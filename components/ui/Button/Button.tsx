@@ -1,11 +1,12 @@
+import Link, { LinkProps } from 'next/link';
 import { FC, MouseEvent } from "react";
 import styles from './Button.module.css';
 
 interface Props {
-  link?: boolean;
   text: string;
+  variant?: "link" | "default";
   size?: "small" | "default" | "large";
-  variant?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
+  theme?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 };
 
@@ -15,7 +16,7 @@ const classStyles = {
     small: styles.sm,
     large: styles.lg,
   },
-  style: {
+  theme: {
     default: "",
     primary: styles.primary,
     secondary: styles.secondary,
@@ -24,10 +25,16 @@ const classStyles = {
   }
 };
 
-const Button: FC<Props> = ({ text, onClick, size = "default", variant = "default", link = false }) => {
+const Button: FC<Props> = ({
+  text,
+  onClick,
+  size = "default",
+  theme = "default",
+  variant = "default",
+}) => {
   const sizeVariant = classStyles.size[size];
-  const styleVariant = classStyles.style[variant];
-  const linkVariant = link ? styles.link : "";
+  const styleVariant = classStyles.theme[theme];
+  const linkVariant = variant === "link" ? styles.link : "";
   const className = [styles.root, sizeVariant, styleVariant, linkVariant].join(" ");
 
   return (
