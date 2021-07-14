@@ -1,8 +1,26 @@
+const plugin = require('tailwindcss/plugin')
+
 module.exports = {
   mode: 'jit',
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      sans: ["Inter", "system-ui", "sans-serif"],
+      serif: ["ui-serif", "Georgia", "serif"],
+      mono: ["ui-monospace", "SFMono-Regular"],
+    },
+    fontSize: {
+      xs: ['12px', '20px'],
+      sm: ['14px', '24px'],
+      base: ['16px', '28px'],
+      lg: ['20px', '28px'],
+      xl: ['24px', '29px'],
+      '2xl': ['34px', '41px'],
+      '3xl': ['48px', '58px'],
+      '4xl': ['60px', '72px'],
+      '5xl': ['96px', '116px'],
+    },
     textColor: {
       primary: "#000F34",
       secondary: "#000F348A",
@@ -38,5 +56,16 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addBase, theme }) {
+      addBase({
+        'h1': { fontSize: theme('fontSize.5xl'), fontWeight: "600" },
+        'h2': { fontSize: theme('fontSize.4xl'), fontWeight: "600" },
+        'h3': { fontSize: theme('fontSize.3xl'), fontWeight: "600" },
+        'h4': { fontSize: theme('fontSize.2xl'), fontWeight: "600" },
+        'h5': { fontSize: theme('fontSize.xl'), fontWeight: "600" },
+        'h6': { fontSize: theme('fontSize.lg'), fontWeight: "600" }
+      })
+    })
+  ],
 }
