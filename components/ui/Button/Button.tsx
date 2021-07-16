@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, ReactElement } from "react";
 import { LoadingOutlined } from '@ant-design/icons';
 
 import styles from './Button.module.css';
@@ -6,6 +6,7 @@ import styles from './Button.module.css';
 interface Props {
   text: string;
   loading?: boolean;
+  icon?: ReactElement;
   variant?: "link" | "default";
   size?: "small" | "default" | "large";
   theme?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
@@ -29,16 +30,24 @@ const classStyles = {
 
 const Button: FC<Props> = ({
   text,
+  icon,
   onClick,
   loading = false,
   size = "default",
   theme = "default",
   variant = "default",
 }) => {
-  const sizeVariant = classStyles.size[size];
-  const styleVariant = classStyles.theme[theme];
-  const linkVariant = variant === "link" ? styles.link : "";
-  const className = [styles.root, sizeVariant, styleVariant, linkVariant].join(" ");
+  const sizeStyles = classStyles.size[size];
+  const themeStyles = classStyles.theme[theme];
+  const linkStyles = variant === "link" ? styles.link : "";
+  const className = [styles.root, sizeStyles, themeStyles, linkStyles].join(" ");
+
+  let iconElement = icon;
+
+  if (loading) {
+    iconElement = <LoadingOutlined style={{ fontSize: 20 }} />;
+  }
+
 
   return (
     <button
@@ -46,9 +55,9 @@ const Button: FC<Props> = ({
       disabled={loading}
       className={className}
     >
-      {loading && (
+      {(loading || icon) && (
         <span className={styles.iconContainer}>
-          <LoadingOutlined style={{ fontSize: 20 }} />
+          {iconElement}
         </span>
       )}
       <span>{text}</span>
