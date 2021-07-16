@@ -1,9 +1,11 @@
-import Link, { LinkProps } from 'next/link';
 import { FC, MouseEvent } from "react";
+import { LoadingOutlined } from '@ant-design/icons';
+
 import styles from './Button.module.css';
 
 interface Props {
   text: string;
+  loading?: boolean;
   variant?: "link" | "default";
   size?: "small" | "default" | "large";
   theme?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
@@ -22,12 +24,13 @@ const classStyles = {
     secondary: styles.secondary,
     danger: styles.danger,
     whatsapp: styles.whatsapp,
-  }
+  },
 };
 
 const Button: FC<Props> = ({
   text,
   onClick,
+  loading = false,
   size = "default",
   theme = "default",
   variant = "default",
@@ -38,7 +41,16 @@ const Button: FC<Props> = ({
   const className = [styles.root, sizeVariant, styleVariant, linkVariant].join(" ");
 
   return (
-    <button className={className} onClick={onClick}>
+    <button
+      onClick={onClick}
+      disabled={loading}
+      className={className}
+    >
+      {loading && (
+        <span className={styles.iconContainer}>
+          <LoadingOutlined style={{ fontSize: 20 }} />
+        </span>
+      )}
       <span>{text}</span>
     </button>
   )

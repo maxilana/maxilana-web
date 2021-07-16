@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { Link } from '~/components/ui';
+import { Button, Link } from '~/components/ui';
 
 export default function Home() {
   return (
@@ -21,6 +21,8 @@ export default function Home() {
           Get started by editing{' '}
           <code>pages/index.js</code>
         </p>
+
+        <Button theme="primary" text="Este es un botón de ejemplo" />
 
         <div className='grid grid-cols-2 gap-8'>
           <Link title='Documentation'>

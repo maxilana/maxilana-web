@@ -36,6 +36,7 @@ module.exports = {
         transparent: "transparent",
         current: "currentColor",
         accent: {
+          light: "#FFF8D3",
           DEFAULT: "#FDDA2A",
           dark: "#F0CE21",
         },
@@ -44,10 +45,12 @@ module.exports = {
           dark: "#0E5290",
         },
         surface: {
+          light: "#F0F6FB",
           DEFAULT: '#F4F5FB',
           dark: "#EBF1F6",
         },
         'action-primary': "#1E83E1",
+        'action-primary-light': "#C9E5FF",
         'action-secondary': "#1978D0",
         'action-critical': "#EF3A3ADE",
       }
