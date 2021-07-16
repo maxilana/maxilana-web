@@ -1,3 +1,5 @@
+
+import Link from 'next/link';
 import { FC, MouseEvent, ReactElement } from "react";
 import { LoadingOutlined } from '@ant-design/icons';
 
@@ -5,6 +7,7 @@ import styles from './Button.module.css';
 
 interface Props {
   text: string;
+  href?: string;
   loading?: boolean;
   icon?: ReactElement;
   variant?: "link" | "default";
@@ -31,6 +34,7 @@ const classStyles = {
 const Button: FC<Props> = ({
   text,
   icon,
+  href,
   onClick,
   loading = false,
   size = "default",
@@ -46,6 +50,21 @@ const Button: FC<Props> = ({
 
   if (loading) {
     iconElement = <LoadingOutlined style={{ fontSize: 20 }} />;
+  }
+
+  if (href !== undefined) {
+    return (
+      <Link href={href}>
+        <a className={className}>
+          {icon && (
+            <span className={styles.iconContainer}>
+              {iconElement}
+            </span>
+          )}
+          <span>{text}</span>
+        </a>
+      </Link>
+    )
   }
 
 
