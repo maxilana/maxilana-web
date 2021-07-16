@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import { Link } from '~/components/ui';
 
+
 export default function Home() {
   return (
     <div>
