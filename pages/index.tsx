@@ -1,10 +1,17 @@
 import Head from 'next/head';
 
-import { Link } from '~/components/ui';
-import { Footer } from '~/components/layout';
+import { Badge, Link, Tag } from '~/components/ui';
+import { Footer, HStack, VStack } from '~/components/layout';
+import { useState } from 'react';
 
 
 export default function Home() {
+  const [badges, setBadges] = useState([
+    "Culiacán",
+    "Envio a domicilio",
+    "Sucursal Aeropuerto"
+  ]);
+
   return (
     <div>
       <Head>
@@ -14,33 +21,45 @@ export default function Home() {
       </Head>
 
       <main className='container mx-auto px-4'>
-        <h1 className='text-7xl text-center'>
-          Welcome to <a href='https://nextjs.org'>Next.js!</a>
-        </h1>
-
-        <p className='text-2xl text-center'>
-          Get started by editing{' '}
-          <code>pages/index.js</code>
-        </p>
-
-        <div className='sm:grid sm:grid-cols-2 sm:gap-8'>
-          <Link title='Documentation'>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </Link>
-          <Link title='Learn'>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </Link>
-          <Link title='Examples'>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </Link>
-          <Link title='Deploy'>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </Link>
+        <div className="mb-10">
+          <h4>VStack/HStack &amp; Tags</h4>
+          <VStack>
+            <HStack spacing="sm">
+              <Tag label="Cadenas de diamante" />
+              <Tag label="Crucifijo" />
+              <Tag label="Dije de oro" />
+              <Tag label="Dije de plata" />
+            </HStack>
+            <HStack>
+              <Tag label="Relojes" />
+              <Tag label="Correas de reloj" />
+            </HStack>
+          </VStack>
+        </div>
+        <div>
+          <h4>Badges</h4>
+          <VStack>
+            <HStack spacing="sm">
+              <Badge label="Culiacán" />
+              <Badge label="Envio a domicilio" />
+              <Badge label="Sucursale Aeropuerto" />
+            </HStack>
+            <HStack spacing="sm">
+              {badges.map(badge => (
+                <Badge
+                  closable
+                  key={badge}
+                  label={badge}
+                  onClick={() => {
+                    const newBadges = badges.filter(label => label !== badge);
+                    setBadges(newBadges);
+                  }}
+                />
+              ))}
+            </HStack>
+          </VStack>
         </div>
       </main>
-
       <Footer />
     </div>
   );
