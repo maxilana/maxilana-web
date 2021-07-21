@@ -1,0 +1,40 @@
+.root {
+  @apply max-w-full overflow-x-auto whitespace-nowrap;
+}
+
+.horizontal {
+  scrollbar-width: none;
+  @apply flex flex-row flex-nowrap px-3 justify-start items-start;
+}
+
+.horizontal::-webkit-scrollbar {
+  display: none;
+}
+
+.hSpace {
+  @apply mr-3;
+}
+
+.hSpaceSmall {
+  @apply mr-1.5;
+}
+
+.hSpaceLarge {
+  @apply mr-6;
+}
+
+.vertical {
+  @apply flex-col justify-start items-start;
+}
+
+.vSpace {
+  @apply mb-3;
+}
+
+.vSpaceSmall {
+  @apply mb-1.5;
+}
+
+.vSpaceLarge {
+  @apply mb-6;
+}

@@ -1,0 +1,5 @@
+.root {
+  color: #172d64de;
+  border-color: #172d64de;
+  @apply inline-block rounded-full bg-white border px-2 py-1;
+}
