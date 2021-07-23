@@ -1,0 +1,5 @@
+.root {
+  border-color: #0c5e9c26;
+  @apply border p-4 bg-white rounded;
+  @apply md:p-6;
+}

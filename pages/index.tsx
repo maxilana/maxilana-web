@@ -1,8 +1,8 @@
 import Head from 'next/head';
-
-import { Badge, Link, Tag } from '~/components/ui';
-import { Footer, HStack, VStack } from '~/components/layout';
 import { useState } from 'react';
+
+import { Badge, Tag, Card, Button } from '~/components/ui';
+import { Footer, HStack, VStack } from '~/components/layout';
 
 
 export default function Home() {
@@ -21,6 +21,41 @@ export default function Home() {
       </Head>
 
       <main className='container mx-auto px-4'>
+        <div className="mb-10">
+          <h4 className="mb-4">Cards</h4>
+          <hr className="mb-4" />
+          <h5 className="mb-4">Simple Card</h5>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card>
+              <VStack>
+                <h5>¿Necesitas dinero?</h5>
+                <p>Obtén un préstamo personal y fácil</p>
+                <Button theme="primary" text="Solicitar Préstamo" size="small" />
+              </VStack>
+            </Card>
+            <Card>
+              <VStack>
+                <h5>Paga en línea</h5>
+                <p>Obtén un préstamo personal y fácil</p>
+                <Button theme="primary" text="Solicitar Préstamo" size="small" />
+              </VStack>
+            </Card>
+            <Card>
+              <VStack>
+                <h5>Gana más con Vales</h5>
+                <p>Obtén un préstamo personal y fácil</p>
+                <Button theme="primary" text="Solicitar Préstamo" size="small" />
+              </VStack>
+            </Card>
+            <Card>
+              <VStack>
+                <h5>Visítanos en nuestras sucursales</h5>
+                <p>Obtén un préstamo personal y fácil</p>
+                <Button theme="primary" text="Solicitar Préstamo" size="small" />
+              </VStack>
+            </Card>
+          </div>
+        </div>
         <div className="mb-10">
           <h4>VStack/HStack &amp; Tags</h4>
           <VStack>
