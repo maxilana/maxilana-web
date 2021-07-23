@@ -3,3 +3,36 @@
   @apply border p-4 bg-white rounded;
   @apply md:p-6;
 }
+
+.rootProduct {
+  @apply flex flex-col p-0 overflow-hidden;
+}
+
+.productImg {
+  @apply flex-grow bg-gray-400 h-40;
+}
+
+.productBody {
+  @apply flex-grow-0 p-2;
+  @apply md:p-4;
+}
+
+.productTitle {
+  @apply text-primary font-semibold text-xs line-clamp-2;
+}
+
+.productPrice {
+  @apply space-x-1 font-semibold text-sm text-price line-clamp-1;
+}
+
+.productPriceSale {
+  color: #ef3a3ade;
+}
+
+.productCompareAtPrice {
+  @apply text-xs text-discount line-through;
+}
+
+.productBranch {
+  @apply text-xs text-secondary line-clamp-1;
+}

@@ -1,8 +1,8 @@
 import Head from 'next/head';
 import { useState } from 'react';
 
-import { Badge, Tag, Card, Button } from '~/components/ui';
 import { Footer, HStack, VStack } from '~/components/layout';
+import { Badge, Tag, Card, Button, ProductCard } from '~/components/ui';
 
 
 export default function Home() {
@@ -54,6 +54,15 @@ export default function Home() {
                 <Button theme="primary" text="Solicitar Préstamo" size="small" />
               </VStack>
             </Card>
+          </div>
+          <hr className="my-4" />
+          <h5 className="mb-4">Product Cards</h5>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
           </div>
         </div>
         <div className="mb-10">
