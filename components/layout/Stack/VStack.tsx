@@ -8,18 +8,19 @@ interface Props {
 }
 
 const spacingClasses = {
-  sm: styles.vSpaceSmall,
-  md: styles.vSpace,
-  lg: styles.vSpaceLarge,
+  sm: styles.spacingSmall,
+  md: "",
+  lg: styles.spacingLarge,
 }
 
 const VStack: FC<Props> = ({ children, spacing = "md" }) => {
   const spacingStyle = spacingClasses[spacing];
+  const className = [styles.root, styles.vertical, spacingStyle].join(" ");
 
   return (
-    <div className={`${styles.root} ${styles.vertical}`}>
+    <div className={className}>
       {React.Children.map(children, (child) => (
-        <div className={spacingStyle}>
+        <div>
           {child}
         </div>
       ))}

@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin');
+const pluginLineClamp = require('@tailwindcss/line-clamp');
 
 module.exports = {
   mode: 'jit',
@@ -26,6 +27,7 @@ module.exports = {
       primary: '#000F34',
       secondary: '#000F348A',
       disabled: '#0000003D',
+      price: '#1E83E1',
       discount: '#C4C9CE',
     },
     borderRadius: {
@@ -62,6 +64,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
+    pluginLineClamp,
     plugin(function ({ addBase, theme }) {
       addBase({
         h1: { fontSize: theme('fontSize.5xl'), fontWeight: '600' },
