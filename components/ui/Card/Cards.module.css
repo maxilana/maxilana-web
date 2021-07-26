@@ -5,7 +5,7 @@
 }
 
 .rootProduct {
-  @apply flex flex-col p-0 overflow-hidden;
+  @apply flex flex-col p-0 overflow-hidden relative;
 }
 
 .productImg {
@@ -35,4 +35,21 @@
 
 .productBranch {
   @apply text-xs text-secondary line-clamp-1;
+}
+
+.productBadge {
+  @apply absolute left-2 top-28 flex flex-row items-center gap-2;
+}
+
+.productBadgeStore {
+  @apply bg-action-primary p-1 rounded-sm text-white inline-flex items-center justify-center;
+}
+
+.productBadgeShipping {
+  background-color: #cb2b55;
+  @apply p-1 rounded-sm text-white inline-flex items-center justify-center;
+}
+
+.productSaleBadge {
+  @apply bg-action-critical p-1 rounded-l-sm absolute right-px top-2 text-white text-xs;
 }

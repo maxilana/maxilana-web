@@ -1,7 +1,15 @@
 import { FC } from "react";
 import { VStack } from "~/components/layout";
+import { CarOutlined, ShopOutlined } from "@ant-design/icons";
 
 import styles from './Cards.module.css';
+
+interface Props {
+  title: string;
+  price: number;
+  salePrice?: number;
+  onSale?: boolean;
+}
 
 const ProductCard: FC = () => {
   return (
@@ -18,6 +26,17 @@ const ProductCard: FC = () => {
             Sucursal Aeropuerto, Culiacán.
           </span>
         </VStack>
+      </div>
+      <span className={styles.productSaleBadge}>
+        Oferta
+      </span>
+      <div className={styles.productBadge}>
+        <div className={styles.productBadgeStore}>
+          <ShopOutlined style={{ fontSize: 20 }} />
+        </div>
+        <div className={styles.productBadgeShipping}>
+          <CarOutlined style={{ fontSize: 20 }} />
+        </div>
       </div>
     </div>
   )
