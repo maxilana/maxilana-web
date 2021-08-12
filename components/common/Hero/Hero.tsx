@@ -1,5 +1,4 @@
 import { FC, ReactNode } from "react";
-import Image from 'next/image';
 
 import styles from './Hero.module.css';
 
@@ -10,9 +9,14 @@ interface Props {
   actions?: ReactNode;
 }
 
-const Hero: FC<Props> = ({ title, subtitle = null, actions = null }) => {
+const Hero: FC<Props> = ({ title, subtitle = null, actions = null, cover = null }) => {
   return (
     <div className={styles.root}>
+      {cover !== null && (
+        <div className={styles.cover}>
+          {cover}
+        </div>
+      )}
       <div className={styles.wrapper}>
         <div className={styles.body}>
           <h1 className={styles.title}>{title}</h1>

@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import React, { useState } from 'react';
 
 import { Hero } from '~/components/common';
@@ -29,6 +30,14 @@ export default function Home() {
             <Button text="Avalúa tu empeño" theme="primary" />
             <Button text="Solicita un préstamo" />
           </React.Fragment>
+        )}
+        cover={(
+          <Image
+            src="/demo-hero.jpg"
+            layout="fill"
+            alt="Hero Homepage Image"
+            objectFit="contain"
+          />
         )}
       />
       <main className='container mx-auto px-4'>

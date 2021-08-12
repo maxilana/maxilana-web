@@ -1,23 +1,26 @@
 .root {
-  @apply relative bg-blue-500;
-}
-
-.wrapper {
-  @apply flex flex-col items-start justify-end container mx-auto px-4;
-  @apply md:px-10;
-  @apply lg:px-0;
+  @apply relative flex flex-col items-start justify-end bg-blue-500;
+  @apply min-h-[420px];
+  @apply sm:min-h-[320px];
+  @apply md:min-h-[680px];
 }
 
 .cover {
-  @apply w-full h-[420px] absolute left-0 top-0;
-  @apply sm:h-auto sm:min-h-[319px];
+  @apply w-full h-[420px] absolute left-0 top-0 z-0;
+  @apply sm:h-auto sm:min-h-[320px];
   @apply md:min-h-[680px];
+}
+
+.wrapper {
+  @apply container mx-auto px-4 relative;
+  @apply md:px-10;
+  @apply lg:px-0;
 }
 
 .body {
   @apply py-8;
   @apply sm:py-20;
-  @apply md:max-w-2xl;
+  @apply md:pb-32 md:max-w-2xl;
 }
 
 .title {
