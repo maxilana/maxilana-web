@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
+import { Hero } from '~/components/common';
 import { Footer, HStack, VStack } from '~/components/layout';
 import { Badge, Tag, Card, Button, ProductCard } from '~/components/ui';
 
@@ -20,6 +21,16 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
+      <Hero
+        title="En Maxilana te sacamos del apuro"
+        subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"
+        actions={(
+          <React.Fragment>
+            <Button text="Avalúa tu empeño" theme="primary" />
+            <Button text="Solicita un préstamo" />
+          </React.Fragment>
+        )}
+      />
       <main className='container mx-auto px-4'>
         <div className="mb-10">
           <h4 className="mb-4">Cards</h4>

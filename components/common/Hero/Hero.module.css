@@ -1,0 +1,36 @@
+.root {
+  @apply relative bg-blue-500;
+}
+
+.wrapper {
+  @apply flex flex-col items-start justify-end container mx-auto px-4;
+  @apply md:px-10;
+  @apply lg:px-0;
+}
+
+.cover {
+  @apply w-full h-[420px] absolute left-0 top-0;
+  @apply sm:h-auto sm:min-h-[319px];
+  @apply md:min-h-[680px];
+}
+
+.body {
+  @apply py-8;
+  @apply sm:py-20;
+  @apply md:max-w-2xl;
+}
+
+.title {
+  @apply text-xl text-white mb-2;
+  @apply md:text-4xl;
+}
+
+.subtitle {
+  @apply text-white text-base mb-4;
+  @apply md:text-lg md:mb-8;
+}
+
+.actionsWrap {
+  @apply flex flex-col items-start space-y-3;
+  @apply md:flex-row md:space-y-0 md:space-x-3;
+}
