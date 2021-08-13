@@ -1,19 +1,12 @@
+import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, { useState } from 'react';
 
 import { Hero } from '~/components/common';
-import { Footer, HStack, VStack } from '~/components/layout';
-import { Badge, Tag, Card, Button, ProductCard } from '~/components/ui';
+import { Footer, Layout } from '~/components/layout';
+import { Card, Button } from '~/components/ui';
 
-
-export default function Home() {
-  const [badges, setBadges] = useState([
-    "Culiacán",
-    "Envio a domicilio",
-    "Sucursal Aeropuerto"
-  ]);
-
+function Home() {
   return (
     <div>
       <Head>
@@ -33,98 +26,97 @@ export default function Home() {
         )}
         cover={(
           <Image
-            src="/demo-hero.jpg"
             layout="fill"
+            src="/demo-hero.jpg"
             alt="Hero Homepage Image"
-            objectFit="contain"
+            objectFit="cover"
           />
         )}
       />
-      <main className='container mx-auto px-4'>
-        <div className="mb-10">
-          <h4 className="mb-4">Cards</h4>
-          <hr className="mb-4" />
-          <h5 className="mb-4">Simple Card</h5>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card>
-              <VStack>
-                <h5>¿Necesitas dinero?</h5>
-                <p>Obtén un préstamo personal y fácil</p>
-                <Button theme="primary" text="Solicitar Préstamo" size="small" />
-              </VStack>
+      <Layout>
+        <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
+          {cards.map(card => (
+            <Card key={card.id}>
+              <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between">
+                <div className="relative min-w-[150px] lg:min-w-[200px]">
+                  <Image
+                    width={250}
+                    height={364}
+                    layout="responsive"
+                    src={card.image.src}
+                    alt={card.image.alt}
+                  />
+                </div>
+                <div className="text-center space-y-3 sm:text-left lg:space-y-4">
+                  <h5 className="text-lg lg:text-2xl">{card.title}</h5>
+                  <p className="text-xs lg:text-base">
+                    {card.description}
+                  </p>
+                  <Button text={card.action.label} size="small" />
+                </div>
+              </div>
             </Card>
-            <Card>
-              <VStack>
-                <h5>Paga en línea</h5>
-                <p>Obtén un préstamo personal y fácil</p>
-                <Button theme="primary" text="Solicitar Préstamo" size="small" />
-              </VStack>
-            </Card>
-            <Card>
-              <VStack>
-                <h5>Gana más con Vales</h5>
-                <p>Obtén un préstamo personal y fácil</p>
-                <Button theme="primary" text="Solicitar Préstamo" size="small" />
-              </VStack>
-            </Card>
-            <Card>
-              <VStack>
-                <h5>Visítanos en nuestras sucursales</h5>
-                <p>Obtén un préstamo personal y fácil</p>
-                <Button theme="primary" text="Solicitar Préstamo" size="small" />
-              </VStack>
-            </Card>
-          </div>
-          <hr className="my-4" />
-          <h5 className="mb-4">Product Cards</h5>
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-          </div>
+          ))}
         </div>
-        <div className="mb-10">
-          <h4>VStack/HStack &amp; Tags</h4>
-          <VStack>
-            <HStack spacing="sm">
-              <Tag label="Cadenas de diamante" />
-              <Tag label="Crucifijo" />
-              <Tag label="Dije de oro" />
-              <Tag label="Dije de plata" />
-            </HStack>
-            <HStack>
-              <Tag label="Relojes" />
-              <Tag label="Correas de reloj" />
-            </HStack>
-          </VStack>
-        </div>
-        <div>
-          <h4>Badges</h4>
-          <VStack>
-            <HStack spacing="sm">
-              <Badge label="Culiacán" />
-              <Badge label="Envio a domicilio" />
-              <Badge label="Sucursale Aeropuerto" />
-            </HStack>
-            <HStack spacing="sm">
-              {badges.map(badge => (
-                <Badge
-                  closable
-                  key={badge}
-                  label={badge}
-                  onClick={() => {
-                    const newBadges = badges.filter(label => label !== badge);
-                    setBadges(newBadges);
-                  }}
-                />
-              ))}
-            </HStack>
-          </VStack>
-        </div>
-      </main>
+      </Layout>
       <Footer />
     </div>
   );
 }
+
+const cards = [
+  {
+    id: 1,
+    title: "Paga en línea",
+    description: "Paga tu empeño, Maxilana Vales o tu prestamo personal.",
+    image: {
+      src: "/ilustracion-pago-online-inicio.png",
+      alt: "Ilustración de tarjetas para pagar en línea",
+    },
+    action: {
+      label: "Pagar en línea",
+      href: "/"
+    }
+  },
+  {
+    id: 2,
+    title: "Gana más con Maxilana Vales",
+    description: "Conviértete en distribuidora de vales.",
+    image: {
+      src: "/ilustracion-pago-online-inicio.png",
+      alt: "Ilustración de tarjetas para pagar en línea",
+    },
+    action: {
+      label: "Más información",
+      href: "/"
+    }
+  },
+  {
+    id: 3,
+    title: "¿Necesitas dinero?",
+    description: "Obtén un préstamo personal fácil y rápido.",
+    image: {
+      src: "/fotografia-hombre-sin-dinero.png",
+      alt: "Ilustración de tarjetas para pagar en línea",
+    },
+    action: {
+      label: "Solicitar préstamo",
+      href: "/"
+    }
+  },
+  {
+    id: 4,
+    title: "Visítanos en sucursal",
+    description: "Nuestros expertos en sucursale pueden calcular el valor justo de una amplia variedad de mercancías.",
+    image: {
+      src: "/ilustracion-mapa-inicio.png",
+      alt: "Ilustración de tarjetas para pagar en línea",
+    },
+    action: {
+      label: "Ver sucursales",
+      href: "/"
+    }
+  }
+];
+
+export default Home;
