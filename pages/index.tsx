@@ -2,9 +2,9 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { CategoryExplorer, Hero } from '~/components/common';
 import { Footer, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
+import { CategoryExplorer, Hero } from '~/components/common';
 
 function Home() {
   return (

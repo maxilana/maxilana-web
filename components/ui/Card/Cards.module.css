@@ -4,12 +4,19 @@
   @apply md:p-6;
 }
 
+/** PRODUCT CARD **/
+
 .rootProduct {
   @apply flex flex-col p-0 overflow-hidden relative rounded-sm;
 }
 
 .productImg {
-  @apply flex-grow bg-gray-300 w-full h-40;
+  @apply flex-grow bg-gray-300 relative w-full h-40 overflow-hidden;
+  @apply lg:max-w-[300px] lg:h-[260px];
+}
+
+.productPlaceholder {
+  @apply flex flex-row items-center justify-center;
 }
 
 .productBody {
@@ -19,10 +26,12 @@
 
 .productTitle {
   @apply text-primary font-semibold text-xs line-clamp-2;
+  @apply lg:text-base;
 }
 
 .productPrice {
   @apply space-x-1 font-semibold text-sm text-price line-clamp-1;
+  @apply sm:text-base;
 }
 
 .productPriceSale {
@@ -38,7 +47,8 @@
 }
 
 .productBadge {
-  @apply absolute left-2 top-28 flex flex-row items-center gap-2;
+  @apply absolute left-2 top-[120px] flex flex-row items-center gap-2;
+  @apply lg:top-[220px];
 }
 
 .productBadgeStore {

@@ -1,14 +1,17 @@
-import React, { FC } from "react";
+import cn from 'classnames';
+import React, { FC, ReactNode } from "react";
+import { CarOutlined, PictureOutlined, ShopOutlined } from "@ant-design/icons";
+
 import { VStack } from "~/components/layout";
-import { CarOutlined, ShopOutlined } from "@ant-design/icons";
+import { usePrice } from "~/modules/hooks";
 
 import styles from './Cards.module.css';
-import { usePrice } from "~/modules/hooks";
 
 interface Props {
   title: string;
   price: number;
   branch: string;
+  image?: ReactNode;
   salePrice?: number;
   onSale?: boolean;
   shipping?: boolean;
@@ -18,9 +21,10 @@ const ProductCard: FC<Props> = ({
   title,
   price,
   branch,
+  image = null,
   onSale = null,
   shipping = null,
-  salePrice = null
+  salePrice = null,
 }) => {
   const { price: basePrice } = usePrice({ amount: price });
   const { price: discountPrice } = usePrice(
@@ -31,7 +35,18 @@ const ProductCard: FC<Props> = ({
 
   return (
     <div className={`${styles.root} ${styles.rootProduct}`}>
-      <div className={styles.productImg} />
+      <div
+        className={cn(
+          styles.productImg,
+          { [styles.productPlaceholder]: image === null }
+        )}
+      >
+        {
+          image !== null
+            ? image
+            : <PictureOutlined style={{ fontSize: 40, color: "white" }} />
+        }
+      </div>
       <div className={styles.productBody}>
         <VStack spacing="sm">
           <p className={styles.productTitle}>{title}</p>
