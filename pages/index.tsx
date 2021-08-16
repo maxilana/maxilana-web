@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { Hero } from '~/components/common';
+import { CategoryExplorer, Hero } from '~/components/common';
 import { Footer, Layout } from '~/components/layout';
 import { Card, Button } from '~/components/ui';
 
@@ -58,6 +58,13 @@ function Home() {
             </Card>
           ))}
         </div>
+        <section className="my-12 lg:my-[72px]">
+          <h2 className="text-center text-2xl">Remates por categoría</h2>
+          <CategoryExplorer />
+          <div className="text-center">
+            <Button theme="secondary" text="Ver todos los remates" href="/" />
+          </div>
+        </section>
       </Layout>
       <Footer />
     </div>
