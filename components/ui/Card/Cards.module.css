@@ -5,11 +5,11 @@
 }
 
 .rootProduct {
-  @apply flex flex-col p-0 overflow-hidden relative;
+  @apply flex flex-col p-0 overflow-hidden relative rounded-sm;
 }
 
 .productImg {
-  @apply flex-grow bg-gray-400 h-40;
+  @apply flex-grow bg-gray-300 w-full h-40;
 }
 
 .productBody {
@@ -52,4 +52,5 @@
 
 .productSaleBadge {
   @apply bg-action-critical p-1 rounded-l-sm absolute right-px top-2 text-white text-xs;
+  line-height: 12px;
 }

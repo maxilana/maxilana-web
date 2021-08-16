@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import { CategoryExplorer, Hero } from '~/components/common';
 import { Footer, Layout } from '~/components/layout';
-import { Card, Button } from '~/components/ui';
+import { Card, Button, ProductCard } from '~/components/ui';
 
 function Home() {
   return (
@@ -63,6 +63,24 @@ function Home() {
           <CategoryExplorer />
           <div className="text-center">
             <Button theme="secondary" text="Ver todos los remates" href="/" />
+          </div>
+        </section>
+        <section>
+          <h2 className="text-2xl">
+            Nuestros últimos productos
+          </h2>
+          <div className="grid grid-cols-2 gap-2 my-4 sm:grid-cols-4 sm:gap-4 lg:gap-6">
+            {products.map(item => (
+              <ProductCard
+                key={item.id}
+                title={item.title}
+                price={item.price}
+                branch={item.branch}
+                onSale={item?.onSale}
+                shipping={item?.shipping}
+                salePrice={item?.salePrice}
+              />
+            ))}
           </div>
         </section>
       </Layout>
@@ -125,5 +143,85 @@ const cards = [
     }
   }
 ];
+
+const products = [
+  {
+    id: 1,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 4308.45,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 2,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 4308.45,
+    branch: "Aeropuerto, Culiacán",
+    shipping: true,
+  },
+  {
+    id: 3,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 4,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+    shipping: true,
+  },
+  {
+    id: 5,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    branch: "Aeropuerto, Culiacán",
+    shipping: true,
+  },
+  {
+    id: 6,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 7,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 8,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 9,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  },
+  {
+    id: 10,
+    title: "Anillo con brillantes 3.80 gramos 14 Kilates",
+    price: 5308.25,
+    salePrice: 4308.50,
+    onSale: true,
+    branch: "Aeropuerto, Culiacán",
+  }
+]
 
 export default Home;
