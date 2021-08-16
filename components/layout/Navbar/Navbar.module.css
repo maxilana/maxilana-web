@@ -1,0 +1,53 @@
+.root {
+  @apply bg-brand py-2;
+}
+
+.wrapper {
+  @apply container px-4 mx-auto;
+}
+
+.areas {
+  @apply flex flex-col gap-4;
+  @apply lg:flex-row;
+}
+
+.brandingArea {
+  @apply flex flex-row justify-start items-center;
+}
+
+.navigationArea {
+  @apply flex-[2];
+}
+
+.contextualArea {
+  @apply hidden flex-col justify-center items-center gap-2 ml-8;
+  @apply lg:flex-1 lg:flex lg:max-w-[200px];
+}
+
+.menu {
+  @apply mr-4;
+  @apply lg:hidden;
+}
+
+.logoContainer {
+  @apply flex-1 flex flex-row justify-center -ml-4;
+  @apply lg:ml-0 lg:mr-8;
+}
+
+.logo {
+  @apply w-[127px] h-[32px];
+  @apply lg:w-[228px] lg:h-[58px];
+}
+
+.navigationMenu {
+  @apply hidden;
+  @apply lg:block;
+}
+
+.navigationItem {
+  @apply inline-block py-2 px-4 text-white text-base;
+}
+
+.loginLink {
+  @apply text-white text-sm;
+}

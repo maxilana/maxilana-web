@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { Footer, Layout } from '~/components/layout';
+import { Footer, Layout, Navbar } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
 import { CategoryExplorer, Hero } from '~/components/common';
 
@@ -18,6 +18,7 @@ function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
+      <Navbar />
       <Hero
         title="En Maxilana te sacamos del apuro"
         subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"

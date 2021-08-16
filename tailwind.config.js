@@ -57,6 +57,7 @@ module.exports = {
         brand: {
           DEFAULT: '#005198',
           dark: '#0E5290',
+          darker: '#0B477D',
         },
         surface: {
           light: '#F0F6FB',
