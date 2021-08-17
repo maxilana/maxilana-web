@@ -17,9 +17,7 @@
   @apply placeholder-shown:text-white focus:outline-none;
 }
 
-.searchInput {
-  @apply border-r border-brand;
-}
-
-.locationInput {
+.locationDropdown {
+  @apply border-l border-brand flex flex-row justify-between items-center;
+  @apply hover:cursor-pointer;
 }

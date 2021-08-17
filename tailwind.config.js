@@ -29,6 +29,11 @@ module.exports = {
       disabled: '#0000003D',
       price: '#1E83E1',
       discount: '#C4C9CE',
+      brand: {
+        DEFAULT: '#005198',
+        dark: '#0E5290',
+        darker: '#0B477D',
+      },
     },
     borderRadius: {
       sm: '8px',
