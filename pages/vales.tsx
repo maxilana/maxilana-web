@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import { NextPage } from "next";
-import { WhatsAppOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { WhatsAppOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 
+import { Button } from '~/components/ui';
 import { Hero } from "~/components/common";
-import { ButtonDropdown } from '~/components/ui';
+import Dropdown from '~/components/ui/Dropdown';
 import { Layout, Navbar } from "~/components/layout";
 
 const whatsappList = [
@@ -14,6 +16,42 @@ const whatsappList = [
   { label: "Mexicali" },
   { label: "Tijuana" }
 ];
+
+const ButtonDropdown = ({ list }: { list: { label: string }[] }) => {
+  const [visible, toggleDropdown] = useState(false);
+
+  return (
+    <Dropdown
+      visible={visible}
+      onClose={() => { toggleDropdown(false) }}
+      parent={(
+        <Button
+          theme="danger"
+          text="Conviértete en distribuidora"
+          onClick={() => { toggleDropdown(!visible) }}
+          icon={<WhatsAppOutlined style={{ fontSize: 20 }} />}
+          rightIcon={
+            visible
+              ? <UpOutlined style={{ fontSize: 20 }} />
+              : <DownOutlined style={{ fontSize: 20 }} />
+          }
+        />
+      )}
+    >
+      <div role="list">
+        {list.map(item => (
+          <span
+            key={item.label}
+            role="listitem"
+            className="block p-1 text-xs text-primary"
+          >
+            {item.label}
+          </span>
+        ))}
+      </div>
+    </Dropdown>
+  )
+}
 
 const ValesPage: NextPage = () => {
   return (
@@ -31,16 +69,7 @@ const ValesPage: NextPage = () => {
           />
         )}
         actions={(
-          <ButtonDropdown
-            theme="danger"
-            text="Conviértete en distribuidora"
-            icon={<WhatsAppOutlined style={{ fontSize: 20 }} />}
-            listItems={whatsappList.map(item => (
-              <span key={item.label} className="block p-2 text-xs text-primary">
-                {item.label}
-              </span>
-            ))}
-          />
+          <ButtonDropdown list={whatsappList} />
         )}
       />
       <Layout>

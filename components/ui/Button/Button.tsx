@@ -10,6 +10,7 @@ interface Props {
   href?: string;
   loading?: boolean;
   icon?: ReactElement;
+  rightIcon?: ReactElement;
   variant?: "link" | "default";
   size?: "small" | "default" | "large";
   theme?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
@@ -33,8 +34,9 @@ const classStyles = {
 
 const Button: FC<Props> = ({
   text,
-  icon,
   href,
+  icon,
+  rightIcon,
   onClick,
   loading = false,
   size = "default",
@@ -75,11 +77,16 @@ const Button: FC<Props> = ({
       className={className}
     >
       {(loading || icon) && (
-        <span className={styles.iconContainer}>
+        <span className={styles.leftIconWrapper}>
           {iconElement}
         </span>
       )}
       <span>{text}</span>
+      {rightIcon && (
+        <span className={styles.rightIconWrapper}>
+          {rightIcon}
+        </span>
+      )}
     </button>
   )
 }

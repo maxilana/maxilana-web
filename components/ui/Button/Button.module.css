@@ -86,24 +86,10 @@
   box-shadow: none;
 }
 
-.iconContainer {
+.leftIconWrapper {
   @apply mr-2;
 }
 
-/** DROPDOWN **/
-
-.rootDropdown {
-  @apply relative;
-}
-
-.dropdownWrapper {
-  @apply hidden absolute top-[100%] left-0 w-full;
-}
-
-.dropdownWrapperVisible {
-  @apply block;
-}
-
-.dropdownCard {
-  @apply p-2;
+.rightIconWrapper {
+  @apply ml-2;
 }
