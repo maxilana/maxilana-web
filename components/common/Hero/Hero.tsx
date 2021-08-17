@@ -21,7 +21,7 @@ const Hero: FC<Props> = ({ title, subtitle = null, actions = null, cover = null 
         <div className={styles.body}>
           <h1 className={styles.title}>{title}</h1>
           {subtitle !== null && (
-            <p className={styles.subtitle}>Averigua hasta cuánto te podemos dar por tus pertenencias</p>
+            <p className={styles.subtitle}>{subtitle}</p>
           )}
           {actions !== null && (
             <div className={styles.actionsWrap}>
