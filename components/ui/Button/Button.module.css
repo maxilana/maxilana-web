@@ -86,6 +86,10 @@
   box-shadow: none;
 }
 
-.iconContainer {
+.leftIconWrapper {
   @apply mr-2;
+}
+
+.rightIconWrapper {
+  @apply ml-2;
 }

@@ -29,11 +29,31 @@ module.exports = {
       disabled: '#0000003D',
       price: '#1E83E1',
       discount: '#C4C9CE',
+      brand: {
+        DEFAULT: '#005198',
+        dark: '#0E5290',
+        darker: '#0B477D',
+      },
+      accent: {
+        light: '#FFF8D3',
+        DEFAULT: '#FDDA2A',
+        dark: '#F0CE21',
+      },
     },
     borderRadius: {
       sm: '8px',
       DEFAULT: '24px',
       full: '9999px',
+    },
+    screens: {
+      sm: '640px',
+      // => @media (min-width: 640px) { ... }
+      md: '768px',
+      // => @media (min-width: 768px) { ... }
+      lg: '1024px',
+      // => @media (min-width: 1024px) { ... }
+      xl: '1280px',
+      // => @media (min-width: 1280px) { ... }
     },
     extend: {
       colors: {
@@ -47,6 +67,7 @@ module.exports = {
         brand: {
           DEFAULT: '#005198',
           dark: '#0E5290',
+          darker: '#0B477D',
         },
         surface: {
           light: '#F0F6FB',
