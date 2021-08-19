@@ -7,7 +7,7 @@ const main = [
   {
     id: 2,
     label: "Empeños",
-    href: "/empeños",
+    href: "/empeno",
   },
   {
     id: 3,
