@@ -30,7 +30,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
               width={361}
               height={222}
               layout="responsive"
-              src="/pagar-vales.png"
+              src={actionCard.imageSource}
               alt="Logotipo Maxilana Vales"
               objectFit="contain"
             />

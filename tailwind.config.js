@@ -34,6 +34,11 @@ module.exports = {
         dark: '#0E5290',
         darker: '#0B477D',
       },
+      accent: {
+        light: '#FFF8D3',
+        DEFAULT: '#FDDA2A',
+        dark: '#F0CE21',
+      },
     },
     borderRadius: {
       sm: '8px',

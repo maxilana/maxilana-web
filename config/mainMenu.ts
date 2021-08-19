@@ -12,12 +12,12 @@ const main = [
   {
     id: 3,
     label: "Préstamos",
-    href: "/prestamos",
+    href: "/prestamos-personales",
   },
   {
     id: 4,
     label: "Maxilana Vales",
-    href: "/maxilana-vales"
+    href: "/vales"
   },
   {
     id: 5,
