@@ -1,11 +1,10 @@
+import React from 'react';
 import Image from 'next/image';
 import { NextPage } from "next";
-import React, { useState } from 'react';
-import { WhatsAppOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 
-import { Button, Dropdown } from '~/components/ui';
-import { Hero, FullBleedBanner, ServicePaymentCards } from "~/components/common";
+import { ButtonDropdown } from '~/components/ui';
 import { Layout, Navbar } from "~/components/layout";
+import { Hero, FullBleedBanner, ServicePaymentCards } from "~/components/common";
 
 const whatsappList = [
   { label: "Culiacán y Navolato" },
@@ -15,42 +14,6 @@ const whatsappList = [
   { label: "Mexicali" },
   { label: "Tijuana" }
 ];
-
-const ButtonDropdown = ({ list }: { list: { label: string }[] }) => {
-  const [visible, toggleDropdown] = useState(false);
-
-  return (
-    <Dropdown
-      visible={visible}
-      onClose={() => { toggleDropdown(false) }}
-      parent={(
-        <Button
-          theme="danger"
-          text="Conviértete en distribuidora"
-          onClick={() => { toggleDropdown(!visible) }}
-          icon={<WhatsAppOutlined style={{ fontSize: 20 }} />}
-          rightIcon={
-            visible
-              ? <UpOutlined style={{ fontSize: 20 }} />
-              : <DownOutlined style={{ fontSize: 20 }} />
-          }
-        />
-      )}
-    >
-      <div role="list">
-        {list.map(item => (
-          <span
-            key={item.label}
-            role="listitem"
-            className="block p-1 text-xs text-primary"
-          >
-            {item.label}
-          </span>
-        ))}
-      </div>
-    </Dropdown>
-  )
-}
 
 const ValesPage: NextPage = () => {
   return (
@@ -68,7 +31,12 @@ const ValesPage: NextPage = () => {
           />
         )}
         actions={(
-          <ButtonDropdown list={whatsappList} />
+          <ButtonDropdown
+            size="small"
+            theme="danger"
+            items={whatsappList}
+            label="Conviérte en distribuidora"
+          />
         )}
       />
       <Layout>
@@ -213,7 +181,12 @@ const ValesPage: NextPage = () => {
                 Solo envíanos un Whatsapp
               </p>
               <div className="inline-block">
-                <ButtonDropdown list={whatsappList} />
+                <ButtonDropdown
+                  size="small"
+                  theme="danger"
+                  items={whatsappList}
+                  label="Conviérte en distribuidora"
+                />
               </div>
             </div>
           </div>

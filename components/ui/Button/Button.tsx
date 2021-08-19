@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 
 import styles from './Button.module.css';
 
-interface Props {
+export interface Props {
   text: string;
   href?: string;
   loading?: boolean;
