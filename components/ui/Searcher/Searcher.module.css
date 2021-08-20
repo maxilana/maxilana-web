@@ -1,5 +1,5 @@
 .root {
-  @apply bg-brand-darker rounded-sm flex flex-row;
+  @apply bg-brand-darker rounded-full flex flex-row;
 }
 
 .inputWrap,
@@ -13,11 +13,23 @@
 }
 
 .inputControl {
-  @apply bg-transparent p-2 text-sm text-white w-full h-full;
+  @apply bg-transparent p-2 pl-3 text-sm text-white w-full h-full;
   @apply placeholder-shown:text-white focus:outline-none;
 }
 
 .locationDropdown {
-  @apply border-l border-brand flex flex-row justify-between items-center;
+  @apply border-l border-brand flex flex-row justify-between items-center pr-2;
   @apply hover:cursor-pointer;
+}
+
+.arrowIndicator {
+  @apply transition-all;
+}
+
+.arrowUp {
+  @apply transform -rotate-180;
+}
+
+.button {
+  @apply bg-action-primary text-white py-2 px-3 rounded-r-full inline-flex items-center;
 }

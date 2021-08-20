@@ -4,9 +4,10 @@
 }
 
 .wrapper {
-  @apply hidden absolute top-[105%] left-0 w-full;
+  @apply absolute top-[105%] right-0 w-64 bg-white rounded-sm shadow-lg p-2 pointer-events-none;
+  @apply transform -translate-y-2 opacity-0 transition-all;
 }
 
 .wrapperVisible {
-  @apply block;
+  @apply opacity-100 translate-y-0 pointer-events-auto;
 }
