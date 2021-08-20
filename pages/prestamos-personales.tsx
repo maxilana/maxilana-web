@@ -1,44 +1,39 @@
 import Image from 'next/image';
-import { NextPage } from "next";
+import { NextPage } from 'next';
 
-import { FullBleedBanner, Hero, ServicePaymentCards } from "~/components/common";
-import { Layout, Navbar } from "~/components/layout";
+import { FullBleedBanner, Hero, ServicePaymentCards } from '~/components/common';
+import { Layout, Navbar, Container } from '~/components/layout';
 import { Card } from '~/components/ui';
 
 const PrestamosPage: NextPage = () => {
   return (
-    <div>
-      <Navbar />
+    <Layout title="Prestamos personales">
       <Hero
         title="Te prestamos para lo que necesites"
         subtitle="Resuelve tus imprevistos fácil y rápido"
-        cover={(
+        cover={
           <Image
             layout="fill"
             src="/demo-hero-prestamos.jpg"
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
           />
-        )}
-        actions={(
-          <p className="text-lg text-accent-dark uppercase">
-            De $2,000 hasta $20,000
-          </p>
-        )}
+        }
+        actions={<p className="text-lg text-accent-dark uppercase">De $2,000 hasta $20,000</p>}
       />
-      <Layout>
+      <Container>
         <section className="my-12 max-w-5xl mx-auto sm:my-24">
           <ServicePaymentCards
             actionCard={{
-              title: "Paga en línea",
-              imageSource: "/pagar-prestamos.png",
-              description: "Paga tu préstamo cómodamente y sin contratiempos",
-              buttonLabel: "Pagar préstamo personal",
-              buttonHref: "/pagos/prestamo-personal"
+              title: 'Paga en línea',
+              imageSource: '/pagar-prestamos.png',
+              description: 'Paga tu préstamo cómodamente y sin contratiempos',
+              buttonLabel: 'Pagar préstamo personal',
+              buttonHref: '/pagos/prestamo-personal',
             }}
             contextCard={{
-              title: "Realiza abonos de tu préstamo sin acudir a sucursal",
-              description: "Por medio de depósito o transferencia en:"
+              title: 'Realiza abonos de tu préstamo sin acudir a sucursal',
+              description: 'Por medio de depósito o transferencia en:',
             }}
           />
         </section>
@@ -49,7 +44,7 @@ const PrestamosPage: NextPage = () => {
                 Requisitos para el préstamo personal de Maxilana
               </h2>
               <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {requisitos.map(item => (
+                {requisitos.map((item) => (
                   <Card key={item.id}>
                     <div>
                       <div className="w-[186px] h-[186px] relative mx-auto">
@@ -62,9 +57,7 @@ const PrestamosPage: NextPage = () => {
                           objectFit="contain"
                         />
                       </div>
-                      <p className="text-lg text-center font-semibold">
-                        {item.label}
-                      </p>
+                      <p className="text-lg text-center font-semibold">{item.label}</p>
                     </div>
                   </Card>
                 ))}
@@ -75,11 +68,8 @@ const PrestamosPage: NextPage = () => {
         <section className="py-12 sm:py-24">
           <h2 className="text-2xl text-center">¿Cómo funciona?</h2>
           <div className="grid gap-6 mt-12 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            {howItWorks.map(item => (
-              <div
-                key={item.id}
-                className="text-center p-2"
-              >
+            {howItWorks.map((item) => (
+              <div key={item.id} className="text-center p-2">
                 <div className="w-[162px] h-[162px] relative mx-auto mb-4">
                   <Image
                     width={162}
@@ -90,26 +80,17 @@ const PrestamosPage: NextPage = () => {
                     objectFit="contain"
                   />
                 </div>
-                <h3 className="text-lg mb-4">
-                  {`${item.id}. ${item.title}`}
-                </h3>
-                <p className="text-sm text-secondary">
-                  {item.description}
-                </p>
+                <h3 className="text-lg mb-4">{`${item.id}. ${item.title}`}</h3>
+                <p className="text-sm text-secondary">{item.description}</p>
               </div>
             ))}
           </div>
         </section>
         <section className="py-12 sm:py-24">
-          <h2 className="text-2xl">
-            Beneficios de los préstamos personales Maxilana
-          </h2>
+          <h2 className="text-2xl">Beneficios de los préstamos personales Maxilana</h2>
           <div className="mt-12 grid gap-6 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map(item => (
-              <div
-                key={item.id}
-                className="p-2"
-              >
+            {benefits.map((item) => (
+              <div key={item.id} className="p-2">
                 <div className="w-[80px] h-[80px] relative mb-4">
                   <Image
                     width={80}
@@ -120,97 +101,96 @@ const PrestamosPage: NextPage = () => {
                     objectFit="contain"
                   />
                 </div>
-                <h3 className="text-lg mb-4">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-secondary">
-                  {item.description}
-                </p>
+                <h3 className="text-lg mb-4">{item.title}</h3>
+                <p className="text-sm text-secondary">{item.description}</p>
               </div>
             ))}
           </div>
         </section>
-      </Layout>
-    </div>
-  )
+      </Container>
+    </Layout>
+  );
 };
 
 const requisitos = [
   {
     id: 1,
-    label: "IFE o INE Vigente",
-    imageSrc: "/requisitos-prestamo-01.png"
+    label: 'IFE o INE Vigente',
+    imageSrc: '/requisitos-prestamo-01.png',
   },
   {
     id: 2,
-    label: "Comprobante de ingresos (último mes)",
-    imageSrc: "/requisitos-prestamo-02.png"
+    label: 'Comprobante de ingresos (último mes)',
+    imageSrc: '/requisitos-prestamo-02.png',
   },
   {
     id: 3,
-    label: "Comprobante de domicilio reciente (no más de 3 meses)",
-    imageSrc: "/requisitos-prestamo-03.png"
+    label: 'Comprobante de domicilio reciente (no más de 3 meses)',
+    imageSrc: '/requisitos-prestamo-03.png',
   },
   {
     id: 4,
-    label: "2 referencias personales y familiares",
-    imageSrc: "/requisitos-prestamo-04.png"
+    label: '2 referencias personales y familiares',
+    imageSrc: '/requisitos-prestamo-04.png',
   },
-]
+];
 
 const howItWorks = [
   {
     id: 1,
-    imageSrc: "/pasos-prestamo-01.png",
-    title: "Simula tu crédito y solicita tu préstamo",
-    description: "Ingresa la información solicitada en el formularío. Empieza ya."
+    imageSrc: '/pasos-prestamo-01.png',
+    title: 'Simula tu crédito y solicita tu préstamo',
+    description: 'Ingresa la información solicitada en el formularío. Empieza ya.',
   },
   {
     id: 2,
-    imageSrc: "/pasos-prestamo-02.png",
-    title: "El equipo de Maxilana se comunicará contigo",
-    description: "Espera la llamada, a la brevedad un agente de Maxilana se comunicara contigo."
+    imageSrc: '/pasos-prestamo-02.png',
+    title: 'El equipo de Maxilana se comunicará contigo',
+    description: 'Espera la llamada, a la brevedad un agente de Maxilana se comunicara contigo.',
   },
   {
     id: 3,
-    imageSrc: "/pasos-prestamo-03.png",
-    title: "Acude a tu sucursal más cercana",
-    description: "Visita una de nuestras sucursales, con todos los requisitos solicitados y en una plazo de 24 horas resolvemos."
+    imageSrc: '/pasos-prestamo-03.png',
+    title: 'Acude a tu sucursal más cercana',
+    description:
+      'Visita una de nuestras sucursales, con todos los requisitos solicitados y en una plazo de 24 horas resolvemos.',
   },
   {
     id: 4,
-    imageSrc: "/pasos-prestamo-04.png",
-    title: "Te entregamos tu dinero",
-    description: "A partir de ese momento, puedes hacer pagos a capital y reducir tus pagos."
+    imageSrc: '/pasos-prestamo-04.png',
+    title: 'Te entregamos tu dinero',
+    description: 'A partir de ese momento, puedes hacer pagos a capital y reducir tus pagos.',
   },
 ];
 
 const benefits = [
   {
     id: 1,
-    imageSrc: "/pasos-prestamo-01.png",
-    title: "Pago a capital",
-    description: "Abona a capital cuando lo decidas, baja tu deuda y tus pagos parciales. Sin penalización."
+    imageSrc: '/pasos-prestamo-01.png',
+    title: 'Pago a capital',
+    description:
+      'Abona a capital cuando lo decidas, baja tu deuda y tus pagos parciales. Sin penalización.',
   },
   {
     id: 2,
-    imageSrc: "/pasos-prestamo-02.png",
-    title: "Pago puntual",
-    description: "Al pagar puntualmente tu crédito el último abono se te bonifica."
+    imageSrc: '/pasos-prestamo-02.png',
+    title: 'Pago puntual',
+    description: 'Al pagar puntualmente tu crédito el último abono se te bonifica.',
   },
   {
     id: 3,
-    imageSrc: "/pasos-prestamo-03.png",
-    title: "Tasa de interés personalizada",
-    description: "Si tu primer crédito fue pagado puntual el segundo obtiene un beneficio de una tasa más baja."
+    imageSrc: '/pasos-prestamo-03.png',
+    title: 'Tasa de interés personalizada',
+    description:
+      'Si tu primer crédito fue pagado puntual el segundo obtiene un beneficio de una tasa más baja.',
   },
   {
     id: 4,
-    imageSrc: "/pasos-prestamo-04.png",
-    title: "Restructuración de tu crédito",
-    description: "Tu crédito puede ser reestructurado a la mitad de tiempo estimado (se liquida el préstamo actual y se otorga la diferencia)"
+    imageSrc: '/pasos-prestamo-04.png',
+    title: 'Restructuración de tu crédito',
+    description:
+      'Tu crédito puede ser reestructurado a la mitad de tiempo estimado (se liquida el préstamo actual y se otorga la diferencia)',
   },
-]
-
+];
 
 export default PrestamosPage;

@@ -1,19 +1,19 @@
 import Image from 'next/image';
-import { NextPage } from "next";
+import { NextPage } from 'next';
 import React, { useState } from 'react';
 import { WhatsAppOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 
 import { Button, Dropdown } from '~/components/ui';
-import { Hero, FullBleedBanner, ServicePaymentCards } from "~/components/common";
-import { Layout, Navbar } from "~/components/layout";
+import { Hero, FullBleedBanner, ServicePaymentCards } from '~/components/common';
+import { Layout, Container } from '~/components/layout';
 
 const whatsappList = [
-  { label: "Culiacán y Navolato" },
-  { label: "Mazatlán" },
-  { label: "Guadalajara" },
-  { label: "Hermosillo" },
-  { label: "Mexicali" },
-  { label: "Tijuana" }
+  { label: 'Culiacán y Navolato' },
+  { label: 'Mazatlán' },
+  { label: 'Guadalajara' },
+  { label: 'Hermosillo' },
+  { label: 'Mexicali' },
+  { label: 'Tijuana' },
 ];
 
 const ButtonDropdown = ({ list }: { list: { label: string }[] }) => {
@@ -22,77 +22,74 @@ const ButtonDropdown = ({ list }: { list: { label: string }[] }) => {
   return (
     <Dropdown
       visible={visible}
-      onClose={() => { toggleDropdown(false) }}
-      parent={(
+      onClose={() => {
+        toggleDropdown(false);
+      }}
+      parent={
         <Button
           theme="danger"
           text="Conviértete en distribuidora"
-          onClick={() => { toggleDropdown(!visible) }}
+          onClick={() => {
+            toggleDropdown(!visible);
+          }}
           icon={<WhatsAppOutlined style={{ fontSize: 20 }} />}
           rightIcon={
-            visible
-              ? <UpOutlined style={{ fontSize: 20 }} />
-              : <DownOutlined style={{ fontSize: 20 }} />
+            visible ? (
+              <UpOutlined style={{ fontSize: 20 }} />
+            ) : (
+              <DownOutlined style={{ fontSize: 20 }} />
+            )
           }
         />
-      )}
+      }
     >
       <div role="list">
-        {list.map(item => (
-          <span
-            key={item.label}
-            role="listitem"
-            className="block p-1 text-xs text-primary"
-          >
+        {list.map((item) => (
+          <span key={item.label} role="listitem" className="block p-1 text-xs text-primary">
             {item.label}
           </span>
         ))}
       </div>
     </Dropdown>
-  )
-}
+  );
+};
 
 const ValesPage: NextPage = () => {
   return (
-    <div>
-      <Navbar />
+    <Layout title="Maxilana vales">
       <Hero
         title="Invierte tu tiempo y gana dinero extra"
         subtitle="Conviértete en distribuidora de vales y empieza a cumplir tus metas"
-        cover={(
+        cover={
           <Image
             layout="fill"
             src="/demo-hero-vales.jpg"
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
           />
-        )}
-        actions={(
-          <ButtonDropdown list={whatsappList} />
-        )}
+        }
+        actions={<ButtonDropdown list={whatsappList} />}
       />
-      <Layout>
+      <Container>
         <section className="my-12 max-w-5xl mx-auto sm:my-24">
           <ServicePaymentCards
             actionCard={{
-              title: "Paga en línea",
-              imageSource: "/pagar-vales.png",
-              description: "Consulta el saldo de tu cuenta y paga tus vales",
-              buttonLabel: "Pagar a distribuidora",
-              buttonHref: "/pagos/vales"
+              title: 'Paga en línea',
+              imageSource: '/pagar-vales.png',
+              description: 'Consulta el saldo de tu cuenta y paga tus vales',
+              buttonLabel: 'Pagar a distribuidora',
+              buttonHref: '/pagos/vales',
             }}
             contextCard={{
-              title: "Realiza abonos de vales sin acudir a sucursal",
-              description: "Por medio de depósito o transferencia en:"
+              title: 'Realiza abonos de vales sin acudir a sucursal',
+              description: 'Por medio de depósito o transferencia en:',
             }}
           />
         </section>
         <FullBleedBanner backgroundColor="#EF6387">
           <div className="max-w-4xl mx-auto py-2 sm:py-9">
             <p className="text-center text-white text-xl sm:text-2xl">
-              <strong>
-                ¡Gana hasta un 18% ofreciendo a tus clientes los mejores servicios!
-              </strong>
+              <strong>¡Gana hasta un 18% ofreciendo a tus clientes los mejores servicios!</strong>
             </p>
           </div>
         </FullBleedBanner>
@@ -101,7 +98,10 @@ const ValesPage: NextPage = () => {
           <div className="mt-12 sm:grid sm:grid-cols-2 gap-20 items-center">
             <div className="mb-6 order-2">
               <h3 className="text-xl mb-4">Sin invertir</h3>
-              <p className="text-base sm:text-lg">Aprovecha el capital que te proporciona Maxilana y empieza a obtener tus propias ganancias.</p>
+              <p className="text-base sm:text-lg">
+                Aprovecha el capital que te proporciona Maxilana y empieza a obtener tus propias
+                ganancias.
+              </p>
             </div>
             <div className="order-1">
               <div className="max-w-xs mx-auto">
@@ -120,7 +120,10 @@ const ValesPage: NextPage = () => {
           <div className="mt-12 sm:grid sm:grid-cols-2 gap-20 items-center">
             <div className="mb-6">
               <h3 className="text-xl mb-4">Administra tu tiempo y genera tus propios ingresos</h3>
-              <p className="text-base sm:text-lg">Con tu línea de crédito podrás realizar préstamos en vales para que tus clientes los cambien en tiendas Maxilana.</p>
+              <p className="text-base sm:text-lg">
+                Con tu línea de crédito podrás realizar préstamos en vales para que tus clientes los
+                cambien en tiendas Maxilana.
+              </p>
             </div>
             <div>
               <div className="max-w-xs mx-auto">
@@ -139,7 +142,9 @@ const ValesPage: NextPage = () => {
           <div className="mt-12 sm:grid sm:grid-cols-2 gap-20 items-center">
             <div className="mb-6 order-2">
               <h3 className="text-xl mb-4">Te damos mayor plazo</h3>
-              <p className="text-base sm:text-lg">Obtén mayor tiempo para pagar los abonos de tus créditos.</p>
+              <p className="text-base sm:text-lg">
+                Obtén mayor tiempo para pagar los abonos de tus créditos.
+              </p>
             </div>
             <div className="order-1">
               <div className="max-w-xs mx-auto">
@@ -159,7 +164,8 @@ const ValesPage: NextPage = () => {
             <div className="mb-6">
               <h3 className="text-xl mb-4">Crecemos contigo</h3>
               <p className="text-base sm:text-lg">
-                Contamos con un equipo de asesoría que te apoyara en todo momento, apoyo en la administración y manejo de cartera de tus clientes.
+                Contamos con un equipo de asesoría que te apoyara en todo momento, apoyo en la
+                administración y manejo de cartera de tus clientes.
               </p>
             </div>
             <div>
@@ -181,12 +187,8 @@ const ValesPage: NextPage = () => {
           <div className="max-w-4xl mx-auto px-4 pt-12">
             <div className="sm:flex flex-row-reverse items-center">
               <div className="mb-4">
-                <h3 className="text-2xl mb-4">
-                  Gana más con Maxilana Vales
-                </h3>
-                <p>
-                  Aumenta tus ingresos y logra todas tus metas
-                </p>
+                <h3 className="text-2xl mb-4">Gana más con Maxilana Vales</h3>
+                <p>Aumenta tus ingresos y logra todas tus metas</p>
               </div>
               <div className="mr-4 flex-grow">
                 <Image
@@ -206,12 +208,9 @@ const ValesPage: NextPage = () => {
           <div className="max-w-2xl mx-auto">
             <div className="sm:text-center">
               <h3 className="text-xl sm:text-3xl mb-4">
-                Únete a la familia de distribuidoras de
-                Maxilana Vales y empieza a mejorar tu vida
+                Únete a la familia de distribuidoras de Maxilana Vales y empieza a mejorar tu vida
               </h3>
-              <p className="mb-4">
-                Solo envíanos un Whatsapp
-              </p>
+              <p className="mb-4">Solo envíanos un Whatsapp</p>
               <div className="inline-block">
                 <ButtonDropdown list={whatsappList} />
               </div>
@@ -248,9 +247,9 @@ const ValesPage: NextPage = () => {
             </div>
           </div>
         </FullBleedBanner>
-      </Layout>
-    </div>
-  )
-}
+      </Container>
+    </Layout>
+  );
+};
 
 export default ValesPage;

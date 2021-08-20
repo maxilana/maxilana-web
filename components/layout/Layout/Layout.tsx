@@ -1,15 +1,22 @@
-import { FC, ReactNode } from "react";
+import React, { FC, PropsWithChildren } from 'react';
+import { Meta } from '~/components/common';
+import { MetaProps } from '~/components/common/Meta/Meta';
+import { Footer, Navbar } from '~/components/layout';
 
 interface Props {
-  children: ReactNode
+  title?: string;
+  meta?: MetaProps;
 }
 
-const Layout: FC<Props> = ({ children }) => {
+const Layout: FC<PropsWithChildren<Props>> = ({ title, meta, children }) => {
   return (
-    <main className="container mx-auto px-4">
+    <>
+      <Meta title={title} {...meta} />
+      <Navbar />
       {children}
-    </main>
-  )
-}
+      <Footer />
+    </>
+  );
+};
 
 export default Layout;
