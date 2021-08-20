@@ -1,9 +1,10 @@
 .root {
-  @apply bg-brand py-2;
+  @apply bg-brand py-2 fixed w-full z-10;
 }
 
 .wrapper {
-  @apply container px-4 mx-auto;
+  @apply px-4;
+  @apply xl:container xl:mx-auto;
 }
 
 .areas {
@@ -12,42 +13,66 @@
 }
 
 .brandingArea {
-  @apply flex flex-row justify-start items-center;
+  @apply flex flex-row justify-start items-center relative;
 }
 
 .navigationArea {
   @apply flex-[2];
+  @apply lg:flex lg:flex-col lg:flex-col-reverse;
 }
 
 .contextualArea {
-  @apply hidden flex-col justify-center items-center gap-2 ml-8;
-  @apply lg:flex-1 lg:flex lg:max-w-[200px];
+  @apply flex-col justify-center items-center gap-2 ml-8 absolute right-4 top-3 ;
+  @apply lg:flex lg:static;
 }
 
-.menu {
+.loginLink {
+  @apply text-white text-sm leading-8;
+}
+
+.payOnlineLink {
+  @apply hidden;
+  @apply lg:inline-block;
+}
+
+.drawerTrigger {
   @apply mr-4;
   @apply lg:hidden;
 }
 
-.logoContainer {
-  @apply flex-1 flex flex-row justify-center -ml-4;
-  @apply lg:ml-0 lg:mr-8;
-}
-
 .logo {
   @apply w-[127px] h-[32px];
-  @apply lg:w-[228px] lg:h-[58px];
+  @apply lg:ml-0 lg:mr-8;
+  @apply xl:w-[228px] xl:h-[58px]
+}
+
+
+.backdrop {
+  @apply fixed top-[104px] bottom-0 inset-x-0 bg-brand/60 opacity-0 transition pointer-events-none;
+  @apply lg:hidden;
 }
 
 .navigationMenu {
-  @apply hidden;
-  @apply lg:block;
+  @apply fixed left-0 top-[104px] bottom-0 w-[162px] bg-white text-base shadow-lg;
+  @apply transform -translate-x-60 transition duration-300 transition-all;
+  @apply lg:block lg:opacity-100 lg:static lg:bg-transparent lg:shadow-none lg:w-auto lg:transform-none lg:transition-none;
 }
 
 .navigationItem {
-  @apply inline-block py-2 px-4 text-white text-base;
+  @apply block py-3 px-4 text-brand;
+  @apply lg:text-white lg:inline-block lg:px-2;
 }
 
-.loginLink {
-  @apply text-white text-sm;
+.menuControl {
+  @apply hidden;
+
+  &:checked {
+    & + .backdrop {
+      @apply opacity-100 pointer-events-auto;
+
+      & + .navigationMenu {
+        @apply translate-x-0;
+      }
+    }
+  }
 }

@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# PHPStorm Project config
+.idea

@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { NextPage } from "next";
+import { NextPage } from 'next';
 
 import { Card, ButtonDropdown } from '~/components/ui';
-import { Layout, Navbar, VStack } from "~/components/layout";
+import { Layout, VStack, Container } from "~/components/layout";
 import { FullBleedBanner, Hero, ServicePaymentCards } from "~/components/common";
 
 const whatsappList = [
@@ -16,38 +16,33 @@ const whatsappList = [
 
 const PrestamosPage: NextPage = () => {
   return (
-    <div>
-      <Navbar />
+    <Layout title="Prestamos personales">
       <Hero
         title="Te prestamos para lo que necesites"
         subtitle="Resuelve tus imprevistos fácil y rápido"
-        cover={(
+        cover={
           <Image
             layout="fill"
             src="/demo-hero-prestamos.jpg"
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
           />
-        )}
-        actions={(
-          <p className="text-lg text-accent-dark uppercase">
-            De $2,000 hasta $20,000
-          </p>
-        )}
+        }
+        actions={<p className="text-lg text-accent-dark uppercase">De $2,000 hasta $20,000</p>}
       />
-      <Layout>
+      <Container>
         <section className="my-12 max-w-5xl mx-auto sm:my-24">
           <ServicePaymentCards
             actionCard={{
-              title: "Paga en línea",
-              imageSource: "/pagar-prestamos.png",
-              description: "Paga tu préstamo cómodamente y sin contratiempos",
-              buttonLabel: "Pagar préstamo personal",
-              buttonHref: "/pagos/prestamo-personal"
+              title: 'Paga en línea',
+              imageSource: '/pagar-prestamos.png',
+              description: 'Paga tu préstamo cómodamente y sin contratiempos',
+              buttonLabel: 'Pagar préstamo personal',
+              buttonHref: '/pagos/prestamo-personal',
             }}
             contextCard={{
-              title: "Realiza abonos de tu préstamo sin acudir a sucursal",
-              description: "Por medio de depósito o transferencia en:"
+              title: 'Realiza abonos de tu préstamo sin acudir a sucursal',
+              description: 'Por medio de depósito o transferencia en:',
             }}
           />
         </section>
@@ -58,7 +53,7 @@ const PrestamosPage: NextPage = () => {
                 Requisitos para el préstamo personal de Maxilana
               </h2>
               <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {requisitos.map(item => (
+                {requisitos.map((item) => (
                   <Card key={item.id}>
                     <div>
                       <div className="w-[120px] h-[120px] relative mx-auto m-10">
@@ -71,9 +66,7 @@ const PrestamosPage: NextPage = () => {
                           objectFit="contain"
                         />
                       </div>
-                      <p className="text-lg text-center font-semibold">
-                        {item.label}
-                      </p>
+                      <p className="text-lg text-center font-semibold">{item.label}</p>
                     </div>
                   </Card>
                 ))}
@@ -99,12 +92,8 @@ const PrestamosPage: NextPage = () => {
                     objectFit="contain"
                   />
                 </div>
-                <h3 className="text-lg mb-4">
-                  {`${item.id}. ${item.title}`}
-                </h3>
-                <p className="text-sm text-secondary">
-                  {item.description}
-                </p>
+                <h3 className="text-lg mb-4">{`${item.id}. ${item.title}`}</h3>
+                <p className="text-sm text-secondary">{item.description}</p>
               </div>
             ))}
           </div>
@@ -129,12 +118,8 @@ const PrestamosPage: NextPage = () => {
                     objectFit="contain"
                   />
                 </div>
-                <h3 className="text-lg mb-4">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-secondary">
-                  {item.description}
-                </p>
+                <h3 className="text-lg mb-4">{item.title}</h3>
+                <p className="text-sm text-secondary">{item.description}</p>
               </div>
             ))}
           </div>
@@ -174,10 +159,10 @@ const PrestamosPage: NextPage = () => {
             </div>
           </FullBleedBanner>
         </section>
-      </Layout>
-    </div>
-  )
-};
+      </Container>
+    </Layout>
+  );
+}
 
 const requisitos = [
   {
@@ -200,7 +185,7 @@ const requisitos = [
     label: "2 referencias personales y familiares",
     imageSrc: "/svg/icono-referencias.svg",
   },
-]
+];
 
 const steps = [
   {
@@ -254,7 +239,6 @@ const benefits = [
     title: "Restructuración de tu crédito",
     description: "Tu crédito puede ser reestructurado a la mitad de tiempo estimado (se liquida el préstamo actual y se otorga la diferencia)"
   },
-]
-
+];
 
 export default PrestamosPage;
