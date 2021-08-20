@@ -1,36 +1,22 @@
-import React, { ChangeEventHandler, FC } from "react";
+import React, { ChangeEventHandler, FC, HTMLAttributes, InputHTMLAttributes } from 'react';
 
 import styles from './InputField.module.css';
 
-interface Props {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-const InputField: FC<Props> = ({
-  name,
-  label,
-  onChange,
-}) => {
+const InputField: FC<Props> = ({ name, label, required, ...rest }) => {
   return (
     <React.Fragment>
-      <label
-        htmlFor={name}
-        className={styles.label}
-      >
-        {label} <span>*</span>
+      <label htmlFor={name} className={styles.label}>
+        {label}
+        {required && <span> *</span>}
       </label>
-      <input
-        type="text"
-        id={name}
-        name={name}
-        onChange={onChange}
-        className={styles.input}
-        placeholder="Escribe tu nombre aquí"
-      />
+      <input {...rest} id={name} name={name} className={styles.input} />
     </React.Fragment>
-  )
-}
+  );
+};
 
 export default InputField;
