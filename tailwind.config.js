@@ -1,5 +1,6 @@
 const plugin = require('tailwindcss/plugin');
 const pluginLineClamp = require('@tailwindcss/line-clamp');
+const pluginTypography = require('@tailwindcss/typography');
 
 module.exports = {
   mode: 'jit',
@@ -86,6 +87,7 @@ module.exports = {
   },
   plugins: [
     pluginLineClamp,
+    pluginTypography,
     plugin(function ({ addBase, theme }) {
       addBase({
         h1: { fontSize: theme('fontSize.5xl'), fontWeight: '600' },

@@ -13,7 +13,7 @@ const Layout: FC<PropsWithChildren<Props>> = ({ title, meta, children }) => {
     <>
       <Meta title={title} {...meta} />
       <Navbar />
-      {children}
+      <main>{children}</main>
       <Footer />
     </>
   );

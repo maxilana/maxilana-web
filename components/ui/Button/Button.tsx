@@ -5,10 +5,11 @@ import { LoadingOutlined } from '@ant-design/icons';
 import styles from './Button.module.css';
 import cn from 'classnames';
 
-interface Props {
+export interface Props {
   text: string;
   href?: string;
   loading?: boolean;
+  fullWidth?: boolean;
   icon?: ReactElement;
   rightIcon?: ReactElement;
   variant?: 'link' | 'default';
@@ -40,6 +41,7 @@ const Button: FC<Props> = ({
   rightIcon,
   onClick,
   loading = false,
+  fullWidth = false,
   size = 'default',
   theme = 'default',
   variant = 'default',
@@ -48,7 +50,15 @@ const Button: FC<Props> = ({
   const sizeStyles = classStyles.size[size];
   const themeStyles = classStyles.theme[theme];
   const linkStyles = variant === 'link' ? styles.link : '';
-  const rootClassName = cn(styles.root, sizeStyles, themeStyles, linkStyles, className);
+  const fullWidthStyles = fullWidth ? styles.fullWidth : '';
+  const rootClassName = cn(
+    styles.root,
+    sizeStyles,
+    themeStyles,
+    linkStyles,
+    fullWidthStyles,
+    className,
+  );
 
   let iconElement = icon;
 

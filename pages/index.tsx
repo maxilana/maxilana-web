@@ -1,8 +1,7 @@
 import React from 'react';
-import Head from 'next/head';
 import Image from 'next/image';
 
-import { Footer, Container, Navbar, Layout } from '~/components/layout';
+import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
 import { CategoryExplorer, Hero } from '~/components/common';
 

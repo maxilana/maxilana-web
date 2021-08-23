@@ -86,6 +86,10 @@
   box-shadow: none;
 }
 
+.fullWidth {
+  @apply w-full justify-center;
+}
+
 .leftIconWrapper {
   @apply mr-2;
 }
