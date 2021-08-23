@@ -123,7 +123,7 @@ const AutoEmpenoPage: NextPage = () => {
                 </div>
               </div>
               <div className="py-8">
-                <Button theme="primary" text="Enviar Solicitud" className="w-full justify-center" />
+                <Button theme="primary" text="Enviar Solicitud" fullWidth />
               </div>
               <p className="text-xs text-secondary">
                 La Tasa Nominal Anual Máxima (TAE) es de 150% sin IVA. Tasa Anual Fija. Para fines
