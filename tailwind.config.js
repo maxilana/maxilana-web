@@ -28,6 +28,7 @@ module.exports = {
       primary: '#000F34',
       secondary: '#000F348A',
       disabled: '#0000003D',
+      danger: '#EF3A3ADE',
       price: '#1E83E1',
       discount: '#C4C9CE',
       brand: {
@@ -90,12 +91,12 @@ module.exports = {
     pluginTypography,
     plugin(function ({ addBase, theme }) {
       addBase({
-        h1: { fontSize: theme('fontSize.5xl'), fontWeight: '600' },
-        h2: { fontSize: theme('fontSize.4xl'), fontWeight: '600' },
-        h3: { fontSize: theme('fontSize.3xl'), fontWeight: '600' },
-        h4: { fontSize: theme('fontSize.2xl'), fontWeight: '600' },
-        h5: { fontSize: theme('fontSize.xl'), fontWeight: '600' },
-        h6: { fontSize: theme('fontSize.lg'), fontWeight: '600' },
+        h1: { fontSize: theme('fontSize.5xl'), fontWeight: '600', color: '#000F34DE' },
+        h2: { fontSize: theme('fontSize.4xl'), fontWeight: '600', color: '#000F34DE' },
+        h3: { fontSize: theme('fontSize.3xl'), fontWeight: '600', color: '#000F34DE' },
+        h4: { fontSize: theme('fontSize.2xl'), fontWeight: '600', color: '#000F34DE' },
+        h5: { fontSize: theme('fontSize.xl'), fontWeight: '600', color: '#000F34DE' },
+        h6: { fontSize: theme('fontSize.lg'), fontWeight: '600', color: '#000F34DE' },
       });
     }),
   ],

@@ -1,0 +1,15 @@
+.root {
+  @apply w-full;
+}
+
+.heading {
+  @apply flex flex-row justify-between items-center;
+}
+
+.headingTitle {
+  @apply text-sm text-secondary;
+}
+
+.headingData {
+  @apply text-sm font-semibold text-primary;
+}
