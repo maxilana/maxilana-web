@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { NextPage } from 'next';
 import Image from 'next/image';
 
@@ -5,7 +6,6 @@ import { Button } from '~/components/ui';
 import { Layout } from '~/components/layout';
 import { FormContainer, InputField } from '~/components/common';
 import Calendar from '~/components/ui/Calendar/Calendar';
-import Link from 'next/link';
 
 const PagoEmpenoPage: NextPage = () => {
   return (
