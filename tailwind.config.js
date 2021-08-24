@@ -58,9 +58,18 @@ module.exports = {
       // => @media (min-width: 1280px) { ... }
     },
     extend: {
+      textColor: {
+        white: '#FFFFFF',
+        primary: '#000F34',
+        secondary: '#000F348A',
+        disabled: '#0000003D',
+        price: '#1E83E1',
+        discount: '#C4C9CE',
+      },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
+        white: '#fff',
         accent: {
           light: '#FFF8D3',
           DEFAULT: '#FDDA2A',
@@ -80,6 +89,13 @@ module.exports = {
         'action-primary-light': '#C9E5FF',
         'action-secondary': '#1978D0',
         'action-critical': '#EF3A3ADE',
+        primary: {
+          DEFAULT: '#1E83E1',
+          light: '#C9E5FF',
+        },
+        secondary: '#1978D0',
+        critical: '#EF3A3ADE',
+        whatsapp: '#0BBF69',
       },
     },
   },

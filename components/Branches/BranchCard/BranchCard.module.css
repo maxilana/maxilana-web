@@ -1,0 +1,51 @@
+.heading {
+  @apply flex justify-between;
+}
+
+.name {
+  @apply text-base;
+}
+
+.address {
+  @apply text-secondary;
+}
+
+.details {
+  @apply h-0 overflow-hidden transition transition-all space-y-4;
+}
+
+.toggle {
+  @apply transition-all w-8 h-8 block flex items-center justify-center
+}
+
+.expanded {
+  & .details {
+    @apply h-[300px];
+  }
+
+  & .toggle {
+    @apply transform -rotate-180;
+  }
+}
+
+.label {
+  @apply block text-xs font-bold text-brand-darker;
+}
+
+.data {
+  @apply text-secondary block;
+}
+
+.contactOptions {
+  @apply flex justify-around text-center;
+}
+
+.contactOption {
+  @apply max-w-[100px] flex flex-col items-center;
+}
+
+.icon {
+  @apply inline-block rounded-full w-12 h-12 text-white flex items-center justify-center text-xl;
+}
+
+
