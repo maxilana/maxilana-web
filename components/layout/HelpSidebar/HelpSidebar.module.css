@@ -1,0 +1,39 @@
+.root {
+  @apply flex flex-col gap-7;
+}
+
+.header {
+  @apply bg-white;
+}
+
+.headerTitle {
+  @apply text-xl mb-4;
+}
+
+.headerCopy {
+  @apply text-center;
+}
+
+.questions {
+}
+
+.questionItem {
+  @apply py-2 text-primary;
+  @apply hover:underline;
+}
+
+.footer {
+  @apply bg-white;
+}
+
+.footerTitle {
+  @apply text-base mb-4;
+}
+
+.footerCopy {
+  @apply text-xs;
+}
+
+.footerCopy > a {
+  @apply text-price;
+}
