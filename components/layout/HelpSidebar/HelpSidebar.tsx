@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import Link from 'next/link';
 import { FC } from 'react';
 
@@ -17,7 +18,7 @@ interface Props {
 
 const HelpSidebar: FC<Props> = ({ direction = 'vertical', questions }) => {
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, { [styles.rootHorizontal]: direction === 'horizontal' })}>
       <Card className={styles.header}>
         <h4 className={styles.headerTitle}>Preguntas Frecuentes</h4>
         <ul>
