@@ -1,9 +1,9 @@
 import Link from 'next/link';
+import cn from 'classnames';
 import { FC, MouseEvent, ReactElement } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import styles from './Button.module.css';
-import cn from 'classnames';
 
 export interface Props {
   text: string;
@@ -14,7 +14,7 @@ export interface Props {
   rightIcon?: ReactElement;
   variant?: 'link' | 'default';
   size?: 'small' | 'default' | 'large';
-  theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp';
+  theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp' | 'warning';
   className?: string;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 }
@@ -30,6 +30,7 @@ const classStyles = {
     primary: styles.primary,
     secondary: styles.secondary,
     danger: styles.danger,
+    warning: styles.warning,
     whatsapp: styles.whatsapp,
   },
 };

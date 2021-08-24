@@ -1,5 +1,8 @@
 .root {
-  color: #172d64de;
-  border-color: #172d64de;
-  @apply inline-block rounded-full bg-white border px-2 py-1;
+  background-color: #79bdff99;
+  @apply flex flex-row items-center rounded-sm p-px px-2 border border-action-primary text-primary text-sm;
+}
+
+.closable {
+  @apply cursor-pointer;
 }
