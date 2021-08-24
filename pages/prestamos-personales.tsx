@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { NextPage } from 'next';
 
 import { Card, ButtonDropdown } from '~/components/ui';
-import { Layout, VStack, Container } from '~/components/layout';
 import { Hero, ServicePaymentCards } from '~/components/common';
+import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 
 const whatsappList = [
   { label: 'Culiacán y Navolato' },
@@ -12,6 +12,24 @@ const whatsappList = [
   { label: 'Hermosillo' },
   { label: 'Mexicali' },
   { label: 'Tijuana' },
+];
+
+const questionList = [
+  {
+    id: 1,
+    label: '¿Qué es un refrendo?',
+    href: '/preguntas-frecuentes#que-es-refrendo',
+  },
+  {
+    id: 2,
+    label: '¿Qué es un empeño?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
+  {
+    id: 3,
+    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
 ];
 
 const PrestamosPage: NextPage = () => {
@@ -148,6 +166,11 @@ const PrestamosPage: NextPage = () => {
           </div>
         </div>
       </section>
+      <Container>
+        <div className="py-10">
+          <HelpSidebar direction="horizontal" questions={questionList} />
+        </div>
+      </Container>
     </Layout>
   );
 };

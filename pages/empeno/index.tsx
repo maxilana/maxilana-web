@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { PictureOutlined } from '@ant-design/icons';
 
-import { Container, Layout } from '~/components/layout';
+import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards } from '~/components/common';
 
 const EmpenoPage: NextPage = () => {
@@ -89,6 +89,11 @@ const EmpenoPage: NextPage = () => {
           </div>
         </div>
       </Container>
+      <Container>
+        <div className="pb-6">
+          <HelpSidebar direction="horizontal" questions={questionList} />
+        </div>
+      </Container>
     </Layout>
   );
 };
@@ -143,6 +148,24 @@ const benefits = [
     imageSrc: '/svg/icono-escudo-seguridad.svg',
     title: 'Tu prenda está asegurada',
     description: 'Todos los artículos empeñados en Maxilana cuentan con un seguro que los protege.',
+  },
+];
+
+const questionList = [
+  {
+    id: 1,
+    label: '¿Qué es un refrendo?',
+    href: '/preguntas-frecuentes#que-es-refrendo',
+  },
+  {
+    id: 2,
+    label: '¿Qué es un empeño?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
+  {
+    id: 3,
+    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
   },
 ];
 
