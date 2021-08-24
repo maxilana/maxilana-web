@@ -4,7 +4,7 @@ import { PictureOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import { FormContainer, InputField } from '~/components/common';
-import { Layout, Container } from '~/components/layout';
+import { Layout, Container, HelpSidebar } from '~/components/layout';
 
 const AutoEmpenoPage: NextPage = () => {
   return (
@@ -135,6 +135,11 @@ const AutoEmpenoPage: NextPage = () => {
             </FormContainer>
           </div>
         </section>
+        <Container>
+          <div className="pt-6 pb-10">
+            <HelpSidebar direction="horizontal" questions={questionList} />
+          </div>
+        </Container>
       </Layout>
     </div>
   );
@@ -175,6 +180,24 @@ const steps = [
         <li>Tendra de 1 a 3 meses de plazo para pagar. Lo puede retirar cuando desee, dentro del plazo señalado, pagando el préstamo e intereses al día del desempeño.</li>
       </ul>
     `,
+  },
+];
+
+const questionList = [
+  {
+    id: 1,
+    label: '¿Qué es un refrendo?',
+    href: '/preguntas-frecuentes#que-es-refrendo',
+  },
+  {
+    id: 2,
+    label: '¿Qué es un empeño?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
+  {
+    id: 3,
+    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
   },
 ];
 
