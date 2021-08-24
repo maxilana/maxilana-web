@@ -8,11 +8,15 @@ import { City, Branch } from '~/types/Models';
 import { BranchesMap } from '~/components/Branches';
 
 export const getStaticProps: GetStaticProps<{ branches: Branch[]; cities: City[] }> = async () => {
-  const cities = await getAllCities();
-  const branches = await getAllBranches();
+  const response = await getAllBranches();
+  let allBranches: Branch[] = [];
+  const cities = response.map(({ branches, ...city }) => {
+    allBranches = [...allBranches, ...branches];
+    return city;
+  });
 
   return {
-    props: { cities, branches },
+    props: { cities, branches: allBranches },
   };
 };
 

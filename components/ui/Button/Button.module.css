@@ -1,6 +1,6 @@
 .root {
   padding: 12px 16px;
-  box-shadow: 1px 1px 4px 0px #00000033;
+  box-shadow: 1px 1px 4px 0 #00000033;
   @apply bg-surface-dark rounded uppercase text-primary text-xs tracking-wide inline-flex flex-row items-center font-semibold;
 }
 
@@ -70,15 +70,6 @@
 .danger:hover,
 .danger:active {
   background-color: #c1254e;
-}
-
-.warning {
-  @apply bg-accent;
-}
-
-.warning:hover,
-.warning:active {
-  @apply bg-accent-dark;
 }
 
 .link {

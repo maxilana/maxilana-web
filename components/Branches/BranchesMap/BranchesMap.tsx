@@ -1,8 +1,10 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
 import Link from 'next/link';
+import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
-import { CheckableTag } from '~/components/ui';
+import { Button, CheckableTag } from '~/components/ui';
 import slugify from '~/utils/slugify';
 import BranchCard from '../BranchCard';
 
@@ -15,8 +17,10 @@ interface Props {
 }
 
 const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
+  const [mapVisible, toggleMap] = useToggleState();
+
   return (
-    <main className={styles.root}>
+    <main className={cn(styles.root, { [styles.visible]: mapVisible })}>
       <aside className={styles.container}>
         <h1 className={styles.title}>Ubica tu sucursal</h1>
         <p>Elige tu ciudad para ver las sucursales más cercanas</p>
@@ -29,9 +33,9 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
             </a>
           </Link>
           {cities.map((city) => (
-            <Link href={`/sucursales/ciudad/${slugify(city?.name)}`} key={city.code}>
+            <Link href={`/sucursales/ciudad/${city?.slug}`} key={city.id}>
               <a>
-                <CheckableTag className={styles.city} checked={city?.code === currentCity?.code}>
+                <CheckableTag className={styles.city} checked={city?.id === currentCity?.id}>
                   {city.name}
                 </CheckableTag>
               </a>
@@ -43,9 +47,21 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
           <BranchCard data={branch} key={branch?.id} />
         ))}
       </aside>
-      <iframe
-        className={styles.map}
-        src="https://www.google.com/maps/d/embed?mid=zqXiv51ICI8g.kRua7qr6zNBg"
+      <div className={styles.map}>
+        <iframe src="https://www.google.com/maps/d/embed?mid=zqXiv51ICI8g.kRua7qr6zNBg" />
+      </div>
+      <Button
+        text={mapVisible ? 'Ver lista' : 'Ver mapa'}
+        theme="secondary"
+        icon={
+          mapVisible ? (
+            <UnorderedListOutlined style={{ fontSize: 20 }} />
+          ) : (
+            <EnvironmentOutlined style={{ fontSize: 20 }} />
+          )
+        }
+        className={styles.mapOpener}
+        onClick={() => toggleMap()}
       />
     </main>
   );

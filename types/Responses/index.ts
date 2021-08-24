@@ -1,2 +1,2 @@
-export * from './GetPlazas';
+export * from './GetCities';
 export * from './GetSucursales';

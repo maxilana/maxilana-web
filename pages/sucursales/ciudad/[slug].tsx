@@ -26,9 +26,9 @@ export const getStaticProps: GetStaticProps<{
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
   const cities = await getAllCities();
-  const currentCity = cities.find((city) => slugify(city.name) === slug);
+  const currentCity = cities.find((city) => city.slug === slug);
 
-  const branches = currentCity ? await getCityBranches(currentCity?.code) : [];
+  const branches = currentCity ? await getCityBranches(currentCity?.id) : [];
 
   return {
     props: { cities, branches, currentCity },

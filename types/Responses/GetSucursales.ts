@@ -1,10 +1,10 @@
-export type GetSucursales = Array<{
+export interface Sucursal {
   id: number;
   numero: number;
   nombre: string;
   direccion: string;
   telefono: string;
-  ciudad: number;
+  codigociudad: number;
   estado: string;
   img_croquis: string;
   activo: 0 | 1;
@@ -23,4 +23,12 @@ export type GetSucursales = Array<{
   HoraCierreS: string;
   HoraAperturaD: string;
   HoraCierreD: string;
+}
+
+export type GetSucursales = Array<{
+  id: number;
+  ciudad: string;
+  codigo: string;
+  totalSucursales: number;
+  sucursales: Sucursal[];
 }>;

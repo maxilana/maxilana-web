@@ -32,7 +32,7 @@ const BranchCard: FC<Props> = ({ data }) => {
               Dom: {data?.sundaySchedule === 'Cerrado' ? 'Cerrado' : `${data?.sundaySchedule} hrs.`}
             </span>
           </div>
-          <Button text="Ver remates de la tienda" fullWidth theme="warning" />
+          <Button text="Ver remates de la tienda" fullWidth theme="primary" />
           <div className={styles.contactOptions}>
             <a href="#" className={styles.contactOption}>
               <span className={cn(styles.icon, 'bg-brand')}>

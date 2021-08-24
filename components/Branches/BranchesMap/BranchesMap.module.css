@@ -1,9 +1,12 @@
 .root {
-  @apply h-screen min-h-[400px] flex pt-[108px];
+  @apply pt-[108px];
+  @apply lg:h-screen lg:min-h-[400px] lg:flex;
 }
 
 .container {
-  @apply w-96 p-4 pt-8 space-y-4 h-full overflow-y-auto;
+  @apply p-4 pt-8 space-y-4 h-full overflow-y-auto;
+  @apply md:w-3/4 mx-auto;
+  @apply lg:w-96 lg:mx-0;
 }
 
 .title {
@@ -22,6 +25,20 @@
   @apply text-secondary block;
 }
 
+.mapOpener {
+  @apply fixed bottom-12 left-[50%] transform translate-x-[-50%];
+  @apply lg:hidden;
+}
+
 .map {
-  @apply bg-brand/10 flex-1;
+  @apply bg-brand/10 fixed bottom-0 top-[104px] inset-x-0 hidden;
+  @apply lg:flex-1 lg:static lg:block;
+
+  & iframe {
+    @apply w-full h-full
+  }
+}
+
+.visible .map {
+  @apply block;
 }

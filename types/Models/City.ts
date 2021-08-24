@@ -1,6 +1,8 @@
 export interface City {
-  code: number;
+  id: number;
+  slug: string;
   name: string;
-  notificationsEmails: string;
-  confirmationEmails: string;
+  state?: string;
+  active?: boolean;
+  code?: number;
 }

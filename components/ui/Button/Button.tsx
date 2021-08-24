@@ -14,7 +14,7 @@ export interface Props {
   rightIcon?: ReactElement;
   variant?: 'link' | 'default';
   size?: 'small' | 'default' | 'large';
-  theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp' | 'warning';
+  theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp';
   className?: string;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 }
@@ -30,7 +30,6 @@ const classStyles = {
     primary: styles.primary,
     secondary: styles.secondary,
     danger: styles.danger,
-    warning: styles.warning,
     whatsapp: styles.whatsapp,
   },
 };
