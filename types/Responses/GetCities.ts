@@ -1,6 +1,6 @@
 export type GetCities = Array<{
   id: number;
-  codigo: string;
+  slug: string;
   nombre: string;
   estado: string;
   activo: 0 | 1;

@@ -1,11 +1,19 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-import { DownOutlined, PhoneOutlined, WhatsAppOutlined, SelectOutlined } from '@ant-design/icons';
+import {
+  DownOutlined,
+  PhoneOutlined,
+  WhatsAppOutlined,
+  SelectOutlined,
+  EnvironmentOutlined,
+} from '@ant-design/icons';
+import { CircleLink } from '~/components/Branches';
 import { Button, Card } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch } from '~/types/Models/Branch';
 
 import styles from './BranchCard.module.css';
+import slugify from '~/utils/slugify';
 
 interface Props {
   data: Branch;
@@ -32,20 +40,20 @@ const BranchCard: FC<Props> = ({ data }) => {
               Dom: {data?.sundaySchedule === 'Cerrado' ? 'Cerrado' : `${data?.sundaySchedule} hrs.`}
             </span>
           </div>
-          <Button text="Ver remates de la tienda" fullWidth theme="primary" />
+          <Button
+            text="Ver remates de la tienda"
+            fullWidth
+            theme="primary"
+            href={`/sucursales/${data?.id}-${slugify(data.name)}`}
+          />
           <div className={styles.contactOptions}>
-            <a href="#" className={styles.contactOption}>
-              <span className={cn(styles.icon, 'bg-brand')}>
-                <PhoneOutlined />
-              </span>
-              <span className="block">Llamar por teléfono</span>
-            </a>
-            <a href="#" className={styles.contactOption}>
-              <span className={cn(styles.icon, 'bg-whatsapp')}>
-                <WhatsAppOutlined />
-              </span>
-              <span className="block">Enviar WhatsApp</span>
-            </a>
+            <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />
+            <CircleLink
+              href="#"
+              text="Enviar WhatsApp"
+              icon={<WhatsAppOutlined />}
+              bgColor="whatsapp"
+            />
           </div>
           <div className="text-center">
             {data?.constancy && (

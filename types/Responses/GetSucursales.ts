@@ -4,7 +4,8 @@ export interface Sucursal {
   nombre: string;
   direccion: string;
   telefono: string;
-  codigociudad: number;
+  codigociudad?: number;
+  ciudad?: number;
   estado: string;
   img_croquis: string;
   activo: 0 | 1;
@@ -23,12 +24,13 @@ export interface Sucursal {
   HoraCierreS: string;
   HoraAperturaD: string;
   HoraCierreD: string;
+  slug?: string;
 }
 
 export type GetSucursales = Array<{
   id: number;
   ciudad: string;
-  codigo: string;
+  slug: string;
   totalSucursales: number;
   sucursales: Sucursal[];
 }>;

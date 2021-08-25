@@ -1,5 +1,4 @@
 .root {
-  @apply pt-[108px];
   @apply lg:h-screen lg:min-h-[400px] lg:flex;
 }
 

@@ -1,17 +1,13 @@
-import { Branch, City } from '~/types/Models';
+import { Branch, City, CityWithBranches } from '~/types/Models';
 import { GetSucursales } from '~/types/Responses';
 
 import axios from './axios';
-
-interface CityWithBranches extends City {
-  branches: Branch[];
-}
 
 const getAllBranches = async (): Promise<CityWithBranches[]> => {
   const response = await axios.get<GetSucursales>('/sucursales');
   return response.map((city) => ({
     id: city?.id,
-    slug: city?.codigo,
+    slug: city?.slug,
     name: city?.ciudad,
     branches: city?.sucursales.map((item) => ({
       id: item?.id,
@@ -19,7 +15,7 @@ const getAllBranches = async (): Promise<CityWithBranches[]> => {
       name: item?.nombre,
       address: item?.direccion,
       phone: item?.telefono,
-      CityId: item?.codigociudad,
+      CityId: item?.codigociudad || item?.ciudad,
       state: item?.estado,
       imgSketch: item?.img_croquis,
       active: item?.activo,
@@ -38,6 +34,7 @@ const getAllBranches = async (): Promise<CityWithBranches[]> => {
       saturdayClosingTime: item?.HoraCierreS,
       sundayOpeningTime: item?.HoraAperturaD,
       sundayClosingTime: item?.HoraCierreD,
+      slug: item?.slug || '',
     })),
   }));
 };

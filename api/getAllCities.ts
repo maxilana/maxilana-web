@@ -7,7 +7,7 @@ const getAllCities = async (): Promise<City[]> => {
 
   return response.map((item) => ({
     id: item?.id,
-    slug: item?.codigo,
+    slug: item?.slug,
     code: item?.codigoplaza,
     name: item?.nombre,
     state: item?.estado,

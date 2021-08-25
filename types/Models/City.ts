@@ -1,3 +1,5 @@
+import { Branch } from './Branch';
+
 export interface City {
   id: number;
   slug: string;
@@ -5,4 +7,8 @@ export interface City {
   state?: string;
   active?: boolean;
   code?: number;
+}
+
+export interface CityWithBranches extends City {
+  branches: Branch[];
 }

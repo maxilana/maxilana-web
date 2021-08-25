@@ -4,7 +4,7 @@ export interface Branch {
   name: string;
   address: string;
   phone: string;
-  CityId: number;
+  CityId?: number;
   state: string;
   imgSketch: string;
   active: 0 | 1;
@@ -23,4 +23,5 @@ export interface Branch {
   saturdayClosingTime: string;
   sundayOpeningTime: string;
   sundayClosingTime: string;
+  slug?: string;
 }
