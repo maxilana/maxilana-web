@@ -33,3 +33,7 @@
 .input.error {
   @apply border-red-500;
 }
+
+.errorMessage {
+  @apply block text-xs text-danger mb-1;
+}
