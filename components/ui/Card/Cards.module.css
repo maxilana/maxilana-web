@@ -11,8 +11,7 @@
 }
 
 .productImg {
-  @apply flex-grow bg-gray-300 relative w-full overflow-hidden aspect-w-1 aspect-h-1 pointer-events-none;
-  @apply lg:max-w-[300px] lg:h-[260px];
+  @apply bg-gray-300 relative overflow-hidden aspect-w-1 aspect-h-1 pointer-events-none;
 }
 
 .blockLink {
@@ -51,8 +50,7 @@
 }
 
 .productBadge {
-  @apply absolute left-2 top-[120px] flex flex-row items-center gap-2;
-  @apply lg:top-[220px];
+  @apply absolute left-2 bottom-2 flex flex-row items-center gap-2;
 }
 
 .productBadgeStore {

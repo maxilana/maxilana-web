@@ -88,14 +88,14 @@ const View: NextPage<Props> = ({ branch, city, products }) => {
                   }
                   title={product.name}
                   branch={`${branch.name}, ${city?.name} ${city?.state}`}
-                  price={product.netPrice}
-                  salePrice={product.price}
+                  price={product.price}
+                  salePrice={product.netPrice}
                   image={`${imageBaseURL}/${product.code}.jpg`}
                 />
               ))}
           </div>
           <Button
-            href={`/remates?sucursal=${branch.id}`}
+            href={`/busqueda?sucursal=${branch.id}`}
             text="Ver todos"
             theme="secondary"
             fullWidth

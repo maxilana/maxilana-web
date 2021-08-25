@@ -4,9 +4,14 @@ import { GetProductos } from '~/types/Responses/GetProductos';
 import axios from './axios';
 
 const getProducts = async (
-  query?: Record<string, number | string>,
+  query: Record<string, number | string> = { page: 1, limit: 24 },
 ): Promise<Paginated<Product>> => {
-  const [response] = await axios.get<GetProductos[]>('/productos', { data: query });
+  const queryParams = query
+    ? Object.keys(query)
+        .map((param) => `${param}=${query[param]}`, '')
+        .join('&')
+    : null;
+  const [response] = await axios.get<GetProductos[]>(`/productos?${queryParams}`, { data: query });
 
   return {
     ...response,

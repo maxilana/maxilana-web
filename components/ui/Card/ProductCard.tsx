@@ -42,12 +42,24 @@ const ProductCard: FC<Props> = ({
           <a className={styles.blockLink} />
         </Link>
       )}
-      <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
-        {image !== null ? (
-          <Image src={image} alt={title} objectFit="cover" layout="fill" />
-        ) : (
-          <PictureOutlined style={{ fontSize: 40, color: 'white' }} />
-        )}
+      <div className="relative">
+        <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
+          {image !== null ? (
+            <Image src={image} alt={title} objectFit="cover" layout="fill" />
+          ) : (
+            <PictureOutlined style={{ fontSize: 40, color: 'white' }} />
+          )}
+        </div>
+        <div className={styles.productBadge}>
+          <div className={styles.productBadgeStore}>
+            <ShopOutlined style={{ fontSize: 20 }} />
+          </div>
+          {shipping && (
+            <div className={styles.productBadgeShipping}>
+              <CarOutlined style={{ fontSize: 20 }} />
+            </div>
+          )}
+        </div>
       </div>
       <div className={styles.productBody}>
         <VStack spacing="sm">
@@ -74,16 +86,6 @@ const ProductCard: FC<Props> = ({
         </VStack>
       </div>
       {onSale && <span className={styles.productSaleBadge}>Oferta</span>}
-      <div className={styles.productBadge}>
-        <div className={styles.productBadgeStore}>
-          <ShopOutlined style={{ fontSize: 20 }} />
-        </div>
-        {shipping && (
-          <div className={styles.productBadgeShipping}>
-            <CarOutlined style={{ fontSize: 20 }} />
-          </div>
-        )}
-      </div>
     </div>
   );
 };
