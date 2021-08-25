@@ -28,14 +28,6 @@
   }
 }
 
-.label {
-  @apply block text-xs font-bold text-brand-darker;
-}
-
-.data {
-  @apply text-secondary block;
-}
-
 .contactOptions {
   @apply flex justify-around text-center;
 }

@@ -7,7 +7,7 @@ import {
   SelectOutlined,
   EnvironmentOutlined,
 } from '@ant-design/icons';
-import { CircleLink } from '~/components/Branches';
+import { BranchSchedule, CircleLink } from '~/components/Branches';
 import { Button, Card } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch } from '~/types/Models/Branch';
@@ -33,12 +33,7 @@ const BranchCard: FC<Props> = ({ data }) => {
         <p className={styles.address}>{data.address}</p>
         <div className={cn(styles.details)}>
           <div>
-            <span className={styles.label}>HORARIOS</span>
-            <span className={styles.data}>Lun - Vie: {data?.mondayToFridaySchedule} hrs.</span>
-            <span className={styles.data}>Sáb: {data?.saturdaySchedule} hrs.</span>
-            <span className={styles.data}>
-              Dom: {data?.sundaySchedule === 'Cerrado' ? 'Cerrado' : `${data?.sundaySchedule} hrs.`}
-            </span>
+            <BranchSchedule branch={data} />
           </div>
           <Button
             text="Ver remates de la tienda"
@@ -48,12 +43,7 @@ const BranchCard: FC<Props> = ({ data }) => {
           />
           <div className={styles.contactOptions}>
             <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />
-            <CircleLink
-              href="#"
-              text="Enviar WhatsApp"
-              icon={<WhatsAppOutlined />}
-              bgColor="whatsapp"
-            />
+            <CircleLink href="#" text="Enviar WhatsApp" icon={<WhatsAppOutlined />} whatsapp />
           </div>
           <div className="text-center">
             {data?.constancy && (

@@ -11,8 +11,12 @@
 }
 
 .productImg {
-  @apply flex-grow bg-gray-300 relative w-full h-40 overflow-hidden;
+  @apply flex-grow bg-gray-300 relative w-full overflow-hidden aspect-w-1 aspect-h-1 pointer-events-none;
   @apply lg:max-w-[300px] lg:h-[260px];
+}
+
+.blockLink {
+  @apply hover:bg-brand/10 absolute inset-0;
 }
 
 .productPlaceholder {

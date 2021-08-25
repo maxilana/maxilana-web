@@ -1,6 +1,6 @@
-const plugin = require('tailwindcss/plugin');
 const pluginLineClamp = require('@tailwindcss/line-clamp');
 const pluginTypography = require('@tailwindcss/typography');
+const pluginAspectRatio = require('@tailwindcss/aspect-ratio');
 
 module.exports = {
   mode: 'jit',
@@ -105,5 +105,6 @@ module.exports = {
   plugins: [
     pluginLineClamp,
     pluginTypography,
+    pluginAspectRatio,
   ],
 };
