@@ -86,6 +86,14 @@
   box-shadow: none;
 }
 
+.link.primary {
+  @apply text-accent;
+}
+
+.link.secondary {
+  @apply text-price;
+}
+
 .fullWidth {
   @apply w-full justify-center;
 }

@@ -1,3 +1,4 @@
+const plugin = require('tailwindcss/plugin');
 const pluginLineClamp = require('@tailwindcss/line-clamp');
 const pluginTypography = require('@tailwindcss/typography');
 
@@ -21,6 +22,25 @@ module.exports = {
       '3xl': ['48px', '58px'],
       '4xl': ['60px', '72px'],
       '5xl': ['96px', '116px'],
+    },
+    textColor: {
+      white: '#FFFFFF',
+      primary: '#000F34',
+      secondary: '#000F348A',
+      disabled: '#0000003D',
+      danger: '#EF3A3ADE',
+      price: '#1E83E1',
+      discount: '#C4C9CE',
+      brand: {
+        DEFAULT: '#005198',
+        dark: '#0E5290',
+        darker: '#0B477D',
+      },
+      accent: {
+        light: '#FFF8D3',
+        DEFAULT: '#FDDA2A',
+        dark: '#F0CE21',
+      },
     },
     borderRadius: {
       sm: '8px',

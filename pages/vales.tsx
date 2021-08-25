@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { NextPage } from 'next';
 
 import { ButtonDropdown } from '~/components/ui';
-import { Layout, Container } from '~/components/layout';
+import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { Hero, ServicePaymentCards } from '~/components/common';
 
 const whatsappList = [
@@ -13,6 +13,24 @@ const whatsappList = [
   { label: 'Hermosillo' },
   { label: 'Mexicali' },
   { label: 'Tijuana' },
+];
+
+const questionList = [
+  {
+    id: 1,
+    label: '¿Qué es un refrendo?',
+    href: '/preguntas-frecuentes#que-es-refrendo',
+  },
+  {
+    id: 2,
+    label: '¿Qué es un empeño?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
+  {
+    id: 3,
+    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
+    href: '/preguntas-frecuentes#que-es-un-empeno',
+  },
 ];
 
 const ValesPage: NextPage = () => {
@@ -225,6 +243,11 @@ const ValesPage: NextPage = () => {
           </div>
         </div>
       </section>
+      <Container>
+        <div className="py-10">
+          <HelpSidebar direction="horizontal" questions={questionList} />
+        </div>
+      </Container>
     </Layout>
   );
 };
