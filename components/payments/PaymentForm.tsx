@@ -1,18 +1,19 @@
 import { FC } from 'react';
 import Link from 'next/link';
+import { DateTime } from 'luxon';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '../ui';
-import { InputField } from '../common';
+import { InputField, InputMask } from '../common';
 import styles from './FormContainer.module.css';
 
 type FormValues = {
   concepto: string;
-  importe: string;
+  importe: number;
   titular: string;
   numeroTarjeta: string;
   fechaVencimiento: string;
-  codigoSeguridad: number;
+  codigoSeguridad: string;
   correoElectronico: string;
 };
 
@@ -48,8 +49,9 @@ const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
                 <InputField
                   disabled
                   label="Concepto"
-                  value="PAGO DE INTERÉS CONTRATO (REFRENDO)"
-                  {...register('concepto')}
+                  {...register('concepto', {
+                    value: 'PAGO DE INTERÉS CONTRATO (REFRENDO)',
+                  })}
                 />
               </div>
               <div className="col-span-2">
@@ -57,7 +59,9 @@ const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
                   disabled
                   label="Importe a pagar"
                   value={401.5}
-                  {...register('importe')}
+                  {...register('importe', {
+                    value: 401.5,
+                  })}
                 />
               </div>
               <div className="col-span-2">
@@ -71,29 +75,47 @@ const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
                 />
               </div>
               <div className="col-span-2">
-                <InputField
-                  maxLength={16}
+                <InputMask
                   label="Número de la tarjeta"
                   errors={errors?.numeroTarjeta}
                   placeholder="#### #### #### ####"
                   {...register('numeroTarjeta', {
                     required: 'Campo requerido',
                   })}
+                  options={{
+                    creditCard: true,
+                  }}
                 />
               </div>
               <div>
-                <InputField
+                <InputMask
                   label="Fecha de vencimiento"
                   placeholder="MM/AA"
                   maxLength={5}
                   errors={errors?.fechaVencimiento}
+                  options={{
+                    date: true,
+                    datePattern: ['m', 'Y'],
+                  }}
                   {...register('fechaVencimiento', {
                     required: 'Campo requerido',
+                    validate: {
+                      future: (value) => {
+                        const dt = DateTime.fromFormat(value, 'MM/yy');
+                        const isFuture = dt.diffNow().isValid;
+
+                        if (dt.isValid && isFuture) {
+                          return true;
+                        }
+
+                        return 'Fecha inválida';
+                      },
+                    },
                   })}
                 />
               </div>
               <div>
-                <InputField
+                <InputMask
                   type="password"
                   label="Cod. de seguridad"
                   placeholder="###"
@@ -102,6 +124,9 @@ const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
                   {...register('codigoSeguridad', {
                     required: 'Campo requerido',
                   })}
+                  options={{
+                    numericOnly: true,
+                  }}
                 />
               </div>
               <div className="col-span-2">
