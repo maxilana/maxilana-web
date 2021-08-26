@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, Ref } from 'react';
 
 import styles from './InputField.module.css';
 
@@ -7,9 +7,11 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   inline?: boolean;
+  errors?: { [key: string]: any };
 }
 
-const InputField: FC<Props> = ({ name, label, required, inline, ...rest }) => {
+const InputField = React.forwardRef((props: Props, ref: Ref<HTMLInputElement>) => {
+  const { name, label, required, inline, errors = null, ...rest } = props;
   const { id, type } = rest;
   let isInline = false;
 
@@ -23,9 +25,12 @@ const InputField: FC<Props> = ({ name, label, required, inline, ...rest }) => {
         {label}
         {required && <span> *</span>}
       </label>
-      <input {...rest} name={name} id={id ?? name} className={styles.input} />
+      <input {...rest} ref={ref} name={name} id={id ?? name} className={styles.input} />
+      {errors && <span className={styles.errorMessage}>{errors.message}</span>}
     </div>
   );
-};
+});
+
+InputField.displayName = 'InputField';
 
 export default InputField;
