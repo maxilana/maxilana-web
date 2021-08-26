@@ -4,14 +4,6 @@ import { FC, useState } from 'react';
 import { Calendar as AntdCalendar } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-/**
- * (ノ=Д=)ノ┻━┻
- */
-import 'antd/lib/select/style/index.css';
-import 'antd/lib/radio/style/index.css';
-import 'antd/lib/date-picker/style/index.css';
-import 'antd/lib/calendar/style/index.css';
-
 import styles from './Calendar.module.css';
 
 interface Props {

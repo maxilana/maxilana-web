@@ -1,17 +1,13 @@
+import { ParsedUrlQuery } from 'querystring';
 import { Product } from '~/types/Models/Product';
 import { Paginated } from '~/types/Paginated';
 import { GetProductos } from '~/types/Responses/GetProductos';
+import parseQuery from '~/utils/parseQuery';
 import axios from './axios';
 
-const getProducts = async (
-  query: Record<string, number | string> = { page: 1, limit: 24 },
-): Promise<Paginated<Product>> => {
-  const queryParams = query
-    ? Object.keys(query)
-        .map((param) => `${param}=${query[param]}`, '')
-        .join('&')
-    : null;
-  const [response] = await axios.get<GetProductos[]>(`/productos?${queryParams}`, { data: query });
+const getProducts = async (query?: ParsedUrlQuery): Promise<Paginated<Product>> => {
+  const queryParams = parseQuery({ page: '1', limit: '24', ...query });
+  const response = await axios.get<GetProductos>(`/productos?${queryParams}`);
 
   return {
     ...response,

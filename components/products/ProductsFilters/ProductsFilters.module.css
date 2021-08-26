@@ -1,0 +1,11 @@
+.root {
+  @apply bg-white shadow-lg rounded divide-y divide-gray-200 space-y-4 pb-1;
+}
+
+.categories {
+  @apply mb-6;
+
+  & .categoryItem {
+    @apply px-4 py-2 block hover:bg-brand/5;
+  }
+}

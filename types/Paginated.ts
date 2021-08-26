@@ -1,5 +1,5 @@
 export interface Paginated<T> {
-  pages: number;
+  page: number;
   next: boolean;
   prev: boolean;
   limit: number;

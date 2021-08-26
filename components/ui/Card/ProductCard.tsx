@@ -8,11 +8,12 @@ import { usePrice } from '~/modules/hooks';
 
 import styles from './Cards.module.css';
 import Link from 'next/link';
+import ProductBadge from '~/components/products/ProductBadge';
 
 interface Props {
   title: string;
   price: number;
-  branch: string;
+  branch?: string;
   image?: string;
   salePrice?: number;
   onSale?: boolean;
@@ -42,7 +43,7 @@ const ProductCard: FC<Props> = ({
           <a className={styles.blockLink} />
         </Link>
       )}
-      <div className="relative">
+      <div className={styles.productImgWrapper}>
         <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
           {image !== null ? (
             <Image src={image} alt={title} objectFit="cover" layout="fill" />
@@ -51,14 +52,8 @@ const ProductCard: FC<Props> = ({
           )}
         </div>
         <div className={styles.productBadge}>
-          <div className={styles.productBadgeStore}>
-            <ShopOutlined style={{ fontSize: 20 }} />
-          </div>
-          {shipping && (
-            <div className={styles.productBadgeShipping}>
-              <CarOutlined style={{ fontSize: 20 }} />
-            </div>
-          )}
+          <ProductBadge type="shop" />
+          {shipping && <ProductBadge type="car" />}
         </div>
       </div>
       <div className={styles.productBody}>
