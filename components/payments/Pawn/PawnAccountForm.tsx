@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
+import { InputField, InputMask } from '~/components/common';
 import styles from '../FormContainer.module.css';
 
 type FormValues = {
@@ -19,12 +20,17 @@ interface Props {
 const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
-    onSubmit(data);
+  const [loading, setLoading] = useState(false);
+
+  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+    setLoading(true);
+    await onSubmit(data);
+    setLoading(false);
   };
 
   return (
@@ -74,17 +80,28 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
                 />
               </div>
               <div>
-                <InputField
+                <InputMask
                   placeholder="$0.00"
                   label="Monto del préstamo"
                   errors={errors?.monto}
                   {...register('monto', {
                     required: 'Campo requerido',
+                    valueAsNumber: true,
                   })}
+                  options={{
+                    prefix: '$',
+                    numeral: true,
+                    numeralPositiveOnly: true,
+                    rawValueTrimPrefix: true,
+                  }}
+                  onChange={({ target }) => {
+                    // @ts-ignore
+                    setValue('monto', target.rawValue); // rawValue viene de Cleave.js
+                  }}
                 />
               </div>
               <div className="col-span-2">
-                <Button fullWidth text="Consultar" theme="primary" loading={false} />
+                <Button fullWidth text="Consultar" theme="primary" loading={loading} />
               </div>
             </div>
           </form>

@@ -1,14 +1,25 @@
-import { FC } from 'react';
+import cn from 'classnames';
+import { FC, useState } from 'react';
 
 import { Button, Calendar } from '~/components/ui';
 
 import styles from '../FormContainer.module.css';
+
+type Status = 'idle' | 'loading' | 'searching';
 
 interface Props {
   onSubmit: () => void;
 }
 
 const PawnCalculateForm: FC<Props> = ({ onSubmit }) => {
+  const [status, setStatus] = useState<Status>('idle');
+
+  const buttonText = {
+    idle: 'Pagar refrendo',
+    loading: 'Pagar refrendo',
+    searching: 'Calculando montos e intereses',
+  };
+
   return (
     <div>
       <div className="px-4">
@@ -19,12 +30,16 @@ const PawnCalculateForm: FC<Props> = ({ onSubmit }) => {
         </p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root}>
+        <form className={cn(styles.root, 'relative')}>
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
               <Calendar
-                onSelect={(date) => {
-                  console.log(date);
+                onSelect={(date: Date) => {
+                  setStatus('searching');
+
+                  setTimeout(() => {
+                    setStatus('idle');
+                  }, 2000);
                 }}
               />
             </div>
@@ -73,7 +88,13 @@ const PawnCalculateForm: FC<Props> = ({ onSubmit }) => {
                   </div>
                 </div>
               </div>
-              <Button fullWidth theme="primary" text="Pagar refrendo" onClick={onSubmit} />
+              <Button
+                fullWidth
+                theme="primary"
+                onClick={onSubmit}
+                text={buttonText[status]}
+                loading={['loading', 'searching'].includes(status)}
+              />
             </div>
           </div>
         </form>

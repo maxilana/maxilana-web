@@ -25,7 +25,7 @@ const questionList = [
 type FormStatus = 'account_status' | 'calculate_date' | 'payment';
 
 const PagoEmpenoPage: NextPage = () => {
-  const [status, setStatus] = useState<FormStatus>('payment');
+  const [status, setStatus] = useState<FormStatus>('account_status');
 
   return (
     <Layout title="Paga online tu boleta de empeño">
@@ -35,12 +35,22 @@ const PagoEmpenoPage: NextPage = () => {
             {status === 'account_status' && (
               <PawnAccountForm
                 onSubmit={(data) => {
-                  console.log(data);
-                  return Promise.resolve();
+                  return new Promise((resolve) => {
+                    setTimeout(() => {
+                      setStatus('calculate_date');
+                      resolve();
+                    }, 2000);
+                  });
                 }}
               />
             )}
-            {status === 'calculate_date' && <PawnCalculateForm onSubmit={() => {}} />}
+            {status === 'calculate_date' && (
+              <PawnCalculateForm
+                onSubmit={() => {
+                  setStatus('payment');
+                }}
+              />
+            )}
             {status === 'payment' && (
               <PaymentForm
                 title="Boleta de empeño"
