@@ -5,6 +5,7 @@ import { CarOutlined, PictureOutlined, ShopOutlined } from '@ant-design/icons';
 
 import { VStack } from '~/components/layout';
 import { usePrice } from '~/modules/hooks';
+import { Img } from '~/components/ui';
 
 import styles from './Cards.module.css';
 import Link from 'next/link';
@@ -44,23 +45,25 @@ const ProductCard: FC<Props> = ({
         </Link>
       )}
       <div className={styles.productImgWrapper}>
-        <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
-          {image !== null ? (
-            <Image
-              src={image}
-              alt={title}
-              objectFit="contain"
-              layout="responsive"
-              width={512}
-              height={512}
-            />
-          ) : (
-            <PictureOutlined style={{ fontSize: 40, color: 'white' }} />
-          )}
-        </div>
-        <div className={styles.productBadge}>
-          <ProductBadge type="shop" />
-          {shipping && <ProductBadge type="car" />}
+        <div>
+          <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
+            {image !== null ? (
+              <Img
+                src={image}
+                alt={title}
+                objectFit="contain"
+                layout="responsive"
+                width={512}
+                height={512}
+              />
+            ) : (
+              <PictureOutlined />
+            )}
+          </div>
+          <div className={styles.productBadge}>
+            <ProductBadge type="shop" />
+            {shipping && <ProductBadge type="car" />}
+          </div>
         </div>
       </div>
       <div className={styles.productBody}>
@@ -76,10 +79,10 @@ const ProductCard: FC<Props> = ({
           </h3>
           <div className={styles.productPrice}>
             {salePrice ? (
-              <React.Fragment>
+              <>
                 <span className={styles.productPriceSale}>{discountPrice}</span>
                 <span className={styles.productCompareAtPrice}>{basePrice}</span>
-              </React.Fragment>
+              </>
             ) : (
               <span className={styles.productPriceSale}>{basePrice}</span>
             )}

@@ -11,19 +11,16 @@
 }
 
 .productImgWrapper {
-  @apply relative pointer-events-none;
+  @apply relative pointer-events-none aspect-w-1 aspect-h-1 border-b border-b-gray-300 bg-white;
 }
 
-.productImg {
-  @apply bg-white border-b border-b-gray-300 ;
-}
 
 .blockLink {
   @apply hover:bg-brand/10 absolute inset-0;
 }
 
 .productPlaceholder {
-  @apply flex flex-row items-center justify-center;
+  @apply flex flex-row items-center justify-center bg-gray-50 h-full text-brand/20 text-4xl;
 }
 
 .productBody {
