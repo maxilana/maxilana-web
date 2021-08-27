@@ -62,10 +62,10 @@ const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city 
           <ProductsFilters cities={cities} />
         </aside>
         <div className="flex-1">
-          <h2 className="h4">Resultado de la búsqueda</h2>
-          <p className="text-secondary">{pagination?.count} productos</p>
           {!!products?.length ? (
             <>
+              <h2 className="h4">Resultado de la búsqueda</h2>
+              <p className="text-secondary">{pagination?.count} productos</p>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 my-12">
                 {products.map((product) => (
                   <ProductCard key={product.id} data={product} />
