@@ -76,7 +76,9 @@ const Searcher: FC = () => {
             >
               {!city ? (
                 <span role="option" className="flex items-center space-x-2">
-                  <Image src={MexicoMap} alt="Mexico" className="hidden md:inline-block" />
+                  <div className="hidden md:inline-block">
+                    <Image src={MexicoMap} alt="Mexico" />
+                  </div>
                   <span>Todo México</span>
                 </span>
               ) : (
