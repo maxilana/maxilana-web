@@ -46,7 +46,14 @@ const ProductCard: FC<Props> = ({
       <div className={styles.productImgWrapper}>
         <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
           {image !== null ? (
-            <Image src={image} alt={title} objectFit="cover" layout="fill" />
+            <Image
+              src={image}
+              alt={title}
+              objectFit="contain"
+              layout="responsive"
+              width={512}
+              height={512}
+            />
           ) : (
             <PictureOutlined style={{ fontSize: 40, color: 'white' }} />
           )}

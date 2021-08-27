@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -15,12 +16,14 @@
       "prettier --write"
     ]
   },
+  "sideEffects": false,
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@netlify/functions": "^0.7.2",
-    "@tailwindcss/aspect-ratio": "^0.2.1",
     "@hookform/error-message": "^2.0.0",
     "@hookform/resolvers": "^2.8.0",
+    "@netlify/functions": "^0.7.2",
+    "@next/bundle-analyzer": "^11.1.0",
+    "@tailwindcss/aspect-ratio": "^0.2.1",
     "@tailwindcss/line-clamp": "^0.2.1",
     "@tailwindcss/typography": "^0.4.1",
     "@types/lodash.omit": "^4.5.6",
@@ -34,18 +37,22 @@
     "lodash.omit": "^4.5.0",
     "luxon": "^2.0.2",
     "next": "11.0.1",
+    "next-plugin-preact": "^3.0.6",
     "postcss": "^8.3.5",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "preact": "^10.5.14",
+    "preact-render-to-string": "^5.1.19",
+    "react": "npm:@preact/compat",
+    "react-dom": "npm:@preact/compat",
     "react-hook-form": "^7.13.0",
     "tailwindcss": "^2.2.4",
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@types/cleave.js": "^1.4.5",
     "@netlify/plugin-nextjs": "^3.8.0",
+    "@types/cleave.js": "^1.4.5",
     "@types/luxon": "^2.0.0",
     "@types/react": "17.0.13",
+    "cross-env": "^7.0.3",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "eslint-plugin-prettier": "^3.4.0",

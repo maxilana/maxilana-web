@@ -21,13 +21,19 @@ function Home() {
         title="En Maxilana te sacamos del apuro"
         subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"
         actions={
-          <React.Fragment>
+          <>
             <Button text="Avalúa tu empeño" theme="primary" />
             <Button text="Solicita un préstamo" />
-          </React.Fragment>
+          </>
         }
         cover={
-          <Image layout="fill" src="/demo-hero.jpg" alt="Hero Homepage Image" objectFit="cover" />
+          <Image
+            layout="fill"
+            src="/demo-hero.jpg"
+            alt="Hero Homepage Image"
+            objectFit="cover"
+            priority
+          />
         }
       />
       <Container>

@@ -10,12 +10,12 @@
   @apply flex flex-col p-0 overflow-hidden relative rounded-sm;
 }
 
-.productImgWrapper{
+.productImgWrapper {
   @apply relative pointer-events-none;
 }
 
 .productImg {
-  @apply bg-gray-300 relative overflow-hidden aspect-w-1 aspect-h-1;
+  @apply bg-white border-b border-b-gray-300 ;
 }
 
 .blockLink {

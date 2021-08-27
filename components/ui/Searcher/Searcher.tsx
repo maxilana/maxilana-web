@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import { FC, FormEventHandler, useState } from 'react';
+import { FC, FormEventHandler, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { EnvironmentOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
@@ -25,6 +25,15 @@ const Searcher: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [visible, toggleDropdown] = useState(false);
   const [city, setCity] = useState<{ label?: string; id?: number } | null>();
+
+  useEffect(() => {
+    if (router) {
+      const {
+        query: { q },
+      } = router;
+      setSearchText((q as string) || '');
+    }
+  }, [router]);
 
   const goToSearch = () => {
     const query: ParsedUrlQuery = {};
@@ -67,7 +76,7 @@ const Searcher: FC = () => {
             >
               {!city ? (
                 <span role="option" className="flex items-center space-x-2">
-                  <Image src={MexicoMap} alt="Mexico" />
+                  <Image src={MexicoMap} alt="Mexico" className="hidden md:inline-block" />
                   <span>Todo México</span>
                 </span>
               ) : (
