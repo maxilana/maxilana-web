@@ -114,11 +114,13 @@ const footerMenu = (cities: City[]) => {
     id: 3,
     label: 'Sucursales',
     href: '/sucursales',
-    children: cities.map((item) => ({
-      id: item.id,
-      label: item?.name,
-      href: `/sucursales/ciudad/${item.slug}`,
-    })),
+    children: cities?.length
+      ? cities.map((item) => ({
+          id: item.id,
+          label: item?.name,
+          href: `/sucursales/ciudad/${item.slug}`,
+        }))
+      : [],
   };
   return [empresa, servicios, sucursales, legal, recursos];
 };

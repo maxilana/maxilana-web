@@ -3,8 +3,8 @@ import { Sucursal } from '~/types/Responses';
 
 import axios from './axios';
 
-const getBranchById = async (id: number): Promise<Branch> => {
-  const branch = await axios.get<Sucursal>(`/sucursal/${id}`);
+const getBranch = async (idOrSlug: string | number): Promise<Branch> => {
+  const branch = await axios.get<Sucursal>(`/sucursal/${idOrSlug}`);
 
   return {
     id: branch?.id,
@@ -34,4 +34,4 @@ const getBranchById = async (id: number): Promise<Branch> => {
   };
 };
 
-export default getBranchById;
+export default getBranch;

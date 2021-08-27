@@ -17,10 +17,8 @@ interface Props {
 }
 
 const ProductCard: FC<Props> = ({ data }) => {
-  const { image, name, price, Branch, saleOnline, netPrice, slug, id } = data;
-  console.log(image);
-
-  const href = slug ? `/producto/${slug}` : `/producto/${id}-${slugify(name)}`;
+  const { image, name, price, Branch, saleOnline, netPrice, slug, code } = data;
+  const href = slug ? `/producto/${slug}` : `/producto/${code}-${slugify(name)}`;
 
   const { price: basePrice } = usePrice({ amount: price });
   const { price: discountPrice } = usePrice(

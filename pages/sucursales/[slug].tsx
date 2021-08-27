@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } fro
 import Image from 'next/image';
 import React from 'react';
 import getAllCities from '~/api/getAllCities';
-import getBranchById from '~/api/getBranchById';
+import getBranch from '~/api/getBranch';
 import getBranchesSlugs from '~/api/getBranchesSlugs';
 import getProducts from '~/api/getProducts';
 import { Layout } from '~/components/layout';
@@ -16,7 +16,6 @@ import LogoRedondo from '../../public/logo-redondo.png';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getBranchesSlugs();
-
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
     fallback: false,
@@ -30,14 +29,11 @@ export const getStaticProps: GetStaticProps<{
   cities: City[];
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
-  const [id] = slug.split('-');
-
-  if (Number.isNaN(parseInt(id))) return { notFound: true };
 
   try {
-    const branch = await getBranchById(parseInt(id));
+    const branch = await getBranch(slug);
     const cities = await getAllCities();
-    const products = await getProducts({ sucursal: id });
+    const products = await getProducts({ sucursal: `${branch?.id}` });
     const city = cities.find((item) => item.id === branch.CityId);
     return {
       props: {

@@ -29,6 +29,7 @@ const getCityBranchesBySlug = async (slug: string): Promise<Branch[]> => {
     saturdayClosingTime: item?.HoraCierreS,
     sundayOpeningTime: item?.HoraAperturaD,
     sundayClosingTime: item?.HoraCierreD,
+    slug: item?.slug,
   }));
 };
 

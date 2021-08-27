@@ -33,7 +33,7 @@ const BranchCard: FC<Props> = ({ data }) => {
             text="Ver remates de la tienda"
             fullWidth
             theme="primary"
-            href={`/sucursales/${data?.id}-${slugify(data.name)}`}
+            href={`/sucursales/${data?.slug || slugify(data.name)}`}
           />
           <div className={styles.contactOptions}>
             <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />

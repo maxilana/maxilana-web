@@ -2,7 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import getAllCities from '~/api/getAllCities';
-import getBranchById from '~/api/getBranchById';
+import getBranch from '~/api/getBranch';
 
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
     const cities = await getAllCities();
     const branch =
       typeof filters?.sucursal === 'string' && Number.isInteger(filters.sucursal)
-        ? await getBranchById(parseInt(filters.sucursal as string))
+        ? await getBranch(filters.sucursal as string)
         : null;
 
     const city = branch?.CityId ? cities.find((item) => item.id === branch?.CityId) : null;
