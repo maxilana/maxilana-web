@@ -5,6 +5,7 @@ import { FC, FormEventHandler, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { EnvironmentOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
+import { City } from '~/types/Models';
 import parseQuery from '~/utils/parseQuery';
 
 import Dropdown from '../Dropdown';
@@ -12,15 +13,19 @@ import MexicoMap from '../../../public/svg/mexico.svg';
 import styles from './Searcher.module.css';
 
 const locations = [
-  { label: 'Culiacán y Navolato', id: 1 },
-  { label: 'Mazatlán', id: 3 },
-  { label: 'Guadalajara', id: 5 },
-  { label: 'Hermosillo', id: 4 },
-  { label: 'Mexicali', id: 7 },
-  { label: 'Tijuana', id: 6 },
+  { name: 'Culiacán y Navolato', id: 1 },
+  { name: 'Mazatlán', id: 3 },
+  { name: 'Guadalajara', id: 5 },
+  { name: 'Hermosillo', id: 4 },
+  { name: 'Mexicali', id: 7 },
+  { name: 'Tijuana', id: 6 },
 ];
 
-const Searcher: FC = () => {
+interface Props {
+  cities?: City[];
+}
+
+const Searcher: FC<Props> = ({ cities }) => {
   const router = useRouter();
   const [searchText, setSearchText] = useState('');
   const [visible, toggleDropdown] = useState(false);
@@ -36,7 +41,7 @@ const Searcher: FC = () => {
   }, [router]);
 
   const goToSearch = () => {
-    const query: ParsedUrlQuery = {};
+    const { query = {} } = router;
     if (searchText) query.q = searchText;
     if (city) query.ciudad = `${city.id}`;
     router.push(`/busqueda?${parseQuery(query)}`);
@@ -104,17 +109,17 @@ const Searcher: FC = () => {
                 <span>Todo México</span>
               </span>
             )}
-            {locations
+            {(cities?.length ? cities : locations)
               .filter((item) => item.id !== city?.id)
               .map((item) => (
                 <span
-                  key={item.label}
+                  key={item.id}
                   role="menuitem"
                   className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"
                   onClick={() => setCity(item)}
                 >
                   <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
-                  <span>{item.label}</span>
+                  <span>{item.name}</span>
                 </span>
               ))}
           </div>

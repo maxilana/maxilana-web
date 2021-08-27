@@ -4,8 +4,11 @@ import { PictureOutlined } from '@ant-design/icons';
 
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards } from '~/components/common';
+import { PropsWithCities } from '~/types/PropsWithCities';
 
-const EmpenoPage: NextPage = () => {
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
+const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
     <Layout
       title="Maxilana | Casa de empeño"
@@ -13,6 +16,7 @@ const EmpenoPage: NextPage = () => {
         description: 'Maxilana casa de empeño y prestamos',
         keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
       }}
+      cities={cities}
     >
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">

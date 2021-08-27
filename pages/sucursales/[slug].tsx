@@ -9,7 +9,6 @@ import getProducts from '~/api/getProducts';
 import { Layout } from '~/components/layout';
 import { Branch, City } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
-import slugify from '~/utils/slugify';
 import { CircleLink, BranchSchedule } from '~/components/Branches';
 import { Button, ProductCard } from '~/components/ui';
 
@@ -24,40 +23,41 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<{ branch: Branch; city?: City; products: Product[] }> =
-  async (ctx) => {
-    const slug = ctx?.params?.slug as string;
-    const [id] = slug.split('-');
+export const getStaticProps: GetStaticProps<{
+  branch: Branch;
+  city?: City;
+  products: Product[];
+  cities: City[];
+}> = async (ctx) => {
+  const slug = ctx?.params?.slug as string;
+  const [id] = slug.split('-');
 
-    if (Number.isNaN(parseInt(id))) return { notFound: true };
+  if (Number.isNaN(parseInt(id))) return { notFound: true };
 
-    try {
-      const branch = await getBranchById(parseInt(id));
-      const cities = await getAllCities();
-      const products = await getProducts({ sucursal: id });
-      const city = cities.find((item) => item.id === branch.CityId);
-      return {
-        props: {
-          branch,
-          city,
-          products: products.rows,
-        },
-      };
-    } catch (e) {
-      console.log(e);
-      return { notFound: true };
-    }
-  };
+  try {
+    const branch = await getBranchById(parseInt(id));
+    const cities = await getAllCities();
+    const products = await getProducts({ sucursal: id });
+    const city = cities.find((item) => item.id === branch.CityId);
+    return {
+      props: {
+        branch,
+        city,
+        products: products.rows,
+        cities,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return { notFound: true };
+  }
+};
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const View: NextPage<Props> = ({ branch, city, products }) => {
-  const imageBaseURL = process.env.NEXT_PUBLIC_PRODUCT_IMAGES_BASEURL;
-  if (!imageBaseURL) {
-    throw Error('Environment variable NEXT_PUBLIC_PRODUCT_IMAGES_BASEURL is missing');
-  }
+const View: NextPage<Props> = ({ branch, city, products, cities }) => {
   return (
-    <Layout title={`${branch.name}, ${city?.name} ${city?.state}`}>
+    <Layout title={`${branch.name}, ${city?.name} ${city?.state}`} cities={cities}>
       <main className="container mx-auto p-4 flex flex-col gap-12 md:flex-row">
         <aside className="divide-y divide-gray-300 md:min-w-[237px] xl:min-w-[300px]">
           <div className="py-4 flex flex-col items-center text-center space-y-2">
@@ -78,24 +78,10 @@ const View: NextPage<Props> = ({ branch, city, products }) => {
           <h2 className="h5 my-6">Algunos productos que puedes encontrar en nuestra sucursal</h2>
           <div className="grid grid-cols-2 gap-4 mb-12 md:grid-cols-3 xl:grid-cols-4">
             {!!products?.length &&
-              products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  href={
-                    product?.slug
-                      ? `/producto/${product?.slug}`
-                      : `/producto/${product.id}-${slugify(product.name)}`
-                  }
-                  title={product.name}
-                  branch={`${branch.name}, ${city?.name} ${city?.state}`}
-                  price={product.price}
-                  salePrice={product.netPrice}
-                  image={`${imageBaseURL}/${product.code}.jpg`}
-                />
-              ))}
+              products.map((product) => <ProductCard key={product.id} data={product} />)}
           </div>
           <Button
-            href={`/busqueda?sucursal=${branch.id}`}
+            href={`/busqueda?sucursal=${branch.id}&ciudad=${branch.CityId}`}
             text="Ver todos"
             theme="secondary"
             fullWidth

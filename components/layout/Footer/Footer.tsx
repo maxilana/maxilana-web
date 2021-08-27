@@ -1,18 +1,20 @@
-import { FC } from "react";
-import Link from "next/link";
+import { FC } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 
-import { SocialMenu } from "~/components/common";
-import footerMenu from "../../../config/footerMenu";
+import { SocialMenu } from '~/components/common';
+import { City } from '~/types/Models';
+import footerMenu from '../../../config/footerMenu';
 
 import styles from './Footer.module.css';
 
 interface Props {
-  variant?: "default" | "compact";
+  variant?: 'default' | 'compact';
+  cities: City[];
 }
 
-const Footer: FC<Props> = ({ variant = "default" }) => {
-  if (variant === "compact") {
+const Footer: FC<Props> = ({ variant = 'default', cities }) => {
+  if (variant === 'compact') {
     return (
       <footer className={`${styles.root} ${styles.rootCompact}`}>
         <div className={styles.wrapper}>
@@ -32,8 +34,8 @@ const Footer: FC<Props> = ({ variant = "default" }) => {
             <Copyright />
           </div>
         </div>
-      </footer >
-    )
+      </footer>
+    );
   }
 
   return (
@@ -58,15 +60,13 @@ const Footer: FC<Props> = ({ variant = "default" }) => {
           </div>
           <div className="flex-1">
             <ul className={`sm:grid sm:grid-cols-3 xl:grid-cols-5`}>
-              {footerMenu.map(section => {
+              {footerMenu(cities).map((section) => {
                 let items: JSX.Element[] = [];
 
                 if (section.children) {
-                  items = section.children.map(link => (
+                  items = section.children.map((link) => (
                     <Link key={link.id} href={link.href}>
-                      <a className={styles.menuLink}>
-                        {link.label}
-                      </a>
+                      <a className={styles.menuLink}>{link.label}</a>
                     </Link>
                   ));
                 }
@@ -76,7 +76,7 @@ const Footer: FC<Props> = ({ variant = "default" }) => {
                     <h6 className={styles.menuTitle}>{section.label}</h6>
                     {items}
                   </li>
-                )
+                );
               })}
             </ul>
           </div>
@@ -84,17 +84,19 @@ const Footer: FC<Props> = ({ variant = "default" }) => {
       </div>
       <Copyright />
     </footer>
-  )
-}
+  );
+};
 
 const Copyright = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <div>
-      <small className={styles.copy}>&copy; Copyright {currentYear} - Todos los derechos reservados</small>
+      <small className={styles.copy}>
+        &copy; Copyright {currentYear} - Todos los derechos reservados
+      </small>
     </div>
-  )
-}
+  );
+};
 
 export default Footer;

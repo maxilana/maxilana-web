@@ -5,11 +5,14 @@ import { PictureOutlined } from '@ant-design/icons';
 import { Button } from '~/components/ui';
 import { FormContainer, InputField } from '~/components/common';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
+import { PropsWithCities } from '~/types/PropsWithCities';
 
-const AutoEmpenoPage: NextPage = () => {
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
+const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
     <div>
-      <Layout title="Auto Empeño">
+      <Layout title="Auto Empeño" cities={cities}>
         <div className="pt-[108px] bg-gradient-to-r from-[#F7D067] to-[#F1C153]">
           <div className="container mx-auto px-4 py-10 sm:py-20">
             <div className="grid gap-4 sm:grid-cols-2">
