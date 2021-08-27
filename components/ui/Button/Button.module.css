@@ -1,16 +1,14 @@
 .root {
-  padding: 12px 16px;
-  box-shadow: 1px 1px 4px 0 #00000033;
-  @apply bg-surface-dark rounded uppercase text-primary text-xs tracking-wide inline-flex flex-row items-center font-semibold;
+  @apply bg-surface-dark rounded uppercase text-primary text-xs tracking-wide inline-flex flex-row items-center font-semibold shadow px-4 py-3;
 }
 
 .root:hover,
 .root:active {
-  background-color: #deeaf5;
+  @apply bg-brand-dark;
 }
 
 .root:active {
-  box-shadow: 1px 1px 4px 0px #0000001a inset;
+  @apply shadow-inner;
 }
 
 .root:disabled {

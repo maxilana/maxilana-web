@@ -1,9 +1,9 @@
 import { Branch } from '~/types/Models';
-import { GetSucursales } from '~/types/Responses';
+import { Sucursal } from '~/types/Responses';
 import axios from './axios';
 
-const getCityBranches = async (id: number): Promise<Branch[]> => {
-  const response = await axios.get<GetSucursales>(`/sucursales/ciudad/${id}`);
+const getCityBranchesBySlug = async (slug: string): Promise<Branch[]> => {
+  const response = await axios.get<Sucursal[]>(`/sucursales?ciudad=${slug}`);
   return response.map((item) => ({
     id: item?.id,
     number: item?.numero,
@@ -32,4 +32,4 @@ const getCityBranches = async (id: number): Promise<Branch[]> => {
   }));
 };
 
-export default getCityBranches;
+export default getCityBranchesBySlug;

@@ -32,20 +32,20 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
               </CheckableTag>
             </a>
           </Link>
-          {cities.map((city) => (
-            <Link href={`/sucursales/ciudad/${city?.slug}`} key={city.id}>
-              <a>
-                <CheckableTag className={styles.city} checked={city?.id === currentCity?.id}>
-                  {city.name}
-                </CheckableTag>
-              </a>
-            </Link>
-          ))}
+          {!!cities?.length &&
+            cities.map((city) => (
+              <Link href={`/sucursales/ciudad/${city?.slug}`} key={city.id}>
+                <a>
+                  <CheckableTag className={styles.city} checked={city?.id === currentCity?.id}>
+                    {city.name}
+                  </CheckableTag>
+                </a>
+              </Link>
+            ))}
         </div>
         <span className={styles.count}>{branches?.length} sucursales</span>
-        {branches.map((branch) => (
-          <BranchCard data={branch} key={branch?.id} />
-        ))}
+        {!!branches?.length &&
+          branches.map((branch) => <BranchCard data={branch} key={branch?.id} />)}
       </aside>
       <div className={styles.map}>
         <iframe src="https://www.google.com/maps/d/embed?mid=zqXiv51ICI8g.kRua7qr6zNBg" />

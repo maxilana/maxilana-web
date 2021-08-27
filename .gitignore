@@ -35,3 +35,6 @@ yarn-error.log*
 
 # PHPStorm Project config
 .idea
+
+# Local Netlify folder
+.netlify

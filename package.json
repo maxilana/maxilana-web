@@ -17,10 +17,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
+    "@netlify/functions": "^0.7.2",
+    "@tailwindcss/aspect-ratio": "^0.2.1",
     "@hookform/error-message": "^2.0.0",
     "@hookform/resolvers": "^2.8.0",
     "@tailwindcss/line-clamp": "^0.2.1",
     "@tailwindcss/typography": "^0.4.1",
+    "@types/lodash.omit": "^4.5.6",
     "antd": "^4.16.13",
     "autoprefixer": "^10.2.6",
     "axios": "^0.21.1",
@@ -28,6 +31,7 @@
     "cleave.js": "^1.6.0",
     "eslint-config-prettier": "^8.3.0",
     "lodash.isequal": "^4.5.0",
+    "lodash.omit": "^4.5.0",
     "luxon": "^2.0.2",
     "next": "11.0.1",
     "postcss": "^8.3.5",
@@ -39,6 +43,7 @@
   },
   "devDependencies": {
     "@types/cleave.js": "^1.4.5",
+    "@netlify/plugin-nextjs": "^3.8.0",
     "@types/luxon": "^2.0.0",
     "@types/react": "17.0.13",
     "eslint": "7.30.0",
@@ -46,6 +51,8 @@
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
+    "netlify-plugin-cache-nextjs": "^1.6.1",
+    "netlify-plugin-next-dynamic": "^1.0.9",
     "postcss-nesting": "^8.0.1",
     "prettier": "^2.3.2",
     "typescript": "4.3.5"

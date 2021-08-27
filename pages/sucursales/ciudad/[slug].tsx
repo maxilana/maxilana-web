@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
-import getCityBranches from '~/api/getCityBranches';
+import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
 
 import { Layout } from '~/components/layout';
 import getAllBranches from '~/api/getAllBranches';
@@ -11,7 +11,7 @@ import slugify from '~/utils/slugify';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const cities = await getAllCities();
-  const slugs = cities.map((city) => slugify(city.name));
+  const slugs = cities.map((city) => city?.slug || slugify(city.name));
 
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps<{
   const cities = await getAllCities();
   const currentCity = cities.find((city) => city.slug === slug);
 
-  const branches = currentCity ? await getCityBranches(currentCity?.id) : [];
+  const branches = currentCity ? await getCityBranchesBySlug(slug) : [];
 
   return {
     props: { cities, branches, currentCity },

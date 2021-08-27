@@ -5,20 +5,13 @@ import styles from './CircleLink.module.css';
 interface Props extends AnchorHTMLAttributes<HTMLAnchorElement> {
   text: string;
   icon: ReactElement;
-  bgColor?: 'brand' | 'whatsapp';
+  whatsapp?: boolean;
 }
 
-const CircleLink: FC<Props> = ({
-  icon,
-  text,
-  className,
-  bgColor = 'brand',
-  children,
-  ...props
-}) => {
+const CircleLink: FC<Props> = ({ icon, text, className, whatsapp, children, ...props }) => {
   return (
     <a {...props} className={cn(styles.root, className)}>
-      <span className={cn(styles.icon, `bg-${bgColor}`)}>{icon}</span>
+      <span className={cn(styles.icon, { [styles.whatsapp]: whatsapp })}>{icon}</span>
       <span className={styles.text}>{text}</span>
     </a>
   );
