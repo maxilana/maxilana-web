@@ -6,7 +6,7 @@ import getBranchById from '~/api/getBranchById';
 
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
-import { Button, ProductCard } from '~/components/ui';
+import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
 import { Branch, City } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
@@ -61,14 +61,21 @@ const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city 
         <aside className="min-w-[250px]">
           <ProductsFilters cities={cities} />
         </aside>
-        <div className="flex-">
+        <div className="flex-1">
           <h2 className="h4">Resultado de la búsqueda</h2>
           <p className="text-secondary">{pagination?.count} productos</p>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 my-12">
-            {!!products?.length &&
-              products.map((product) => <ProductCard key={product.id} data={product} />)}
-          </div>
-          <Button text="Cargar mas" fullWidth theme="secondary" />
+          {!!products?.length ? (
+            <>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 my-12">
+                {products.map((product) => (
+                  <ProductCard key={product.id} data={product} />
+                ))}
+              </div>
+              <Button text="Cargar mas" fullWidth theme="secondary" />
+            </>
+          ) : (
+            <ProductsNotFound />
+          )}
         </div>
       </main>
     </Layout>
