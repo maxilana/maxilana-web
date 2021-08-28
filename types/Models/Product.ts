@@ -1,8 +1,8 @@
 import { Branch } from '~/types/Models/Branch';
 
 export interface Product {
-  id: number;
-  code: string;
+  id: string;
+  //code: string;
   name: string;
   type: number; // TODO:Que es esto? preguntas a maxilana
   BranchId: number;

@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import { ParsedUrlQuery } from 'querystring';
 import { FC, FormEventHandler, useState, useEffect } from 'react';
 import Image from 'next/image';
+import omit from 'lodash.omit';
 import { EnvironmentOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import { City } from '~/types/Models';
@@ -29,21 +29,36 @@ const Searcher: FC<Props> = ({ cities }) => {
   const router = useRouter();
   const [searchText, setSearchText] = useState('');
   const [visible, toggleDropdown] = useState(false);
-  const [city, setCity] = useState<{ label?: string; id?: number } | null>();
+  const [city, setCity] = useState<Partial<City> | null>();
+
+  const {
+    query: { q, ciudad },
+  } = router;
 
   useEffect(() => {
-    if (router) {
-      const {
-        query: { q },
-      } = router;
+    if (q || ciudad) {
       setSearchText((q as string) || '');
+      if (ciudad) {
+        setCity(
+          cities?.length ? cities.find((item) => item?.id === parseInt(ciudad as string)) : null,
+        );
+      }
     }
-  }, [router]);
+  }, [q, ciudad]);
 
   const goToSearch = () => {
     const { query = {} } = router;
-    if (searchText) query.q = searchText;
-    if (city) query.ciudad = `${city.id}`;
+    if (searchText) {
+      query.q = searchText;
+    } else {
+      delete query.q;
+    }
+    if (city) {
+      query.ciudad = `${city.id}`;
+    } else {
+      delete query.ciudad;
+    }
+
     router.push(`/busqueda?${parseQuery(query)}`);
   };
 
@@ -88,7 +103,7 @@ const Searcher: FC<Props> = ({ cities }) => {
                 </span>
               ) : (
                 <span role="option" className="flex items-center space-x-2">
-                  <span>{city?.label}</span>
+                  <span>{city?.name}</span>
                 </span>
               )}
               <DownOutlined
@@ -99,7 +114,7 @@ const Searcher: FC<Props> = ({ cities }) => {
           }
         >
           <div role="menu">
-            {!city && (
+            {city && (
               <span
                 role="menuitem"
                 className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"

@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
+import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
 
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
@@ -20,6 +21,7 @@ interface GSSProps {
   cities?: City[];
   branch?: Branch | null;
   city?: City | null;
+  branches?: Branch[] | null;
 }
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
@@ -27,14 +29,18 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { page, limit, ...filters } = query || {};
 
   try {
-    const { rows: products, ...pagination } = await getProducts(query);
+    const paginatedProducts = await getProducts(query);
+    const { rows: products, ...pagination } = paginatedProducts;
     const cities = await getAllCities();
-    const branch =
-      typeof filters?.sucursal === 'string' && Number.isInteger(filters.sucursal)
-        ? await getBranch(filters.sucursal as string)
-        : null;
+    const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
 
-    const city = branch?.CityId ? cities.find((item) => item.id === branch?.CityId) : null;
+    const city =
+      branch?.CityId || filters?.ciudad
+        ? cities.find((item) =>
+            [branch?.CityId, parseInt(filters?.ciudad as string)].includes(item.id),
+          )
+        : null;
+    const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
 
     return {
       props: {
@@ -44,9 +50,11 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
         cities,
         branch,
         city,
+        branches,
       },
     };
   } catch (e) {
+    console.log('ERROR: getServerSideProps');
     console.log(e);
     return { notFound: 40, props: {} };
   }
@@ -54,12 +62,12 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city }) => {
+const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city, branches }) => {
   return (
     <Layout title="Buscador de productos" cities={cities || []}>
       <main className="container mx-auto p-4 flex gap-8 flex-col md:flex-row mb-12 mt-4">
-        <aside className="min-w-[250px]">
-          <ProductsFilters cities={cities} />
+        <aside className="min-w-[250px] md:max-w-[250px]">
+          <ProductsFilters cities={cities} branches={branches} />
         </aside>
         <div className="flex-1">
           {!!products?.length ? (

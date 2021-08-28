@@ -1,17 +1,18 @@
+import cn from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import React, { FC } from 'react';
-import { Radio, Space, Checkbox, Form } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { Radio, Space, Checkbox, Form, FormProps } from 'antd';
 import omit from 'lodash.omit';
-import { DownOutlined } from '@ant-design/icons';
-import { useForm } from 'react-hook-form';
+import intersection from 'lodash/intersection';
 
-import { City } from '~/types/Models';
+import { Branch, City } from '~/types/Models';
 import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import ProductBadge from '../ProductBadge';
 
 import styles from './ProductsFilters.module.css';
+import { InputField } from '~/components/common';
 
 const categories = [
   {
@@ -63,21 +64,79 @@ const categories = [
 
 interface Props {
   cities?: City[];
+  branches?: Branch[] | null;
 }
 
-const ProductsFilters: FC<Props> = ({ cities }) => {
+const ProductsFilters: FC<Props> = ({ cities, branches }) => {
   const [form] = Form.useForm();
-  const { query } = useRouter();
+  const [branchFilter, setBranchFilter] = useState('');
+  const { query, push } = useRouter();
+  const [category, setCategory] = useState<
+    { id: number; name: string; categoriesId: number[] } | undefined | null
+  >(null);
 
-  const onSubmit = console.log;
+  const { categoria, ciudad, sucursal, vtalinea } = query;
+
+  useEffect(() => {
+    if (typeof categoria === 'string') {
+      const categoriesIds = categoria.split(',').map((item) => parseInt(item));
+      setCategory(categories.find((item) => intersection(item.categoriesId, categoriesIds).length));
+    }
+  }, [categoria]);
+
+  useEffect(() => {
+    if (typeof ciudad === 'string') {
+      form.setFieldsValue({ CityId: parseInt(ciudad) });
+    }
+  }, [ciudad]);
+
+  useEffect(() => {
+    if (typeof sucursal === 'string') {
+      form.setFieldsValue({ BranchId: parseInt(sucursal) });
+    }
+  }, [sucursal]);
+
+  useEffect(() => {
+    if (vtalinea) {
+      form.setFieldsValue({ saleOnline: [vtalinea] });
+    }
+  }, [vtalinea]);
+
+  const handleChange: FormProps['onValuesChange'] = (changes) => {
+    const { CityId, saleOnline, BranchId } = changes;
+    if (CityId) {
+      if (CityId === 'all') {
+        push(`/busqueda?${parseQuery(omit(query, 'ciudad'))}`);
+      } else {
+        push(`/busqueda?${parseQuery({ ...query, ciudad: CityId })}`);
+      }
+    }
+    if (BranchId) {
+      if (BranchId === 'all') {
+        push(`/busqueda?${parseQuery(omit(query, 'sucursal'))}`);
+      } else {
+        push(`/busqueda?${parseQuery({ ...query, sucursal: BranchId })}`);
+      }
+    }
+    if (saleOnline) {
+      if (saleOnline.includes('0') && saleOnline.includes('1')) {
+        push(`/busqueda?${parseQuery(omit(query, 'vtalinea'))}`);
+      } else {
+        push(`/busqueda?${parseQuery({ ...query, vtalinea: saleOnline })}`);
+      }
+    }
+  };
 
   return (
     <Form
       className={styles.root}
       form={form}
-      onFinish={onSubmit}
-      onValuesChange={console.log}
-      initialValues={{ CityId: 'all' }}
+      onValuesChange={handleChange}
+      initialValues={{
+        CityId: ciudad ? parseInt(ciudad as string) : 'all',
+        saleOnline: vtalinea ? [vtalinea] : ['0', '1'],
+        BranchId: sucursal ? parseInt(sucursal as string) : 'all',
+      }}
       id="productFilters"
     >
       <div>
@@ -85,19 +144,27 @@ const ProductsFilters: FC<Props> = ({ cities }) => {
         {/* TODO: obtener las categorías de strapi */}
         <ul className={styles.categories}>
           <li>
-            <Link href={`/busqueda?${parseQuery(omit(query, 'category'))}`}>
-              <a className={styles.categoryItem}>Todas las categorías</a>
+            <Link href={`/busqueda?${parseQuery(omit(query, 'categoria'))}`}>
+              <a className={cn(styles.categoryItem, { [styles.categorySelected]: !category })}>
+                Todas las categorías
+              </a>
             </Link>
           </li>
-          {categories.map((category) => (
-            <li key={category.id}>
+          {categories.map((item) => (
+            <li key={item.id}>
               <Link
                 href={`/busqueda?${parseQuery({
                   ...query,
-                  categoria: category.categoriesId.join(','),
+                  categoria: item.categoriesId.join(','),
                 })}`}
               >
-                <a className={styles.categoryItem}>{category.name}</a>
+                <a
+                  className={cn(styles.categoryItem, {
+                    [styles.categorySelected]: item.id === category?.id,
+                  })}
+                >
+                  {item.name}
+                </a>
               </Link>
             </li>
           ))}
@@ -129,17 +196,17 @@ const ProductsFilters: FC<Props> = ({ cities }) => {
         </Collapse>
       </div>
       <div className="p-4">
-        <Form.Item name="sale">
+        <Form.Item name="saleOnline">
           <Checkbox.Group className="saleTypeCheckboxes">
             <Space direction="vertical" className="space-y-3">
-              <Checkbox value="inStore">
+              <Checkbox value="0" disabled={vtalinea === '0'}>
                 <span>
                   Venta en sucursal
                   <span className="block text-secondary">Culiacan y Navolato</span>
                 </span>
                 <ProductBadge type="shop" />
               </Checkbox>
-              <Checkbox value="online">
+              <Checkbox value="1" disabled={vtalinea === '1'}>
                 <span>
                   Venta en línea
                   <span className="block text-secondary">Envíos a todo méxico</span>
@@ -150,6 +217,38 @@ const ProductsFilters: FC<Props> = ({ cities }) => {
           </Checkbox.Group>
         </Form.Item>
       </div>
+      {!!branches?.length && (
+        <div className="p-4">
+          <Collapse title="Sucursales">
+            <InputField
+              name="searchBranch"
+              value={branchFilter}
+              onChange={(e) => setBranchFilter(e.target.value)}
+              placeholder="Buscar sucursal"
+              className="w-full rounded-sm border px-4 py-2"
+            />
+            <Form.Item name="BranchId" className="max-h-[400px] overflow-y-auto">
+              <Radio.Group>
+                <div className="flex flex-col gap-4">
+                  <Radio value="all" className="block">
+                    Todas
+                  </Radio>
+                  {(branchFilter
+                    ? branches.filter((item) =>
+                        item.name.toLowerCase().includes(branchFilter.toLowerCase()),
+                      )
+                    : branches
+                  ).map((branch) => (
+                    <Radio value={branch.id} key={branch.id} className="block">
+                      {branch.name}
+                    </Radio>
+                  ))}
+                </div>
+              </Radio.Group>
+            </Form.Item>
+          </Collapse>
+        </div>
+      )}
       <button type="submit" className="hidden" />
     </Form>
   );
