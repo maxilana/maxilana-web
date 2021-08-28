@@ -73,7 +73,6 @@ const Busqueda: NextPage<Props> = ({
   branches,
   query,
 }) => {
-  console.log(pagination);
   return (
     <Layout title="Buscador de productos" cities={cities || []}>
       <main className="container mx-auto p-4 flex gap-8 flex-col md:flex-row mb-12 mt-4">

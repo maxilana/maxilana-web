@@ -55,6 +55,7 @@ const Searcher: FC<Props> = ({ cities }) => {
     }
     if (city) {
       query.ciudad = `${city.id}`;
+      delete query.sucursal;
     } else {
       delete query.ciudad;
     }

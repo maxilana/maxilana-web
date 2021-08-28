@@ -111,9 +111,9 @@ const ProductsFilters: FC<Props> = ({ cities, branches }) => {
     const { CityId, saleOnline, BranchId } = changes;
     if (CityId) {
       if (CityId === 'all') {
-        goToSearch(omit(query, 'ciudad'));
+        goToSearch(omit(query, 'ciudad', 'sucursal'));
       } else {
-        goToSearch({ ...query, ciudad: CityId });
+        goToSearch(omit({ ...query, ciudad: CityId }, 'sucursal'));
       }
     }
     if (BranchId) {
