@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { ParsedUrlQuery } from 'querystring';
 import React, { FC, useEffect, useState } from 'react';
 import { Radio, Space, Checkbox, Form, FormProps } from 'antd';
 import omit from 'lodash.omit';
@@ -75,6 +76,10 @@ const ProductsFilters: FC<Props> = ({ cities, branches }) => {
     { id: number; name: string; categoriesId: number[] } | undefined | null
   >(null);
 
+  const goToSearch = (queryParams: ParsedUrlQuery) => {
+    push(`/busqueda?${parseQuery(omit(queryParams, 'page'))}`);
+  };
+
   const { categoria, ciudad, sucursal, vtalinea } = query;
 
   useEffect(() => {
@@ -106,23 +111,23 @@ const ProductsFilters: FC<Props> = ({ cities, branches }) => {
     const { CityId, saleOnline, BranchId } = changes;
     if (CityId) {
       if (CityId === 'all') {
-        push(`/busqueda?${parseQuery(omit(query, 'ciudad'))}`);
+        goToSearch(omit(query, 'ciudad'));
       } else {
-        push(`/busqueda?${parseQuery({ ...query, ciudad: CityId })}`);
+        goToSearch({ ...query, ciudad: CityId });
       }
     }
     if (BranchId) {
       if (BranchId === 'all') {
-        push(`/busqueda?${parseQuery(omit(query, 'sucursal'))}`);
+        goToSearch(omit(query, 'sucursal'));
       } else {
-        push(`/busqueda?${parseQuery({ ...query, sucursal: BranchId })}`);
+        goToSearch({ ...query, sucursal: BranchId });
       }
     }
     if (saleOnline) {
       if (saleOnline.includes('0') && saleOnline.includes('1')) {
-        push(`/busqueda?${parseQuery(omit(query, 'vtalinea'))}`);
+        goToSearch(omit(query, 'vtalinea'));
       } else {
-        push(`/busqueda?${parseQuery({ ...query, vtalinea: saleOnline })}`);
+        goToSearch({ ...query, vtalinea: saleOnline });
       }
     }
   };

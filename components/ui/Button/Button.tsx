@@ -16,6 +16,7 @@ export interface Props {
   size?: 'small' | 'default' | 'large';
   theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp';
   className?: string;
+  disabled?: boolean;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -46,6 +47,7 @@ const Button: FC<Props> = ({
   theme = 'default',
   variant = 'default',
   className,
+  disabled = false,
 }) => {
   const sizeStyles = classStyles.size[size];
   const themeStyles = classStyles.theme[theme];
@@ -58,6 +60,7 @@ const Button: FC<Props> = ({
     linkStyles,
     fullWidthStyles,
     className,
+    { [styles.disabled]: disabled },
   );
 
   let iconElement = icon;
@@ -70,8 +73,9 @@ const Button: FC<Props> = ({
     return (
       <Link href={href}>
         <a className={rootClassName}>
-          {icon && <span className={styles.iconContainer}>{iconElement}</span>}
-          <span>{text}</span>
+          {icon && iconElement}
+          <span className={styles.label}>{text}</span>
+          {rightIcon}
         </a>
       </Link>
     );
@@ -79,9 +83,9 @@ const Button: FC<Props> = ({
 
   return (
     <button onClick={onClick} disabled={loading} className={rootClassName}>
-      {(loading || icon) && <span className={styles.leftIconWrapper}>{iconElement}</span>}
-      <span>{text}</span>
-      {rightIcon && <span className={styles.rightIconWrapper}>{rightIcon}</span>}
+      {(loading || icon) && iconElement}
+      <span className={styles.label}>{text}</span>
+      {rightIcon}
     </button>
   );
 };

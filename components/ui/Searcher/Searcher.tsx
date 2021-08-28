@@ -59,7 +59,7 @@ const Searcher: FC<Props> = ({ cities }) => {
       delete query.ciudad;
     }
 
-    router.push(`/busqueda?${parseQuery(query)}`);
+    router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
   };
 
   useEffectOnUpdate(goToSearch, [city]);

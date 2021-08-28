@@ -13,11 +13,13 @@ import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
 import slugify from '~/utils/slugify';
 import { ProductsFilters } from '~/components/products';
+import parseQuery from '~/utils/parseQuery';
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 interface GSSProps {
   pagination?: Pagination;
   products?: Product[];
-  filters?: ParsedUrlQuery;
+  query?: ParsedUrlQuery;
   cities?: City[];
   branch?: Branch | null;
   city?: City | null;
@@ -46,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
       props: {
         pagination,
         products,
-        filters,
+        query,
         cities,
         branch,
         city,
@@ -62,7 +64,16 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city, branches }) => {
+const Busqueda: NextPage<Props> = ({
+  pagination,
+  products,
+  cities,
+  branch,
+  city,
+  branches,
+  query,
+}) => {
+  console.log(pagination);
   return (
     <Layout title="Buscador de productos" cities={cities || []}>
       <main className="container mx-auto p-4 flex gap-8 flex-col md:flex-row mb-12 mt-4">
@@ -79,7 +90,36 @@ const Busqueda: NextPage<Props> = ({ pagination, products, cities, branch, city,
                   <ProductCard key={product.id} data={product} />
                 ))}
               </div>
-              <Button text="Cargar mas" fullWidth theme="secondary" />
+              <div className="flex space-x-6 justify-center">
+                <Button
+                  icon={<ArrowLeftOutlined />}
+                  text="Anterior"
+                  disabled={!pagination?.prev}
+                  theme={pagination?.prev ? 'secondary' : 'default'}
+                  href={
+                    pagination?.prev
+                      ? `/busqueda?${parseQuery({
+                          ...query,
+                          page: `${pagination?.page - 1}`,
+                        })}`
+                      : undefined
+                  }
+                />
+                <Button
+                  text="Siguiente"
+                  rightIcon={<ArrowRightOutlined />}
+                  disabled={!pagination?.next}
+                  theme={pagination?.next ? 'secondary' : 'default'}
+                  href={
+                    pagination?.next
+                      ? `/busqueda?${parseQuery({
+                          ...query,
+                          page: `${pagination?.page + 1}`,
+                        })}`
+                      : undefined
+                  }
+                />
+              </div>
             </>
           ) : (
             <ProductsNotFound />
