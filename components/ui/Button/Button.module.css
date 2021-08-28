@@ -4,7 +4,7 @@
 
 .root:hover,
 .root:active {
-  @apply bg-brand-dark;
+  @apply bg-brand-dark text-white;
 }
 
 .root:active {
@@ -34,7 +34,7 @@
 
 .primary:hover,
 .primar:active {
-  @apply bg-accent-dark;
+  @apply bg-accent-dark text-primary;
 }
 
 .primary:disabled {
@@ -42,8 +42,7 @@
 }
 
 .secondary {
-  color: #fff;
-  @apply bg-action-primary;
+  @apply bg-action-primary text-white;
 }
 
 .secondary:hover,
@@ -63,16 +62,18 @@
 .whatsapp:hover,
 .whatsapp:active {
   background-color: #06aa5b;
+  color: #fff;
 }
 
 .danger {
   background-color: #cb2b55;
-  color: #fff;
+  color: white;
 }
 
 .danger:hover,
 .danger:active {
   background-color: #c1254e;
+  color: white;
 }
 
 .link {
