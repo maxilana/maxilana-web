@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
 
+import { LoanCalculator } from '~/components/loans';
 import { Card, ButtonDropdown } from '~/components/ui';
-import { Hero, ServicePaymentCards } from '~/components/common';
+import { ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 
 const whatsappList = [
@@ -35,19 +36,7 @@ const questionList = [
 const PrestamosPage: NextPage = () => {
   return (
     <Layout title="Prestamos personales">
-      <Hero
-        title="Te prestamos para lo que necesites"
-        subtitle="Resuelve tus imprevistos fácil y rápido"
-        cover={
-          <Image
-            layout="fill"
-            src="/demo-hero-prestamos.jpg"
-            alt="Mujer hablando por teléfono, consiguiendo clientes"
-            objectFit="cover"
-          />
-        }
-        actions={<p className="text-lg text-accent-dark uppercase">De $2,000 hasta $20,000</p>}
-      />
+      <LoanCalculator />
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards

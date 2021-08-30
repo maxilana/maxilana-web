@@ -1,0 +1,36 @@
+.root {
+  @apply bg-white p-4;
+  @apply sm:rounded;
+}
+
+.title {
+  @apply text-center text-xl;
+}
+
+.label {
+  @apply text-primary;
+}
+
+.result {
+  @apply block my-2 text-brand text-xl font-semibold;
+}
+
+.resultSmall {
+  @apply text-lg font-normal;
+}
+
+.resultFinal {
+  @apply text-price;
+}
+
+.field {
+  @apply my-8;
+}
+
+.fieldCenter {
+  @apply text-center;
+}
+
+.split {
+  @apply flex flex-row justify-between items-center;
+}
