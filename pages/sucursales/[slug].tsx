@@ -29,7 +29,6 @@ export const getStaticProps: GetStaticProps<{
   cities: City[];
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
-
   try {
     const branch = await getBranch(slug);
     const cities = await getAllCities();

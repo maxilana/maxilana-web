@@ -8,15 +8,18 @@ interface Props {
   title?: string;
   meta?: MetaProps;
   cities: City[];
+  bgWhite?: boolean;
 }
 
-const Layout: FC<PropsWithChildren<Props>> = ({ title, meta, cities, children }) => {
+const Layout: FC<PropsWithChildren<Props>> = ({ title, meta, cities = [], children, bgWhite }) => {
   return (
     <>
       <Meta title={title} {...meta} />
-      <Navbar cities={cities} />
-      <main>{children}</main>
-      <Footer cities={cities} />
+      <div className="min-h-screen flex flex-col">
+        <Navbar cities={cities} />
+        <main className={`flex-1${bgWhite ? ' bg-white' : ''}`}>{children}</main>
+        <Footer cities={cities} />
+      </div>
     </>
   );
 };
