@@ -10,9 +10,10 @@ export interface Producto {
   precioneto: number;
   marca: string;
   observaciones: string;
-  image: 1 | 0;
+  imagen: 1 | 0;
   precod: number;
   slug?: string;
+  ventalinea: 1 | 0;
 }
 
 export type GetProductos = Paginated<Producto>;

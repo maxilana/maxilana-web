@@ -1,3 +1,5 @@
+import { City } from '~/types/Models/City';
+
 export interface Branch {
   id: number;
   number: number;
@@ -5,6 +7,7 @@ export interface Branch {
   address: string;
   phone: string;
   CityId?: number;
+  City?: Partial<City>;
   state: string;
   imgSketch: string;
   active: 0 | 1;

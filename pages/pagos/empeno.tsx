@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { PawnAccountForm, PawnCalculateForm } from '~/components/payments';
+import { PropsWithCities } from '~/types/PropsWithCities';
+
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const questionList = [
   {
@@ -24,11 +27,11 @@ const questionList = [
 
 type FormStatus = 'account_status' | 'calculate_date' | 'payment';
 
-const PagoEmpenoPage: NextPage = () => {
+const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [status, setStatus] = useState<FormStatus>('account_status');
 
   return (
-    <Layout title="Paga online tu boleta de empeño">
+    <Layout title="Paga online tu boleta de empeño" cities={cities}>
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           <div>

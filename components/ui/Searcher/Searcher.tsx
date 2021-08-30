@@ -1,10 +1,11 @@
 import cn from 'classnames';
 import { useRouter } from 'next/router';
-import { ParsedUrlQuery } from 'querystring';
-import { FC, FormEventHandler, useState } from 'react';
+import { FC, FormEventHandler, useState, useEffect } from 'react';
 import Image from 'next/image';
+import omit from 'lodash.omit';
 import { EnvironmentOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
+import { City } from '~/types/Models';
 import parseQuery from '~/utils/parseQuery';
 
 import Dropdown from '../Dropdown';
@@ -12,25 +13,54 @@ import MexicoMap from '../../../public/svg/mexico.svg';
 import styles from './Searcher.module.css';
 
 const locations = [
-  { label: 'Culiacán y Navolato', id: 1 },
-  { label: 'Mazatlán', id: 3 },
-  { label: 'Guadalajara', id: 5 },
-  { label: 'Hermosillo', id: 4 },
-  { label: 'Mexicali', id: 7 },
-  { label: 'Tijuana', id: 6 },
+  { name: 'Culiacán y Navolato', id: 1 },
+  { name: 'Mazatlán', id: 3 },
+  { name: 'Guadalajara', id: 5 },
+  { name: 'Hermosillo', id: 4 },
+  { name: 'Mexicali', id: 7 },
+  { name: 'Tijuana', id: 6 },
 ];
 
-const Searcher: FC = () => {
+interface Props {
+  cities?: City[];
+}
+
+const Searcher: FC<Props> = ({ cities }) => {
   const router = useRouter();
   const [searchText, setSearchText] = useState('');
   const [visible, toggleDropdown] = useState(false);
-  const [city, setCity] = useState<{ label?: string; id?: number } | null>();
+  const [city, setCity] = useState<Partial<City> | null>();
+
+  const {
+    query: { q, ciudad },
+  } = router;
+
+  useEffect(() => {
+    if (q || ciudad) {
+      setSearchText((q as string) || '');
+      if (ciudad) {
+        setCity(
+          cities?.length ? cities.find((item) => item?.id === parseInt(ciudad as string)) : null,
+        );
+      }
+    }
+  }, [q, ciudad]);
 
   const goToSearch = () => {
-    const query: ParsedUrlQuery = {};
-    if (searchText) query.q = searchText;
-    if (city) query.ciudad = `${city.id}`;
-    router.push(`/busqueda?${parseQuery(query)}`);
+    const { query = {} } = router;
+    if (searchText) {
+      query.q = searchText;
+    } else {
+      delete query.q;
+    }
+    if (city) {
+      query.ciudad = `${city.id}`;
+      delete query.sucursal;
+    } else {
+      delete query.ciudad;
+    }
+
+    router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
   };
 
   useEffectOnUpdate(goToSearch, [city]);
@@ -67,12 +97,14 @@ const Searcher: FC = () => {
             >
               {!city ? (
                 <span role="option" className="flex items-center space-x-2">
-                  <Image src={MexicoMap} alt="Mexico" />
+                  <div className="hidden md:inline-block">
+                    <Image src={MexicoMap} alt="Mexico" />
+                  </div>
                   <span>Todo México</span>
                 </span>
               ) : (
                 <span role="option" className="flex items-center space-x-2">
-                  <span>{city?.label}</span>
+                  <span>{city?.name}</span>
                 </span>
               )}
               <DownOutlined
@@ -83,7 +115,7 @@ const Searcher: FC = () => {
           }
         >
           <div role="menu">
-            {!city && (
+            {city && (
               <span
                 role="menuitem"
                 className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"
@@ -93,17 +125,17 @@ const Searcher: FC = () => {
                 <span>Todo México</span>
               </span>
             )}
-            {locations
+            {(cities?.length ? cities : locations)
               .filter((item) => item.id !== city?.id)
               .map((item) => (
                 <span
-                  key={item.label}
+                  key={item.id}
                   role="menuitem"
                   className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"
                   onClick={() => setCity(item)}
                 >
                   <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
-                  <span>{item.label}</span>
+                  <span>{item.name}</span>
                 </span>
               ))}
           </div>

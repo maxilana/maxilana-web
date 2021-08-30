@@ -8,7 +8,7 @@ const getBranchesSlugs = async (): Promise<Array<string>> => {
   const branches = response.reduce((r: Branch[], c: CityWithBranches) => {
     return [...r, ...c.branches];
   }, []);
-  return branches.map((branch) => `${branch.id}-${slugify(branch.name)}`);
+  return branches.map((branch) => branch?.slug || slugify(branch?.name));
 };
 
 export default getBranchesSlugs;

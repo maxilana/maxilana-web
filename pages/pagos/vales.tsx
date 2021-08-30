@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { CouponAccountForm, CouponCheckPaymentForm } from '~/components/payments';
+import { PropsWithCities } from '~/types/PropsWithCities';
+
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const questionList = [
   {
@@ -24,11 +27,11 @@ const questionList = [
 
 type Status = 'account_status' | 'confirm_payment' | 'payment';
 
-const CouponPaymentPage: NextPage = () => {
+const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [status, setStatus] = useState<Status>('account_status');
 
   return (
-    <Layout title="Paga online online directamente a tu distribuidora">
+    <Layout title="Paga online online directamente a tu distribuidora" cities={cities}>
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           <div>

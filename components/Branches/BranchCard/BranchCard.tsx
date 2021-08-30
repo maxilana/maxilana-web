@@ -1,12 +1,6 @@
 import cn from 'classnames';
 import React, { FC } from 'react';
-import {
-  DownOutlined,
-  PhoneOutlined,
-  WhatsAppOutlined,
-  SelectOutlined,
-  EnvironmentOutlined,
-} from '@ant-design/icons';
+import { DownOutlined, PhoneOutlined, WhatsAppOutlined, SelectOutlined } from '@ant-design/icons';
 import { BranchSchedule, CircleLink } from '~/components/Branches';
 import { Button, Card } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
@@ -39,7 +33,7 @@ const BranchCard: FC<Props> = ({ data }) => {
             text="Ver remates de la tienda"
             fullWidth
             theme="primary"
-            href={`/sucursales/${data?.id}-${slugify(data.name)}`}
+            href={`/sucursales/${data?.slug || slugify(data.name)}`}
           />
           <div className={styles.contactOptions}>
             <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />

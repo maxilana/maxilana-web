@@ -6,3 +6,5 @@ export { default as Tag } from './Tag';
 export { default as Dropdown } from './Dropdown';
 export { default as Calendar } from './Calendar';
 export { default as Collapse } from './Collapse';
+export { default as Img } from './Img';
+export { default as ProductsNotFound } from './ProductsNotFound';

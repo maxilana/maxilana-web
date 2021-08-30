@@ -11,11 +11,11 @@ import slugify from '~/utils/slugify';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const cities = await getAllCities();
-  const slugs = cities.map((city) => city?.slug || slugify(city.name));
+  const slugs = cities.map((city) => city?.slug);
 
   return {
     paths: slugs.map((slug) => ({ params: { slug } })),
-    fallback: true,
+    fallback: false,
   };
 };
 
@@ -39,7 +39,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Index: NextPage<Props> = (props) => {
   return (
-    <Layout title="Sucursales">
+    <Layout title="Sucursales" cities={props.cities}>
       <BranchesMap {...props} />
     </Layout>
   );

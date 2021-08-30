@@ -5,6 +5,7 @@ import { LoanCalculator } from '~/components/loans';
 import { Card, ButtonDropdown } from '~/components/ui';
 import { ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
+import { PropsWithCities } from '~/types/PropsWithCities';
 
 const whatsappList = [
   { label: 'Culiacán y Navolato' },
@@ -33,9 +34,11 @@ const questionList = [
   },
 ];
 
-const PrestamosPage: NextPage = () => {
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
+const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
-    <Layout title="Prestamos personales">
+    <Layout cities={cities} title="Prestamos personales">
       <LoanCalculator />
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">

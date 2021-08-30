@@ -1,14 +1,35 @@
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
+import getAllCities from '~/api/getAllCities';
+import getProducts from '~/api/getProducts';
 
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
 import { CategoryExplorer, Hero } from '~/components/common';
 
 import cards from '~/modules/mock/homelinks.json';
-import products from '~/modules/mock/products.json';
+//import products from '~/modules/mock/products.json';
+//import { City } from '~/types/Models';
+import { Product } from '~/types/Models/Product';
+import { PropsWithCities } from '~/types/PropsWithCities';
 
-function Home() {
+export const getStaticProps: GetStaticProps<PropsWithCities<{ products: Product[] }>> =
+  async () => {
+    const cities = await getAllCities();
+    const { rows: products } = await getProducts({ limit: '8' });
+
+    return {
+      props: {
+        cities,
+        products,
+      },
+    };
+  };
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+const Home: NextPage<Props> = ({ cities, products }) => {
   return (
     <Layout
       title="Maxilana | Casa de empeño"
@@ -16,18 +37,25 @@ function Home() {
         description: 'Maxilana casa de empeño y prestamos',
         keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
       }}
+      cities={cities}
     >
       <Hero
         title="En Maxilana te sacamos del apuro"
         subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"
         actions={
-          <React.Fragment>
+          <>
             <Button text="Avalúa tu empeño" theme="primary" />
             <Button text="Solicita un préstamo" />
-          </React.Fragment>
+          </>
         }
         cover={
-          <Image layout="fill" src="/demo-hero.jpg" alt="Hero Homepage Image" objectFit="cover" />
+          <Image
+            layout="fill"
+            src="/demo-hero.jpg"
+            alt="Hero Homepage Image"
+            objectFit="cover"
+            priority
+          />
         }
       />
       <Container>
@@ -64,21 +92,13 @@ function Home() {
           <h2 className="text-2xl">Nuestros últimos productos</h2>
           <div className="grid grid-cols-2 gap-2 my-4 sm:grid-cols-4 sm:gap-4 lg:gap-6">
             {products.map((item) => (
-              <ProductCard
-                key={item.id}
-                title={item.title}
-                price={item.price}
-                branch={item.branch}
-                onSale={item?.onSale}
-                shipping={item?.shipping}
-                salePrice={item?.salePrice}
-              />
+              <ProductCard key={item.id} data={item} />
             ))}
           </div>
         </section>
       </Container>
     </Layout>
   );
-}
+};
 
 export default Home;

@@ -3,6 +3,9 @@ import { NextPage } from 'next';
 import { Button, Card } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import Image from 'next/image';
+import { PropsWithCities } from '~/types/PropsWithCities';
+
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const payments = [
   {
@@ -46,9 +49,9 @@ const payments = [
   },
 ];
 
-const PaymentsPage: NextPage = () => {
+const PaymentsPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
-    <Layout title="Paga online online directamente a tu distribuidora">
+    <Layout title="Paga online online directamente a tu distribuidora" cities={cities}>
       <Container>
         <div className="py-12 sm:py-16">
           <div className="mb-11">

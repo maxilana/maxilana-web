@@ -24,7 +24,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Index: NextPage<Props> = (props) => {
   return (
-    <Layout title="Sucursales">
+    <Layout title="Sucursales" cities={props.cities}>
       <BranchesMap {...props} />
     </Layout>
   );

@@ -4,12 +4,17 @@ import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
 import Searcher from '~/components/ui/Searcher';
+import { City } from '~/types/Models';
 
 import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
 import { Button } from '~/components/ui';
 
-const Navbar: FC = () => {
+interface Props {
+  cities?: City[];
+}
+
+const Navbar: FC<Props> = ({ cities }) => {
   return (
     <header className={styles.root}>
       <div className={styles.wrapper}>
@@ -18,7 +23,7 @@ const Navbar: FC = () => {
             <label className={styles.drawerTrigger} role="button" htmlFor="menuControl">
               <MenuOutlined style={{ color: 'white', fontSize: 24 }} />
             </label>
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <a className={styles.logo}>
                 <Logo />
               </a>
@@ -30,16 +35,16 @@ const Navbar: FC = () => {
             <ul className={styles.navigationMenu}>
               {mainMenu.map((item) => (
                 <li key={item.id} className={styles.navigationItem}>
-                  <Link href={item.href}>
+                  <Link href={item.href} prefetch={false}>
                     <a>{item.label}</a>
                   </Link>
                 </li>
               ))}
             </ul>
-            <Searcher />
+            <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
-            <Link href="/">
+            <Link href="/" prefetch={false}>
               <a className={styles.loginLink}>Iniciar sesión</a>
             </Link>
             <span className={styles.payOnlineLink}>

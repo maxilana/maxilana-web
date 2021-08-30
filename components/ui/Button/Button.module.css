@@ -1,5 +1,5 @@
 .root {
-  @apply bg-surface-dark rounded uppercase text-primary text-xs tracking-wide inline-flex flex-row items-center font-semibold shadow px-4 py-3;
+  @apply bg-surface-dark rounded text-primary tracking-wide inline-flex flex-row space-x-2 items-center shadow px-4 py-3;
 }
 
 .root:hover,
@@ -11,8 +11,13 @@
   @apply shadow-inner;
 }
 
-.root:disabled {
+.root:disabled,
+.disabled {
   @apply bg-surface-light text-disabled pointer-events-none;
+}
+
+.label {
+  @apply text-xs font-semibold uppercase;
 }
 
 .sm {
@@ -94,12 +99,4 @@
 
 .fullWidth {
   @apply w-full justify-center;
-}
-
-.leftIconWrapper {
-  @apply mr-2;
-}
-
-.rightIconWrapper {
-  @apply ml-2;
 }
