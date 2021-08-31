@@ -75,7 +75,9 @@ const ProductCard: FC<Props> = ({ data }) => {
               <span className={styles.productPriceSale}>{basePrice}</span>
             )}
           </div>
-          <span className={styles.productBranch}>{Branch?.name}</span>
+          <span className={styles.productBranch}>
+            {Branch?.name}, {Branch?.City?.name}
+          </span>
         </VStack>
       </div>
       {/* TODO: como sabes cuando un producto esta en oferta? */}

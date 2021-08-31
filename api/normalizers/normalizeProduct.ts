@@ -1,3 +1,4 @@
+import imageExists from '~/api/imageExists';
 import { Product } from '~/types/Models/Product';
 import { Producto } from '~/types/Responses/GetProductos';
 
@@ -29,8 +30,8 @@ const normalizeProduct = (noNormalized: Producto): Product => ({
   },
   price: noNormalized.precio,
   netPrice: noNormalized.precioneto,
-  brand: noNormalized.marca,
-  observations: noNormalized.observaciones,
+  brand: noNormalized.marca ? noNormalized.marca.trim() : '',
+  observations: noNormalized.observaciones ? noNormalized.observaciones.trim() : '',
   image: !!noNormalized.imagen ? `${imageBaseURL}/${noNormalized.codigo}.jpg` : null,
   precod: noNormalized.precod,
   saleOnline: Boolean(noNormalized.ventalinea),
