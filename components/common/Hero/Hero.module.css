@@ -25,7 +25,8 @@
 
 .title {
   @apply text-xl text-white mb-2;
-  @apply md:text-4xl;
+  @apply sm:text-3xl;
+  @apply lg:text-4xl;
 }
 
 .subtitle {
