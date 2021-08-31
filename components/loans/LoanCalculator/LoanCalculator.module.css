@@ -1,6 +1,10 @@
 .root {
-  @apply bg-white p-4;
+  @apply bg-white p-4 relative min-h-[638px];
   @apply sm:rounded;
+}
+
+.rootLoading {
+  @apply pointer-events-none;
 }
 
 .title {
@@ -33,4 +37,12 @@
 
 .split {
   @apply flex flex-row justify-between items-center;
+}
+
+.loaderOverlay {
+  @apply absolute top-0 left-0 w-full h-full z-50 bg-white opacity-70;
+}
+
+.loader {
+  @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
 }
