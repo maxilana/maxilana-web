@@ -1,10 +1,12 @@
 import { Branch } from '~/types/Models/Branch';
+import { Category } from '~/types/Models/Category';
 
 export interface Product {
   id: string;
   //code: string;
   name: string;
-  type: number; // TODO:Que es esto? preguntas a maxilana
+  CategoryId: number;
+  Category: Partial<Category>;
   BranchId: number;
   Branch?: Partial<Branch>;
   price: number;

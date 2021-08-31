@@ -1,3 +1,4 @@
+import { normalizeBranch } from '~/api/normalizers';
 import { Branch, City, CityWithBranches } from '~/types/Models';
 import { GetSucursales } from '~/types/Responses';
 
@@ -9,33 +10,7 @@ const getAllBranches = async (): Promise<CityWithBranches[]> => {
     id: city?.id,
     slug: city?.slug,
     name: city?.ciudad,
-    branches: city?.sucursales.map((item) => ({
-      id: item?.id,
-      number: item?.numero,
-      name: item?.nombre,
-      address: item?.direccion,
-      phone: item?.telefono,
-      CityId: item?.codigociudad || item?.ciudad,
-      state: item?.estado,
-      imgSketch: item?.img_croquis,
-      active: item?.activo,
-      mondayToFridaySchedule: item?.HorarioLV,
-      saturdaySchedule: item?.HorarioS,
-      sundaySchedule: item?.HorarioD,
-      constancy: item?.constancia,
-      mapId: item?.identifcadorparamapa,
-      whatsapp: item?.whatsapp,
-      formattedSchedule: item?.HorarioConFormato,
-      formattedWhatsApp: item?.whatsappConFormato,
-      email: item?.correoelectronico,
-      mondayToFridayOpeningTime: item?.HoraAperturaLV,
-      mondayToFridayClosingTime: item?.HoraCierreLV,
-      saturdayOpeningTime: item?.HoraAperturaS,
-      saturdayClosingTime: item?.HoraCierreS,
-      sundayOpeningTime: item?.HoraAperturaD,
-      sundayClosingTime: item?.HoraCierreD,
-      slug: item?.slug || '',
-    })),
+    branches: city?.sucursales.map(normalizeBranch),
   }));
 };
 

@@ -18,7 +18,7 @@ interface Props {
 
 const ProductCard: FC<Props> = ({ data }) => {
   const { image, name, price, Branch, saleOnline, netPrice, slug, id } = data;
-  const href = slug ? `/producto/${slug}` : `/producto/${id}-${slugify(name)}`;
+  const href = `/producto/${id}-${slugify(name)}`;
 
   const { price: basePrice } = usePrice({ amount: price });
   const { price: discountPrice } = usePrice(
@@ -75,7 +75,9 @@ const ProductCard: FC<Props> = ({ data }) => {
               <span className={styles.productPriceSale}>{basePrice}</span>
             )}
           </div>
-          <span className={styles.productBranch}>{Branch?.name}</span>
+          <span className={styles.productBranch}>
+            {Branch?.name}, {Branch?.City?.name}
+          </span>
         </VStack>
       </div>
       {/* TODO: como sabes cuando un producto esta en oferta? */}

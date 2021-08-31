@@ -3,9 +3,16 @@ import { Paginated } from '~/types/Paginated';
 export interface Producto {
   id: number;
   codigo: string;
-  tipo: number;
+  idcategoria: number;
+  nombrecategoria: string;
+  slugcategoria: string;
   nombre: string;
-  sucursal: number;
+  idsucursal: number;
+  nombresucursal: string;
+  slugsucursal: string;
+  idciudad: number;
+  ciudadnombre: string;
+  slugciudad: string;
   precio: number;
   precioneto: number;
   marca: string;
