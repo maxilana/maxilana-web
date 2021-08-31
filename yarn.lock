@@ -879,13 +879,13 @@
   dependencies:
     is-promise "^4.0.0"
 
-"@netlify/plugin-nextjs@^3.1.1-experimental-odb.1":
-  version "3.1.1-experimental-odb.1"
-  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-3.1.1-experimental-odb.1.tgz#3fbd7e56ad21a537e2ddc6f57076bb8dfcadcdb4"
-  integrity sha512-aQ2nj2ruw/6p9EzoWkcAVujg5PN/Argt/IzbN/f1h/HKNf3sASA7gZPzSSvbC3T4nd9oRJHbGbOf/bPMCvIjaw==
+"@netlify/plugin-nextjs@3.1.0-experimental-odb.2":
+  version "3.1.0-experimental-odb.2"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-3.1.0-experimental-odb.2.tgz#5fcd59dd83e838fdb66461353319ef316fb58e13"
+  integrity sha512-8fGqZg9JBQzekmBg2Ey37aEeFuHKMNbBbA0VFqrx/EkLQ85bpA4FPgwDvBVd6sjXU4i6L4t6EqGjBuKZzTV/gQ==
   dependencies:
     "@netlify/functions" "^0.6.0"
-    "@sls-next/lambda-at-edge" "1.8.0"
+    "@sls-next/lambda-at-edge" "^1.5.2"
     adm-zip "^0.5.4"
     chalk "^4.1.0"
     chokidar "^3.5.1"
@@ -1014,7 +1014,7 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.0.6.tgz#023d72a5c4531b4ce204528971700a78a85a0c50"
   integrity sha512-Myxw//kzromB9yWgS8qYGuGVf91oBUUJpNvy5eM50sqvmKLbKjwLxohJnkWGTeeI9v9IBMtPLxz5Gc60FIfvCA==
 
-"@sls-next/lambda-at-edge@1.8.0":
+"@sls-next/lambda-at-edge@^1.5.2":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@sls-next/lambda-at-edge/-/lambda-at-edge-1.8.0.tgz#d9d3f9c14f342d5f72ad4fa54b3706b94f1067d4"
   integrity sha512-fELc/83OpTGv5vUF/zMeGbNu2z225xtE74YfRw4GIOCCfj0LJT9ycSSilIrVjUEvQUp9YLmfdCGAhaeENXgYCw==
