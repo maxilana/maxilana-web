@@ -1,6 +1,6 @@
 .root {
-  @apply bg-white p-4 relative min-h-[638px];
-  @apply sm:rounded;
+  @apply bg-white p-4 relative min-h-[560px];
+  @apply sm:rounded sm:p-6;
 }
 
 .rootLoading {
