@@ -37,7 +37,7 @@ interface GSProps {
 }
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
-  const paginatedProducts = await getProducts({ limit: '10' });
+  const paginatedProducts = await getProducts();
   const { rows: products } = paginatedProducts;
   return {
     paths: products.map((product) => ({
@@ -51,7 +51,6 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
   try {
     const slug = ctx?.params?.slug as string;
     const id = slug.split('-')[0];
-    if (Number.isNaN(parseInt(id))) return { notFound: true };
     const product = await getProductById(id);
     if (!product) return { notFound: true };
     const { rows: relatedProducts } = await getProducts({
