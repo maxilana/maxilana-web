@@ -33,25 +33,16 @@ const ProductCard: FC<Props> = ({ data }) => {
         </Link>
       )}
       <div className={styles.productImgWrapper}>
-        <div>
-          <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
-            {image !== null ? (
-              <Img
-                src={image}
-                alt={name}
-                objectFit="contain"
-                layout="responsive"
-                width={512}
-                height={512}
-              />
-            ) : (
-              <PictureOutlined />
-            )}
-          </div>
-          <div className={styles.productBadge}>
-            <ProductBadge type="shop" />
-            {saleOnline && <ProductBadge type="car" />}
-          </div>
+        <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
+          {image !== null ? (
+            <Img src={image} alt={name} objectFit="contain" layout="fill" />
+          ) : (
+            <PictureOutlined />
+          )}
+        </div>
+        <div className={styles.productBadge}>
+          <ProductBadge type="shop" />
+          {saleOnline && <ProductBadge type="car" />}
         </div>
       </div>
       <div className={styles.productBody}>
