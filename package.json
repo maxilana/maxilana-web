@@ -46,6 +46,7 @@
     "react": "npm:@preact/compat",
     "react-dom": "npm:@preact/compat",
     "react-hook-form": "^7.13.0",
+    "sharp": "^0.29.0",
     "tailwindcss": "^2.2.4",
     "yup": "^0.32.9"
   },
