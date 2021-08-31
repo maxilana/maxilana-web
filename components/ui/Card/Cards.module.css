@@ -11,9 +11,12 @@
 }
 
 .productImgWrapper {
-  @apply relative pointer-events-none aspect-w-1 aspect-h-1 border-b border-b-gray-300 bg-white;
+  @apply relative pointer-events-none border-b border-b-gray-300 bg-white;
 }
 
+.productImg {
+  @apply aspect-w-1 aspect-h-1;
+}
 
 .blockLink {
   @apply hover:bg-brand/10 absolute inset-0;

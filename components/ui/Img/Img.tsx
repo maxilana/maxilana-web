@@ -19,14 +19,20 @@ const toBase64 = (str: string) =>
   typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
 const Img: FC<ImageProps> = (props) => {
-  const defaultProps = {
-    placeholder: 'blur',
-    blurDataURL: `data:image/svg+xml;base64,${toBase64(
-      shimmer(parseInt(`${props?.width || 700}`), parseInt(`${props?.height || 475}`)),
-    )}`,
-  };
   // @ts-ignore
-  return <Image {...defaultProps} {...props} />;
+  return (
+    <Image
+      alt=""
+      placeholder="blur"
+      blurDataURL={`data:image/svg+xml;base64,${toBase64(
+        shimmer(parseInt(`${props?.width || 700}`), parseInt(`${props?.height || 475}`)),
+      )}`}
+      loader={({ src, width, quality = 75 }) =>
+        `/api/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`
+      }
+      {...props}
+    />
+  );
 };
 
 export default Img;

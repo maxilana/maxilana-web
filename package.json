@@ -27,6 +27,7 @@
     "@tailwindcss/line-clamp": "^0.2.1",
     "@tailwindcss/typography": "^0.4.1",
     "@types/lodash.omit": "^4.5.6",
+    "@types/sharp": "^0.28.5",
     "antd": "^4.16.13",
     "autoprefixer": "^10.2.6",
     "axios": "^0.21.1",
