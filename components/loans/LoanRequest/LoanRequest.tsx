@@ -1,24 +1,24 @@
 import cn from 'classnames';
 import { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { WhatsAppOutlined } from '@ant-design/icons';
+import { WhatsAppOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import { InputField } from '~/components/common';
 
 import styles from '../LoanCalculator/LoanCalculator.module.css';
 
-type FormValues = {
-  nombre: string;
-  correo: string;
-  telefono: string;
+export type FormValues = {
+  Nombre: string;
+  CorreoElectronico: string;
+  Telefono: string;
 };
 
 interface Props {
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: FormValues) => Promise<any>;
 }
 
-const ProspectForm: FC<Props> = ({ onSubmit }) => {
+const LoanRequest: FC<Props> = ({ onSubmit }) => {
   const {
     register,
     setValue,
@@ -35,7 +35,7 @@ const ProspectForm: FC<Props> = ({ onSubmit }) => {
   };
 
   return (
-    <div className={styles.root}>
+    <div className={cn(styles.root, { [styles.rootLoading]: loading })}>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <div className="mb-6 text-center">
           <h5 className={cn(styles.title, 'mb-4')}>Información de contacto</h5>
@@ -47,9 +47,9 @@ const ProspectForm: FC<Props> = ({ onSubmit }) => {
         <div className="grid gap-4">
           <div>
             <InputField
-              label="Número de préstamo"
-              errors={errors?.nombre}
-              {...register('nombre', {
+              label="Nombre completo"
+              errors={errors?.Nombre}
+              {...register('Nombre', {
                 required: 'Campo requerido',
               })}
             />
@@ -58,8 +58,8 @@ const ProspectForm: FC<Props> = ({ onSubmit }) => {
             <InputField
               type="email"
               label="Correo electrónico"
-              errors={errors?.correo}
-              {...register('correo', {
+              errors={errors?.CorreoElectronico}
+              {...register('CorreoElectronico', {
                 required: 'Campo requerido',
               })}
             />
@@ -70,14 +70,14 @@ const ProspectForm: FC<Props> = ({ onSubmit }) => {
               label="Teléfono"
               maxLength={10}
               placeholder="##########"
-              errors={errors?.telefono}
-              {...register('telefono', {
+              errors={errors?.Telefono}
+              {...register('Telefono', {
                 required: 'Campo requerido',
               })}
             />
           </div>
           <div>
-            <Button fullWidth theme="primary" loading={loading} text="Enviar información" />
+            <Button fullWidth theme="primary" text="Enviar información" />
           </div>
           <div>
             <Button
@@ -92,8 +92,15 @@ const ProspectForm: FC<Props> = ({ onSubmit }) => {
           </div>
         </div>
       </form>
+      {loading && (
+        <div className={styles.loaderOverlay}>
+          <span className={styles.loader}>
+            <LoadingOutlined spin style={{ fontSize: 40 }} />
+          </span>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ProspectForm;
+export default LoanRequest;

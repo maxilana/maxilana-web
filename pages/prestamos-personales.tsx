@@ -1,12 +1,11 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
 
-import { LoanCalculator } from '~/components/loans';
+import LoanRequestFlow from '~/components/loans';
 import { Card, ButtonDropdown } from '~/components/ui';
 import { ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
-import ProspectForm from '~/components/loans/ProspectForm';
 
 const whatsappList = [
   { label: 'Culiacán y Navolato' },
@@ -40,7 +39,7 @@ export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
     <Layout cities={cities} title="Prestamos personales">
-      <ProspectForm onSubmit={console.log} />
+      <LoanRequestFlow />
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
