@@ -6,6 +6,8 @@ import { PawnRequest } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards } from '~/components/common';
 import { PropsWithCities } from '~/types/PropsWithCities';
+import { Button, Card } from '~/components/ui';
+import React from 'react';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -19,11 +21,37 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       }}
       cities={cities}
     >
-      <div>
-        <PawnRequest />
+      <div className="container mx-auto sm:my-12 sm:px-4">
+        <div className="grid gap-6 items-center lg:grid-cols-2">
+          <PawnRequest />
+          <div className="hidden max-w-lg lg:block">
+            <Card>
+              <React.Fragment>
+                <div className="mb-6">
+                  <Image
+                    width={361}
+                    height={222}
+                    layout="responsive"
+                    src="/ilustracion-pago-online-inicio.png"
+                    alt="Logotipo Maxilana Vales"
+                    objectFit="contain"
+                  />
+                </div>
+                <div className="space-y-3 sm:text-left lg:space-y-4">
+                  <h2 className="text-2xl">Paga en línea o cualquier sucursal</h2>
+                  <p className="text-secondary">Paga tu empeño y no pierdas tu artículo</p>
+                  <div className="space-x-3">
+                    <Button theme="secondary" text="Pagar refrendo" href="/pagos/empeno" />
+                    <Button text="Ver sucursales" href="/sucursales" />
+                  </div>
+                </div>
+              </React.Fragment>
+            </Card>
+          </div>
+        </div>
       </div>
       <Container>
-        <div className="py-12 max-w-5xl mx-auto sm:py-24">
+        <div className="my-12 max-w-5xl mx-auto sm:my-24">
           <ServicePaymentCards
             actionCard={{
               title: 'Te prestamos más por tu auto',
@@ -40,7 +68,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
       </Container>
       <Container>
-        <div className="py-12 max-w-5xl mx-auto sm:py-24">
+        <div className="my-12 max-w-5xl mx-auto sm:my-24">
           <h2 className="text-2xl text-center">Así de fácil es empeñar en Maxilana</h2>
           <div className="bg-gray-200 mt-12 w-full h-60 flex flex-row items-center justify-center">
             <PictureOutlined style={{ fontSize: 48, color: 'white' }} />
@@ -48,7 +76,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
       </Container>
       <Container>
-        <div className="py-12 max-w-4xl mx-auto sm:py-24 sm:px-32">
+        <div className="my-12 max-w-4xl mx-auto sm:my-24 sm:px-32">
           <h2 className="text-2xl text-center">Pasos para empeñar en Maxilana</h2>
           <div className="my-12">
             <ol className="flex flex-col space-y-10 sm:space-y-20">
@@ -75,7 +103,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
       </Container>
       <Container>
-        <div className="py-12 sm:py-24 sm:px-32">
+        <div className="my-12 sm:my-24 sm:px-32">
           <h2 className="text-2xl text-center">Recibe más beneficios por empeño</h2>
           <div className="grid gap-6 mt-16 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((item) => (

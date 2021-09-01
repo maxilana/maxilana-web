@@ -50,9 +50,7 @@ const PawnRequest: FC = () => {
         }}
       >
         <div className="mb-6">
-          <h1 className={styles.title}>
-            Recibe un valor justo al empeñar tus artículos con nosotros
-          </h1>
+          <h1 className={styles.title}>Recibimos casi todos tus artículos</h1>
           <p className={styles.copy}>
             Usa nuestra herramienta para saber hasta cuánto te podemos dar por tus pertenencias.
           </p>
