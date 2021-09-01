@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { PictureOutlined } from '@ant-design/icons';
 
+import { PawnRequest } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards } from '~/components/common';
 import { PropsWithCities } from '~/types/PropsWithCities';
@@ -18,6 +19,9 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       }}
       cities={cities}
     >
+      <div>
+        <PawnRequest />
+      </div>
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
