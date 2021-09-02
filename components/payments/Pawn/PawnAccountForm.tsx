@@ -1,16 +1,18 @@
-import { FC } from 'react';
+import { Form } from 'antd';
 import Image from 'next/image';
-import { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { AxiosError } from 'axios';
+import React, { FC, useState } from 'react';
 
 import { Button } from '~/components/ui';
-import { InputField, InputMask } from '~/components/common';
+import { FormFeedback, InputField, InputMask } from '~/components/common';
+
 import styles from '../FormContainer.module.css';
+import validationMessages from '../../../config/validationMessages';
 
 type FormValues = {
-  numeroBoleta: string;
+  boleta: string;
   letra: string;
-  monto: string;
+  monto: number;
 };
 
 interface Props {
@@ -18,23 +20,23 @@ interface Props {
 }
 
 const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
-
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+  const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-    await onSubmit(data);
+    try {
+      await onSubmit(data);
+    } catch (err) {
+      setError((err as AxiosError).message);
+    }
+
     setLoading(false);
   };
 
   return (
-    <div>
+    <Form form={form} onFinish={handleFormSubmit} validateMessages={validationMessages}>
       <div className="px-4">
         <h1 className="text-2xl mb-4">Boleta de empeño</h1>
         <p>
@@ -53,61 +55,63 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
               alt="Imagen muestra de boleta de empeño"
             />
           </div>
-          <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
-            <div className="mb-6">
-              <h2 className="text-lg mb-4">Consulta el estado de cuenta de tu boleta</h2>
-              <p>Ingresa los datos que vienen escritos en tu boleta</p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="col-span-2">
-                <InputField
-                  maxLength={5}
-                  label="Número de boleta"
-                  errors={errors?.numeroBoleta}
-                  {...register('numeroBoleta', {
-                    required: 'Campo requerido',
-                  })}
-                />
-              </div>
-              <div>
-                <InputField
-                  label="Letra"
-                  maxLength={1}
-                  errors={errors?.letra}
-                  {...register('letra', {
-                    required: 'Campo requerido',
-                  })}
-                />
-              </div>
-              <div>
-                <InputMask
-                  placeholder="$0.00"
-                  label="Monto del préstamo"
-                  errors={errors?.monto}
-                  {...register('monto', {
-                    required: 'Campo requerido',
-                    valueAsNumber: true,
-                  })}
-                  options={{
-                    prefix: '$',
-                    numeral: true,
-                    numeralPositiveOnly: true,
-                    rawValueTrimPrefix: true,
-                  }}
-                  onChange={({ target }) => {
-                    // @ts-ignore
-                    setValue('monto', target.rawValue); // rawValue viene de Cleave.js
-                  }}
-                />
-              </div>
-              <div className="col-span-2">
-                <Button fullWidth text="Consultar" theme="primary" loading={loading} />
-              </div>
-            </div>
-          </form>
+          <div className={styles.root}>
+            <FormFeedback
+              visible={error !== null}
+              errorMessage={error as string}
+              onDismiss={() => {
+                setError(null);
+              }}
+            >
+              <React.Fragment>
+                <div className="mb-6">
+                  <h2 className="text-lg mb-4">Consulta el estado de cuenta de tu boleta</h2>
+                  <p>Ingresa los datos que vienen escritos en tu boleta</p>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="col-span-2">
+                    <Form.Item name="boleta" rules={[{ required: true, len: 5 }]}>
+                      <InputField maxLength={5} label="Número de boleta" />
+                    </Form.Item>
+                  </div>
+                  <div>
+                    <Form.Item name="letra" rules={[{ required: true, len: 1 }]}>
+                      <InputField label="Letra" maxLength={1} />
+                    </Form.Item>
+                  </div>
+                  <div>
+                    <Form.Item
+                      name="monto"
+                      getValueFromEvent={({ target }) => target.rawValue} // rawValue viene de Cleave.js
+                      rules={[{ required: true }]}
+                    >
+                      <InputMask
+                        placeholder="$0.00"
+                        label="Monto del préstamo"
+                        options={{
+                          prefix: '$',
+                          numeral: true,
+                          numeralPositiveOnly: true,
+                          rawValueTrimPrefix: true,
+                        }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div className="col-span-2">
+                    <Button
+                      fullWidth
+                      theme="primary"
+                      loading={loading}
+                      text={loading ? 'Consultando' : 'Consultar'}
+                    />
+                  </div>
+                </div>
+              </React.Fragment>
+            </FormFeedback>
+          </div>
         </div>
       </div>
-    </div>
+    </Form>
   );
 };
 
