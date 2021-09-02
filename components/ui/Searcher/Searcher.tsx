@@ -48,19 +48,25 @@ const Searcher: FC<Props> = ({ cities }) => {
 
   const goToSearch = () => {
     const { query = {} } = router;
-    if (searchText) {
-      query.q = searchText;
-    } else {
-      delete query.q;
-    }
-    if (city) {
-      query.ciudad = `${city.id}`;
-      delete query.sucursal;
-    } else {
-      delete query.ciudad;
-    }
+    if (searchText !== query?.q || `${city?.id}` !== query?.ciudad) {
+      if (searchText) {
+        query.q = searchText;
+      } else {
+        delete query.q;
+      }
+      if (city) {
+        query.ciudad = `${city.id}`;
+        delete query.sucursal;
+      } else {
+        delete query.ciudad;
+      }
 
-    router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
+      if (!query?.orden) {
+        query.orden = 'desc';
+      }
+
+      router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
+    }
   };
 
   useEffectOnUpdate(goToSearch, [city]);
@@ -103,8 +109,8 @@ const Searcher: FC<Props> = ({ cities }) => {
                   <span>Todo México</span>
                 </span>
               ) : (
-                <span role="option" className="flex items-center space-x-2">
-                  <span>{city?.name}</span>
+                <span role="option" className="block space-x-2 line-clamp-1">
+                  {city?.name}
                 </span>
               )}
               <DownOutlined
@@ -116,11 +122,7 @@ const Searcher: FC<Props> = ({ cities }) => {
         >
           <div role="menu">
             {city && (
-              <span
-                role="menuitem"
-                className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"
-                onClick={() => setCity(null)}
-              >
+              <span role="menuitem" className={styles.categoryItem} onClick={() => setCity(null)}>
                 <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
                 <span>Todo México</span>
               </span>
@@ -131,7 +133,7 @@ const Searcher: FC<Props> = ({ cities }) => {
                 <span
                   key={item.id}
                   role="menuitem"
-                  className="flex flex-row items-center space-x-2 px-1 py-2 text-sm text-brand-darker cursor-pointer rounded-sm hover:bg-brand/10"
+                  className={styles.categoryItem}
                   onClick={() => setCity(item)}
                 >
                   <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />

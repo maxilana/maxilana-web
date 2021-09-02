@@ -4,7 +4,7 @@ import React, { InputHTMLAttributes, Ref } from 'react';
 import styles from './InputField.module.css';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
+  name?: string;
   label?: string;
   inline?: boolean;
   errors?: { [key: string]: any };

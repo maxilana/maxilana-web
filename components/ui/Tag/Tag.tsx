@@ -1,21 +1,28 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 
 import styles from './Tag.module.css';
 
 interface Props {
-  label: string;
+  label?: string;
   closable?: boolean;
   onClick?: () => void;
+  className?: string;
 }
 
-const Tag: FC<Props> = ({ label, closable = false, onClick }) => {
+const Tag: FC<PropsWithChildren<Props>> = ({
+  label,
+  closable = false,
+  onClick,
+  children,
+  className,
+}) => {
   const closableStyles = closable ? styles.closable : '';
-  const className = [styles.root, closableStyles].join(' ');
+  const rootClassName = [styles.root, closableStyles, className].join(' ');
 
   return (
-    <span className={className} onClick={onClick}>
-      <span>{label}</span>
+    <span className={rootClassName} onClick={onClick}>
+      <span>{label || children}</span>
       {closable && <CloseOutlined style={{ fontSize: 12 }} />}
     </span>
   );

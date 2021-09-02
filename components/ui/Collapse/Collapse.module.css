@@ -3,7 +3,7 @@
 }
 
 .indicator {
-  @apply mr-4 transition transition-all;
+  @apply transition transition-all;
 }
 
 .collapsed .indicator {
