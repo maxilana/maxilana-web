@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
 
+import LoanRequestFlow from '~/components/loans';
 import { Card, ButtonDropdown } from '~/components/ui';
-import { Hero, ServicePaymentCards } from '~/components/common';
+import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
@@ -37,20 +38,24 @@ export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
-    <Layout title="Prestamos personales" cities={cities}>
-      <Hero
+    <Layout cities={cities} title="Prestamos personales">
+      <HeroComposed
         title="Te prestamos para lo que necesites"
-        subtitle="Resuelve tus imprevistos fácil y rápido"
+        copy="¡Resuelve tus imprevistos fácil y rápido!"
+        footer={<p className="text-lg uppercase text-accent">De $1,000 hasta $20,000</p>}
         cover={
           <Image
+            priority
             layout="fill"
             src="/demo-hero-prestamos.jpg"
-            alt="Mujer hablando por teléfono, consiguiendo clientes"
+            alt="Prestamos Hero Image"
             objectFit="cover"
+            quality={100}
           />
         }
-        actions={<p className="text-lg text-accent-dark uppercase">De $2,000 hasta $20,000</p>}
-      />
+      >
+        <LoanRequestFlow />
+      </HeroComposed>
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
