@@ -1,6 +1,16 @@
+import cn from 'classnames';
+import omit from 'lodash.omit';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import { useRouter, RouterEvent, Router, NextRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  FilterOutlined,
+  SortAscendingOutlined,
+} from '@ant-design/icons';
+
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
 import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
@@ -8,13 +18,12 @@ import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
 import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
+import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
-import slugify from '~/utils/slugify';
-import { ProductsFilters } from '~/components/products';
+import { AppliedFilters, ProductsFilters } from '~/components/products';
 import parseQuery from '~/utils/parseQuery';
-import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
 interface GSSProps {
   pagination?: Pagination;
@@ -73,18 +82,61 @@ const Busqueda: NextPage<Props> = ({
   branches,
   query,
 }) => {
+  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string): void => {
+      if (url.includes('busqueda')) {
+        setLoading(true);
+        if (visibleFilter) toggleVisibleFilter();
+      }
+    };
+    const handleRouteChangeComplete = () => {
+      setLoading(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, []);
+
+  const search = (queryParams: ParsedUrlQuery) => {
+    router.push(`/busqueda?${parseQuery(omit(queryParams, 'page'))}`, undefined, { scroll: false });
+  };
+
   return (
     <Layout title="Buscador de productos" cities={cities || []}>
-      <main className="container mx-auto p-4 flex gap-8 flex-col md:flex-row mb-12 mt-4">
-        <aside className="min-w-[250px] md:max-w-[250px]">
-          <ProductsFilters cities={cities} branches={branches} />
+      <main className="container mx-auto p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:flex lg:gap-8 lg:flex-row">
+        <aside>
+          <ProductsFilters
+            cities={cities}
+            branches={branches}
+            visible={visibleFilter}
+            onClose={toggleVisibleFilter}
+            onFiltersChange={search}
+          />
         </aside>
-        <div className="flex-1">
+        <div className={cn('flex-1', { 'opacity-50': loading })}>
+          <h2 className="h4">{query?.q || 'Resultado de la búsqueda'}</h2>
+          <p className="text-secondary">{pagination?.count} productos</p>
+          <AppliedFilters city={city} branch={branch} onFiltersChange={search} />
+          <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
+            <Button
+              icon={<FilterOutlined />}
+              text="Filtros y orden"
+              onClick={toggleVisibleFilter}
+              theme="secondary"
+            />
+          </div>
           {!!products?.length ? (
             <>
-              <h2 className="h4">Resultado de la búsqueda</h2>
-              <p className="text-secondary">{pagination?.count} productos</p>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 my-12">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 mb-12">
                 {products.map((product) => (
                   <ProductCard key={product.id} data={product} />
                 ))}
