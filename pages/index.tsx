@@ -14,6 +14,8 @@ import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
 
+import HeroImage from '../public/demo-hero.jpg';
+
 interface GSProps {
   products: Product[];
   categories: CMSCategory[];
@@ -59,10 +61,11 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
         cover={
           <Image
             layout="fill"
-            src="/demo-hero.jpg"
+            src={HeroImage}
             alt="Hero Homepage Image"
             objectFit="cover"
             priority
+            placeholder="blur"
           />
         }
       />
