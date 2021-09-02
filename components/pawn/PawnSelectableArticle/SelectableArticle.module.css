@@ -1,0 +1,25 @@
+.root {
+  @apply flex flex-row items-center rounded-sm border border-brand overflow-hidden;
+  @apply hover:cursor-pointer;
+}
+
+.wrapImage {
+  @apply w-[100px] h-[80px] relative;
+}
+
+.wrapBody {
+  @apply flex-grow flex flex-row justify-between items-center px-4 h-full;
+}
+
+.label {
+  @apply font-semibold text-base text-primary;
+}
+
+.root:hover .wrapBody,
+.wrapBody.selected {
+  @apply bg-brand;
+
+  & > .label {
+    @apply text-white;
+  }
+}

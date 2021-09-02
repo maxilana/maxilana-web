@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { PictureOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
-import { FormContainer, InputField } from '~/components/common';
+import { AutoPawnForm } from '~/components/pawn';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
@@ -75,67 +75,7 @@ const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </Container>
         <section id="solicitud-avaluo" className="my-12 sm:my-24 sm:px-4">
           <div className="max-w-3xl mx-auto">
-            <FormContainer>
-              <div className="text-center mb-8">
-                <h2 className="text-2xl">Solicitud de avalúo</h2>
-                <p className="text-secondary text-sm">
-                  Conoce cuanto te prestamos por tu auto. A la brevedad un representante se
-                  comunicará contigo
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
-                  <InputField name="name" label="Nombre" />
-                </div>
-                <div>
-                  <InputField name="firstName" label="Primer Apellido" />
-                </div>
-                <div>
-                  <InputField name="lastName" label="Segundo Apellido" />
-                </div>
-                <div>
-                  <InputField name="birthDate" label="Fecha de nacimiento" />
-                </div>
-                <div>
-                  <InputField name="city" label="Ciudad" />
-                </div>
-                <div>
-                  <InputField name="carBrand" label="Marca" />
-                </div>
-                <div>
-                  <InputField name="carYear" label="Modelo o Año" />
-                </div>
-                <div>
-                  <InputField name="carType" label="Tipo" />
-                </div>
-                <div>
-                  <InputField name="solicitedQuantity" label="Cantidad solicitada" />
-                </div>
-                <div>
-                  <InputField required name="email" type="email" label="Correo electrónico" />
-                </div>
-                <div>
-                  <InputField
-                    required
-                    type="tel"
-                    maxLength={10}
-                    pattern="[0-9]{10}"
-                    name="phoneNumber"
-                    label="Teléfono (10 dígitos)"
-                  />
-                </div>
-              </div>
-              <div className="py-8">
-                <Button theme="primary" text="Enviar Solicitud" fullWidth />
-              </div>
-              <p className="text-xs text-secondary">
-                La Tasa Nominal Anual Máxima (TAE) es de 150% sin IVA. Tasa Anual Fija. Para fines
-                informativos y de comparación. Fecha de cálculo 30 de junio de 2017. Por ejemplo
-                para un préstamo de $10,000 pesos se deberán abonar 12 cuotas mensuales de $1,250.00
-                pesos más IVA cada una. Importe total a pagar (capital + intereses) de $15,000.00
-                pesos más IVA. Periodo mínimo de 60 días y máximo de 6 meses (renovable).
-              </p>
-            </FormContainer>
+            <AutoPawnForm />
           </div>
         </section>
         <Container>
