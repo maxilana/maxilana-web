@@ -1,14 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-/*import sharp from 'sharp';
-import axios from 'axios';*/
+import sharp from 'sharp';
+import axios from 'axios';
 
-interface Data {
-  name: string;
-}
-
-/*interface TransformOptions {
+interface TransformOptions {
   blur?: number;
   cropMode?: 'entropy' | 'attention';
   height: number;
@@ -58,10 +54,10 @@ const transform = ({ blur, height, width, quality, format = 'jpg' }: TransformOp
     });
   }
   return sharpObj;
-};*/
+};
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  /*const { url, w, h, q, blur } = req.query;
+  const { url, w, h, q, blur } = req.query;
 
   const format =
     req?.headers?.accept && req?.headers?.accept.includes('image/webp') ? 'webp' : 'jpg';
@@ -82,6 +78,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     )
     .catch((err) => {
       res.status(404).send('');
-    });*/
-  res.status(200).json({ name: 'Jhon Lennon' });
+    });
 }
