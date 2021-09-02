@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Image from 'next/image';
+import { Img } from '~/components/ui';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 
 import styles from './CategoryExplorer.module.css';
@@ -16,7 +16,7 @@ const CategoryExplorer: FC<Props> = ({ categories }) => {
           <div key={item.id} className={styles.gridElement}>
             <div className={styles.link}>
               <div className="w-[56px] h-[56px]">
-                <Image
+                <Img
                   src={item?.image?.url}
                   width={item?.image?.width}
                   height={item?.image?.height}
