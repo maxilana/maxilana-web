@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Image, { ImageProps } from 'next/image';
+import Image, { ImageLoaderProps, ImageProps } from 'next/image';
 
 const shimmer = (w: number, h: number) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -18,8 +18,23 @@ const shimmer = (w: number, h: number) => `
 const toBase64 = (str: string) =>
   typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
+const loaders = {
+  cloudinary: ({ src, width, quality = 75 }: ImageLoaderProps) => {
+    if (!process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL) {
+      throw Error('Environment variable NEXT_PUBLIC_CLOUDINARY_BASEURL is missing');
+    }
+    const baseURL = process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL;
+    return `${baseURL}/image/fetch/f_auto,w_${width},q_${quality}/${src}`;
+  },
+  maxilana: ({ src, width, quality = 75 }: ImageLoaderProps) =>
+    `${process.env.NEXT_PUBLIC_API_BASEURL}/image?url=${encodeURIComponent(
+      src,
+    )}&w=${width}&q=${quality}`,
+};
+
 const Img: FC<ImageProps> = (props) => {
-  const customLoader = process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER === 'true';
+  const customLoader =
+    loaders[process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders];
   return (
     <>
       {/*@ts-ignore esta mal typeado el componente Image*/}
@@ -29,12 +44,7 @@ const Img: FC<ImageProps> = (props) => {
         blurDataURL={`data:image/svg+xml;base64,${toBase64(
           shimmer(parseInt(`${props?.width || 700}`), parseInt(`${props?.height || 475}`)),
         )}`}
-        loader={
-          customLoader
-            ? ({ src, width, quality = 75 }) =>
-                `/api/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`
-            : undefined
-        }
+        loader={customLoader}
         {...props}
       />
     </>

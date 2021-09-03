@@ -3,33 +3,41 @@ import React from 'react';
 import Image from 'next/image';
 import getAllCities from '~/api/getAllCities';
 import getProducts from '~/api/getProducts';
+import getCategories from '~/api/cms/getCategories';
 
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
 import { CategoryExplorer, Hero } from '~/components/common';
 
 import cards from '~/modules/mock/homelinks.json';
-//import products from '~/modules/mock/products.json';
-//import { City } from '~/types/Models';
+import { City } from '~/types/Models';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
-import { PropsWithCities } from '~/types/PropsWithCities';
 
-export const getStaticProps: GetStaticProps<PropsWithCities<{ products: Product[] }>> =
-  async () => {
-    const cities = await getAllCities();
-    const { rows: products } = await getProducts({ limit: '8' });
+interface GSProps {
+  products: Product[];
+  categories: CMSCategory[];
+  cities: City[];
+}
 
-    return {
-      props: {
-        cities,
-        products,
-      },
-    };
+export const getStaticProps: GetStaticProps<GSProps> = async () => {
+  const cities = await getAllCities();
+  const categories = await getCategories();
+  const { rows: products } = await getProducts({ limit: '8', orden: 'rand' });
+
+  return {
+    props: {
+      cities,
+      products,
+      categories,
+    },
+    revalidate: 60, // Each minute
   };
+};
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Home: NextPage<Props> = ({ cities, products }) => {
+const Home: NextPage<Props> = ({ cities, products, categories }) => {
   return (
     <Layout
       title="Maxilana | Casa de empeño"
@@ -83,7 +91,7 @@ const Home: NextPage<Props> = ({ cities, products }) => {
         </div>
         <section className="my-12 lg:my-[72px]">
           <h2 className="text-center text-2xl">Remates por categoría</h2>
-          <CategoryExplorer />
+          {!!categories && <CategoryExplorer categories={categories} />}
           <div className="text-center">
             <Button theme="secondary" text="Ver todos los remates" href="/" />
           </div>

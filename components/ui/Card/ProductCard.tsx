@@ -17,7 +17,7 @@ interface Props {
 }
 
 const ProductCard: FC<Props> = ({ data }) => {
-  const { image, name, price, Branch, saleOnline, netPrice, slug, id } = data;
+  const { image, name, price, Branch, saleOnline, netPrice, id } = data;
   const href = `/producto/${id}-${slugify(name)}`;
 
   const { price: basePrice } = usePrice({ amount: price });

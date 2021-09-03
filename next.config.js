@@ -7,15 +7,19 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const buildId = nextBuildId.sync({ dir: __dirname });
 
+if (!process.env.IMAGES_DOMAINS) throw Error('Environment variable IMAGES_DOMAINS is missing');
+if (!process.env.IMAGES_DEVICE_SIZES) throw Error('Environment variable IMAGES_DEVICE_SIZES is missing');
+if (!process.env.IMAGES_SIZES) throw Error('Environment variable IMAGES_SIZES is missing');
+
 module.exports = withPreact(
   withBundleAnalyzer({
     target: 'serverless',
     generateBuildId: () => buildId,
     reactStrictMode: true,
     images: {
-      domains: ['www.maxilana.com'],
-      deviceSizes: [640, 750, 828, 1080, 1200],
-      imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+      domains: process.env.IMAGES_DOMAINS.split(','),
+      deviceSizes: process.env.IMAGES_DEVICE_SIZES.split(',').map(item => parseInt(item)),
+      imageSizes: process.env.IMAGES_SIZES.split(',').map(item => parseInt(item)),
     },
   }),
 );
