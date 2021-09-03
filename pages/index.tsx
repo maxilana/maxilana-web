@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import getAllCities from '~/api/getAllCities';
 import getProducts from '~/api/getProducts';
-import getCategories from '~/api/cms/getCategories';
+import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
@@ -22,7 +22,7 @@ interface GSProps {
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
   const cities = await getAllCities();
-  const categories = await getCategories();
+  const categories = await getCMSCategories();
   const { rows: products } = await getProducts({ limit: '8', orden: 'rand' });
 
   return {

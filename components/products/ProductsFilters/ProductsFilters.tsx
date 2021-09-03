@@ -11,6 +11,7 @@ import intersection from 'lodash/intersection';
 import ClickOutside from '~/modules/lib/click-outside';
 
 import { Branch, City } from '~/types/Models';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import { PriceRangeInput } from '~/components/products';
@@ -19,70 +20,28 @@ import ProductBadge from '../ProductBadge';
 import styles from './ProductsFilters.module.css';
 import { InputField } from '~/components/common';
 
-const categories = [
-  {
-    id: 1,
-    name: 'Joyería',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 2,
-    name: 'Relojes',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 3,
-    name: 'Computadoras',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 4,
-    name: 'Herramientas',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 5,
-    name: 'Instrumentos musicales',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 6,
-    name: 'Automobiles',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 7,
-    name: 'Celulares',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 8,
-    name: 'Electrodomésticos',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 9,
-    name: 'Videojuegos',
-    categoriesId: [1, 3, 4],
-  },
-];
-
 interface Props {
   cities?: City[];
   branches?: Branch[] | null;
   visible?: boolean;
   onClose?: () => void;
   onFiltersChange: (filters: ParsedUrlQuery) => void;
+  categories: CMSCategory[];
 }
 
-const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFiltersChange }) => {
+const ProductsFilters: FC<Props> = ({
+  categories,
+  cities,
+  branches,
+  visible,
+  onClose,
+  onFiltersChange,
+}) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [form] = Form.useForm();
   const [branchFilter, setBranchFilter] = useState('');
-  const { query, push } = useRouter();
-  const [category, setCategory] = useState<
-    { id: number; name: string; categoriesId: number[] } | undefined | null
-  >(null);
+  const { query } = useRouter();
+  const [category, setCategory] = useState<CMSCategory | null | undefined>(null);
 
   const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = query;
 
@@ -101,8 +60,7 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
 
   useEffect(() => {
     if (typeof categoria === 'string') {
-      const categoriesIds = categoria.split(',').map((item) => parseInt(item));
-      setCategory(categories.find((item) => intersection(item.categoriesId, categoriesIds).length));
+      setCategory(categories.find((item) => item.id === parseInt(categoria)));
     }
   }, [categoria]);
 
@@ -207,7 +165,7 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
                     <Link
                       href={`/busqueda?${parseQuery({
                         ...query,
-                        categoria: item.categoriesId.join(','),
+                        categoria: `${item?.id}`,
                       })}`}
                     >
                       <a

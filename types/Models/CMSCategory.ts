@@ -1,3 +1,4 @@
+import { CMSFilters } from '~/types/Models/CMSFilters';
 import { CMSImage } from '~/types/Models/CMSImage';
 
 export interface CMSCategory {
@@ -6,11 +7,6 @@ export interface CMSCategory {
   products_page_mkt: number | null;
   create_at: string;
   updated_at: string;
-  filters: {
-    id: number;
-    search: string | null;
-    categories: number[];
-    products: number[];
-  };
+  filters: CMSFilters;
   image: CMSImage;
 }

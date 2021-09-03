@@ -10,6 +10,7 @@ import {
   FilterOutlined,
   SortAscendingOutlined,
 } from '@ant-design/icons';
+import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
@@ -20,6 +21,7 @@ import getProducts from '~/api/getProducts';
 import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
 import { AppliedFilters, ProductsFilters } from '~/components/products';
@@ -33,6 +35,7 @@ interface GSSProps {
   branch?: Branch | null;
   city?: City | null;
   branches?: Branch[] | null;
+  categories?: CMSCategory[];
 }
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
@@ -40,6 +43,14 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { page, limit, ...filters } = query || {};
 
   try {
+    const categories = await getCMSCategories();
+    if (query.categoria) {
+      const category = categories.find((item) => item.id === parseInt(query?.categoria as string));
+      if (category?.filters?.categories?.length) {
+        query.categoria = category?.filters?.categories.map((item) => item?.itemID).join(',');
+      }
+    }
+    // console.log(query);
     const paginatedProducts = await getProducts(query);
     const { rows: products, ...pagination } = paginatedProducts;
     const cities = await getAllCities();
@@ -62,11 +73,12 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
         branch,
         city,
         branches,
+        categories,
       },
     };
   } catch (e) {
     console.log('ERROR: getServerSideProps');
-    console.log(e);
+    // console.log(e);
     return { notFound: 40, props: {} };
   }
 };
@@ -81,6 +93,7 @@ const Busqueda: NextPage<Props> = ({
   city,
   branches,
   query,
+  categories,
 }) => {
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const [loading, setLoading] = useState(false);
@@ -115,6 +128,7 @@ const Busqueda: NextPage<Props> = ({
       <main className="container mx-auto p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:flex lg:gap-8 lg:flex-row">
         <aside>
           <ProductsFilters
+            categories={categories || []}
             cities={cities}
             branches={branches}
             visible={visibleFilter}
