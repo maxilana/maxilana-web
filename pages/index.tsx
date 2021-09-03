@@ -13,6 +13,7 @@ import cards from '~/modules/mock/homelinks.json';
 import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
+import HeroImg from '../public/demo-hero.jpg';
 
 interface GSProps {
   products: Product[];
@@ -59,10 +60,11 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
         cover={
           <Image
             layout="fill"
-            src="/demo-hero.jpg"
+            src={HeroImg}
             alt="Hero Homepage Image"
             objectFit="cover"
             priority
+            placeholder="blur"
           />
         }
       />

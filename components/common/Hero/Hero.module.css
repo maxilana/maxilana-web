@@ -6,7 +6,7 @@
 }
 
 .cover {
-  @apply w-full h-[420px] absolute left-0 top-0 z-0;
+  @apply absolute inset-0 z-0;
   @apply sm:h-auto sm:min-h-[320px];
   @apply md:min-h-[680px];
 }
