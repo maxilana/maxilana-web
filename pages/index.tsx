@@ -59,7 +59,7 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
         cover={
           <Image
             layout="fill"
-            src="demo-hero.jpg"
+            src="/demo-hero.jpg"
             alt="Hero Homepage Image"
             objectFit="cover"
             priority
