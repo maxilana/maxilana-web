@@ -6,12 +6,51 @@ import { InputField, InputMask } from '~/components/common';
 
 import styles from '../Pawn.module.css';
 import PawnSelectableArticle from '../PawnSelectableArticle';
+import Joyeria from '~/public/empeno-articulo-joyeria.jpg';
+import Auto from '~/public/empeno-articulo-auto.jpg';
+import Celulares from '~/public/empeno-articulo-celulares.jpg';
+import Relojes from '~/public/empeno-articulo-relojes.jpg';
+import Instrumentos from '~/public/empeno-articulo-musicales.jpg';
+import Herramientas from '~/public/empeno-articulo-herramientas.jpg';
+
+const articles = [
+  {
+    id: 1,
+    label: 'Joyería',
+    imageSrc: Joyeria,
+  },
+  {
+    id: 2,
+    label: 'Automóviles',
+    imageSrc: Auto,
+  },
+  {
+    id: 3,
+    label: 'Celulares',
+    imageSrc: Celulares,
+  },
+  {
+    id: 4,
+    label: 'Relojes',
+    imageSrc: Relojes,
+  },
+  {
+    id: 5,
+    label: 'Instrumentos musicales',
+    imageSrc: Instrumentos,
+  },
+  {
+    id: 6,
+    label: 'Herramientas',
+    imageSrc: Herramientas,
+  },
+];
 
 const PawnRequest: FC = () => {
   const [form] = Form.useForm();
   const [selected, setSelected] = useState<number[]>([]);
 
-  const handleToogleArticle = useCallback(
+  const handleToggleArticle = useCallback(
     (id: number) => {
       const found = selected.find((item) => item === id);
 
@@ -65,7 +104,7 @@ const PawnRequest: FC = () => {
                 imageSrc={item.imageSrc}
                 checked={selected.includes(item.id)}
                 onClick={() => {
-                  handleToogleArticle(item.id);
+                  handleToggleArticle(item.id);
                 }}
               />
             );
@@ -107,38 +146,5 @@ const PawnRequest: FC = () => {
     </div>
   );
 };
-
-const articles = [
-  {
-    id: 1,
-    label: 'Joyería',
-    imageSrc: '/empeno-articulo-joyeria.jpg',
-  },
-  {
-    id: 2,
-    label: 'Automóviles',
-    imageSrc: '/empeno-articulo-auto.jpg',
-  },
-  {
-    id: 3,
-    label: 'Celulares',
-    imageSrc: '/empeno-articulo-celulares.jpg',
-  },
-  {
-    id: 4,
-    label: 'Relojes',
-    imageSrc: '/empeno-articulo-relojes.jpg',
-  },
-  {
-    id: 5,
-    label: 'Instrumentos musicales',
-    imageSrc: '/empeno-articulo-musicales.jpg',
-  },
-  {
-    id: 6,
-    label: 'Herramientas',
-    imageSrc: '/empeno-articulo-herramientas.jpg',
-  },
-];
 
 export default PawnRequest;

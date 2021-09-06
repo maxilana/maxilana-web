@@ -20,7 +20,8 @@
       "~/api/*": ["api/*"],
       "~/hooks/*": ["hooks/*"],
       "~/types/*": ["types/*"],
-      "~/utils/*": ["utils/*"]
+      "~/utils/*": ["utils/*"],
+      "~/public/*": ["public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "modules/lib/*"],

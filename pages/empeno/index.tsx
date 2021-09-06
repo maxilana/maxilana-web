@@ -1,3 +1,4 @@
+import React from 'react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { PictureOutlined } from '@ant-design/icons';
@@ -7,9 +8,11 @@ import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards } from '~/components/common';
 import { PropsWithCities } from '~/types/PropsWithCities';
 import { Button, Card } from '~/components/ui';
-import React from 'react';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
+import PagoOnline from '~/public/ilustracion-pago-online-inicio.png';
+import Auto from '~/public/tarjeta-empeno-auto.png';
 
 const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
@@ -21,41 +24,35 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       }}
       cities={cities}
     >
-      <div className="container mx-auto sm:my-12 sm:px-4">
-        <div className="grid gap-6 items-center lg:grid-cols-2">
+      <div className="bg-surface-dark sm:p-4 xl:py-8 border-b">
+        <div className="container mx-auto grid gap-6 items-center lg:gap-4 lg:grid-cols-12">
           <PawnRequest />
-          <div className="hidden max-w-lg lg:block">
-            <Card>
-              <React.Fragment>
-                <div className="mb-6">
-                  <Image
-                    width={361}
-                    height={222}
-                    layout="responsive"
-                    src="/ilustracion-pago-online-inicio.png"
-                    alt="Logotipo Maxilana Vales"
-                    objectFit="contain"
-                  />
-                </div>
-                <div className="space-y-3 sm:text-left lg:space-y-4">
-                  <h2 className="text-2xl">Paga en línea o cualquier sucursal</h2>
-                  <p className="text-secondary">Paga tu empeño y no pierdas tu artículo</p>
-                  <div className="space-x-3">
-                    <Button theme="secondary" text="Pagar refrendo" href="/pagos/empeno" />
-                    <Button text="Ver sucursales" href="/sucursales" />
-                  </div>
-                </div>
-              </React.Fragment>
-            </Card>
-          </div>
+          <Card className="hidden h-full lg:col-span-5 lg:flex lg:flex-col lg:items-center">
+            <div className="flex-1 relative w-[220px]">
+              <Image
+                layout="fill"
+                src={PagoOnline}
+                alt="Logotipo Maxilana Vales"
+                objectFit="contain"
+              />
+            </div>
+            <div className="space-y-3 sm:text-left lg:space-y-4 pb-4">
+              <h2 className="text-2xl">Paga en línea o cualquier sucursal</h2>
+              <p className="text-secondary">Paga tu empeño y no pierdas tu artículo</p>
+              <div className="space-x-3">
+                <Button theme="secondary" text="Pagar refrendo" href="/pagos/empeno" />
+                <Button text="Ver sucursales" href="/sucursales" />
+              </div>
+            </div>
+          </Card>
         </div>
       </div>
       <Container>
-        <div className="my-12 max-w-5xl mx-auto sm:my-24">
+        <div className="my-12 max-w-5xl mx-auto sm:my-12">
           <ServicePaymentCards
             actionCard={{
               title: 'Te prestamos más por tu auto',
-              imageSource: '/tarjeta-empeno-auto.png',
+              imageSource: Auto,
               description: 'Recibe más por tu auto, más dinero, mayor plazo.',
               buttonLabel: 'Solicitar un avalúo',
               buttonHref: '/empeno/auto',
