@@ -3,7 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import getAllCities from '~/api/getAllCities';
 import getProducts from '~/api/getProducts';
-import getCategories from '~/api/cms/getCategories';
+import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
@@ -13,6 +13,7 @@ import cards from '~/modules/mock/homelinks.json';
 import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
+import HeroImg from '../public/demo-hero.jpg';
 
 interface GSProps {
   products: Product[];
@@ -22,7 +23,7 @@ interface GSProps {
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
   const cities = await getAllCities();
-  const categories = await getCategories();
+  const categories = await getCMSCategories();
   const { rows: products } = await getProducts({ limit: '8', orden: 'rand' });
 
   return {
@@ -59,10 +60,11 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
         cover={
           <Image
             layout="fill"
-            src="/demo-hero.jpg"
+            src={HeroImg}
             alt="Hero Homepage Image"
             objectFit="cover"
             priority
+            placeholder="blur"
           />
         }
       />
@@ -90,10 +92,10 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
           ))}
         </div>
         <section className="my-12 lg:my-[72px]">
-          <h2 className="text-center text-2xl">Remates por categoría</h2>
+          <h2 className="text-center text-2xl">¡Todos nuestros productos en Remate!</h2>
           {!!categories && <CategoryExplorer categories={categories} />}
           <div className="text-center">
-            <Button theme="secondary" text="Ver todos los remates" href="/" />
+            <Button theme="secondary" text="Ver todos los remates" href="/remates" />
           </div>
         </section>
         <section>

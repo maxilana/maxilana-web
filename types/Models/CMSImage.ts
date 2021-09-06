@@ -1,11 +1,19 @@
-export interface CMSImage {
-  id: number;
+import { CMSModel } from '~/types/Models/CMSModel';
+
+export interface Formats {
+  large: Omit<CMSImage, 'formats'>;
+  small: Omit<CMSImage, 'formats'>;
+  medium: Omit<CMSImage, 'formats'>;
+  thumbnail: Omit<CMSImage, 'formats'>;
+}
+
+export interface CMSImage extends CMSModel {
   name: string;
   alternativeText: string;
   caption: string;
   width: number;
   height: number;
-  formats: string | null;
+  formats: Formats | null;
   hash: string;
   ext: string;
   mime: string;
@@ -13,6 +21,4 @@ export interface CMSImage {
   url: string;
   provider: string;
   provider_metadata: string;
-  created_at: string;
-  updated_at: string;
 }

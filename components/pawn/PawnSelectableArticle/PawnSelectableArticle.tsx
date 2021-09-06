@@ -6,7 +6,7 @@ import styles from './SelectableArticle.module.css';
 
 interface Props {
   label: string;
-  imageSrc?: string;
+  imageSrc?: StaticImageData;
   checked?: boolean;
   onClick?: () => void;
 }
@@ -23,9 +23,9 @@ const PawnSelectableArticle: FC<Props> = ({
         {imageSrc !== null && (
           <Image
             layout="fill"
-            quality={100}
             src={imageSrc}
             objectFit="cover"
+            priority
             alt="Imagen de un artículo que se puede empeñar"
           />
         )}

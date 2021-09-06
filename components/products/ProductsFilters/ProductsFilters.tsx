@@ -11,6 +11,7 @@ import intersection from 'lodash/intersection';
 import ClickOutside from '~/modules/lib/click-outside';
 
 import { Branch, City } from '~/types/Models';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import { PriceRangeInput } from '~/components/products';
@@ -19,70 +20,28 @@ import ProductBadge from '../ProductBadge';
 import styles from './ProductsFilters.module.css';
 import { InputField } from '~/components/common';
 
-const categories = [
-  {
-    id: 1,
-    name: 'Joyería',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 2,
-    name: 'Relojes',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 3,
-    name: 'Computadoras',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 4,
-    name: 'Herramientas',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 5,
-    name: 'Instrumentos musicales',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 6,
-    name: 'Automobiles',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 7,
-    name: 'Celulares',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 8,
-    name: 'Electrodomésticos',
-    categoriesId: [1, 3, 4],
-  },
-  {
-    id: 9,
-    name: 'Videojuegos',
-    categoriesId: [1, 3, 4],
-  },
-];
-
 interface Props {
   cities?: City[];
   branches?: Branch[] | null;
   visible?: boolean;
   onClose?: () => void;
   onFiltersChange: (filters: ParsedUrlQuery) => void;
+  categories: CMSCategory[];
 }
 
-const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFiltersChange }) => {
+const ProductsFilters: FC<Props> = ({
+  categories,
+  cities,
+  branches,
+  visible,
+  onClose,
+  onFiltersChange,
+}) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [form] = Form.useForm();
   const [branchFilter, setBranchFilter] = useState('');
-  const { query, push } = useRouter();
-  const [category, setCategory] = useState<
-    { id: number; name: string; categoriesId: number[] } | undefined | null
-  >(null);
+  const { query } = useRouter();
+  const [category, setCategory] = useState<CMSCategory | null | undefined>(null);
 
   const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = query;
 
@@ -101,8 +60,7 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
 
   useEffect(() => {
     if (typeof categoria === 'string') {
-      const categoriesIds = categoria.split(',').map((item) => parseInt(item));
-      setCategory(categories.find((item) => intersection(item.categoriesId, categoriesIds).length));
+      setCategory(categories.find((item) => item.id === parseInt(categoria)));
     }
   }, [categoria]);
 
@@ -207,7 +165,7 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
                     <Link
                       href={`/busqueda?${parseQuery({
                         ...query,
-                        categoria: item.categoriesId.join(','),
+                        categoria: `${item?.id}`,
                       })}`}
                     >
                       <a
@@ -248,14 +206,18 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
                     <Checkbox value="0" disabled={vtalinea === '0'}>
                       <span>
                         Venta en sucursal
-                        <span className="block text-secondary">Culiacan y Navolato</span>
+                        <span className="block text-secondary line-clamp-1">
+                          Culiacan y Navolato
+                        </span>
                       </span>
                       <ProductBadge type="shop" />
                     </Checkbox>
                     <Checkbox value="1" disabled={vtalinea === '1'}>
                       <span>
                         Venta en línea
-                        <span className="block text-secondary">Envíos a todo méxico</span>
+                        <span className="block text-secondary line-clamp-1">
+                          Envíos a todo méxico
+                        </span>
                       </span>
                       <ProductBadge type="car" />
                     </Checkbox>
@@ -304,11 +266,11 @@ const ProductsFilters: FC<Props> = ({ cities, branches, visible, onClose, onFilt
                 <Form.Item name="order">
                   <Radio.Group>
                     <div className="flex flex-col">
-                      <Radio value="desc" className="block">
-                        Precio mas alto primero
+                      <Radio value="desc" className="line-clamp-1">
+                        <span title="Precio mas alto primero">Precio mas alto primero</span>
                       </Radio>
-                      <Radio value="asc" className="block">
-                        Precio mas bajo primero
+                      <Radio value="asc" className="line-clamp-1">
+                        <span title="Precio mas bajo primero">Precio mas bajo primero</span>
                       </Radio>
                     </div>
                   </Radio.Group>

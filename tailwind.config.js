@@ -1,3 +1,4 @@
+const plugin = require('tailwindcss/plugin');
 const pluginLineClamp = require('@tailwindcss/line-clamp');
 const pluginTypography = require('@tailwindcss/typography');
 const pluginAspectRatio = require('@tailwindcss/aspect-ratio');
@@ -106,5 +107,20 @@ module.exports = {
     pluginLineClamp,
     pluginTypography,
     pluginAspectRatio,
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.scrollbar-hide': {
+          /* IE and Edge */
+          '-ms-overflow-style': 'none',
+          /* Firefox */
+          'scrollbar-width': 'none',
+
+          /* Safari and Chrome */
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    }),
   ],
 };

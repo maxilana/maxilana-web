@@ -1,16 +1,10 @@
+import { CMSFilters } from '~/types/Models/CMSFilters';
 import { CMSImage } from '~/types/Models/CMSImage';
+import { CMSModel } from '~/types/Models/CMSModel';
 
-export interface CMSCategory {
-  id: number;
+export interface CMSCategory extends CMSModel {
   name: string;
   products_page_mkt: number | null;
-  create_at: string;
-  updated_at: string;
-  filters: {
-    id: number;
-    search: string | null;
-    categories: number[];
-    products: number[];
-  };
+  filters: CMSFilters;
   image: CMSImage;
 }
