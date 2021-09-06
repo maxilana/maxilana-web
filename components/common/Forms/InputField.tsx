@@ -7,11 +7,11 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   label?: string;
   inline?: boolean;
-  errors?: { [key: string]: any };
+  errors?: string[];
 }
 
 const InputField = React.forwardRef((props: Props, ref: Ref<HTMLInputElement>) => {
-  const { name, label, required, inline, errors = null, ...rest } = props;
+  const { name, label, required, inline, errors = [], ...rest } = props;
   const { id, type } = rest;
   let isInline = false;
 
@@ -26,7 +26,8 @@ const InputField = React.forwardRef((props: Props, ref: Ref<HTMLInputElement>) =
         {required && <span> *</span>}
       </label>
       <input {...rest} ref={ref} name={name} id={id ?? name} className={styles.input} />
-      {errors && <span className={styles.errorMessage}>{errors.message}</span>}
+      {/* {errors && <span className={styles.errorMessage}>{errors.message}</span>} */}
+      {errors.length > 0 && <span className={styles.errorMessage}>{errors[0]}</span>}
     </div>
   );
 });
