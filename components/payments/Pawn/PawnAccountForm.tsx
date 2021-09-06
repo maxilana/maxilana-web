@@ -70,8 +70,8 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="col-span-2">
-                    <Form.Item name="boleta" rules={[{ required: true, len: 5 }]}>
-                      <InputField maxLength={5} label="Número de boleta" />
+                    <Form.Item name="boleta" rules={[{ required: true }]}>
+                      <InputField maxLength={6} label="Número de boleta" />
                     </Form.Item>
                   </div>
                   <div>

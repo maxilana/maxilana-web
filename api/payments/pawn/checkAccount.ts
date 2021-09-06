@@ -22,6 +22,8 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     BoletaActual,
     Cliente,
     Prestamo,
+    TipoEmpeno,
+    InteresNormal,
   } = response;
 
   return {
@@ -32,6 +34,8 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     status: EstadoBoleta,
     requestDate: FechaConsulta,
     dueDate: FechaVencimiento,
+    description: TipoEmpeno,
+    interest: Number(InteresNormal),
   };
 };
 
