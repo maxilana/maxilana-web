@@ -1,14 +1,16 @@
-import { FC, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form } from 'antd';
+import { AxiosError } from 'axios';
+import React, { FC, useState } from 'react';
 
 import { Button } from '~/components/ui';
-import { InputMask } from '~/components/common';
+import { FormFeedback, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
+import defaultValidateMessages from 'config/validationMessages';
 
 type FormValues = {
-  numeroPrestamo: string;
-  importePrestamo: number;
+  codigoprestamo: string;
+  prestamo: number;
 };
 
 interface Props {
@@ -16,80 +18,89 @@ interface Props {
 }
 
 const LoanAccountForm: FC<Props> = ({ onSubmit }) => {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
-
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+  const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-    await onSubmit(data);
+
+    try {
+      await onSubmit(data);
+    } catch (err) {
+      setError((err as AxiosError).message);
+    }
+
     setLoading(false);
   };
 
   return (
-    <div>
+    <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
       <div className="px-4">
         <h1 className="text-2xl mb-4">Préstamos personales</h1>
         <p>Abona a tu préstamo personal en línea</p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className="mb-6">
-            <h2 className="text-lg mb-4">Consulta el estado de cuenta de tu préstamo personal</h2>
-            <p>Ingresa los datos de tu préstamo</p>
-          </div>
-          <div className="grid gap-4">
-            <div>
-              <InputMask
-                label="Número de préstamo"
-                errors={errors?.numeroPrestamo}
-                placeholder="#-######"
-                {...register('numeroPrestamo', {
-                  required: true,
-                })}
-                options={{
-                  blocks: [1, 6],
-                  delimiter: '-',
-                }}
-              />
-            </div>
-            <div>
-              <InputMask
-                label="Importe del préstamo"
-                errors={errors?.importePrestamo}
-                {...register('importePrestamo', {
-                  required: true,
-                  valueAsNumber: true,
-                })}
-                options={{
-                  prefix: '$',
-                  numeral: true,
-                  numeralPositiveOnly: true,
-                  rawValueTrimPrefix: true,
-                }}
-                onChange={({ target }) => {
-                  // @ts-ignore
-                  setValue('importePrestamo', target.rawValue); // rawValue viene de Cleave.js
-                }}
-              />
-            </div>
-            <div>
-              <Button
-                fullWidth
-                theme="primary"
-                loading={loading}
-                text={loading ? 'Buscando...' : 'Buscar'}
-              />
-            </div>
-          </div>
-        </form>
+        <div className={styles.root}>
+          <FormFeedback
+            visible={error !== null}
+            errorMessage={error as string}
+            onDismiss={() => {
+              form.resetFields();
+              setError(null);
+            }}
+          >
+            <React.Fragment>
+              <div className="mb-6">
+                <h2 className="text-lg mb-4">
+                  Consulta el estado de cuenta de tu préstamo personal
+                </h2>
+                <p>Ingresa los datos de tu préstamo</p>
+              </div>
+              <div className="grid gap-4">
+                <div>
+                  <Form.Item name="codigoprestamo" rules={[{ required: true }]}>
+                    <InputMask
+                      label="Número de préstamo"
+                      placeholder="#-######"
+                      options={{
+                        blocks: [1, 6],
+                        delimiter: '-',
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div>
+                  <Form.Item
+                    name="prestamo"
+                    rules={[{ required: true }]}
+                    getValueFromEvent={({ target }) => target.rawValue} // rawValue viene de Cleave.js
+                  >
+                    <InputMask
+                      label="Importe del préstamo"
+                      options={{
+                        prefix: '$',
+                        numeral: true,
+                        numeralPositiveOnly: true,
+                        rawValueTrimPrefix: true,
+                      }}
+                    />
+                  </Form.Item>
+                </div>
+                <div>
+                  <Button
+                    fullWidth
+                    theme="primary"
+                    loading={loading}
+                    text={loading ? 'Buscando...' : 'Buscar'}
+                  />
+                </div>
+              </div>
+            </React.Fragment>
+          </FormFeedback>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
 
