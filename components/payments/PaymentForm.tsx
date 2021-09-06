@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import Link from 'next/link';
-import { Form } from 'antd';
 import dayjs from 'dayjs';
+import Link from 'next/link';
+import { Form, Radio } from 'antd';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '../ui';
@@ -77,6 +77,18 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
               <div className="col-span-2">
                 <Form.Item name="importe">
                   <InputField disabled label="Importe a pagar" />
+                </Form.Item>
+              </div>
+              <div className="col-span-2">
+                <Form.Item name="tipoTarjeta" label="Tipo de tarjeta">
+                  <Radio.Group className="flex flex-row">
+                    <Radio value="visa">
+                      <span>VISA</span>
+                    </Radio>
+                    <Radio value="mastercard">
+                      <span>MASTERCARD</span>
+                    </Radio>
+                  </Radio.Group>
                 </Form.Item>
               </div>
               <div className="col-span-2">
