@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import cn from 'classnames';
-import { DateTime } from 'luxon';
 import { FC, useState } from 'react';
 import { Calendar as AntdCalendar } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -21,8 +21,8 @@ const Calendar: FC<Props> = ({ onSelect }) => {
     setSelectedDay(day);
   };
 
-  const dt = DateTime.fromJSDate(selectedDay);
-  const formatted = dt.toLocaleString(DateTime.DATE_MED);
+  const dt = dayjs(selectedDay);
+  const formatted = dt.locale('es').format('LL');
 
   return (
     <div className={styles.root}>

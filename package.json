@@ -40,7 +40,6 @@
     "lodash.intersection": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "lodash.omit": "^4.5.0",
-    "luxon": "^2.0.2",
     "next": "11.0.1",
     "next-build-id": "^3.0.0",
     "next-plugin-preact": "^3.0.6",
