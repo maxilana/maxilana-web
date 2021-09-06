@@ -206,14 +206,18 @@ const ProductsFilters: FC<Props> = ({
                     <Checkbox value="0" disabled={vtalinea === '0'}>
                       <span>
                         Venta en sucursal
-                        <span className="block text-secondary">Culiacan y Navolato</span>
+                        <span className="block text-secondary line-clamp-1">
+                          Culiacan y Navolato
+                        </span>
                       </span>
                       <ProductBadge type="shop" />
                     </Checkbox>
                     <Checkbox value="1" disabled={vtalinea === '1'}>
                       <span>
                         Venta en línea
-                        <span className="block text-secondary">Envíos a todo méxico</span>
+                        <span className="block text-secondary line-clamp-1">
+                          Envíos a todo méxico
+                        </span>
                       </span>
                       <ProductBadge type="car" />
                     </Checkbox>
@@ -262,11 +266,11 @@ const ProductsFilters: FC<Props> = ({
                 <Form.Item name="order">
                   <Radio.Group>
                     <div className="flex flex-col">
-                      <Radio value="desc" className="block">
-                        Precio mas alto primero
+                      <Radio value="desc" className="line-clamp-1">
+                        <span title="Precio mas alto primero">Precio mas alto primero</span>
                       </Radio>
-                      <Radio value="asc" className="block">
-                        Precio mas bajo primero
+                      <Radio value="asc" className="line-clamp-1">
+                        <span title="Precio mas bajo primero">Precio mas bajo primero</span>
                       </Radio>
                     </div>
                   </Radio.Group>

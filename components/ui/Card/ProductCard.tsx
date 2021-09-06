@@ -14,9 +14,10 @@ import ProductBadge from '~/components/products/ProductBadge';
 
 interface Props {
   data: Product;
+  className?: string;
 }
 
-const ProductCard: FC<Props> = ({ data }) => {
+const ProductCard: FC<Props> = ({ data, className }) => {
   const { image, name, price, Branch, saleOnline, netPrice, id } = data;
   const href = `/producto/${id}-${slugify(name)}`;
 
@@ -26,7 +27,9 @@ const ProductCard: FC<Props> = ({ data }) => {
   );
 
   return (
-    <div className={cn(styles.root, styles.rootProduct, { [styles.productLink]: !!href })}>
+    <div
+      className={cn(styles.root, styles.rootProduct, { [styles.productLink]: !!href }, className)}
+    >
       {!!href && (
         <Link href={href}>
           <a className={styles.blockLink} />

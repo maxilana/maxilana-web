@@ -1,7 +1,7 @@
 .root {
   @apply transition fixed inset-0 bottom-0 top-[104px] shadow-lg flex z-20;
   @apply bg-white pb-1 transform translate-y-full;
-  @apply lg:opacity-100 lg:rounded lg:translate-y-0 lg:static lg:w-[250px];
+  @apply lg:opacity-100 lg:rounded lg:translate-y-0 lg:static;
 }
 
 .visible {

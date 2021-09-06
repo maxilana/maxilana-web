@@ -26,7 +26,7 @@ const getProducts = async (query?: ParsedUrlQuery): Promise<Paginated<Product>> 
   return {
     ...response,
     page: parseInt((query?.page as string) || '1'),
-    rows: response.rows.map(normalizeProduct),
+    rows: (response.rows || []).map(normalizeProduct),
   };
 };
 

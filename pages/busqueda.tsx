@@ -125,7 +125,7 @@ const Busqueda: NextPage<Props> = ({
 
   return (
     <Layout title="Buscador de productos" cities={cities || []}>
-      <main className="container mx-auto p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:flex lg:gap-8 lg:flex-row">
+      <main className="container mx-auto grid p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:grid-cols-4 lg:gap-8 lg:flex-row">
         <aside>
           <ProductsFilters
             categories={categories || []}
@@ -136,7 +136,7 @@ const Busqueda: NextPage<Props> = ({
             onFiltersChange={search}
           />
         </aside>
-        <div className={cn('flex-1', { 'opacity-50': loading })}>
+        <div className={cn('lg:col-span-3', { 'opacity-50': loading })}>
           <h2 className="h4">{query?.q || 'Resultado de la búsqueda'}</h2>
           <p className="text-secondary">{pagination?.count} productos</p>
           <AppliedFilters city={city} branch={branch} onFiltersChange={search} />
