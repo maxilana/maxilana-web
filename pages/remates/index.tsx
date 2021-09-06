@@ -74,7 +74,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
       meta={{ description: metaDescription, keywords: metaKeywords }}
       cities={cities || []}
     >
-      <div className="container mx-auto lg:p-4 grid gap-8 lg:gap-8 lg:grid-cols-4">
+      <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
             cities={cities}
@@ -82,21 +82,22 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
             onFiltersChange={handleFiltersChanges}
           />
         </aside>
-        <main className="flex-1 lg:col-span-3">
+        <main className="lg:col-span-3">
           <div className="px-4 lg:px-0">
             <Banners items={page?.banners} />
             {!!categories && <CategoryExplorer categories={categories} />}
           </div>
           {!!categoriesProducts?.length &&
-            categoriesProducts.map((item) => {
-              if (!item?.products?.length) return null;
-              return (
-                <div key={item?.id} className="max-w-full">
-                  <h3 className="h5 m-4">{item?.name}</h3>
-                  <ProductsCarrousel products={item?.products} />
-                </div>
-              );
-            })}
+            categoriesProducts
+              .filter((item) => item?.products?.length)
+              .map((item) => {
+                return (
+                  <div key={item?.id} className="max-w-full">
+                    <h3 className="h5 m-4">{item?.name}</h3>
+                    <ProductsCarrousel products={item?.products || []} />
+                  </div>
+                );
+              })}
         </main>
       </div>
     </Layout>
