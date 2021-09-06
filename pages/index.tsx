@@ -92,10 +92,10 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
           ))}
         </div>
         <section className="my-12 lg:my-[72px]">
-          <h2 className="text-center text-2xl">Remates por categoría</h2>
+          <h2 className="text-center text-2xl">¡Todos nuestros productos en Remate!</h2>
           {!!categories && <CategoryExplorer categories={categories} />}
           <div className="text-center">
-            <Button theme="secondary" text="Ver todos los remates" href="/" />
+            <Button theme="secondary" text="Ver todos los remates" href="/remates" />
           </div>
         </section>
         <section>
