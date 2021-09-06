@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { CouponAccountForm, CouponCheckPaymentForm } from '~/components/payments';
+import { checkCouponAccount } from '~/api/payments/coupons';
+import { CouponAccount } from '~/types/Models';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
@@ -27,8 +29,17 @@ const questionList = [
 
 type Status = 'account_status' | 'confirm_payment' | 'payment';
 
+type Payment = {
+  concept: string;
+  amount: number;
+};
+
+const PAYMENT_CONCEPT = 'ABONO A LÍNEA DE CRÉDITO DIST.';
+
 const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [status, setStatus] = useState<Status>('account_status');
+  const [payment, setPayment] = useState<Payment | null>(null);
+  const [account, setAccount] = useState<CouponAccount | null>(null);
 
   return (
     <Layout title="Paga online online directamente a tu distribuidora" cities={cities}>
@@ -37,34 +48,41 @@ const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div>
             {status === 'account_status' && (
               <CouponAccountForm
-                onSubmit={(data) => {
-                  return new Promise((resolve) => {
-                    setTimeout(() => {
-                      resolve();
-                      setStatus('confirm_payment');
-                    }, 2000);
+                onSubmit={async (data) => {
+                  const account = await checkCouponAccount(data);
+
+                  setAccount({
+                    ...account,
+                    partnerNumber: Number(data.numdistribuidor),
                   });
+                  setStatus('confirm_payment');
                 }}
               />
             )}
-            {status === 'confirm_payment' && (
+            {status === 'confirm_payment' && account && (
               <CouponCheckPaymentForm
+                account={account}
                 onSubmit={(data) => {
-                  return new Promise((resolve) => {
-                    setTimeout(() => {
-                      resolve();
-                      setStatus('payment');
-                    }, 2000);
+                  const { paymentAmount } = data;
+                  setPayment({
+                    amount: paymentAmount,
+                    concept: `${PAYMENT_CONCEPT} #${account.partnerNumber}`,
                   });
+
+                  setStatus('payment');
+                  return Promise.resolve();
                 }}
               />
             )}
-            {status === 'payment' && (
+            {status === 'payment' && payment && (
               <PaymentForm
+                data={payment}
                 title="Maxilana Vales"
                 description="Paga directamente a tu distribuidora"
                 onSubmit={(data) => {
                   console.log(data);
+
+                  return Promise.resolve();
                 }}
               />
             )}

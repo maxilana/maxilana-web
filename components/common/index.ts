@@ -6,4 +6,5 @@ export { default as CategoryExplorer } from './CategoryExplorer';
 export { default as ServicePaymentCards } from './ServicePaymentCards';
 export { default as Meta } from './Meta';
 export { default as HeroComposed } from './HeroComposed';
+export { default as FormFeedback } from './FormFeedback';
 export { default as Banners } from './Banners';

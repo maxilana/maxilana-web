@@ -1,8 +1,10 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
+import { checkAccount } from '~/api/payments';
 
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { PawnAccountForm, PawnCalculateForm } from '~/components/payments';
+import { PawnAccount } from '~/types/Models';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
@@ -25,10 +27,32 @@ const questionList = [
   },
 ];
 
+type Payment = { concept: string; amount: number } | null;
+
 type FormStatus = 'account_status' | 'calculate_date' | 'payment';
+
+const PAYMENT_CONCEPT = [
+  'PAGO DE INTERÉS NUEVO CONTRATO (REFRENDO, AMPLIACIÓN DE TÉRMINO DEL CONTRATO)',
+  'ABONO A INTERÉS',
+];
 
 const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [status, setStatus] = useState<FormStatus>('account_status');
+  const [account, setAccount] = useState<PawnAccount | null>(null);
+  const [payment, setPayment] = useState<Payment>(null);
+
+  const handlePaymentSelection = (data: any) => {
+    let concept = PAYMENT_CONCEPT[1]; // ABONOS
+
+    if (data.paymentType === 'REFRENDO') {
+      concept = PAYMENT_CONCEPT[0];
+    }
+
+    setPayment({ concept, amount: data.paymentAmount });
+    setStatus('payment');
+
+    return Promise.resolve();
+  };
 
   return (
     <Layout title="Paga online tu boleta de empeño" cities={cities}>
@@ -37,30 +61,25 @@ const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div>
             {status === 'account_status' && (
               <PawnAccountForm
-                onSubmit={(data) => {
-                  return new Promise((resolve) => {
-                    setTimeout(() => {
-                      setStatus('calculate_date');
-                      resolve();
-                    }, 2000);
-                  });
+                onSubmit={async (data) => {
+                  const account = await checkAccount(data);
+                  setAccount(account);
+                  setStatus('calculate_date');
                 }}
               />
             )}
-            {status === 'calculate_date' && (
-              <PawnCalculateForm
-                onSubmit={() => {
-                  setStatus('payment');
-                }}
-              />
+            {status === 'calculate_date' && account && (
+              <PawnCalculateForm data={account} onSubmit={handlePaymentSelection} />
             )}
-            {status === 'payment' && (
+            {status === 'payment' && payment && (
               <PaymentForm
+                data={payment}
                 title="Boleta de empeño"
                 description="Realiza el pago del refrendo para no perder tu artículo.
                  El pago del desempeño de tu artículo tiene que ser en sucursal ya que pierde el seguro que lo protege."
                 onSubmit={(data) => {
                   console.log(data);
+                  return Promise.resolve();
                 }}
               />
             )}

@@ -1,11 +1,13 @@
 import { FC } from 'react';
+import dayjs from 'dayjs';
 import Link from 'next/link';
-import { DateTime } from 'luxon';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form, Radio } from 'antd';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '../ui';
 import { InputField, InputMask } from '../common';
 import styles from './FormContainer.module.css';
+import defaultValidateMessages from 'config/validationMessages';
 
 type FormValues = {
   concepto: string;
@@ -17,127 +19,144 @@ type FormValues = {
   correoElectronico: string;
 };
 
+type Data = {
+  concept: string;
+  amount: number;
+};
+
 interface Props {
+  data: Data;
   title: string;
   description: string;
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: FormValues) => Promise<void>;
 }
 
-const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+dayjs.extend(customParseFormat);
 
-  const handleFormSubmit: SubmitHandler<FormValues> = (data) => {
-    onSubmit(data);
+const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
+  const [form] = Form.useForm();
+
+  const handleFormSubmit = (values: FormValues) => {
+    const newValues = {
+      ...values,
+      importe: data.amount,
+      concepto: data.concept,
+    };
+
+    try {
+      onSubmit(newValues);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <div>
+    <Form
+      form={form}
+      onFinish={handleFormSubmit}
+      validateMessages={defaultValidateMessages}
+      initialValues={{
+        concepto: data.concept,
+        importe: data.amount,
+      }}
+    >
       <div className="px-4">
         <h1 className="text-2xl mb-4">{title}</h1>
         <p>{description}</p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
+        <div className={styles.root}>
           <div>
             <h5 className="text-lg mb-6">Información de pago</h5>
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="col-span-2">
-                <InputField
-                  disabled
-                  label="Concepto"
-                  {...register('concepto', {
-                    value: 'PAGO DE INTERÉS CONTRATO (REFRENDO)',
-                  })}
-                />
+                <Form.Item name="concepto">
+                  <InputField disabled label="Concepto" />
+                </Form.Item>
               </div>
               <div className="col-span-2">
-                <InputField
-                  disabled
-                  label="Importe a pagar"
-                  value={401.5}
-                  {...register('importe', {
-                    value: 401.5,
-                  })}
-                />
+                <Form.Item name="importe">
+                  <InputField disabled label="Importe a pagar" />
+                </Form.Item>
               </div>
               <div className="col-span-2">
-                <InputField
-                  label="Titular de la tarjeta"
-                  errors={errors?.titular}
-                  placeholder="Nombre del titular de la tarjeta"
-                  {...register('titular', {
-                    required: 'Campo requerido',
-                  })}
-                />
+                <Form.Item name="tipoTarjeta" label="Tipo de tarjeta">
+                  <Radio.Group className="flex flex-row">
+                    <Radio value="visa">
+                      <span>VISA</span>
+                    </Radio>
+                    <Radio value="mastercard">
+                      <span>MASTERCARD</span>
+                    </Radio>
+                  </Radio.Group>
+                </Form.Item>
               </div>
               <div className="col-span-2">
-                <InputMask
-                  label="Número de la tarjeta"
-                  errors={errors?.numeroTarjeta}
-                  placeholder="#### #### #### ####"
-                  {...register('numeroTarjeta', {
-                    required: 'Campo requerido',
-                  })}
-                  options={{
-                    creditCard: true,
-                  }}
-                />
+                <Form.Item name="titular" rules={[{ required: true }]}>
+                  <InputField
+                    label="Titular de la tarjeta"
+                    placeholder="Nombre del titular de la tarjeta"
+                  />
+                </Form.Item>
+              </div>
+              <div className="col-span-2">
+                <Form.Item name="numeroTarjeta" rules={[{ required: true }]}>
+                  <InputMask
+                    label="Número de la tarjeta"
+                    placeholder="#### #### #### ####"
+                    options={{
+                      creditCard: true,
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div>
-                <InputMask
-                  label="Fecha de vencimiento"
-                  placeholder="MM/AA"
-                  maxLength={5}
-                  errors={errors?.fechaVencimiento}
-                  options={{
-                    date: true,
-                    datePattern: ['m', 'Y'],
-                  }}
-                  {...register('fechaVencimiento', {
-                    required: 'Campo requerido',
-                    validate: {
-                      future: (value) => {
-                        const dt = DateTime.fromFormat(value, 'MM/yy');
-                        const isFuture = dt.diffNow().isValid;
+                <Form.Item
+                  name="fechaVencimiento"
+                  rules={[
+                    {
+                      required: true,
+                      validator: (_, value) => {
+                        const dt = dayjs(value, 'MM/YY');
+                        const isFuture = dt.isAfter(dayjs());
 
-                        if (dt.isValid && isFuture) {
-                          return true;
+                        if (dt.isValid() && isFuture) {
+                          return Promise.resolve();
                         }
 
-                        return 'Fecha inválida';
+                        return Promise.reject(new Error('Fecha inválida'));
                       },
                     },
-                  })}
-                />
+                  ]}
+                >
+                  <InputMask
+                    label="Fecha de vencimiento"
+                    placeholder="MM/AA"
+                    maxLength={5}
+                    options={{
+                      date: true,
+                      datePattern: ['m', 'Y'],
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div>
-                <InputMask
-                  type="password"
-                  label="Cod. de seguridad"
-                  placeholder="###"
-                  maxLength={3}
-                  errors={errors?.codigoSeguridad}
-                  {...register('codigoSeguridad', {
-                    required: 'Campo requerido',
-                  })}
-                  options={{
-                    numericOnly: true,
-                  }}
-                />
+                <Form.Item name="codigoSeguridad" rules={[{ required: true }]}>
+                  <InputMask
+                    type="password"
+                    label="Cod. de seguridad"
+                    placeholder="###"
+                    maxLength={3}
+                    options={{
+                      numericOnly: true,
+                    }}
+                  />
+                </Form.Item>
               </div>
               <div className="col-span-2">
-                <InputField
-                  type="email"
-                  label="Correo Electrónico"
-                  errors={errors?.correoElectronico}
-                  {...register('correoElectronico', {
-                    required: 'Campo requerido',
-                  })}
-                />
+                <Form.Item name="correoElectronico" rules={[{ required: true }]}>
+                  <InputField type="email" label="Correo Electrónico" />
+                </Form.Item>
               </div>
               <div className="col-span-2">
                 <Button fullWidth text="Realizar Pago" theme="primary" loading={false} />
@@ -152,9 +171,9 @@ const PaymentForm: FC<Props> = ({ title, description, onSubmit }) => {
               </small>
             </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
 

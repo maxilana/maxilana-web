@@ -1,8 +1,10 @@
 import { NextPage } from 'next';
 import { useState } from 'react';
+import { checkLoanAccount } from '~/api/payments';
 
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { LoanAccountForm, LoanSelectionPaymentForm } from '~/components/payments';
+import { LoanAccount } from '~/types/Models';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
@@ -25,10 +27,14 @@ const questionList = [
   },
 ];
 
+type Payment = { concept: string; amount: number } | null;
+
 type Status = 'account_status' | 'select_payment' | 'payment';
 
 const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
+  const [payment, setPayment] = useState<Payment>(null);
   const [status, setStatus] = useState<Status>('account_status');
+  const [account, setAccount] = useState<LoanAccount | null>(null);
 
   return (
     <Layout title="Abona a tu préstamo personal en línea" cities={cities}>
@@ -37,36 +43,35 @@ const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div>
             {status === 'account_status' && (
               <LoanAccountForm
-                onSubmit={(data) => {
-                  return new Promise((resolve) => {
-                    setTimeout(() => {
-                      console.log(data);
-                      resolve();
-                      setStatus('select_payment');
-                    }, 2000);
-                  });
+                onSubmit={async (data) => {
+                  const account = await checkLoanAccount(data);
+                  setAccount(account);
+                  setStatus('select_payment');
                 }}
               />
             )}
-            {status === 'select_payment' && (
+            {status === 'select_payment' && account && (
               <LoanSelectionPaymentForm
+                account={account}
                 onSubmit={(data) => {
-                  return new Promise((resolve) => {
-                    setTimeout(() => {
-                      console.log(data);
-                      resolve();
-                      setStatus('payment');
-                    }, 2000);
+                  setPayment({
+                    concept: 'Pago de préstamo',
+                    amount: data.pago,
                   });
+
+                  setStatus('payment');
+                  return Promise.resolve();
                 }}
               />
             )}
-            {status === 'payment' && (
+            {status === 'payment' && payment && (
               <PaymentForm
+                data={payment}
                 title="Préstamos personales"
                 description="Abona a tu préstamo personal en línea"
                 onSubmit={(data) => {
                   console.log(data);
+                  return Promise.resolve();
                 }}
               />
             )}

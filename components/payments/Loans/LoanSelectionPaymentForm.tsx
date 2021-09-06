@@ -1,75 +1,143 @@
-import { FC } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { AxiosError } from 'axios';
+import { FC, useState } from 'react';
+import { Form, Radio } from 'antd';
 
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
+import { FormFeedback, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
-import { useState } from 'react';
+import { LoanAccount } from '~/types/Models';
+import { usePrice } from '~/modules/hooks';
 
 type FormValues = {
   pago: number;
+  otropago?: number;
 };
 
 interface Props {
+  account: LoanAccount;
   onSubmit: (data: FormValues) => Promise<void>;
 }
 
-const LoanSelectionPaymentForm: FC<Props> = ({ onSubmit }) => {
-  const { register, handleSubmit } = useForm<FormValues>();
-
+const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
+  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+  const { price: settleAmount } = usePrice({ amount: account.settlePayment });
+  const { price: minimumAmount } = usePrice({ amount: account.minPayment });
+
+  const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-    await onSubmit(data);
+    const { pago, otropago } = data;
+
+    try {
+      let amount = pago;
+
+      if (pago === -1 && !otropago) {
+        throw new Error('Escribe una cantidad correcta para otro pago');
+      } else if (pago === -1) {
+        amount = otropago as number;
+      }
+
+      await onSubmit({ pago: amount });
+    } catch (err) {
+      setError((err as AxiosError).message);
+    }
+
     setLoading(false);
   };
 
   return (
-    <div>
+    <Form
+      form={form}
+      onFinish={handleFormSubmit}
+      initialValues={{
+        pago: account.minPayment,
+      }}
+    >
       <div className="px-4">
         <h1 className="text-2xl mb-4">Préstamos personales</h1>
         <p>Abona a tu préstamo personal en línea</p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
-          <div>
-            <p className="text-sm text-secondary">Cliente:</p>
-            <p className="text-primary font-semibold">Maira Jaime Herrera</p>
-            <div className="grid gap-4">
-              <div>
-                <p className="text-sm text-secondary">
-                  Seleccione una opción de abono a su préstamo, en caso de seleccionar “Otro
-                  importe” habrá de capturar el importe en el recuadro.
-                </p>
+        <div className={styles.root}>
+          <FormFeedback
+            visible={error !== null}
+            errorMessage={error as string}
+            onDismiss={() => {
+              setError(null);
+            }}
+          >
+            <div>
+              <p className="text-sm text-secondary">Cliente:</p>
+              <p className="text-primary font-semibold">{account.clientName}</p>
+              <div className="grid gap-4">
+                <div>
+                  <p className="text-sm text-secondary">
+                    Seleccione una opción de abono a su préstamo, en caso de seleccionar “Otro
+                    importe” habrá de capturar el importe en el recuadro.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-primary font-semibold mb-4">
+                    ¿Qué desea hacer con su préstamo?
+                  </p>
+                  <Form.Item name="pago">
+                    <Radio.Group>
+                      <span className="block my-2">
+                        <Radio value={account.minPayment}>
+                          <strong>{minimumAmount}</strong> de abono, tiene hasta el{' '}
+                          {account.dueDate}
+                        </Radio>
+                      </span>
+                      <span className="block my-2">
+                        <Radio value={account.settlePayment}>
+                          <strong>{settleAmount}</strong> para liquidar a día de hoy
+                        </Radio>
+                      </span>
+                      <span className="block my-2">
+                        <Radio value={-1}>
+                          <div className="flex flex-row items-center space-x-3">
+                            <span>Otro importe</span>
+                            <Form.Item noStyle shouldUpdate>
+                              {({ getFieldValue }) =>
+                                getFieldValue('pago') === -1 ? (
+                                  <Form.Item
+                                    name="otropago"
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'Campo requerido',
+                                      },
+                                    ]}
+                                    getValueFromEvent={({ target }) => target.rawValue}
+                                  >
+                                    <InputMask
+                                      options={{
+                                        prefix: '$',
+                                        numeral: true,
+                                        numeralPositiveOnly: true,
+                                        rawValueTrimPrefix: true,
+                                      }}
+                                    />
+                                  </Form.Item>
+                                ) : null
+                              }
+                            </Form.Item>
+                          </div>
+                        </Radio>
+                      </span>
+                    </Radio.Group>
+                  </Form.Item>
+                </div>
+                <Button fullWidth theme="primary" text="Proceder al pago" loading={loading} />
               </div>
-              <div>
-                <p className="text-primary font-semibold mb-4">¿Qué desea hacer con su préstamo?</p>
-                <InputField
-                  checked
-                  type="radio"
-                  id="abonar"
-                  label="$242.43 de abono tiene hasta el 16/05/2021"
-                  {...register('pago', {
-                    value: 242.43,
-                  })}
-                />
-                <InputField
-                  type="radio"
-                  id="liquidar"
-                  label="$2042.43 para liquidar al 09/09/2021"
-                  {...register('pago', {
-                    value: 2042.43,
-                  })}
-                />
-              </div>
-              <Button fullWidth theme="primary" text="Proceder al pago" loading={loading} />
             </div>
-          </div>
-        </form>
+          </FormFeedback>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
 

@@ -5,7 +5,7 @@ import React, { InputHTMLAttributes, Ref } from 'react';
 import styles from './InputField.module.css';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
+  name?: string;
   label?: string;
   options: CleaveOptions;
   errors?: { [key: string]: any };
