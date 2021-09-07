@@ -2,7 +2,7 @@ import { ArrowRightOutlined } from '@ant-design/icons';
 import { Form } from 'antd';
 import Link from 'next/link';
 import { FormEventHandler } from 'react';
-import { Error404, Logo } from '~/components/svg';
+import { Error500, Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { InputField } from '~/components/common';
 
@@ -23,12 +23,14 @@ const custom404 = () => {
       </div>
       <div className="flex justify-center items-center flex-1">
         <div className="text-center space-y-8 max-w-2xl">
-          <Error404 />
+          <Error500 />
           <div>
-            <span className="h4 mt-8 mb-4 block">Oops!... La página que buscas no existe.</span>
-            <span className="block">
-              Lo sentimos puede que la página que buscas ya no exista o nunca fue creada.
-            </span>
+            <span className="h4 mt-8 mb-4 block">Oops... Un error inesperado a ocurrido.</span>
+            <p className="block">
+              Lo sentimos, estamos trabajando en solucionarlo. Por favor vuelve a intentarlo más
+              tarde. Si necesitas ayuda urgente por favor comunicarse al{' '}
+              <a href="tel:800 215 1515">800 215 1515</a>.
+            </p>
           </div>
           <Button text="Ir al inicio" rightIcon={<ArrowRightOutlined />} href="/" />
           <Form className="max-w-sm mx-auto" onFinish={handleSubmit}>

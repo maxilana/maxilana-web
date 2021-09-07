@@ -41,46 +41,39 @@ interface GSSProps {
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
   const { page, limit, ...filters } = query || {};
-
-  try {
-    const categories = await getCMSCategories();
-    if (query.categoria) {
-      const category = categories.find((item) => item.id === parseInt(query?.categoria as string));
-      if (category?.filters?.categories?.length) {
-        query.categoria = category?.filters?.categories.map((item) => item?.itemID).join(',');
-      }
+  const categories = await getCMSCategories();
+  if (query.categoria) {
+    const category = categories.find((item) => item.id === parseInt(query?.categoria as string));
+    if (category?.filters?.categories?.length) {
+      query.categoria = category?.filters?.categories.map((item) => item?.itemID).join(',');
     }
-    // console.log(query);
-    const paginatedProducts = await getProducts(query);
-    const { rows: products, ...pagination } = paginatedProducts;
-    const cities = await getAllCities();
-    const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
-
-    const city =
-      branch?.CityId || filters?.ciudad
-        ? cities.find((item) =>
-            [branch?.CityId, parseInt(filters?.ciudad as string)].includes(item.id),
-          )
-        : null;
-    const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
-
-    return {
-      props: {
-        pagination,
-        products,
-        query,
-        cities,
-        branch,
-        city,
-        branches,
-        categories,
-      },
-    };
-  } catch (e) {
-    console.log('ERROR: getServerSideProps');
-    // console.log(e);
-    return { notFound: 40, props: {} };
   }
+  // console.log(query);
+  const paginatedProducts = await getProducts(query);
+  const { rows: products, ...pagination } = paginatedProducts;
+  const cities = await getAllCities();
+  const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
+
+  const city =
+    branch?.CityId || filters?.ciudad
+      ? cities.find((item) =>
+          [branch?.CityId, parseInt(filters?.ciudad as string)].includes(item.id),
+        )
+      : null;
+  const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
+
+  return {
+    props: {
+      pagination,
+      products,
+      query,
+      cities,
+      branch,
+      city,
+      branches,
+      categories,
+    },
+  };
 };
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
