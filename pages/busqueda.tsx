@@ -35,7 +35,7 @@ interface GSSProps {
   branch?: Branch | null;
   city?: City | null;
   branches?: Branch[] | null;
-  categories?: CMSCategory[];
+  categories?: Array<Partial<CMSCategory>>;
 }
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
@@ -150,7 +150,7 @@ const Busqueda: NextPage<Props> = ({
           </div>
           {!!products?.length ? (
             <>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 mb-12">
+              <div className="productsGrid">
                 {products.map((product) => (
                   <ProductCard key={product.id} data={product} />
                 ))}

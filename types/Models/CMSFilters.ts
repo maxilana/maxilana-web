@@ -8,4 +8,6 @@ export interface CMSFilters {
   search: string | null;
   categories: ItemId[];
   products: ItemId[];
+  quantity?: number;
+  order: 'Aleatorio' | 'Descendente' | 'Ascendete';
 }

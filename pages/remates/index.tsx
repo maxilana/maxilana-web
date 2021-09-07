@@ -6,6 +6,7 @@ import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSRematesPage from '~/api/cms/getCMSRematesPage';
 import getAllCities from '~/api/getAllCities';
 import getProducts from '~/api/getProducts';
+import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Banners, CategoryExplorer } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { City } from '~/types/Models';
@@ -18,7 +19,7 @@ import parseQuery from '~/utils/parseQuery';
 interface GSProps {
   cities?: City[];
   page?: CMSRematesPage;
-  categories?: CMSCategory[];
+  categories?: Array<Partial<CMSCategory>>;
   categoriesProducts?: Array<Partial<CMSCategory & { products: Product[] }>>;
 }
 
@@ -31,18 +32,11 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       ? await Promise.all(
           page?.categories.map((item) => {
             const category = categories.find(({ id }) => id === item?.category?.id);
-            const query: ParsedUrlQuery = { limit: '10', orden: 'rand' };
-            if (category?.filters?.categories?.length) {
-              query.categoria = category?.filters?.categories
-                ?.map((item) => item?.itemID)
-                .join(',');
-            }
-            // TODO: soporte para obtener los productos seleccionados en la categoria (CMS)
-            if (category?.filters?.search) query.q = category?.filters?.search;
-
-            return getProducts(query).then((response) => {
-              return { ...category, products: response?.rows };
-            });
+            return category?.filters
+              ? getProductsFromCMSFilters(category?.filters).then((products) => {
+                  return { ...category, products };
+                })
+              : { ...category, products: [] as Product[] };
           }),
         )
       : [];

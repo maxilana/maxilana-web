@@ -5,7 +5,7 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import styles from './CategoryExplorer.module.css';
 
 interface Props {
-  categories: CMSCategory[];
+  categories: Array<Partial<CMSCategory>>;
 }
 
 const CategoryExplorer: FC<Props> = ({ categories }) => {
@@ -16,13 +16,15 @@ const CategoryExplorer: FC<Props> = ({ categories }) => {
           <div key={item.id} className={styles.gridElement}>
             <div className={styles.link}>
               <div className="w-[56px] h-[56px]">
-                <Img
-                  src={item?.image?.url}
-                  width={item?.image?.width}
-                  height={item?.image?.height}
-                  layout="fixed"
-                  alt={item?.image?.alternativeText || item?.name}
-                />
+                {!!item?.image?.url && (
+                  <Img
+                    src={item?.image?.url}
+                    width={item?.image?.width}
+                    height={item?.image?.height}
+                    layout="fixed"
+                    alt={item?.image?.alternativeText || item?.name}
+                  />
+                )}
               </div>
               <span className={styles.linkLabel}>{item.name}</span>
             </div>
