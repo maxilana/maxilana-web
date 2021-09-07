@@ -17,7 +17,7 @@ import HeroImg from '../public/demo-hero.jpg';
 
 interface GSProps {
   products: Product[];
-  categories: CMSCategory[];
+  categories: Array<Partial<CMSCategory>>;
   cities: City[];
 }
 

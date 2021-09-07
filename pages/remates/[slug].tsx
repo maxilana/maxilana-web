@@ -24,37 +24,27 @@ interface GSProps {
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getCMSMktPagesSlugs();
   return {
-    paths: slugs?.map?.((slug) => ({ params: { slug } })),
+    paths: slugs?.slice?.(0, 1)?.map?.((slug) => ({ params: { slug } })),
     fallback: true,
   };
 };
 
 export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (ctx) => {
-  try {
-    const { slug } = ctx?.params || {};
-    if (!slug) return { notFound: true };
+  const { slug } = ctx?.params || {};
+  if (!slug) return { notFound: true };
+  const cities = await getAllCities();
+  const categories = await getCMSCategories();
+  const page = await getMktPageBySlug(slug as string);
+  const products = page?.productsFilters
+    ? await getProductsFromCMSFilters(page?.productsFilters)
+    : [];
 
-    const cities = await getAllCities();
-    const categories = await getCMSCategories();
-    const page = await getMktPageBySlug(slug as string);
-    const products = page?.productsFilters
-      ? await getProductsFromCMSFilters(page?.productsFilters)
-      : [];
+  if (!page) return { notFound: true };
 
-    return {
-      props: { cities, categories, page, products },
-      revalidate: 10 * 60, // Each 10 minutes
-    };
-  } catch (e) {
-    console.log('ERROR getStaticProps');
-    console.log(e as Error);
-
-    return {
-      props: {},
-      notFound: true,
-      revalidate: 10 * 60, // Each 10 minutes
-    };
-  }
+  return {
+    props: { cities, categories, page, products },
+    revalidate: 10 * 60, // Each 10 minutes
+  };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
