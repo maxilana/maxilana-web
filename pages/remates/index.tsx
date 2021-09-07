@@ -77,9 +77,8 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
           />
         </aside>
         <main className="lg:col-span-3">
-          <div className="px-4 lg:px-0">
+          <div className="px-4 lg:px-0 mb-12">
             <Banners items={page?.banners} />
-            {!!categories && <CategoryExplorer categories={categories} />}
           </div>
           {!!categoriesProducts?.length &&
             categoriesProducts
