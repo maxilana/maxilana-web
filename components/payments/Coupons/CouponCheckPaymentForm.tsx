@@ -1,65 +1,70 @@
-import { FC } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { FC, useState } from 'react';
+import { Form, Radio } from 'antd';
 
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
+import { usePrice } from '~/modules/hooks';
 
 import styles from '../FormContainer.module.css';
-import { useState } from 'react';
+import { CouponAccount } from '~/types/Models';
 
 type FormValues = {
-  pago: number;
+  paymentAmount: number;
 };
 
 interface Props {
+  account: CouponAccount;
   onSubmit: (data: FormValues) => Promise<void>;
 }
 
-const CouponCheckPaymentForm: FC<Props> = ({ onSubmit }) => {
-  const { register, handleSubmit } = useForm<FormValues>();
+const CouponCheckPaymentForm: FC<Props> = ({ account, onSubmit }) => {
+  const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
+  const { price: paymentAmount } = usePrice({ amount: account.amount });
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+  const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
     await onSubmit(data);
     setLoading(false);
   };
 
   return (
-    <div>
+    <Form
+      form={form}
+      onFinish={handleFormSubmit}
+      initialValues={{
+        paymentAmount: account.amount,
+      }}
+    >
       <div className="px-4">
         <h1 className="text-2xl mb-4">Maxilana Vales</h1>
         <p>Paga directamente a tu distribuidora</p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
+        <div className={styles.root}>
           <div>
             <p className="text-sm text-secondary">Distribuidor:</p>
-            <p className="text-primary font-semibold">Lilia Concepción Valencia Rojo</p>
+            <p className="text-primary font-semibold">{account.clientName}</p>
             <div className="grid gap-4">
               <div>
                 <p className="text-sm text-secondary">
                   El importe que se muestra acontinuación es para la quincena{' '}
-                  <span className="text-primary font-semibold">15 Mayo 2020</span>
+                  <span className="text-primary font-semibold">{account.currentDate}</span>
                 </p>
               </div>
-              <div>
-                <InputField
-                  checked
-                  type="radio"
-                  label="Pago de $17,201.33"
-                  {...register('pago', {
-                    value: 17201.33,
-                  })}
-                />
-              </div>
-              <Button fullWidth theme="primary" text="Pagar quincena" onClick={() => {}} />
+              <Form.Item name="paymentAmount" rules={[{ required: true }]}>
+                <Radio value={account.amount}>
+                  <span>
+                    Pagar <strong>{paymentAmount}</strong>
+                  </span>
+                </Radio>
+              </Form.Item>
+              <Button fullWidth theme="primary" loading={loading} text="Pagar quincena" />
             </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
 

@@ -1,15 +1,16 @@
-import { FC } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form } from 'antd';
+import { AxiosError } from 'axios';
+import { FC, useState } from 'react';
 
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
+import { FormFeedback, InputField } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
-import { useState } from 'react';
+import defaultValidateMessages from 'config/validationMessages';
 
 type FormValues = {
-  numeroDistribuidor: string;
-  password: string;
+  numdistribuidor: string;
+  contrasena: string;
 };
 
 interface Props {
@@ -17,65 +18,64 @@ interface Props {
 }
 
 const CouponAccountForm: FC<Props> = ({ onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValues>();
+  const [form] = Form.useForm();
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (data) => {
+  const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-    await onSubmit(data);
+
+    try {
+      await onSubmit(data);
+    } catch (err) {
+      setError((err as AxiosError).message);
+    }
+
     setLoading(false);
   };
 
   return (
-    <div>
+    <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
       <div className="px-4">
         <h1 className="text-2xl mb-4">Maxilana Vales</h1>
         <p>Paga directamente a tu distribuidora</p>
       </div>
       <div className="py-6 sm:px-4">
-        <form className={styles.root} onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className="mb-6">
-            <h2 className="text-lg mb-4">Consulta el estado de cuenta a la quincena actual</h2>
-            <p>Ingresa los datos de tu distribuidor</p>
-          </div>
-          <div className="grid gap-4">
-            <div>
-              <InputField
-                type="number"
-                label="Número de distribuidor"
-                errors={errors?.numeroDistribuidor}
-                {...register('numeroDistribuidor', {
-                  required: 'Campo requerido',
-                })}
-              />
-            </div>
-            <div>
-              <InputField
-                type="password"
-                label="Contraseña"
-                errors={errors?.password}
-                {...register('password', {
-                  required: 'Campo requerido',
-                })}
-              />
-            </div>
-            <div>
-              <Button
-                fullWidth
-                theme="primary"
-                loading={loading}
-                text={loading ? 'Buscando...' : 'Buscar'}
-              />
-            </div>
-          </div>
-        </form>
+        <div className={styles.root}>
+          <FormFeedback
+            visible={error !== null}
+            errorMessage={error as string}
+            onDismiss={() => {
+              setError(null);
+            }}
+          >
+            <>
+              <div className="mb-6">
+                <h2 className="text-lg mb-4">Consulta el estado de cuenta a la quincena actual</h2>
+                <p>Ingresa los datos de tu distribuidor</p>
+              </div>
+              <div className="grid gap-4">
+                <Form.Item name="numdistribuidor">
+                  <InputField type="number" label="Número de distribuidor" />
+                </Form.Item>
+                <Form.Item name="contrasena">
+                  <InputField type="password" label="Contraseña" />
+                </Form.Item>
+                <div>
+                  <Button
+                    fullWidth
+                    theme="primary"
+                    loading={loading}
+                    text={loading ? 'Buscando' : 'Buscar'}
+                  />
+                </div>
+              </div>
+            </>
+          </FormFeedback>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
 

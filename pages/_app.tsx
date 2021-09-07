@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import NextNprogress from 'nextjs-progressbar';
 
+import 'dayjs/locale/es';
 import 'tailwindcss/tailwind.css';
 import '../styles/globals.css';
 

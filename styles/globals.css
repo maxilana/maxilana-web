@@ -7,6 +7,7 @@
 @import '~antd/lib/checkbox/style/index.css';
 @import '~antd/lib/slider/style/index.css';
 @import 'antd-motion.css';
+@import 'antd-form.css';
 
 @tailwind base;
 @tailwind components;
