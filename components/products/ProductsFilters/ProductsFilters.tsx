@@ -26,7 +26,7 @@ interface Props {
   visible?: boolean;
   onClose?: () => void;
   onFiltersChange: (filters: ParsedUrlQuery) => void;
-  categories: CMSCategory[];
+  categories: Array<Partial<CMSCategory>>;
 }
 
 const ProductsFilters: FC<Props> = ({
@@ -41,7 +41,7 @@ const ProductsFilters: FC<Props> = ({
   const [form] = Form.useForm();
   const [branchFilter, setBranchFilter] = useState('');
   const { query } = useRouter();
-  const [category, setCategory] = useState<CMSCategory | null | undefined>(null);
+  const [category, setCategory] = useState<Partial<CMSCategory> | null | undefined>(null);
 
   const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = query;
 
@@ -60,7 +60,7 @@ const ProductsFilters: FC<Props> = ({
 
   useEffect(() => {
     if (typeof categoria === 'string') {
-      setCategory(categories.find((item) => item.id === parseInt(categoria)));
+      setCategory(categories?.find?.((item) => item?.id === parseInt(categoria)));
     }
   }, [categoria]);
 
