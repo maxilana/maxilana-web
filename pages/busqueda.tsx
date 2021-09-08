@@ -25,6 +25,7 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
 import { AppliedFilters, ProductsFilters } from '~/components/products';
+import { filtersToQueryParams } from '~/utils/filtersToQueryString';
 import parseQuery from '~/utils/parseQuery';
 
 interface GSSProps {
@@ -43,12 +44,16 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { page, limit, ...filters } = query || {};
   const categories = await getCMSCategories();
   if (query.categoria) {
-    const category = categories.find((item) => item.id === parseInt(query?.categoria as string));
-    if (category?.filters?.categories?.length) {
-      query.categoria = category?.filters?.categories.map((item) => item?.itemID).join(',');
+    const category = categories.find((item) => item.id === query?.categoria);
+    const { filters } = category || {};
+    if (filters) {
+      if (filters?.categories) {
+        query.categoria = filters?.categories.map((item) => item?.itemID).join(',');
+      }
+      Object.assign(filtersToQueryParams(filters), query);
     }
   }
-  // console.log(query);
+  console.log(query);
   const paginatedProducts = await getProducts(query);
   const { rows: products, ...pagination } = paginatedProducts;
   const cities = await getAllCities();

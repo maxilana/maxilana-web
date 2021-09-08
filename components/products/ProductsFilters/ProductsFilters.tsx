@@ -7,11 +7,11 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Radio, Space, Checkbox, Form, FormProps } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import omit from 'lodash.omit';
-import intersection from 'lodash/intersection';
 import ClickOutside from '~/modules/lib/click-outside';
 
 import { Branch, City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import generateCategoryURL from '~/utils/generateCategoryURL';
 import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import { PriceRangeInput } from '~/components/products';
@@ -83,7 +83,6 @@ const ProductsFilters: FC<Props> = ({
   }, [vtalinea]);
 
   useEffect(() => {
-    console.log({ min, max }, '...');
     form.setFieldsValue({ priceRange: { min, max } });
   }, [min, max]);
 
@@ -162,12 +161,7 @@ const ProductsFilters: FC<Props> = ({
                 </li>
                 {categories.map((item) => (
                   <li key={item.id}>
-                    <Link
-                      href={`/busqueda?${parseQuery({
-                        ...query,
-                        categoria: `${item?.id}`,
-                      })}`}
-                    >
+                    <Link href={generateCategoryURL(item, query)}>
                       <a
                         className={cn(styles.categoryItem, {
                           [styles.categorySelected]: item.id === category?.id,
