@@ -108,4 +108,8 @@ body {
   .productsGrid {
     @apply grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4 mb-12;
   }
+
+  .circleRight {
+    @apply rounded-full bg-surface flex justify-center items-center block min-w-[32px] min-h-[32px];
+  }
 }

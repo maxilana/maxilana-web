@@ -104,7 +104,7 @@ const recursos = {
     {
       id: 3,
       label: 'Ayuda y Soporte',
-      href: '/ayuda-soporte',
+      href: '/preguntas-frecuentes',
     },
   ],
 };
