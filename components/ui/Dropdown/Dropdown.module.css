@@ -4,7 +4,7 @@
 }
 
 .wrapper {
-  @apply absolute top-[105%] right-0 w-64 bg-white rounded-sm shadow-lg p-2 pointer-events-none;
+  @apply absolute z-10 top-[105%] right-0 w-64 bg-white rounded-sm shadow-lg p-2 pointer-events-none;
   @apply transform -translate-y-2 opacity-0 transition-all;
 }
 

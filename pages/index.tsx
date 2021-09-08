@@ -53,8 +53,8 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
         subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"
         actions={
           <>
-            <Button text="Avalúa tu empeño" theme="primary" />
-            <Button text="Solicita un préstamo" />
+            <Button text="Avalúa tu empeño" theme="primary" href="/empeno" />
+            <Button text="Explora nuestros remates" href="/remates" />
           </>
         }
         cover={
@@ -85,7 +85,7 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
                 <div className="text-center space-y-3 sm:text-left lg:space-y-4">
                   <h5 className="text-lg lg:text-2xl">{card.title}</h5>
                   <p className="text-xs lg:text-base">{card.description}</p>
-                  <Button text={card.action.label} size="small" />
+                  <Button size="small" href={card.action.href} text={card.action.label} />
                 </div>
               </div>
             </Card>
