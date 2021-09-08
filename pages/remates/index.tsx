@@ -15,6 +15,8 @@ import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
 import { ProductsCarrousel, ProductsFilters } from '~/components/products';
 import { Product } from '~/types/Models/Product';
 import parseQuery from '~/utils/parseQuery';
+import { Button } from '~/components/ui';
+import generateCategoryURL from '~/utils/generateCategoryURL';
 
 interface GSProps {
   cities?: City[];
@@ -86,7 +88,15 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
               .map((item) => {
                 return (
                   <div key={item?.id} className="max-w-full">
-                    <h3 className="h5 m-4">{item?.name}</h3>
+                    <div className="flex">
+                      <h3 className="h5 m-4">{item?.name}</h3>
+                      <Button
+                        text="Ver todos"
+                        theme="secondary"
+                        variant="link"
+                        href={generateCategoryURL(item)}
+                      />
+                    </div>
                     <ProductsCarrousel products={item?.products || []} />
                   </div>
                 );

@@ -1,4 +1,7 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
+import omit from 'lodash.omit';
 import React from 'react';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSMktPagesSlugs from '~/api/cms/getCMSMktPagesSlugs';
@@ -13,6 +16,8 @@ import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
 import { Product } from '~/types/Models/Product';
+import filtersToQueryString, { filtersToQueryParams } from '~/utils/filtersToQueryString';
+import parseQuery from '~/utils/parseQuery';
 
 interface GSProps {
   cities?: City[];
@@ -50,6 +55,11 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) => {
+  const { push } = useRouter();
+  const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
+    push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
+  };
+
   return (
     <Layout
       title={page?.title}
@@ -59,12 +69,13 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
-            onFiltersChange={console.log}
+            onFiltersChange={handleFiltersChanges}
             cities={cities}
             categories={categories || []}
+            initialValues={filtersToQueryParams(page?.productsFilters || {})}
           />
         </aside>
-        <main className="lg:col-span-3">
+        <main className="lg:col-span-3 mb-12">
           {page?.cover?.url && (
             <div className="aspect-w-16 aspect-h-7 relative rounded overflow-hidden mb-6">
               <Img src={page?.cover?.url} layout="fill" />
@@ -79,7 +90,14 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
               <ProductCard key={product.id} data={product} />
             ))}
           </div>
-          <Button text="Ver mas productos" href={`/busqueda?`} />
+          <div className="text-center">
+            <Button
+              text="Ver mas productos"
+              theme="primary"
+              size="large"
+              href={`/busqueda?${filtersToQueryString(page?.productsFilters || {})}`}
+            />
+          </div>
         </main>
       </div>
     </Layout>

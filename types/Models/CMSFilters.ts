@@ -10,4 +10,5 @@ export interface CMSFilters {
   products: ItemId[];
   quantity?: number;
   order: 'Aleatorio' | 'Descendente' | 'Ascendete';
+  city: number;
 }
