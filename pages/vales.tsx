@@ -10,12 +10,36 @@ import { PropsWithCities } from '~/types/PropsWithCities';
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const whatsappList = [
-  { label: 'Culiacán y Navolato' },
-  { label: 'Mazatlán' },
-  { label: 'Guadalajara' },
-  { label: 'Hermosillo' },
-  { label: 'Mexicali' },
-  { label: 'Tijuana' },
+  {
+    id: 1,
+    label: 'Culiacán y Navolato',
+    href: '6671073945',
+  },
+  {
+    id: 2,
+    label: 'Mazatlán',
+    href: '6692405437',
+  },
+  {
+    id: 3,
+    label: 'Guadalajara',
+    href: '3318911511',
+  },
+  {
+    id: 4,
+    label: 'Hermosillo',
+    href: '6624294030',
+  },
+  {
+    id: 5,
+    label: 'Mexicali',
+    href: '6861571304',
+  },
+  {
+    id: 6,
+    label: 'Tijuana',
+    href: '664120345',
+  },
 ];
 
 const questionList = [
@@ -51,12 +75,7 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
           />
         }
         actions={
-          <ButtonDropdown
-            size="small"
-            theme="danger"
-            items={whatsappList}
-            label="Conviérte en distribuidora"
-          />
+          <ButtonDropdown theme="danger" items={whatsappList} label="Conviérte en distribuidora" />
         }
       />
       <Container>
@@ -235,13 +254,19 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
               />
             </div>
             <div className="flex-grow">
-              <Image
-                width={250}
-                height={95}
-                layout="fixed"
-                src="/google-play-badge.png"
-                alt="Badge de descarga en Google Play"
-              />
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://play.google.com/store/apps/details?id=com.maxilana.maxilanavales&hl=es_MX&gl=US"
+              >
+                <Image
+                  width={250}
+                  height={95}
+                  layout="fixed"
+                  src="/google-play-badge.png"
+                  alt="Badge de descarga en Google Play"
+                />
+              </a>
             </div>
           </div>
         </div>
