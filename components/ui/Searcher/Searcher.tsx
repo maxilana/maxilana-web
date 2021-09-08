@@ -106,7 +106,7 @@ const Searcher: FC<Props> = ({ cities }) => {
                   <div className="hidden md:inline-block">
                     <Image src={MexicoMap} alt="Mexico" />
                   </div>
-                  <span>Todo México</span>
+                  <span className="line-clamp-1">Todo México</span>
                 </span>
               ) : (
                 <span role="option" className="block space-x-2 line-clamp-1">

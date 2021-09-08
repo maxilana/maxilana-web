@@ -180,7 +180,7 @@ const ProductsFilters: FC<Props> = ({
               </ul>
             </div>
             <div className="p-4 pb-0">
-              <Collapse title="Ubicación">
+              <Collapse title="Ubicación" collapsed={false}>
                 <Form.Item name="CityId">
                   <Radio.Group>
                     <div className="flex flex-col gap-4">
@@ -226,7 +226,7 @@ const ProductsFilters: FC<Props> = ({
             </div>
             {!!branches?.length && (
               <div className="p-4">
-                <Collapse title="Sucursales">
+                <Collapse title="Sucursales" collapsed={false}>
                   <InputField
                     name="searchBranch"
                     value={branchFilter}
@@ -257,7 +257,7 @@ const ProductsFilters: FC<Props> = ({
               </div>
             )}
             <div className="p-4">
-              <Collapse title="Rango de precios">
+              <Collapse title="Rango de precios" collapsed={false}>
                 <Form.Item name="priceRange">
                   <PriceRangeInput />
                 </Form.Item>
