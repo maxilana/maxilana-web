@@ -2,7 +2,6 @@ import cn from 'classnames';
 import { FC, ReactElement, ReactNode } from 'react';
 import ClickOutside from '~/modules/lib/click-outside';
 
-import { Card } from '../Card';
 import styles from './Dropdown.module.css';
 
 interface Props {
