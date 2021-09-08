@@ -99,7 +99,7 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
           </div>
         </section>
         <section>
-          <h2 className="text-2xl">Nuestros últimos productos</h2>
+          <h2 className="text-2xl text-center">Nuestros últimos productos</h2>
           <div className="grid grid-cols-2 gap-2 my-4 sm:grid-cols-4 sm:gap-4 lg:gap-6">
             {products.map((item) => (
               <ProductCard key={item.id} data={item} />

@@ -24,6 +24,7 @@ const PawnSelectableArticle: FC<Props> = ({
           <Image
             layout="fill"
             src={imageSrc}
+            placeholder="blur"
             objectFit="cover"
             priority
             alt="Imagen de un artículo que se puede empeñar"

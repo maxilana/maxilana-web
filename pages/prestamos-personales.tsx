@@ -7,6 +7,9 @@ import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
+import HeroPrestamos from '~/public/demo-hero-prestamos.jpg';
+import PagarPrestamos from '~/public/pagar-prestamos.png';
+
 const whatsappList = [
   { label: 'Culiacán y Navolato' },
   { label: 'Mazatlán' },
@@ -47,9 +50,10 @@ const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
           <Image
             priority
             layout="fill"
-            src="/demo-hero-prestamos.jpg"
+            src={HeroPrestamos}
             alt="Prestamos Hero Image"
             objectFit="cover"
+            placeholder="blur"
             quality={100}
           />
         }
@@ -61,7 +65,7 @@ const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
           <ServicePaymentCards
             actionCard={{
               title: 'Paga en línea',
-              imageSource: '/pagar-prestamos.png',
+              imageSource: PagarPrestamos,
               description: 'Paga tu préstamo cómodamente y sin contratiempos',
               buttonLabel: 'Pagar préstamo personal',
               buttonHref: '/pagos/prestamo-personal',

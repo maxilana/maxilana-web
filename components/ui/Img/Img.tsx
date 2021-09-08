@@ -15,6 +15,9 @@ const shimmer = (w: number, h: number) => `
   <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
 </svg>`;
 
+const getBase64Placeholder = (w: number, h: number): string =>
+  `data:image/svg+xml;base64,${toBase64(shimmer(parseInt(`${w}`), parseInt(`${h}`)))}`;
+
 const toBase64 = (str: string) =>
   typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
@@ -41,9 +44,10 @@ const Img: FC<ImageProps> = (props) => {
       <Image
         alt=""
         placeholder="blur"
-        blurDataURL={`data:image/svg+xml;base64,${toBase64(
-          shimmer(parseInt(`${props?.width || 700}`), parseInt(`${props?.height || 475}`)),
-        )}`}
+        blurDataURL={getBase64Placeholder(
+          parseFloat(`${props?.width}`) || 700,
+          parseFloat(`${props?.height}`) || 450,
+        )}
         loader={customLoader}
         {...props}
       />

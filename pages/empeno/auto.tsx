@@ -6,6 +6,7 @@ import { Button } from '~/components/ui';
 import { AutoPawnForm } from '~/components/pawn';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
+import HeroAutoEmpeno from '~/public/foto-hero-auto-empeno.png';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -21,8 +22,9 @@ const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
                   width={628}
                   height={347}
                   layout="responsive"
-                  src="/foto-hero-auto-empeno.png"
+                  src={HeroAutoEmpeno}
                   alt="Imagen de un automóvil"
+                  placeholder="blur"
                 />
               </div>
               <div>

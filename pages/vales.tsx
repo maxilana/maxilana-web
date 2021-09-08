@@ -9,6 +9,14 @@ import { PropsWithCities } from '~/types/PropsWithCities';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
+import HeroValesImg from '~/public/demo-hero-vales.jpg';
+import HowWorks01 from '~/public/como-funcionan-vales-01.png';
+import HowWorks02 from '~/public/como-funcionan-vales-02.png';
+import HowWorks03 from '~/public/como-funcionan-vales-03.png';
+import HowWorks04 from '~/public/como-funcionan-vales-04.png';
+import GetMaxilanaVales from '~/public/gana-maxilana-vales.png';
+import PayVales from '~/public/pagar-vales.png';
+
 const whatsappList = [
   { label: 'Culiacán y Navolato' },
   { label: 'Mazatlán' },
@@ -45,9 +53,10 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
         cover={
           <Image
             layout="fill"
-            src="/demo-hero-vales.jpg"
+            src={HeroValesImg}
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
+            placeholder="blur"
           />
         }
         actions={
@@ -64,7 +73,7 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
           <ServicePaymentCards
             actionCard={{
               title: 'Paga en línea',
-              imageSource: '/pagar-vales.png',
+              imageSource: PayVales,
               description: 'Consulta el saldo de tu cuenta y paga tus vales',
               buttonLabel: 'Pagar a distribuidora',
               buttonHref: '/pagos/vales',
@@ -101,7 +110,7 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
                   height={431}
                   quality={80}
                   layout="responsive"
-                  src="/como-funcionan-vales-01.png"
+                  src={HowWorks01}
                   objectFit="cover"
                   alt="Imagen de mujer pensando en invertir en Maxilana Vales"
                 />
@@ -123,8 +132,9 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
                   height={359}
                   quality={80}
                   layout="responsive"
-                  src="/como-funcionan-vales-02.png"
+                  src={HowWorks02}
                   objectFit="cover"
+                  placeholder="blur"
                   alt="Imagen de mujer con una taza de café decidiendo en qué invertir su tiempo."
                 />
               </div>
@@ -144,8 +154,9 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
                   height={435}
                   quality={80}
                   layout="responsive"
-                  src="/como-funcionan-vales-03.png"
+                  src={HowWorks03}
                   objectFit="cover"
+                  placeholder="blur"
                   alt="Imagen de mujer viendo un celular con un vaso de café en la mano"
                 />
               </div>
@@ -166,8 +177,9 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
                   height={346}
                   quality={80}
                   layout="responsive"
-                  src="/como-funcionan-vales-04.png"
+                  src={HowWorks04}
                   objectFit="cover"
+                  placeholder="blur"
                   alt="Dos mujeres conversando sobre un negocio"
                 />
               </div>
@@ -189,7 +201,8 @@ const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
                 quality={80}
                 layout="responsive"
                 objectFit="contain"
-                src="/gana-maxilana-vales.png"
+                src={GetMaxilanaVales}
+                placeholder="blur"
                 alt="Mujer con expresión feliz por su dinero en mano"
               />
             </div>

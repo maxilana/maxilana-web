@@ -36,7 +36,7 @@ const Navbar: FC<Props> = ({ cities }) => {
               {mainMenu.map((item) => (
                 <li key={item.id} className={styles.navigationItem}>
                   <Link href={item.href} prefetch={false}>
-                    <a>{item.label}</a>
+                    <a target={item?.target || '_self'}>{item.label}</a>
                   </Link>
                 </li>
               ))}
