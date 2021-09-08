@@ -27,6 +27,7 @@ interface Props {
   onClose?: () => void;
   onFiltersChange: (filters: ParsedUrlQuery) => void;
   categories: Array<Partial<CMSCategory>>;
+  initialValues?: Record<string, string>;
 }
 
 const ProductsFilters: FC<Props> = ({
@@ -36,6 +37,7 @@ const ProductsFilters: FC<Props> = ({
   visible,
   onClose,
   onFiltersChange,
+  initialValues,
 }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [form] = Form.useForm();
@@ -43,7 +45,10 @@ const ProductsFilters: FC<Props> = ({
   const { query } = useRouter();
   const [category, setCategory] = useState<Partial<CMSCategory> | null | undefined>(null);
 
-  const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = query;
+  const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = Object.assign(
+    query || {},
+    initialValues || {},
+  );
 
   useEffect(() => {
     if (ref.current) {
@@ -60,7 +65,7 @@ const ProductsFilters: FC<Props> = ({
 
   useEffect(() => {
     if (typeof categoria === 'string') {
-      setCategory(categories?.find?.((item) => item?.id === parseInt(categoria)));
+      setCategory(categories?.find?.((item) => `${item?.id}` === `${categoria}`));
     }
   }, [categoria]);
 
@@ -161,7 +166,7 @@ const ProductsFilters: FC<Props> = ({
                 </li>
                 {categories.map((item) => (
                   <li key={item.id}>
-                    <Link href={generateCategoryURL(item, query)}>
+                    <Link href={generateCategoryURL(item, omit(query, 'slug'))}>
                       <a
                         className={cn(styles.categoryItem, {
                           [styles.categorySelected]: item.id === category?.id,

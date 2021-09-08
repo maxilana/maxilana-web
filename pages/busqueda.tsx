@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
       Object.assign(filtersToQueryParams(filters), query);
     }
   }
-  console.log(query);
+
   const paginatedProducts = await getProducts(query);
   const { rows: products, ...pagination } = paginatedProducts;
   const cities = await getAllCities();
@@ -118,7 +118,9 @@ const Busqueda: NextPage<Props> = ({
   }, []);
 
   const search = (queryParams: ParsedUrlQuery) => {
-    router.push(`/busqueda?${parseQuery(omit(queryParams, 'page'))}`, undefined, { scroll: false });
+    router.push(`/busqueda?${parseQuery(omit(queryParams, 'page', 'slug'))}`, undefined, {
+      scroll: false,
+    });
   };
 
   return (

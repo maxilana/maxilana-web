@@ -40,7 +40,9 @@ const ProductCard: FC<Props> = ({ data, className }) => {
           {image !== null ? (
             <Img src={image} alt={name} objectFit="contain" layout="fill" />
           ) : (
-            <PictureOutlined />
+            <div className="flex justify-center items-center">
+              <PictureOutlined />
+            </div>
           )}
         </div>
         <div className={styles.productBadge}>
