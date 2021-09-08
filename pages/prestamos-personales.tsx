@@ -11,12 +11,36 @@ import HeroPrestamos from '~/public/demo-hero-prestamos.jpg';
 import PagarPrestamos from '~/public/pagar-prestamos.png';
 
 const whatsappList = [
-  { label: 'Culiacán y Navolato' },
-  { label: 'Mazatlán' },
-  { label: 'Guadalajara' },
-  { label: 'Hermosillo' },
-  { label: 'Mexicali' },
-  { label: 'Tijuana' },
+  {
+    id: 1,
+    label: 'Culiacán y Navolato',
+    href: '6675021267',
+  },
+  {
+    id: 2,
+    label: 'Mazatlán',
+    href: '6692405437',
+  },
+  {
+    id: 3,
+    label: 'Guadalajara',
+    href: '3318911511',
+  },
+  {
+    id: 4,
+    label: 'Hermosillo',
+    href: '6624294030',
+  },
+  {
+    id: 5,
+    label: 'Mexicali',
+    href: '6861571304',
+  },
+  {
+    id: 6,
+    label: 'Tijuana',
+    href: '664120345',
+  },
 ];
 
 const questionList = [

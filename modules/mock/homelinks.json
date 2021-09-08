@@ -9,7 +9,7 @@
     },
     "action": {
       "label": "Pagar en línea",
-      "href": "/"
+      "href": "/pagos"
     }
   },
   {
@@ -22,7 +22,7 @@
     },
     "action": {
       "label": "Más información",
-      "href": "/"
+      "href": "/vales"
     }
   },
   {
@@ -35,20 +35,20 @@
     },
     "action": {
       "label": "Solicitar préstamo",
-      "href": "/"
+      "href": "/prestamos-personales"
     }
   },
   {
     "id": 4,
     "title": "Visítanos en sucursal",
-    "description": "Nuestros expertos en sucursale pueden calcular el valor justo de una amplia variedad de mercancías.",
+    "description": "Nuestros expertos en sucursales pueden calcular el valor justo de una amplia variedad de mercancías.",
     "image": {
       "src": "/ilustracion-mapa-inicio.png",
       "alt": "Ilustración de tarjetas para pagar en línea"
     },
     "action": {
       "label": "Ver sucursales",
-      "href": "/"
+      "href": "/sucursales"
     }
   }
 ]
