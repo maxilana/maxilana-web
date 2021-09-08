@@ -33,6 +33,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
                 layout="fill"
                 src={PagoOnline}
                 alt="Logotipo Maxilana Vales"
+                placeholder="blur"
                 objectFit="contain"
               />
             </div>

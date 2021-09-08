@@ -6,6 +6,11 @@ import { Container, Layout } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
 import HeroImg from '../public/empresa-vision.jpg';
+import Empeno from '../public/empresa-servicio-empeno.png';
+import Prestamos from '../public/empresa-servicio-prestamos.png';
+import Remates from '../public/empresa-servicio-remates.png';
+import Vales from '../public/empresa-servicio-vales.png';
+import Trabajo from '../public/empresa-bolsa-trabajo.png';
 
 const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
@@ -72,10 +77,11 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div className="sm:order-1">
             <div>
               <Image
-                src="/empresa-servicio-empeno.png"
+                src={Empeno}
                 width={628}
                 height={469}
                 layout="responsive"
+                placeholder="blur"
                 alt="Hombre con artículos para empeñar"
               />
             </div>
@@ -94,11 +100,12 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div>
             <div>
               <Image
-                src="/empresa-servicio-remates.png"
+                src={Remates}
                 width={628}
                 height={422}
                 quality={80}
                 layout="responsive"
+                placeholder="blur"
                 alt="Imagen de tarjetas de productos de remate en Maxilana"
               />
             </div>
@@ -120,7 +127,8 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
                 quality={80}
                 layout="responsive"
                 objectFit="contain"
-                src="/empresa-servicio-vales.png"
+                src={Vales}
+                placeholder="blur"
                 alt="Mujer con expresión feliz por su dinero en mano"
               />
             </div>
@@ -139,11 +147,12 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
           <div>
             <div>
               <Image
-                src="/empresa-servicio-prestamos.png"
+                src={Prestamos}
                 width={628}
                 height={422}
                 quality={80}
                 layout="responsive"
+                placeholder="blur"
                 alt="Imagen de hombre buscando dinero en su cartera"
               />
             </div>
@@ -175,7 +184,8 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
                   quality={80}
                   layout="responsive"
                   objectFit="contain"
-                  src="/empresa-bolsa-trabajo.png"
+                  src={Trabajo}
+                  placeholder="blur"
                   alt="Imagen de joven con playera de Maxilana"
                 />
               </div>

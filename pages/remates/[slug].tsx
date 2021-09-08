@@ -29,7 +29,7 @@ interface GSProps {
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getCMSMktPagesSlugs();
   return {
-    paths: slugs?.slice?.(0, 1)?.map?.((slug) => ({ params: { slug } })),
+    paths: slugs?.map?.((slug) => ({ params: { slug } })),
     fallback: true,
   };
 };

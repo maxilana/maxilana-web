@@ -23,6 +23,7 @@ const main = [
     id: 5,
     label: 'Subastas',
     href: 'https://subastas.maxilana.com/',
+    target: '_blank',
   },
   {
     id: 6,

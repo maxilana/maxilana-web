@@ -34,6 +34,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
             src={actionCard.imageSource as StaticImageData}
             alt="Logotipo Maxilana Vales"
             objectFit="contain"
+            placeholder="blur"
           />
         </div>
         <div className="space-y-3 sm:text-left lg:space-y-4">
@@ -58,6 +59,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
               layout="fixed"
               quality={70}
               src={LogoBanorte}
+              placeholder="blur"
               alt="Logotipo de Banorte"
             />
             <Image
@@ -66,6 +68,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
               layout="fixed"
               quality={70}
               src={LogoFarmacia}
+              placeholder="blur"
               alt="Logotipo de Farmacia Guadalajara"
             />
             <Image
@@ -74,6 +77,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
               layout="fixed"
               quality={70}
               src={LogoSeven}
+              placeholder="blur"
               alt="Logotipo de 7Eleven"
             />
           </div>
