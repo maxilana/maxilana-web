@@ -44,9 +44,6 @@ const Navbar: FC<Props> = ({ cities }) => {
             <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
-            <Link href="/" prefetch={false}>
-              <a className={styles.loginLink}>Iniciar sesión</a>
-            </Link>
             <span className={styles.payOnlineLink}>
               <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
             </span>
