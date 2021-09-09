@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import Link from 'next/link';
 import { Img } from '~/components/ui';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 
@@ -14,20 +15,22 @@ const CategoryExplorer: FC<Props> = ({ categories }) => {
       <div className={styles.gridWrapper}>
         {categories.map((item) => (
           <div key={item.id} className={styles.gridElement}>
-            <div className={styles.link}>
-              <div className="w-[56px] h-[56px]">
-                {!!item?.image?.url && (
-                  <Img
-                    src={item?.image?.url}
-                    width={item?.image?.width}
-                    height={item?.image?.height}
-                    layout="fixed"
-                    alt={item?.image?.alternativeText || item?.name}
-                  />
-                )}
-              </div>
-              <span className={styles.linkLabel}>{item.name}</span>
-            </div>
+            <Link href={`/busqueda?categoria=${item?.id}&orden=desc`}>
+              <a className={styles.link}>
+                <div className="w-[56px] h-[56px]">
+                  {!!item?.image?.url && (
+                    <Img
+                      src={item?.image?.url}
+                      width={item?.image?.width}
+                      height={item?.image?.height}
+                      layout="fixed"
+                      alt={item?.image?.alternativeText || item?.name}
+                    />
+                  )}
+                </div>
+                <span className={styles.linkLabel}>{item.name}</span>
+              </a>
+            </Link>
           </div>
         ))}
       </div>
