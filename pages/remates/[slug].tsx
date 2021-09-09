@@ -69,7 +69,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
       meta={{ title: page?.seo?.metaTitle, description: page?.seo?.metaDescription }}
       cities={cities || []}
     >
-      <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
+      <div className="container mx-auto p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
             onFiltersChange={handleFiltersChanges}
