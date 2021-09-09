@@ -96,6 +96,7 @@ const Busqueda: NextPage<Props> = ({
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const category = categories?.find?.((item) => `${item.id}` === `${router?.query?.categoria}`);
 
   useEffect(() => {
     const handleRouteChange = (url: string): void => {
@@ -137,7 +138,20 @@ const Busqueda: NextPage<Props> = ({
           />
         </aside>
         <div className={cn('lg:col-span-3', { 'opacity-50': loading })}>
-          <h2 className="h4">{query?.q || 'Resultado de la búsqueda'}</h2>
+          <h2 className="h4">
+            {(() => {
+              if (category?.name) {
+                return query?.q ? (
+                  <span>
+                    {category.name}: <span className="text-secondary">{query.q}</span>
+                  </span>
+                ) : (
+                  category.name
+                );
+              }
+              return query?.q || 'Lista de productos en remate!';
+            })()}
+          </h2>
           <p className="text-secondary">{pagination?.count} productos</p>
           <AppliedFilters city={city} branch={branch} onFiltersChange={search} />
           <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
