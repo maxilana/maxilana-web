@@ -17,7 +17,7 @@ const Layout: FC<PropsWithChildren<Props>> = ({ title, meta, cities = [], childr
       <Meta title={title} {...meta} />
       <div className="min-h-screen flex flex-col">
         <Navbar cities={cities} />
-        <main className={`flex-1${bgWhite ? ' bg-white' : ''}`}>{children}</main>
+        <div className={`flex-1${bgWhite ? ' bg-white' : ''}`}>{children}</div>
         <Footer cities={cities} />
       </div>
     </>
