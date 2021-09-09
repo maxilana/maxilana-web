@@ -71,8 +71,8 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
       <Container>
         <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
           {cards.map((card) => (
-            <Card key={card.id}>
-              <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between">
+            <Card key={card.id} noPadding>
+              <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between pl-4 md:pl-6">
                 <div className="relative min-w-[150px] lg:min-w-[200px]">
                   <Image
                     width={250}

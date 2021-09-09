@@ -4,6 +4,10 @@
   @apply md:p-6;
 }
 
+.noPadding {
+  @apply p-0;
+}
+
 /** PRODUCT CARD **/
 
 .rootProduct {
