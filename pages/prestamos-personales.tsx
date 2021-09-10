@@ -69,7 +69,7 @@ const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
       <HeroComposed
         title="Te prestamos para lo que necesites"
         copy="¡Resuelve tus imprevistos fácil y rápido!"
-        footer={<p className="text-lg uppercase text-accent">De $1,000 hasta $20,000</p>}
+        footer={<p className="text-lg uppercase text-accent">De $2,000 hasta $20,000</p>}
         cover={
           <Image
             priority

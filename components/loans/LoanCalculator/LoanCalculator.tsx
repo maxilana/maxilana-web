@@ -30,7 +30,7 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
   const { config, isLoading: isUpdating } = useLoanConfig(cityCode);
 
   const [policy, setPolicy] = useState(null);
-  const [uiAmount, setUIAmount] = useState(1000);
+  const [uiAmount, setUIAmount] = useState(2000);
   const [amount, setAmount] = useState(uiAmount);
 
   const loanAtPeriod = useCalculateLoan(policy ?? '', amount);
@@ -38,8 +38,8 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
 
   useEffectOnUpdate(() => {
     setPolicy(null);
-    setAmount(1000);
-    setUIAmount(1000);
+    setAmount(2000);
+    setUIAmount(2000);
   }, [cityCode]);
 
   const handleSubmit = () => {

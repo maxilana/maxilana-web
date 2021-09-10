@@ -7,7 +7,7 @@ import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard } from '~/components/ui';
-import { CategoryExplorer, Hero } from '~/components/common';
+import { CategoryExplorer, ComissionsTable, Hero } from '~/components/common';
 
 import cards from '~/modules/mock/homelinks.json';
 import { City } from '~/types/Models';
@@ -105,6 +105,10 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
               <ProductCard key={item.id} data={item} />
             ))}
           </div>
+        </section>
+        <section className="my-12 lg:my-24">
+          <h3 className="text-2xl text-center">Consulta los costos y comisiones</h3>
+          <ComissionsTable />
         </section>
       </Container>
     </Layout>
