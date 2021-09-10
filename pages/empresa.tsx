@@ -6,6 +6,8 @@ import { Button } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
 
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
 import HeroImg from '../public/empresa-vision.jpg';
 import Empeno from '../public/empresa-servicio-empeno.png';
 import Prestamos from '../public/empresa-servicio-prestamos.png';
