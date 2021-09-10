@@ -63,18 +63,13 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts }) => {
   const { push } = useRouter();
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
-  const { metaTitle, metaDescription, metaKeywords } = page?.seo || {};
 
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     push(`/busqueda?${parseQuery(queryParams)}`);
   };
 
   return (
-    <Layout
-      title={metaTitle}
-      meta={{ description: metaDescription, keywords: metaKeywords }}
-      cities={cities || []}
-    >
+    <Layout meta={page?.seo} cities={cities || []}>
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
