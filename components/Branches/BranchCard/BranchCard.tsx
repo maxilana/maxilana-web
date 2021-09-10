@@ -15,6 +15,11 @@ interface Props {
 
 const BranchCard: FC<Props> = ({ data }) => {
   const [showDetails, toggleDetails] = useToggleState(false);
+
+  const { phone = '', whatsapp = '' } = data || {};
+  const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
+  const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
+
   return (
     <Card className={showDetails ? styles.expanded : ''}>
       <div className={styles.heading}>
@@ -36,8 +41,13 @@ const BranchCard: FC<Props> = ({ data }) => {
             href={`/sucursales/${data?.slug || slugify(data.name)}`}
           />
           <div className={styles.contactOptions}>
-            <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />
-            <CircleLink href="#" text="Enviar WhatsApp" icon={<WhatsAppOutlined />} whatsapp />
+            <CircleLink href={phoneLink} text="Llamar por teléfono" icon={<PhoneOutlined />} />
+            <CircleLink
+              whatsapp
+              href={whatsappLink}
+              text="Enviar WhatsApp"
+              icon={<WhatsAppOutlined />}
+            />
           </div>
           <div className="text-center">
             {data?.constancy && (
