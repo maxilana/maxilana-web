@@ -9,6 +9,6 @@ export interface CMSFilters {
   categories: ItemId[];
   products: ItemId[];
   quantity?: number;
-  order: 'Aleatorio' | 'Descendente' | 'Ascendete';
+  order: 'rand' | 'desc' | 'asc';
   city: number;
 }

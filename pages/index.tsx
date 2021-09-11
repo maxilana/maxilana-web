@@ -1,35 +1,40 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
+import getHomePage from '~/api/cms/getHomePage';
 import getAllCities from '~/api/getAllCities';
-import getProducts from '~/api/getProducts';
-import getCMSCategories from '~/api/cms/getCMSCategories';
+import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 
 import { Container, Layout } from '~/components/layout';
-import { Card, Button, ProductCard } from '~/components/ui';
+import { Card, Button, ProductCard, Img } from '~/components/ui';
 import { CategoryExplorer, ComissionsTable, Hero } from '~/components/common';
-
-import cards from '~/modules/mock/homelinks.json';
 import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import { CMSHomePage } from '~/types/Models/CMSHomePage';
 import { Product } from '~/types/Models/Product';
-import HeroImg from '../public/demo-hero.jpg';
+import getCMSCategories from '~/api/cms/getCMSCategories';
 
 interface GSProps {
   products: Product[];
+  page: Partial<CMSHomePage>;
   categories: Array<Partial<CMSCategory>>;
   cities: City[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
   const cities = await getAllCities();
-  const categories = await getCMSCategories();
-  const { rows: products } = await getProducts({ limit: '8', orden: 'rand' });
+  const page = await getHomePage();
+  const categories = page?.categories?.length ? page?.categories : await getCMSCategories();
+
+  const products = await getProductsFromCMSFilters(
+    page?.productFilters || { quantity: 8, order: 'rand' },
+  );
 
   return {
     props: {
       cities,
       products,
+      page,
       categories,
     },
     revalidate: 60, // Each minute
@@ -38,39 +43,37 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Home: NextPage<Props> = ({ cities, products, categories }) => {
+const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
   return (
-    <Layout
-      title="Maxilana | Casa de empeño"
-      meta={{
-        description: 'Maxilana casa de empeño y prestamos',
-        keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
-      }}
-      cities={cities}
-    >
+    <Layout meta={page.seo} cities={cities}>
       <Hero
-        title="En Maxilana te sacamos del apuro"
-        subtitle="Averigua hasta cuánto te podemos dar por tus pertenencias"
+        title={`${page?.hero?.mainText}`}
+        subtitle={page?.hero?.secondaryText}
         actions={
           <>
-            <Button text="Avalúa tu empeño" theme="primary" href="/empeno" />
-            <Button text="Explora nuestros remates" href="/remates" />
+            {page?.hero?.actions.map((cta, index) => (
+              <Button
+                key={cta.id}
+                text={cta.text}
+                theme={!index ? 'primary' : 'default'}
+                href={cta.url}
+              />
+            ))}
           </>
         }
         cover={
-          <Image
+          <Img
             layout="fill"
-            src={HeroImg}
+            src={`${page?.hero?.image?.url}`}
             alt="Hero Homepage Image"
             objectFit="cover"
             priority
-            placeholder="blur"
           />
         }
       />
       <Container>
         <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
-          {cards.map((card) => (
+          {page?.directAccess?.map?.((card) => (
             <Card key={card.id} noPadding>
               <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between pl-4 md:pl-6">
                 <div className="relative min-w-[150px] lg:min-w-[200px]">
@@ -78,14 +81,16 @@ const Home: NextPage<Props> = ({ cities, products, categories }) => {
                     width={250}
                     height={364}
                     layout="responsive"
-                    src={card.image.src}
-                    alt={card.image.alt}
+                    src={card.image.url}
+                    alt={card.title}
                   />
                 </div>
                 <div className="text-center space-y-3 sm:text-left lg:space-y-4">
                   <h5 className="text-lg lg:text-2xl">{card.title}</h5>
                   <p className="text-xs lg:text-base">{card.description}</p>
-                  <Button size="small" href={card.action.href} text={card.action.label} />
+                  {card.links?.map?.((link) => (
+                    <Button key={link.id} size="small" href={link.url} text={link.text} />
+                  ))}
                 </div>
               </div>
             </Card>
