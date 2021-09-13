@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 
 import { BareLayout } from '~/components/layout';
-import { CheckoutSuccess, ConfirmPurchase } from '~/components/checkout';
+import { CheckoutError } from '~/components/checkout';
 
 const CheckoutPage: NextPage = () => {
   return (
     <BareLayout>
-      <CheckoutSuccess />
+      <CheckoutError />
     </BareLayout>
   );
 };
