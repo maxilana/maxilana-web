@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import { FC } from 'react';
+import Image from 'next/image';
 
 import { usePrice } from '~/modules/hooks';
 import { Product } from '~/types/Models/Product';
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const CartSummary: FC<Props> = ({ data }) => {
-  const { name, price, netPrice } = data;
+  const { name, price, image, netPrice } = data;
 
   const { price: basePrice } = usePrice({ amount: price });
   const { price: discountPrice } = usePrice(
@@ -21,7 +22,11 @@ const CartSummary: FC<Props> = ({ data }) => {
   return (
     <div>
       <div className={styles.productRow}>
-        <div className={styles.productImage} />
+        <div className={styles.productImage}>
+          {image && (
+            <Image src={image} layout="fill" objectFit="contain" alt={`Imagen de ${name}`} />
+          )}
+        </div>
         <div className="flex-1 space-y-2">
           <h5 className={styles.productTitle}>{name}</h5>
           <div className={styles.productPrice}>
@@ -39,7 +44,7 @@ const CartSummary: FC<Props> = ({ data }) => {
       <div className="space-y-2">
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio del artículo</span>
-          <span className={styles.amount}>{basePrice}</span>
+          <span className={styles.amount}>{discountPrice ?? basePrice}</span>
         </div>
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio entrega</span>

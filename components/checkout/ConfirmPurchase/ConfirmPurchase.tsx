@@ -2,32 +2,20 @@ import { FC } from 'react';
 import { Form } from 'antd';
 import dayjs from 'dayjs';
 
-import { InputField, InputMask } from '~/components/common';
+import { Button } from '~/components/ui';
+import { CartSummary, InputField, InputMask } from '~/components/common';
 
 import styles from './ConfirmPurchase.module.css';
 import formContainerStyles from '../FormContainer.module.css';
 
 import defaultValidateMessages from 'config/validationMessages';
-import CheckoutSummary from '../CheckoutSummary';
+import { Product } from '~/types/Models/Product';
 
-const product = {
-  id: 1,
-  name: 'ANILLO C/ BRILLANTES 3.80 GRAMOS 14 KILATES',
-  CategoryId: 2,
-  Category: '',
-  BranchId: 3,
-  Branch: '',
-  price: 4308.25,
-  netPrice: 4308.25,
-  brand: '',
-  observations: '',
-  image: '',
-  precod: 0,
-  slug: '',
-  saleOnline: true,
-};
+interface Props {
+  product: Product;
+}
 
-const ConfirmPurchase: FC = () => {
+const ConfirmPurchase: FC<Props> = ({ product }) => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (data: any) => {
@@ -158,7 +146,21 @@ const ConfirmPurchase: FC = () => {
             </div>
             <div className="lg:max-w-[520px]">
               <div className={formContainerStyles.root}>
-                <CheckoutSummary data={product} />
+                <div>
+                  {/** @ts-ignore */}
+                  <CartSummary data={product} />
+                  <hr className="my-4" />
+                  <div>
+                    <Button fullWidth size="large" theme="primary" text="Proceder al pago" />
+                  </div>
+                  <hr className="my-4" />
+                  <div className="text-center">
+                    <small>
+                      Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los
+                      TÉRMINOS Y CONDICIONES de Maxilana.
+                    </small>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

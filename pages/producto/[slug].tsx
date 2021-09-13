@@ -20,6 +20,7 @@ import { Button, ProductCard } from '~/components/ui';
 import { ProductBadge, Gallery } from '~/components/products';
 
 import LogoRedondo from '../../public/logo-redondo.png';
+import useAddItem from '~/hooks/cart/useAddItem';
 
 interface GSProps {
   product: Product;
@@ -85,10 +86,12 @@ const ProductView: NextPage<Props> = ({
   router,
 }) => {
   const { isFallback } = router;
+  const addItem = useAddItem();
   const { price: basePrice } = usePrice({ amount: product?.price });
   const { price: discountPrice } = usePrice(
     product?.netPrice ? { amount: product?.netPrice, baseAmount: product?.price } : undefined,
   );
+
   if (isFallback || !product) {
     return (
       <Layout title="Cargando..." cities={[]}>
@@ -101,6 +104,11 @@ const ProductView: NextPage<Props> = ({
       </Layout>
     );
   }
+
+  const handlePurchaseProduct = () => {
+    addItem(product);
+    router.push('/checkout');
+  };
 
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
@@ -145,7 +153,14 @@ const ProductView: NextPage<Props> = ({
               <p className="font-semibold">
                 Si te interesa recoger en tienda este producto comunicate a la sucursal.
               </p>
-              {product?.saleOnline && <Button text="Comprar en línea" theme="primary" fullWidth />}
+              {product?.saleOnline && (
+                <Button
+                  fullWidth
+                  theme="primary"
+                  text="Comprar en línea"
+                  onClick={handlePurchaseProduct}
+                />
+              )}
               <Button
                 fullWidth
                 theme="whatsapp"
