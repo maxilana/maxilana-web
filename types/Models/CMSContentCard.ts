@@ -6,5 +6,5 @@ export interface CMSContentCard extends CMSModel {
   title: string;
   description: string;
   image: CMSImage;
-  links: CMSLink[];
+  link: CMSLink[];
 }
