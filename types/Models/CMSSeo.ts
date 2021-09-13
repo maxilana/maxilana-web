@@ -2,8 +2,8 @@ import { CMSImage } from '~/types/Models/CMSImage';
 
 export interface CMSSeo {
   id: number;
-  metaTitle: string;
-  metaDescription: string;
-  metaKeywords: string;
-  shareImage: CMSImage;
+  title: string;
+  description: string;
+  keywords: string;
+  shareImage: CMSImage | string;
 }

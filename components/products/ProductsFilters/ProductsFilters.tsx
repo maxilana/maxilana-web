@@ -166,7 +166,7 @@ const ProductsFilters: FC<Props> = ({
                 </li>
                 {categories.map((item) => (
                   <li key={item.id}>
-                    <Link href={generateCategoryURL(item, omit(query, 'slug'))}>
+                    <Link href={generateCategoryURL(item, omit(query, 'slug', 'q'))}>
                       <a
                         className={cn(styles.categoryItem, {
                           [styles.categorySelected]: item.id === category?.id,
@@ -266,10 +266,10 @@ const ProductsFilters: FC<Props> = ({
                   <Radio.Group>
                     <div className="flex flex-col">
                       <Radio value="desc" className="line-clamp-1">
-                        <span title="Precio mas alto primero">Precio mas alto primero</span>
+                        <span title="Precio mas alto primero">Precio más alto primero</span>
                       </Radio>
                       <Radio value="asc" className="line-clamp-1">
-                        <span title="Precio mas bajo primero">Precio mas bajo primero</span>
+                        <span title="Precio mas bajo primero">Precio más bajo primero</span>
                       </Radio>
                     </div>
                   </Radio.Group>

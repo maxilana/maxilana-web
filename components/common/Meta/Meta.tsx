@@ -1,10 +1,13 @@
 import Head from 'next/head';
 import React, { FC } from 'react';
+import { CMSImage } from '~/types/Models/CMSImage';
+import { CMSSeo } from '~/types/Models/CMSSeo';
 
-export interface MetaProps {
+export interface MetaProps extends Partial<CMSSeo> {
   title?: string;
   description?: string;
   keywords?: string;
+  shareImage?: string | CMSImage;
 }
 
 const Meta: FC<MetaProps> = ({ title, description, keywords }) => {

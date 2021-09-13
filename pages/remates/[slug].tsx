@@ -1,3 +1,4 @@
+import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
@@ -12,6 +13,7 @@ import { Markdown } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { ProductsFilters } from '~/components/products';
 import { Button, Img, ProductCard } from '~/components/ui';
+import useToggleState from '~/hooks/useToggleState';
 import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
@@ -55,23 +57,22 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) => {
+  const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
   };
 
   return (
-    <Layout
-      title={page?.title}
-      meta={{ title: page?.seo?.metaTitle, description: page?.seo?.metaDescription }}
-      cities={cities || []}
-    >
-      <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
+    <Layout title={page?.title} meta={page?.seo} cities={cities || []}>
+      <div className="container mx-auto p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
             onFiltersChange={handleFiltersChanges}
             cities={cities}
             categories={categories || []}
+            visible={visibleFilter}
+            onClose={toggleVisibleFilter}
             initialValues={filtersToQueryParams(page?.productsFilters || {})}
           />
         </aside>
@@ -85,6 +86,14 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
           {!!page?.content && (
             <Markdown content={page?.content} className="prose max-w-none mb-6" />
           )}
+          <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
+            <Button
+              icon={<FilterOutlined />}
+              text="Filtros y orden"
+              onClick={toggleVisibleFilter}
+              theme="secondary"
+            />
+          </div>
           <div className="productsGrid">
             {products?.map?.((product) => (
               <ProductCard key={product.id} data={product} />

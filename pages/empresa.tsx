@@ -1,9 +1,12 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Button } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import { PropsWithCities } from '~/types/PropsWithCities';
+
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 import HeroImg from '../public/empresa-vision.jpg';
 import Empeno from '../public/empresa-servicio-empeno.png';
@@ -67,7 +70,11 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
       <Container>
         <div className="my-12 grid gap-6 items-center sm:my-24 sm:grid-cols-2">
           <div className="space-y-6 sm:order-2">
-            <h1 className="text-base text-brand uppercase">Empeños</h1>
+            <h1 className="text-base text-brand uppercase">
+              <Link href="/empenos">
+                <a>Empeños</a>
+              </Link>
+            </h1>
             <h2 className="text-2xl">Recibe más por tus artículos y sal del apuro</h2>
             <p className="text-lg text-primary">
               Las mejores tasas, promociones todo el año, pagos cómodos en cualquier sucursal y en
@@ -91,7 +98,11 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
       <Container>
         <div className="my-12 grid gap-6 items-center sm:my-24 sm:grid-cols-2">
           <div className="space-y-6">
-            <h1 className="text-base text-brand uppercase">Remates</h1>
+            <h1 className="text-base text-brand uppercase">
+              <Link href="/remates">
+                <a>Remates</a>
+              </Link>
+            </h1>
             <h2 className="text-2xl">Navega entre miles de remates de oportunidad</h2>
             <p className="text-lg text-primary">
               Como joyas, relojes, instrumentos musicales, carros, laptops y más.
@@ -115,7 +126,11 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
       <Container>
         <div className="my-12 grid gap-6 items-center sm:my-24 sm:grid-cols-2">
           <div className="space-y-6 sm:order-2">
-            <h1 className="text-base text-brand uppercase">Maxilana Vales</h1>
+            <h1 className="text-base text-brand uppercase">
+              <Link href="/vales">
+                <a>Maxilana Vales</a>
+              </Link>
+            </h1>
             <h2 className="text-2xl">Conviértete en distribuidora</h2>
             <p className="text-lg text-primary">Empieza a ganar dinero extra en tu tiempo libre.</p>
           </div>
@@ -138,7 +153,11 @@ const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
       <Container>
         <div className="my-12 grid gap-6 items-center sm:my-24 sm:grid-cols-2">
           <div className="space-y-6">
-            <h1 className="text-base text-brand uppercase">Préstamos Personales</h1>
+            <h1 className="text-base text-brand uppercase">
+              <Link href="/prestamos-personales">
+                <a>Préstamos Personales</a>
+              </Link>
+            </h1>
             <h2 className="text-2xl">Te prestamos para lo que necesites</h2>
             <p className="text-lg text-primary">
               Desde $1,000 hasta $20,000 para que resuelvas tus imprevistos fácil y rápido.

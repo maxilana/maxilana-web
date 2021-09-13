@@ -43,7 +43,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Faq: NextPage<Props> = ({ cities, section, sections }) => {
   return (
-    <Layout title={section?.name} cities={cities}>
+    <Layout title={section?.name} cities={cities} meta={section?.seo}>
       <main className="container mx-auto px-4 py-12 grid gap-16 lg:grid-cols-3">
         <div className="hidden lg:block">
           <SideMenu

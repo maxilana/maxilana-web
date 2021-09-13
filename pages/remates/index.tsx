@@ -1,3 +1,4 @@
+import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
@@ -9,6 +10,7 @@ import getProducts from '~/api/getProducts';
 import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Banners, CategoryExplorer } from '~/components/common';
 import { Layout } from '~/components/layout';
+import useToggleState from '~/hooks/useToggleState';
 import { City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
@@ -60,24 +62,32 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts }) => {
   const { push } = useRouter();
-  const { metaTitle, metaDescription, metaKeywords } = page?.seo || {};
+  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     push(`/busqueda?${parseQuery(queryParams)}`);
   };
+
   return (
-    <Layout
-      title={metaTitle}
-      meta={{ description: metaDescription, keywords: metaKeywords }}
-      cities={cities || []}
-    >
+    <Layout meta={page?.seo} cities={cities || []}>
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters
             cities={cities}
             categories={categories || []}
+            visible={visibleFilter}
+            onClose={toggleVisibleFilter}
             onFiltersChange={handleFiltersChanges}
           />
         </aside>
+        <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
+          <Button
+            icon={<FilterOutlined />}
+            text="Filtros y orden"
+            onClick={toggleVisibleFilter}
+            theme="secondary"
+          />
+        </div>
         <main className="lg:col-span-3">
           <div className="px-4 lg:px-0 mb-12">
             <Banners items={page?.banners} />
