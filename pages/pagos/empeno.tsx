@@ -55,7 +55,13 @@ const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   };
 
   return (
-    <Layout title="Paga online tu boleta de empeño" cities={cities}>
+    <Layout
+      title="Paga online tu boleta de empeño"
+      cities={cities}
+      meta={{
+        css: ['/antd/form.css', '/antd/radio.css', '/antd/calendar.css', '/antd/select.css'],
+      }}
+    >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           <div>

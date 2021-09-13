@@ -65,7 +65,13 @@ export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
-    <Layout cities={cities} title="Prestamos personales">
+    <Layout
+      cities={cities}
+      title="Prestamos personales"
+      meta={{
+        css: ['/antd/form.css', '/antd/radio.css', '/antd/slider.css'],
+      }}
+    >
       <HeroComposed
         title="Te prestamos para lo que necesites"
         copy="¡Resuelve tus imprevistos fácil y rápido!"

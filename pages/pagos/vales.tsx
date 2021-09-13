@@ -42,7 +42,11 @@ const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [account, setAccount] = useState<CouponAccount | null>(null);
 
   return (
-    <Layout title="Paga online online directamente a tu distribuidora" cities={cities}>
+    <Layout
+      title="Paga online online directamente a tu distribuidora"
+      cities={cities}
+      meta={{ css: ['/antd/form.css', '/antd/radio.css'] }}
+    >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           <div>
