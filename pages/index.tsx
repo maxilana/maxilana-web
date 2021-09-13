@@ -57,6 +57,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
                 text={cta.text}
                 theme={!index ? 'primary' : 'default'}
                 href={cta.url}
+                prefetch={false}
               />
             ))}
           </>

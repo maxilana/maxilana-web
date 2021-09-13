@@ -1,15 +1,10 @@
 import cn from 'classnames';
 import omit from 'lodash.omit';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import { useRouter, RouterEvent, Router, NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
-import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  FilterOutlined,
-  SortAscendingOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, ArrowRightOutlined, FilterOutlined } from '@ant-design/icons';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import getAllCities from '~/api/getAllCities';
