@@ -18,6 +18,7 @@ export interface Props {
   className?: string;
   disabled?: boolean;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
+  prefetch?: boolean;
 }
 
 const classStyles = {
@@ -48,6 +49,7 @@ const Button: FC<Props> = ({
   variant = 'default',
   className,
   disabled = false,
+  prefetch,
 }) => {
   const sizeStyles = classStyles.size[size];
   const themeStyles = classStyles.theme[theme];
@@ -71,7 +73,7 @@ const Button: FC<Props> = ({
 
   if (href !== undefined) {
     return (
-      <Link href={href}>
+      <Link href={href} prefetch={prefetch}>
         <a className={rootClassName}>
           {icon && iconElement}
           <span className={styles.label}>{text}</span>

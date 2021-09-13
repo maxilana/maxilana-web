@@ -57,6 +57,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
                 text={cta.text}
                 theme={!index ? 'primary' : 'default'}
                 href={cta.url}
+                prefetch={false}
               />
             ))}
           </>
@@ -88,8 +89,8 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
                 <div className="text-center space-y-3 sm:text-left lg:space-y-4">
                   <h5 className="text-lg lg:text-2xl">{card.title}</h5>
                   <p className="text-xs lg:text-base">{card.description}</p>
-                  {card.links?.map?.((link) => (
-                    <Button key={link.id} size="small" href={link.url} text={link.text} />
+                  {card.link?.map?.((link) => (
+                    <Button key={link?.id} size="small" href={link.url} text={link.text} />
                   ))}
                 </div>
               </div>

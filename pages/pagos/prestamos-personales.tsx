@@ -37,7 +37,11 @@ const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
   const [account, setAccount] = useState<LoanAccount | null>(null);
 
   return (
-    <Layout title="Abona a tu préstamo personal en línea" cities={cities}>
+    <Layout
+      title="Abona a tu préstamo personal en línea"
+      cities={cities}
+      meta={{ css: ['/antd/form.css', '/antd/radio.css'] }}
+    >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           <div>

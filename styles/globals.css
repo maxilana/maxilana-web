@@ -1,14 +1,5 @@
 @charset "UTF-8";
 
-@import '~antd/lib/select/style/index.css';
-@import '~antd/lib/radio/style/index.css';
-@import '~antd/lib/date-picker/style/index.css';
-@import '~antd/lib/calendar/style/index.css';
-@import '~antd/lib/checkbox/style/index.css';
-@import '~antd/lib/slider/style/index.css';
-@import 'antd-motion.css';
-@import 'antd-form.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -16,7 +16,6 @@ import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import { PriceRangeInput } from '~/components/products';
 import ProductBadge from '../ProductBadge';
-
 import styles from './ProductsFilters.module.css';
 import { InputField } from '~/components/common';
 

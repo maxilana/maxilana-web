@@ -1,15 +1,10 @@
 import cn from 'classnames';
 import omit from 'lodash.omit';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import { useRouter, RouterEvent, Router, NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
-import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  FilterOutlined,
-  SortAscendingOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, ArrowRightOutlined, FilterOutlined } from '@ant-design/icons';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import getAllCities from '~/api/getAllCities';
@@ -125,7 +120,11 @@ const Busqueda: NextPage<Props> = ({
   };
 
   return (
-    <Layout title="Buscador de productos" cities={cities || []}>
+    <Layout
+      title="Buscador de productos"
+      cities={cities || []}
+      meta={{ css: ['/antd/radio.css', '/antd/checkbox.css'] }}
+    >
       <main className="container mx-auto grid p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:grid-cols-4 lg:gap-8 lg:flex-row">
         <aside>
           <ProductsFilters

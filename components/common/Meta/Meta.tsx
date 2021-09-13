@@ -8,9 +8,10 @@ export interface MetaProps extends Partial<CMSSeo> {
   description?: string;
   keywords?: string;
   shareImage?: string | CMSImage;
+  css?: string[];
 }
 
-const Meta: FC<MetaProps> = ({ title, description, keywords }) => {
+const Meta: FC<MetaProps> = ({ title, description, keywords, css }) => {
   const metaTitle = title ? `${title} | Maxilana` : 'Maxilana | Casa de empeño';
   return (
     <Head>
@@ -37,6 +38,21 @@ const Meta: FC<MetaProps> = ({ title, description, keywords }) => {
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
       <meta name="theme-color" content="#ffffff" />
+      {css?.map?.((href) => (
+        <link href={href} as="style" rel="preload" key={href} />
+      ))}
+      {css?.map?.((href) => (
+        <link
+          href={href}
+          type="text/css"
+          rel="stylesheet"
+          key={href}
+          onLoad={function onLoad() {
+            //@ts-ignore
+            this.media = 'all';
+          }}
+        />
+      ))}
     </Head>
   );
 };
