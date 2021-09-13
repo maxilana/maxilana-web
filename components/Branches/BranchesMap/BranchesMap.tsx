@@ -5,7 +5,6 @@ import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
 import { Button, CheckableTag } from '~/components/ui';
-import slugify from '~/utils/slugify';
 import BranchCard from '../BranchCard';
 
 import styles from './BranchesMap.module.css';

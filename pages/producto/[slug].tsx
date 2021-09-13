@@ -2,14 +2,7 @@ import { WithRouterProps } from 'next/dist/client/with-router';
 import { withRouter } from 'next/router';
 import React from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
-import {
-  WhatsAppOutlined,
-  LoadingOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
-  ShopFilled,
-  PhoneOutlined,
-} from '@ant-design/icons';
+import { WhatsAppOutlined, LoadingOutlined, ShopFilled, PhoneOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -23,10 +16,11 @@ import { Product } from '~/types/Models/Product';
 import generateProductGallery from '~/utils/generateProductGallery';
 import slugify from '~/utils/slugify';
 import getProductById from '~/api/getProductById';
-import { Button, Img, ProductCard } from '~/components/ui';
+import { Button, ProductCard } from '~/components/ui';
 import { ProductBadge, Gallery } from '~/components/products';
 
 import LogoRedondo from '../../public/logo-redondo.png';
+import useAddItem from '~/hooks/cart/useAddItem';
 
 interface GSProps {
   product: Product;
@@ -92,10 +86,12 @@ const ProductView: NextPage<Props> = ({
   router,
 }) => {
   const { isFallback } = router;
+  const addItem = useAddItem();
   const { price: basePrice } = usePrice({ amount: product?.price });
   const { price: discountPrice } = usePrice(
     product?.netPrice ? { amount: product?.netPrice, baseAmount: product?.price } : undefined,
   );
+
   if (isFallback || !product) {
     return (
       <Layout title="Cargando..." cities={[]}>
@@ -109,11 +105,20 @@ const ProductView: NextPage<Props> = ({
     );
   }
 
+  const handlePurchaseProduct = () => {
+    addItem(product);
+    router.push('/checkout');
+  };
+
+  const { phone = '', whatsapp = '' } = branch || {};
+  const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
+  const whatsappLink = `https://api.whatsapp.com/send?phone=152${whatsapp.replace(/\s/g, '')}`;
+
   return (
     <Layout title={product?.name} cities={cities || []} bgWhite>
       <div className="container mx-auto pb-12">
         <div className="grid gap-6 mt-8 px-4 md:grid-cols-2 md:max-w-none lg:grid-cols-5 xl:grid-cols-3">
-          <main className="md:px-12 md:px-0 lg:col-span-2 order-2 xl:col-span-1">
+          <main className="md:px-0 lg:col-span-2 order-2 xl:col-span-1">
             <div className="px-4 space-y-6 border rounded pt-4">
               <div>
                 <h1 className="h6">{product.name}</h1>
@@ -138,27 +143,40 @@ const ProductView: NextPage<Props> = ({
               {product?.saleOnline && (
                 <span className="flex items-center gap-4">
                   <ProductBadge type="car" />
-                  <strong>Entrega estimada de 3 a 5 días hábiles.</strong>
+                  <strong>Disponible para compra en línea</strong>
                 </span>
               )}
-              <span className="flex flex items-center gap-4">
+              <span className="flex items-center gap-4">
                 <ProductBadge type="shop" />
                 <span>Disponible en sucursal</span>
               </span>
               <p className="font-semibold">
                 Si te interesa recoger en tienda este producto comunicate a la sucursal.
               </p>
-              {product?.saleOnline && <Button text="Comprar en línea" theme="primary" fullWidth />}
+              {product?.saleOnline && (
+                <Button
+                  fullWidth
+                  theme="primary"
+                  text="Comprar en línea"
+                  onClick={handlePurchaseProduct}
+                />
+              )}
               <Button
-                text="Comprar en sucursal"
-                theme="whatsapp"
                 fullWidth
+                theme="whatsapp"
+                text="Comprar en sucursal"
+                href={whatsappLink}
                 icon={<WhatsAppOutlined />}
               />
               {!product?.saleOnline && (
-                <Button text="Llamar a sucursal" fullWidth icon={<PhoneOutlined />} />
+                <Button
+                  fullWidth
+                  text="Llamar a sucursal"
+                  icon={<PhoneOutlined />}
+                  href={phoneLink}
+                />
               )}
-              <div className="border-t border-b divide-x grid grid-cols-2 gap-4 py-4">
+              {/* <div className="border-t border-b divide-x grid grid-cols-2 gap-4 py-4">
                 <a href="#" className="text-brand flex items-center justify-center gap-2">
                   <HeartOutlined />
                   Favorito
@@ -167,7 +185,7 @@ const ProductView: NextPage<Props> = ({
                   <ShareAltOutlined />
                   Compartir
                 </a>
-              </div>
+              </div> */}
               <div className="flex items-center gap-4 border-b py-4">
                 <div className="shadow rounded-full overflow-hidden w-[72px] h-[72px]">
                   <Image src={LogoRedondo} width={72} height={72} alt="Logo Maxilana" />
@@ -181,7 +199,7 @@ const ProductView: NextPage<Props> = ({
                 </div>
               </div>
               <div className="flex items-center gap-4 py-4">
-                <span className="text-white text-xl bg-brand rounded-full min-w-[72px] min-h-[72px] border-accent border-4 border flex justify-center items-center">
+                <span className="text-white text-xl bg-brand rounded-full min-w-[72px] min-h-[72px] border-accent border-4 flex justify-center items-center">
                   <ShopFilled />
                 </span>
                 <div>

@@ -51,6 +51,10 @@ export const getStaticProps: GetStaticProps<{
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const View: NextPage<Props> = ({ branch, city, products, cities }) => {
+  const { phone = '', whatsapp = '', email } = branch || {};
+  const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
+  const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
+
   return (
     <Layout title={`${branch.name}, ${city?.name} ${city?.state}`} cities={cities}>
       <main className="container mx-auto p-4 flex flex-col gap-12 md:flex-row">
@@ -61,12 +65,21 @@ const View: NextPage<Props> = ({ branch, city, products, cities }) => {
             <p className="text-secondary text-sm">{branch.address}</p>
           </div>
           <div className="grid grid-cols-3 py-4">
-            <CircleLink href="#" text="Llamar por teléfono" icon={<PhoneOutlined />} />
+            <CircleLink href={phoneLink} text="Llamar por teléfono" icon={<PhoneOutlined />} />
             <CircleLink href="#" text="Ver en el mapa" icon={<EnvironmentOutlined />} />
-            <CircleLink href="#" text="Enviar WhatsApp" icon={<WhatsAppOutlined />} whatsapp />
+            <CircleLink
+              whatsapp
+              href={whatsappLink}
+              text="Enviar WhatsApp"
+              icon={<WhatsAppOutlined />}
+            />
           </div>
           <div className="py-4 text-secondary">
             <BranchSchedule branch={branch} />
+          </div>
+          <div className="py-4 text-secondary">
+            <span className="block text-brand-dark text-xs font-semibold uppercase">Contacto</span>
+            <a href={`mailto:${email}`}>{email}</a>
           </div>
         </aside>
         <section className="mb-16">
