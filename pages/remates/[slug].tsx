@@ -64,7 +64,11 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
   };
 
   return (
-    <Layout title={page?.title} meta={page?.seo} cities={cities || []}>
+    <Layout
+      title={page?.title}
+      meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
+      cities={cities || []}
+    >
       <div className="container mx-auto p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters

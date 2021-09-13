@@ -120,7 +120,11 @@ const Busqueda: NextPage<Props> = ({
   };
 
   return (
-    <Layout title="Buscador de productos" cities={cities || []}>
+    <Layout
+      title="Buscador de productos"
+      cities={cities || []}
+      meta={{ css: ['/antd/radio.css', '/antd/checkbox.css'] }}
+    >
       <main className="container mx-auto grid p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:grid-cols-4 lg:gap-8 lg:flex-row">
         <aside>
           <ProductsFilters
