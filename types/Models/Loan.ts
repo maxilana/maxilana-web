@@ -3,4 +3,5 @@ export interface LoanAccount {
   minPayment: number;
   settlePayment: number;
   dueDate: string;
+  clientCode: string;
 }

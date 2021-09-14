@@ -59,8 +59,8 @@ const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
                 account={account}
                 onSubmit={(data) => {
                   setPayment({
-                    concept: 'Pago de préstamo',
                     amount: data.pago,
+                    concept: `ABONO A PRÉSTAMO NÚMERO ${account.clientCode}`,
                   });
 
                   setStatus('payment');

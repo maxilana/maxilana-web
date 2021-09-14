@@ -20,6 +20,7 @@ const checkLoanAccount = async (data: Body): Promise<LoanAccount> => {
     response;
 
   return {
+    clientCode: data.codigoprestamo,
     clientName: strNombreCliente,
     settlePayment: dblMontoLiquidaCon,
     minPayment: dblMontoAlCorriente,
