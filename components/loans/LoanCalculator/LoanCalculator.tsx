@@ -154,8 +154,9 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
                 {loanAtPeriod !== '' ? loanAtPeriod : '...'}
               </span>
             </div>
-            <div>
+            <div className="text-center">
               <Button fullWidth theme="primary" text="Solicitar préstamo" onClick={handleSubmit} />
+              <small className="my-2">Importe más comisión por apertura e IVA</small>
             </div>
             {isUpdating && (
               <div className={styles.loaderOverlay}>

@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps<{
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const View: NextPage<Props> = ({ branch, city, products, cities }) => {
-  const { phone = '', whatsapp = '', email } = branch || {};
+  const { phone = '', whatsapp = '', email = null, imgSketch = null } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
 
@@ -66,7 +66,11 @@ const View: NextPage<Props> = ({ branch, city, products, cities }) => {
           </div>
           <div className="grid grid-cols-3 py-4">
             <CircleLink href={phoneLink} text="Llamar por teléfono" icon={<PhoneOutlined />} />
-            <CircleLink href="#" text="Ver en el mapa" icon={<EnvironmentOutlined />} />
+            <CircleLink
+              href={imgSketch ?? '#'}
+              text="Ver en el mapa"
+              icon={<EnvironmentOutlined />}
+            />
             <CircleLink
               whatsapp
               href={whatsappLink}

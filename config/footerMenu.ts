@@ -77,12 +77,12 @@ const legal = {
     {
       id: 3,
       label: 'Contrato de adhesión',
-      href: '/legal/contrato-adhesion',
+      href: 'https://maxilana.com/assets/contratoadhesion.pdf',
     },
     {
       id: 4,
       label: 'Registro Público',
-      href: '/legal/registro-publico',
+      href: 'https://rpce.profeco.gob.mx/casa_empeno.php',
     },
   ],
 };
