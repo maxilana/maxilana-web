@@ -19,6 +19,7 @@ const checkCouponAccount = async (data: Body): Promise<CouponAccount> => {
   const { dblMontoACobrar, strNombreDistribuidor, strQuincena } = response;
 
   return {
+    partnerNumber: data.numdistribuidor,
     clientName: strNombreDistribuidor,
     amount: dblMontoACobrar,
     currentDate: strQuincena,

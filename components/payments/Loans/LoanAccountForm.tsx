@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import React, { FC, useState } from 'react';
 
 import { Button } from '~/components/ui';
-import { FormFeedback, InputMask } from '~/components/common';
+import { FormFeedback, InputField, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
@@ -60,14 +60,7 @@ const LoanAccountForm: FC<Props> = ({ onSubmit }) => {
               <div className="grid gap-4">
                 <div>
                   <Form.Item name="codigoprestamo" rules={[{ required: true }]}>
-                    <InputMask
-                      label="Número de préstamo"
-                      placeholder="#-######"
-                      options={{
-                        blocks: [1, 6],
-                        delimiter: '-',
-                      }}
-                    />
+                    <InputField label="Número de préstamo" placeholder="##-######" />
                   </Form.Item>
                 </div>
                 <div>

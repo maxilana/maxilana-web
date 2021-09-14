@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
-import { PictureOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import { AutoPawnForm } from '~/components/pawn';
@@ -44,9 +43,14 @@ const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
         <Container>
           <div className="my-12 max-w-5xl mx-auto sm:my-24">
-            <div className="bg-gray-200 mt-12 w-full h-60 flex flex-row items-center justify-center">
-              <PictureOutlined style={{ fontSize: 48, color: 'white' }} />
-            </div>
+            <iframe
+              width="846"
+              height="471"
+              src="https://www.youtube.com/embed/5NZyvct4KK0"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </Container>
         <Container>

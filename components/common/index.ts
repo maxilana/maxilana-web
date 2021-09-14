@@ -11,4 +11,5 @@ export { default as Banners } from './Banners';
 export { default as Markdown } from './Markdown';
 export { default as SideMenu } from './SideMenu';
 export { default as ComissionsTable } from './ComissionsTable';
+export { default as CartSummary } from './CartSummary';
 export { default as ShareLinks } from './ShareLinks';

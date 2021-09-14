@@ -5,10 +5,10 @@ import { Radio, Form } from 'antd';
 import { FC, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
-import { FormFeedback, InputMask } from '~/components/common';
-import { Button, Calendar } from '~/components/ui';
+import { Button } from '~/components/ui';
 import { usePrice } from '~/modules/hooks';
 import { PawnAccount } from '~/types/Models';
+import { FormFeedback, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
 
@@ -48,6 +48,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
     Vencida: 'text-danger',
   };
 
+  // TODO: CAMBIAR ESOS DATOS FIJOS
   const handleFormSubmit = async (data: FormValues) => {
     setStatus('loading');
     const { paymentType, paymentAmount } = data;
@@ -94,17 +95,6 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
         <div className={cn(styles.root, 'relative')}>
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
-              <Calendar
-                onSelect={(date: Date) => {
-                  setStatus('searching');
-
-                  setTimeout(() => {
-                    setStatus('idle');
-                  }, 2000);
-                }}
-              />
-            </div>
-            <div>
               <p className="text-sm text-secondary">Cliente:</p>
               <p className="text-primary font-semibold">{data.name}</p>
               <div className="mb-4">
@@ -150,78 +140,79 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                 </div>
               </div>
             </div>
+            <FormFeedback
+              visible={error !== null}
+              errorMessage={error as string}
+              onDismiss={() => {
+                setError(null);
+              }}
+            >
+              <div className="flex flex-col h-full">
+                <h2 className="text-lg mb-4">Selecciona el monto que desees pagar</h2>
+                <div className="flex-1">
+                  <Form.Item name="paymentType">
+                    <Radio.Group>
+                      <span className="block my-2">
+                        <Radio value="REFRENDO">
+                          Pago de refrendo <strong>$401.60</strong>
+                        </Radio>
+                      </span>
+                      <span className="block my-2">
+                        <Radio value="ABONO">
+                          Pago de extensión de 7 días <strong>$63.50</strong>
+                        </Radio>
+                      </span>
+                      <span className="block my-2">
+                        <Radio value="OTRO-ABONO">
+                          <div className="flex flex-row items-center space-x-3">
+                            <span>Pagar abono</span>
+                            <Form.Item noStyle shouldUpdate>
+                              {({ getFieldValue }) =>
+                                getFieldValue('paymentType') === 'OTRO-ABONO' ? (
+                                  <Form.Item
+                                    name="paymentAmount"
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message: 'Campo requerido',
+                                      },
+                                    ]}
+                                    getValueFromEvent={({ target }) => target.rawValue}
+                                  >
+                                    <InputMask
+                                      options={{
+                                        prefix: '$',
+                                        numeral: true,
+                                        numeralPositiveOnly: true,
+                                        rawValueTrimPrefix: true,
+                                      }}
+                                    />
+                                  </Form.Item>
+                                ) : null
+                              }
+                            </Form.Item>
+                          </div>
+                        </Radio>
+                      </span>
+                    </Radio.Group>
+                  </Form.Item>
+                </div>
+                <Button
+                  fullWidth
+                  theme="primary"
+                  text={buttonText[status]}
+                  loading={['loading', 'searching'].includes(status)}
+                />
+              </div>
+            </FormFeedback>
           </div>
         </div>
       </div>
-      <div className="py-6 sm:px-4">
+      {/* <div className="py-6 sm:px-4">
         <div className={styles.root}>
-          <FormFeedback
-            visible={error !== null}
-            errorMessage={error as string}
-            onDismiss={() => {
-              setError(null);
-            }}
-          >
-            <>
-              <h2 className="text-lg mb-4">Selecciona el monto que desees pagar</h2>
-              <div className="mb-4">
-                <Form.Item name="paymentType">
-                  <Radio.Group>
-                    <span className="block my-2">
-                      <Radio value="REFRENDO">
-                        Pago de refrendo <strong>$401.60</strong>
-                      </Radio>
-                    </span>
-                    <span className="block my-2">
-                      <Radio value="ABONO">
-                        Pago de extensión de 7 días <strong>$63.50</strong>
-                      </Radio>
-                    </span>
-                    <span className="block my-2">
-                      <Radio value="OTRO-ABONO">
-                        <div className="flex flex-row items-center space-x-3">
-                          <span>Pagar abono</span>
-                          <Form.Item noStyle shouldUpdate>
-                            {({ getFieldValue }) =>
-                              getFieldValue('paymentType') === 'OTRO-ABONO' ? (
-                                <Form.Item
-                                  name="paymentAmount"
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: 'Campo requerido',
-                                    },
-                                  ]}
-                                  getValueFromEvent={({ target }) => target.rawValue}
-                                >
-                                  <InputMask
-                                    options={{
-                                      prefix: '$',
-                                      numeral: true,
-                                      numeralPositiveOnly: true,
-                                      rawValueTrimPrefix: true,
-                                    }}
-                                  />
-                                </Form.Item>
-                              ) : null
-                            }
-                          </Form.Item>
-                        </div>
-                      </Radio>
-                    </span>
-                  </Radio.Group>
-                </Form.Item>
-              </div>
-              <Button
-                fullWidth
-                theme="primary"
-                text={buttonText[status]}
-                loading={['loading', 'searching'].includes(status)}
-              />
-            </>
-          </FormFeedback>
+          
         </div>
-      </div>
+      </div> */}
     </Form>
   );
 };

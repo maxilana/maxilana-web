@@ -5,11 +5,13 @@ const ComissionsTable: FC = () => {
   return (
     <div>
       <div className="max-w-4xl mx-auto my-6">
-        <table className="w-full table-auto text-center">
+        <table className="w-full table-auto text-center text-sm">
           <thead>
             <tr>
               <th className="p-2 bg-surface-dark text-left">Plaza</th>
-              <th className="p-2 bg-surface-dark">CAT Promedio</th>
+              <th className="p-2 bg-surface-dark">
+                <span className="text-base">CAT</span> Promedio
+              </th>
               <th className="p-2 bg-surface-dark">Costo Mensual Totalizado</th>
               <th className="p-2 bg-surface-dark">Costo Diario Totalizado</th>
             </tr>

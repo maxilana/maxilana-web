@@ -55,10 +55,7 @@ const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
                 onSubmit={async (data) => {
                   const account = await checkCouponAccount(data);
 
-                  setAccount({
-                    ...account,
-                    partnerNumber: Number(data.numdistribuidor),
-                  });
+                  setAccount(account);
                   setStatus('confirm_payment');
                 }}
               />

@@ -20,7 +20,7 @@ export default function normalizeBranch(sucursal: Sucursal): Branch {
     whatsapp: sucursal?.whatsapp,
     formattedSchedule: sucursal?.HorarioConFormato,
     formattedWhatsApp: sucursal?.whatsappConFormato,
-    email: sucursal?.correoelectronico,
+    email: sucursal?.correoelectronicooficial,
     mondayToFridayOpeningTime: sucursal?.HoraAperturaLV,
     mondayToFridayClosingTime: sucursal?.HoraCierreLV,
     saturdayOpeningTime: sucursal?.HoraAperturaS,
