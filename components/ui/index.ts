@@ -8,3 +8,4 @@ export { default as Calendar } from './Calendar';
 export { default as Collapse } from './Collapse';
 export { default as Img } from './Img';
 export { default as ProductsNotFound } from './ProductsNotFound';
+export { default as Map } from './Map';

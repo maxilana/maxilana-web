@@ -23,7 +23,7 @@ import { Product } from '~/types/Models/Product';
 import generateProductGallery from '~/utils/generateProductGallery';
 import slugify from '~/utils/slugify';
 import getProductById from '~/api/getProductById';
-import { Button, Img, ProductCard } from '~/components/ui';
+import { Button, Map, ProductCard } from '~/components/ui';
 import { ProductBadge, Gallery } from '~/components/products';
 
 import LogoRedondo from '../../public/logo-redondo.png';
@@ -199,7 +199,11 @@ const ProductView: NextPage<Props> = ({
             <aside className=" xl:col-span-2 order-1 md:order-none">
               {product?.image && <Gallery images={gallery} />}
             </aside>
-            <div className="min-h-[400px] bg-surface my-6 order-3 md:order-none" />
+            {!!branch && (
+              <div className="aspect-w-16 aspect-h-9 bg-surface my-6 order-3 md:order-none rounded overflow-hidden">
+                <Map branches={[branch]} />
+              </div>
+            )}
           </div>
         </div>
         {!!relatedProducts && (
