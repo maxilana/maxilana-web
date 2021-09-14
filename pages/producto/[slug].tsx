@@ -1,14 +1,14 @@
 import { WithRouterProps } from 'next/dist/client/with-router';
 import { withRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import {
   WhatsAppOutlined,
   LoadingOutlined,
-  HeartOutlined,
-  ShareAltOutlined,
   ShopFilled,
   PhoneOutlined,
+  FacebookOutlined,
+  TwitterOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,6 +16,7 @@ import Image from 'next/image';
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
 import getProducts from '~/api/getProducts';
+import { ShareLinks } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { usePrice } from '~/modules/hooks';
 import { Branch, City } from '~/types/Models';
@@ -91,11 +92,18 @@ const ProductView: NextPage<Props> = ({
   branch,
   router,
 }) => {
+  // const [visibleShare, toggleShare] = useToggleState();
+  const [shareURL, setShareURL] = useState<string>();
   const { isFallback } = router;
   const { price: basePrice } = usePrice({ amount: product?.price });
   const { price: discountPrice } = usePrice(
     product?.netPrice ? { amount: product?.netPrice, baseAmount: product?.price } : undefined,
   );
+  useEffect(() => {
+    if (process.browser) {
+      setShareURL(window?.location?.toString());
+    }
+  }, []);
   if (isFallback || !product) {
     return (
       <Layout title="Cargando..." cities={[]}>
@@ -158,16 +166,7 @@ const ProductView: NextPage<Props> = ({
               {!product?.saleOnline && (
                 <Button text="Llamar a sucursal" fullWidth icon={<PhoneOutlined />} />
               )}
-              <div className="border-t border-b divide-x grid grid-cols-2 gap-4 py-4">
-                <a href="#" className="text-brand flex items-center justify-center gap-2">
-                  <HeartOutlined />
-                  Favorito
-                </a>
-                <a href="#" className="text-brand flex items-center justify-center gap-2">
-                  <ShareAltOutlined />
-                  Compartir
-                </a>
-              </div>
+              <ShareLinks url={`${shareURL}`} text={product?.name} className="border-t border-b" />
               <div className="flex items-center gap-4 border-b py-4">
                 <div className="shadow rounded-full overflow-hidden w-[72px] h-[72px]">
                   <Image src={LogoRedondo} width={72} height={72} alt="Logo Maxilana" />
@@ -200,7 +199,7 @@ const ProductView: NextPage<Props> = ({
               {product?.image && <Gallery images={gallery} />}
             </aside>
             {!!branch && (
-              <div className="aspect-w-16 aspect-h-9 bg-surface my-6 order-3 md:order-none rounded overflow-hidden">
+              <div className="aspect-w-16 aspect-h-8 bg-surface my-6 order-3 md:order-none rounded overflow-hidden">
                 <Map branches={[branch]} />
               </div>
             )}
