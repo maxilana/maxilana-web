@@ -41,6 +41,7 @@
 
 .loaderOverlay {
   @apply absolute top-0 left-0 w-full h-full z-50 bg-white opacity-70;
+  @apply sm:rounded;
 }
 
 .loader {
