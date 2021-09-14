@@ -2,13 +2,13 @@
   @apply relative flex flex-col items-start justify-end bg-blue-500;
   @apply min-h-[420px];
   @apply sm:min-h-[320px];
-  @apply md:min-h-[680px];
+  @apply md:min-h-[610px];
 }
 
 .cover {
   @apply absolute inset-0 z-0;
   @apply sm:h-auto sm:min-h-[320px];
-  @apply md:min-h-[680px];
+  @apply md:min-h-[610px];
 }
 
 .wrapper {

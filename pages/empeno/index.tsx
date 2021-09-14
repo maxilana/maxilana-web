@@ -1,7 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
 import Image from 'next/image';
-import { PictureOutlined } from '@ant-design/icons';
 
 import { PawnRequest } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
@@ -67,10 +66,15 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       </Container>
       <Container>
         <div className="my-12 max-w-5xl mx-auto sm:my-24">
-          <h2 className="text-2xl text-center">Así de fácil es empeñar en Maxilana</h2>
-          <div className="bg-gray-200 mt-12 w-full h-60 flex flex-row items-center justify-center">
-            <PictureOutlined style={{ fontSize: 48, color: 'white' }} />
-          </div>
+          <h2 className="text-2xl text-center mb-6">Así de fácil es empeñar en Maxilana</h2>
+          <iframe
+            width="1060"
+            height="600"
+            src="https://www.youtube.com/embed/Zc_9C0XGnwk"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
         </div>
       </Container>
       <Container>
@@ -101,7 +105,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
       </Container>
       <Container>
-        <div className="my-12 sm:my-24 sm:px-32">
+        <div className="my-12 sm:my-24">
           <h2 className="text-2xl text-center">Recibe más beneficios por empeño</h2>
           <div className="grid gap-6 mt-16 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((item) => (

@@ -19,7 +19,7 @@ const HeroComposed: FC<PropsWithChildren<Props>> = ({
   return (
     <div className={styles.root}>
       {cover !== null && <div className={styles.cover}>{cover}</div>}
-      <div className="container mx-auto sm:px-4 sm:py-20">
+      <div className="container mx-auto sm:px-4 sm:py-8">
         <div className="grid gap-7 items-center sm:grid-cols-2 lg:gap-14">
           <div className="relative sm:order-1">{children}</div>
           <div className="relative hidden sm:block">
