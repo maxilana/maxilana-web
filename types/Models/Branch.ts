@@ -26,5 +26,7 @@ export interface Branch {
   saturdayClosingTime: string;
   sundayOpeningTime: string;
   sundayClosingTime: string;
+  latitud: number;
+  longitud: number;
   slug?: string;
 }

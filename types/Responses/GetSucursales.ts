@@ -24,6 +24,8 @@ export interface Sucursal {
   HoraCierreS: string;
   HoraAperturaD: string;
   HoraCierreD: string;
+  latitud: number;
+  longitud: number;
   slug?: string;
 }
 

@@ -323,6 +323,13 @@
   dependencies:
     purgecss "^4.0.3"
 
+"@googlemaps/js-api-loader@1.11.4":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.11.4.tgz#f687a88e270234e3a29c64b42b76129e75467ca7"
+  integrity sha512-atFTSgEXXsE7mOsOIInUKG4JApu/NdyZR79Ed6jF92MjVQTcD6dz/Xo8djf4cIetnq4WYQmetem0d8/uS4o8oQ==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+
 "@hapi/accept@5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.2.tgz#ab7043b037e68b722f93f376afb05e85c0699523"
@@ -535,6 +542,26 @@
   dependencies:
     "@prefresh/core" "^1.3.1"
     "@prefresh/utils" "^1.1.0"
+
+"@react-google-maps/api@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-2.2.0.tgz#1654fe85d125a3a9ad56b92447bf45cda1265b70"
+  integrity sha512-kMmzHyveLdEiLP+WN/H4vYEyaDTJn59mXj5Y0BxjJs5SIMhUtYxJ6EeJCV0aRSN+Gq5hYFLheBoy8Pfqtabq5g==
+  dependencies:
+    "@googlemaps/js-api-loader" "1.11.4"
+    "@react-google-maps/infobox" "2.2.0"
+    "@react-google-maps/marker-clusterer" "2.2.0"
+    invariant "2.2.4"
+
+"@react-google-maps/infobox@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/infobox/-/infobox-2.2.0.tgz#4d491f5de42f4c548f9ca91b7f0a16e3dc5c6d52"
+  integrity sha512-nQbsPdcSTodXaaOgM9CaqyXytBkmollMuaYvERv5zxdoTWT1JvuViSaRbxpc3dYDsEHmp3myLx4ZbDcnOjf7Hg==
+
+"@react-google-maps/marker-clusterer@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/marker-clusterer/-/marker-clusterer-2.2.0.tgz#a1d635ce9a5b55f1e48fddc6acafc0e1128a6476"
+  integrity sha512-QaQAfY/FdaSwPmm0JnW9AW+t0ocfUYmuso9WmeIMwTRCqcqNxc4GFe5uT0LDLmsYt/wxAeYoGWVaD8sd/Vquig==
 
 "@rushstack/eslint-patch@^1.0.6":
   version "1.0.6"
@@ -3137,6 +3164,13 @@ internal-slot@^1.0.3:
     get-intrinsic "^1.1.0"
     has "^1.0.3"
     side-channel "^1.0.4"
+
+invariant@2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+  integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
+  dependencies:
+    loose-envify "^1.0.0"
 
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
