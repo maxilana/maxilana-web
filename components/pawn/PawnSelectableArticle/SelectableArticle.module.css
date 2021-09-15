@@ -1,6 +1,10 @@
 .root {
-  @apply flex flex-row items-center rounded-sm border border-brand overflow-hidden;
+  @apply flex flex-row items-center rounded border border-surface overflow-hidden;
   @apply hover:cursor-pointer;
+}
+
+.root:hover {
+  @apply bg-surface border-surface-dark;
 }
 
 .wrapImage {
@@ -8,18 +12,9 @@
 }
 
 .wrapBody {
-  @apply flex-grow flex flex-row justify-between items-center px-4 h-full;
+  @apply flex-grow flex flex-row justify-between items-center px-4 py-2 h-full;
 }
 
 .label {
   @apply font-semibold text-base text-primary;
-}
-
-.root:hover .wrapBody,
-.wrapBody.selected {
-  @apply bg-brand;
-
-  & > .label {
-    @apply text-white;
-  }
 }
