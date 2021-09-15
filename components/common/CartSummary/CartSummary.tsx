@@ -13,10 +13,15 @@ interface Props {
 
 const CartSummary: FC<Props> = ({ data }) => {
   const { name, price, image, netPrice } = data;
+  const shippingPrice = 200;
 
   const { price: basePrice } = usePrice({ amount: price });
   const { price: discountPrice } = usePrice(
     netPrice ? { amount: netPrice, baseAmount: price } : undefined,
+  );
+
+  const { price: totalPrice } = usePrice(
+    netPrice ? { amount: netPrice + shippingPrice, baseAmount: price + shippingPrice } : undefined,
   );
 
   return (
@@ -48,15 +53,11 @@ const CartSummary: FC<Props> = ({ data }) => {
         </div>
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio entrega</span>
-          <span className={styles.amount}>$200.00</span>
-        </div>
-        <div className={styles.rowSplit}>
-          <span className="text-secondary">Impuestos</span>
-          <span className={styles.amount}>$43.40</span>
+          <span className={styles.amount}>{`$${shippingPrice}.00`}</span>
         </div>
         <div className={styles.rowSplit}>
           <span className="font-semibold text-lg">Total</span>
-          <span className={cn(styles.amount, styles.amountFeat)}>$4551.70</span>
+          <span className={cn(styles.amount, styles.amountFeat)}>{totalPrice}</span>
         </div>
       </div>
     </div>

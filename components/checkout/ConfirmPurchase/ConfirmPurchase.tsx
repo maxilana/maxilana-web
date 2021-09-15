@@ -147,7 +147,6 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
             <div className="lg:max-w-[520px]">
               <div className={formContainerStyles.root}>
                 <div>
-                  {/** @ts-ignore */}
                   <CartSummary data={product} />
                   <hr className="my-4" />
                   <div>
