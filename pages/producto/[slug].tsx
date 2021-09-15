@@ -2,14 +2,7 @@ import { WithRouterProps } from 'next/dist/client/with-router';
 import { withRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
-import {
-  WhatsAppOutlined,
-  LoadingOutlined,
-  ShopFilled,
-  PhoneOutlined,
-  FacebookOutlined,
-  TwitterOutlined,
-} from '@ant-design/icons';
+import { WhatsAppOutlined, LoadingOutlined, ShopFilled, PhoneOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -24,7 +17,7 @@ import { Product } from '~/types/Models/Product';
 import generateProductGallery from '~/utils/generateProductGallery';
 import slugify from '~/utils/slugify';
 import getProductById from '~/api/getProductById';
-import { Button, Map, ProductCard } from '~/components/ui';
+import { Button, LazyMap, ProductCard } from '~/components/ui';
 import { ProductBadge, Gallery } from '~/components/products';
 
 import LogoRedondo from '../../public/logo-redondo.png';
@@ -223,8 +216,8 @@ const ProductView: NextPage<Props> = ({
               {product?.image && <Gallery images={gallery} />}
             </aside>
             {!!branch && (
-              <div className="aspect-w-16 aspect-h-8 bg-surface my-6 order-3 md:order-none rounded overflow-hidden">
-                <Map branches={[branch]} />
+              <div className="aspect-w-16 aspect-h-8 bg-surface my-6 order-3 md:order-none rounded overflow-hidden border">
+                <LazyMap branch={branch} />
               </div>
             )}
           </div>

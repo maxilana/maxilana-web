@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Banner: FC<Props> = ({ data }) => {
-  const image = <Img src={data?.image?.url} layout="fill" objectFit="cover" />;
+  const image = <Img src={data?.image?.url} layout="fill" objectFit="cover" quality={90} />;
   const url =
     Array.isArray(data?.products_page_mkts) && data?.products_page_mkts?.length === 1
       ? `/remates/${data?.products_page_mkts[0].slug}`
