@@ -13,3 +13,4 @@ export { default as SideMenu } from './SideMenu';
 export { default as ComissionsTable } from './ComissionsTable';
 export { default as CartSummary } from './CartSummary';
 export { default as ShareLinks } from './ShareLinks';
+export { default as YouTube } from './YouTube';

@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
+import React from 'react';
+import { YouTube } from '~/components/common';
 
 import { Button } from '~/components/ui';
 import { AutoPawnForm } from '~/components/pawn';
@@ -43,15 +45,7 @@ const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         </div>
         <Container>
           <div className="my-12 max-w-5xl mx-auto sm:my-24">
-            <div className="aspect-w-16 aspect-h-9 relative">
-              <iframe
-                className="absolute inset-0"
-                src="https://www.youtube.com/embed/5NZyvct4KK0"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <YouTube url="https://www.youtube.com/embed/5NZyvct4KK0" />
           </div>
         </Container>
         <Container>
