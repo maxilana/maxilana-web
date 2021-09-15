@@ -10,8 +10,9 @@ import { Button, Card } from '~/components/ui';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
-import PagoOnline from '~/public/ilustracion-pago-online-inicio.png';
 import Auto from '~/public/tarjeta-empeno-auto.png';
+import HeroEmpeno from '~/public/hero-empeno.png';
+import PagoOnline from '~/public/ilustracion-pago-online-inicio.png';
 
 const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
   return (
@@ -23,45 +24,58 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       }}
       cities={cities}
     >
-      <div className="bg-surface-dark sm:p-4 xl:py-8 border-b">
-        <div className="container mx-auto grid gap-6 items-center lg:gap-4 lg:grid-cols-12">
-          <PawnRequest />
-          <Card className="hidden h-full lg:col-span-5 lg:flex lg:flex-col lg:items-center">
-            <div className="flex-1 relative w-[220px]">
+      <div className="bg-[#F7D067] sm:p-4 lg:py-12 border-b">
+        <div className="container mx-auto grid gap-6 items-center lg:gap-4 lg:grid-flow-col">
+          <div className="lg:w-[628px]">
+            <div className="relative text-center mb-6">
               <Image
-                layout="fill"
-                src={PagoOnline}
-                alt="Logotipo Maxilana Vales"
-                placeholder="blur"
-                objectFit="contain"
+                priority
+                quality={100}
+                src={HeroEmpeno}
+                alt="Imagen de un hombre feliz con varios artículos"
               />
             </div>
-            <div className="space-y-3 sm:text-left lg:space-y-4 pb-4">
-              <h2 className="text-2xl">Paga en línea o cualquier sucursal</h2>
-              <p className="text-secondary">Paga tu empeño y no pierdas tu artículo</p>
-              <div className="space-x-3">
-                <Button theme="secondary" text="Pagar refrendo" href="/pagos/empeno" />
-                <Button text="Ver sucursales" href="/sucursales" />
-              </div>
+            <div className="px-4 space-y-2">
+              <h1 className="text-2xl sm:text-4xl">Recibimos casi todos los artículos</h1>
+              <p className="text-lg">¡Te damos más por tu prenda!</p>
             </div>
-          </Card>
+          </div>
+          <PawnRequest />
         </div>
       </div>
       <Container>
         <div className="my-12 max-w-5xl mx-auto sm:my-12">
           <ServicePaymentCards
             actionCard={{
-              title: 'Te prestamos más por tu auto',
-              imageSource: Auto,
-              description: 'Recibe más por tu auto, más dinero, mayor plazo.',
-              buttonLabel: 'Solicitar un avalúo',
-              buttonHref: '/empeno/auto',
+              title: 'Paga en línea o en cualquier sucursal',
+              imageSource: PagoOnline,
+              description: 'Paga tu empeño y no pierdas tu artículo',
+              buttonLabel: 'Pagar refrendo',
+              buttonHref: '/pagos/empeno',
             }}
             contextCard={{
               title: 'Realiza abonos de tu empeño sin acudir a sucursal',
               description: 'Por medio de depósito o transferencia en:',
             }}
           />
+        </div>
+      </Container>
+      <Container>
+        <div className="my-12 sm:my-24">
+          <Card>
+            <div className="sm:flex flex-row items-center">
+              <div className="flex-grow">
+                <Image src={Auto} layout="responsive" alt="Fotografía de un auto" />
+              </div>
+              <div className="sm:w-1/2">
+                <div className="space-y-4">
+                  <h3 className="text-lg sm:text-2xl">Te prestamos más por tu auto</h3>
+                  <p>Recibe más por tu auto, más dinero, mayor plazo.</p>
+                  <Button theme="secondary" href="/empeno/auto" text="Solicitar un avalúo" />
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
       </Container>
       <Container>
