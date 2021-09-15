@@ -75,9 +75,9 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
       <Container>
         <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
           {page?.directAccess?.map?.((card) => (
-            <Card key={card.id} noPadding>
+            <Card key={card.id} className="overflow-hidden" noPadding>
               <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between pl-4 md:pl-6">
-                <div className="relative min-w-[150px] lg:min-w-[200px]">
+                <div className="relative mr-2 min-w-[150px] lg:min-w-[200px]">
                   <Image
                     width={250}
                     height={364}
@@ -86,7 +86,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
                     alt={card.title}
                   />
                 </div>
-                <div className="text-center space-y-3 sm:text-left lg:space-y-4">
+                <div className="text-center pb-2 space-y-3 sm:pb-0 sm:text-left lg:space-y-4">
                   <h5 className="text-lg lg:text-2xl">{card.title}</h5>
                   <p className="text-xs lg:text-base">{card.description}</p>
                   {card.link?.map?.((link) => (
