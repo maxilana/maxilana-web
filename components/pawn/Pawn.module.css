@@ -1,8 +1,7 @@
 .root {
-  @apply bg-white p-4 relative;
-  @apply sm:rounded;
+  @apply relative bg-surface;
+  @apply sm:rounded sm:overflow-hidden;
   @apply lg:col-span-7;
-  @apply xl:p-8 xl:pb-2;
 }
 
 .rootLoading {
@@ -10,7 +9,7 @@
 }
 
 .title {
-  @apply text-2xl mb-4;
+  @apply text-xl mb-4;
 }
 
 .copy {

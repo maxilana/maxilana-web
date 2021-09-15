@@ -19,18 +19,6 @@ const PawnSelectableArticle: FC<Props> = ({
 }) => {
   return (
     <div id={label} role="checkbox" className={styles.root} onClick={onClick}>
-      <div className={styles.wrapImage}>
-        {imageSrc !== null && (
-          <Image
-            layout="fill"
-            src={imageSrc}
-            placeholder="blur"
-            objectFit="cover"
-            priority
-            alt="Imagen de un artículo que se puede empeñar"
-          />
-        )}
-      </div>
       <div className={cn(styles.wrapBody, { [styles.selected]: checked })}>
         <label htmlFor={label} className={styles.label}>
           {label}
