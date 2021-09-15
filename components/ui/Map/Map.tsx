@@ -5,9 +5,10 @@ import { Branch } from '~/types/Models';
 interface Props {
   branches: Branch[];
   zoom?: number;
+  onLoad?: (map: any) => void;
 }
 
-const Map: FC<Props> = ({ branches, zoom = 6 }) => {
+const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
   const [map, setMap] = useState(null);
   if (!process.env.NEXT_PUBLIC_GM_API) console.warn('NEXT_PUBLIC_GM_API variable does not exist');
   if (!process.env.NEXT_PUBLIC_MARKER_IMAGE_URL) {
@@ -29,15 +30,15 @@ const Map: FC<Props> = ({ branches, zoom = 6 }) => {
   };
 
   useEffect(() => {
-    console.log({ map, isLoaded });
     if (map && isLoaded) {
       setTimeout(() => setMapCenter(map), 300);
     }
   }, [isLoaded, map]);
 
-  const onLoad = useCallback(function callback(_map) {
+  const handleLoad = useCallback(function callback(_map) {
     setMapCenter(_map);
     setMap(_map);
+    onLoad?.(_map);
   }, []);
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
@@ -46,7 +47,7 @@ const Map: FC<Props> = ({ branches, zoom = 6 }) => {
   if (!isLoaded) return null;
   return (
     <GoogleMap
-      onLoad={onLoad}
+      onLoad={handleLoad}
       onUnmount={onUnmount}
       center={{
         lat: branches[0].latitud,
