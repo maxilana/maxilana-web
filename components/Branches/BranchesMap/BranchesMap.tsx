@@ -13,9 +13,10 @@ interface Props {
   cities: City[];
   branches: Branch[];
   currentCity?: City;
+  zoom?: number;
 }
 
-const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
+const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
   const [mapVisible, toggleMap] = useToggleState();
   return (
     <main className={cn(styles.root, { [styles.visible]: mapVisible })}>
@@ -46,7 +47,7 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
           branches.map((branch) => <BranchCard data={branch} key={branch?.id} />)}
       </aside>
       <div className={styles.map}>
-        <Map branches={branches} />
+        <Map branches={branches} zoom={zoom} />
       </div>
       <Button
         text={mapVisible ? 'Ver lista' : 'Ver mapa'}
