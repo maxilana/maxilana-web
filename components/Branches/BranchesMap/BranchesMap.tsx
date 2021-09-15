@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import useToggleState from '~/hooks/useToggleState';
@@ -13,10 +13,21 @@ interface Props {
   cities: City[];
   branches: Branch[];
   currentCity?: City;
+  zoom?: number;
 }
 
-const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
+const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
+  const [selectedBranch, setSelectedBranch] = useState<Branch>();
   const [mapVisible, toggleMap] = useToggleState();
+  const [map, setMap] = useState<google.maps.Map>();
+
+  useEffect(() => {
+    if (selectedBranch && map) {
+      map.setZoom(18);
+      map.setCenter({ lat: selectedBranch.latitud, lng: selectedBranch.longitud });
+    }
+  }, [selectedBranch]);
+
   return (
     <main className={cn(styles.root, { [styles.visible]: mapVisible })}>
       <aside className={styles.container}>
@@ -43,10 +54,17 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity }) => {
         </div>
         <span className={styles.count}>{branches?.length} sucursales</span>
         {!!branches?.length &&
-          branches.map((branch) => <BranchCard data={branch} key={branch?.id} />)}
+          branches.map((branch) => (
+            <BranchCard
+              data={branch}
+              key={branch?.id}
+              onClick={() => setSelectedBranch(branch)}
+              expanded={branch?.id === selectedBranch?.id}
+            />
+          ))}
       </aside>
       <div className={styles.map}>
-        <Map branches={branches} />
+        <Map branches={branches} zoom={zoom} onLoad={setMap} />
       </div>
       <Button
         text={mapVisible ? 'Ver lista' : 'Ver mapa'}

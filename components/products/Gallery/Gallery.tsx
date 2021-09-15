@@ -13,7 +13,7 @@ const Gallery: FC<Props> = ({ images }) => {
   return (
     <div className={styles.root}>
       <div className={styles.image}>
-        <Img src={images[selected]} layout="fill" objectFit="contain" alt="" />
+        <Img src={images[selected]} layout="fill" objectFit="contain" alt="" placeholder="empty" />
       </div>
       {images?.length > 1 && (
         <div className={styles.thumbnails}>
@@ -24,7 +24,15 @@ const Gallery: FC<Props> = ({ images }) => {
               onClick={() => setSelected(index)}
               className={cn(styles.thumbnail, { [styles.selected]: index === selected })}
             >
-              <Img src={url} width={64} height={64} layout="responsive" objectFit="cover" alt="" />
+              <Img
+                src={url}
+                width={64}
+                height={64}
+                layout="responsive"
+                objectFit="cover"
+                alt=""
+                placeholder="empty"
+              />
             </div>
           ))}
         </div>

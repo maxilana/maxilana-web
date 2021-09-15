@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       page,
       categories,
     },
-    revalidate: 60, // Each minute
+    // revalidate: 60 * 60, // Each minute
   };
 };
 
@@ -66,9 +66,10 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
           <Img
             layout="fill"
             src={`${page?.hero?.image?.url}`}
-            alt="Hero Homepage Image"
+            alt=""
             objectFit="cover"
             priority
+            placeholderType="brand"
           />
         }
       />

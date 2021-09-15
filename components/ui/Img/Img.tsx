@@ -1,22 +1,29 @@
 import React, { FC } from 'react';
 import Image, { ImageLoaderProps, ImageProps } from 'next/image';
 
-const shimmer = (w: number, h: number) => `
+interface ShimmerOptions {
+  w: number;
+  h: number;
+  baseColor?: string;
+  accentColor?: string;
+}
+
+const shimmer = ({ w, h, baseColor = '#E2E3E4', accentColor = '#fff' }: ShimmerOptions) => `
 <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <linearGradient id="g">
-      <stop stop-color="#E2E3E4" offset="20%" />
-      <stop stop-color="#FFF" offset="50%" />
-      <stop stop-color="#E2E3E4" offset="70%" />
+    <linearGradient id="imgPlaceholder">
+      <stop stopColor={baseColor} offset="20%" />
+      <stop stopColor={accentColor} offset="50%" />
+      <stop stopColor={baseColor} offset="70%" />
     </linearGradient>
   </defs>
-  <rect width="${w}" height="${h}" fill="#E2E3E4" />
+  <rect width="${w}" height="${h}" fill={baseColor} />
   <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
   <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
 </svg>`;
 
-const getBase64Placeholder = (w: number, h: number): string =>
-  `data:image/svg+xml;base64,${toBase64(shimmer(parseInt(`${w}`), parseInt(`${h}`)))}`;
+const getBase64Placeholder = (options: ShimmerOptions): string =>
+  `data:image/svg+xml;base64,${toBase64(shimmer(options))}`;
 
 const toBase64 = (str: string) =>
   typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
@@ -35,7 +42,22 @@ const loaders = {
     )}&w=${width}&q=${quality}`,
 };
 
-const Img: FC<ImageProps> = (props) => {
+const placeholderColors = {
+  default: {
+    baseColor: '#E2E3E4',
+    accentColor: '#FFF',
+  },
+  brand: {
+    baseColor: '#005198',
+    accentColor: '#1E83E1',
+  },
+};
+
+type Props = ImageProps & {
+  placeholderType?: 'default' | 'brand';
+};
+
+const Img: FC<Props> = ({ placeholderType = 'default', ...props }) => {
   const customLoader =
     loaders[process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders];
   return (
@@ -44,10 +66,11 @@ const Img: FC<ImageProps> = (props) => {
       <Image
         alt=""
         placeholder="blur"
-        blurDataURL={getBase64Placeholder(
-          parseFloat(`${props?.width}`) || 700,
-          parseFloat(`${props?.height}`) || 450,
-        )}
+        blurDataURL={getBase64Placeholder({
+          w: parseFloat(`${props?.width}`) || 700,
+          h: parseFloat(`${props?.height}`) || 450,
+          ...placeholderColors[placeholderType],
+        })}
         loader={customLoader}
         {...props}
       />
