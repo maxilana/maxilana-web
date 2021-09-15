@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Form } from 'antd';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 
 import { Button } from '~/components/ui';
 import { CartSummary, InputField, InputMask } from '~/components/common';
@@ -147,7 +148,6 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
             <div className="lg:max-w-[520px]">
               <div className={formContainerStyles.root}>
                 <div>
-                  {/** @ts-ignore */}
                   <CartSummary data={product} />
                   <hr className="my-4" />
                   <div>
@@ -156,8 +156,11 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                   <hr className="my-4" />
                   <div className="text-center">
                     <small>
-                      Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los
-                      TÉRMINOS Y CONDICIONES de Maxilana.
+                      Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los{' '}
+                      <Link href="/legal/terminos-condiciones">
+                        <a className="text-price">TÉRMINOS Y CONDICIONES</a>
+                      </Link>{' '}
+                      de Maxilana.
                     </small>
                   </div>
                 </div>
