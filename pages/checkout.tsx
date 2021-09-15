@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 
-import { BareLayout, Container } from '~/components/layout';
+import { BareLayout } from '~/components/layout';
 import { ConfirmPurchase } from '~/components/checkout';
 import useCart from '~/hooks/cart/useCart';
 import { Button } from '~/components/ui';
@@ -9,7 +9,7 @@ const CheckoutPage: NextPage = () => {
   const { data } = useCart();
 
   return (
-    <BareLayout>
+    <BareLayout title="Confirmar Compra" meta={{ css: ['/antd/form.css'] }}>
       {data !== null ? (
         <ConfirmPurchase product={data} />
       ) : (
