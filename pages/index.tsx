@@ -66,9 +66,10 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
           <Img
             layout="fill"
             src={`${page?.hero?.image?.url}`}
-            alt="Hero Homepage Image"
+            alt=""
             objectFit="cover"
             priority
+            placeholderType="brand"
           />
         }
       />
