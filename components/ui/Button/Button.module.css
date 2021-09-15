@@ -1,10 +1,10 @@
 .root {
-  @apply bg-surface-dark rounded text-primary tracking-wide inline-flex flex-row space-x-2 items-center shadow px-4 py-3;
+  @apply bg-surface rounded text-primary tracking-wide inline-flex flex-row space-x-2 items-center shadow px-4 py-3;
 }
 
 .root:hover,
 .root:active {
-  @apply bg-brand-dark text-white;
+  @apply bg-surface-dark;
 }
 
 .root:active {

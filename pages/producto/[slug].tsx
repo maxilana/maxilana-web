@@ -190,7 +190,7 @@ const ProductView: NextPage<Props> = ({
                   href={phoneLink}
                 />
               )}
-              {/* <ShareLinks url={`${shareURL}`} text={product?.name} className="border-t border-b" /> */}
+              <ShareLinks url={`${shareURL}`} text={product?.name} className="border-t border-b" />
               <div className="flex items-center gap-4 border-b py-4">
                 <div className="shadow rounded-full overflow-hidden w-[72px] h-[72px]">
                   <Image src={LogoRedondo} width={72} height={72} alt="Logo Maxilana" />
