@@ -2,7 +2,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 
-import { PawnRequest } from '~/components/pawn';
+import { PawnRequestFlow } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards, YouTube } from '~/components/common';
 import { PropsWithCities } from '~/types/PropsWithCities';
@@ -40,7 +40,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
               <p className="text-lg">¡Te damos más por tu prenda!</p>
             </div>
           </div>
-          <PawnRequest />
+          <PawnRequestFlow />
         </div>
       </div>
       <Container>

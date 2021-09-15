@@ -1,4 +1,5 @@
 import { FC, useState, useCallback } from 'react';
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 
@@ -44,7 +45,11 @@ const articles = [
   },
 ];
 
-const PawnRequest: FC = () => {
+interface Props {
+  onWhatsappClick: () => void;
+}
+
+const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
   const [selected, setSelected] = useState<number[]>([]);
 
   const handleToggleArticle = useCallback(
@@ -100,7 +105,14 @@ const PawnRequest: FC = () => {
       </div>
       <div className="border-surface-dark border-t p-4 bg-white md:bg-transparent">
         <p className="mb-4">O comunícate directamente con un valuador:</p>
-        <Button fullWidth size="large" theme="whatsapp" text="Obtén una valuación por Whatsapp" />
+        <Button
+          fullWidth
+          size="large"
+          theme="whatsapp"
+          text="Obtén una valuación por Whatsapp"
+          onClick={onWhatsappClick}
+          icon={<WhatsAppOutlined style={{ color: 'white', fontSize: 20 }} />}
+        />
       </div>
     </div>
   );
