@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       page,
       categories,
     },
-    revalidate: 60, // Each minute
+    // revalidate: 60 * 60, // Each minute
   };
 };
 

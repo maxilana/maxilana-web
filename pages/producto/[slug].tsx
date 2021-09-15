@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
         relatedProducts,
         cities,
       },
-      revalidate: 60 * 30, // Update each 30 minutes
+      // revalidate: 60 * 30, // Update each 30 minutes
     };
   } catch (e) {
     console.log('getStaticProps ERROR:', e);
