@@ -126,7 +126,7 @@ const ProductView: NextPage<Props> = ({
 
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
-  const whatsappLink = `https://api.whatsapp.com/send?phone=152${whatsapp.replace(/\s/g, '')}`;
+  const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
 
   return (
     <Layout title={product?.name} cities={cities || []} bgWhite>
