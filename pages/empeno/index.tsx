@@ -67,14 +67,15 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       <Container>
         <div className="my-12 max-w-5xl mx-auto sm:my-24">
           <h2 className="text-2xl text-center mb-6">Así de fácil es empeñar en Maxilana</h2>
-          <iframe
-            width="1060"
-            height="600"
-            src="https://www.youtube.com/embed/Zc_9C0XGnwk"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <div className="aspect-w-16 aspect-h-9 relative">
+            <iframe
+              className="absolute inset-0"
+              src="https://www.youtube.com/embed/Zc_9C0XGnwk"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         </div>
       </Container>
       <Container>
