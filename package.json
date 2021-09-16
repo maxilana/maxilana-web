@@ -52,6 +52,7 @@
     "preact": "^10.5.14",
     "preact-render-to-string": "^5.1.19",
     "react": "npm:@preact/compat",
+    "react-device-detect": "^1.17.0",
     "react-dom": "npm:@preact/compat",
     "sharp": "^0.29.0",
     "showdown": "^1.9.1",

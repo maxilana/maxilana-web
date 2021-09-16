@@ -39,5 +39,5 @@
 }
 
 .visible .map {
-  @apply block;
+  @apply grid;
 }

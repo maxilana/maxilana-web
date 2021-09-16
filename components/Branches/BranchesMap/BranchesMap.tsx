@@ -2,6 +2,7 @@ import cn from 'classnames';
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { isMobile } from 'react-device-detect';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
 import { Button, CheckableTag, Map } from '~/components/ui';
@@ -64,7 +65,7 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
           ))}
       </aside>
       <div className={styles.map}>
-        <Map branches={branches} zoom={zoom} onLoad={setMap} />
+        {(mapVisible || !isMobile) && <Map branches={branches} zoom={zoom} onLoad={setMap} />}
       </div>
       <Button
         text={mapVisible ? 'Ver lista' : 'Ver mapa'}

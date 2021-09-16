@@ -54,6 +54,7 @@ const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
         lng: branches[0].longitud,
       }}
       zoom={zoom}
+      options={{ streetViewControl: false, mapTypeControl: false }}
     >
       {branches
         .filter((branch) => branch?.latitud && branch?.longitud)
