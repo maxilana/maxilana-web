@@ -11,7 +11,7 @@
 }
 
 .thumbnail {
-  @apply border rounded-sm overflow-hidden w-[64px] h-[64px] transition-all hover:border-gray-400 p-8;
+  @apply border rounded-sm overflow-hidden w-[64px] h-[64px] transition-all hover:border-gray-400;
   @apply md:w-[92px] md:h-[92px];
 }
 
