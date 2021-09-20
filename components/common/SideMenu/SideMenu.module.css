@@ -3,7 +3,7 @@
 }
 
 .link {
-  @apply p-6 block mr-8 rounded-r-full text-lg;
+  @apply p-4 block mr-8 rounded-r-full text-base;
   @apply hover:bg-surface-light;
 }
 
