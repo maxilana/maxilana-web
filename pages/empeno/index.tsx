@@ -21,6 +21,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       meta={{
         description: 'Maxilana casa de empeño y prestamos',
         keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
+        css: ['/antd/form.css', '/antd/slider.css'],
       }}
       cities={cities}
     >

@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
@@ -46,40 +46,11 @@ const articles = [
 ];
 
 interface Props {
+  onSelect: () => void;
   onWhatsappClick: () => void;
 }
 
-const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
-  const [selected, setSelected] = useState<number[]>([]);
-
-  const handleToggleArticle = useCallback(
-    (id: number) => {
-      const found = selected.find((item) => item === id);
-
-      if (found) {
-        const newSelected = selected.filter((item) => item !== id);
-        setSelected(newSelected);
-      } else {
-        setSelected([id, ...selected]);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [selected],
-  );
-
-  const handleSubmit = (values: any) => {
-    const selectedArticles = articles
-      .filter((item) => {
-        return selected.includes(item.id);
-      })
-      .map((item) => item.label);
-
-    console.log({
-      ...values,
-      Articulos: selectedArticles,
-    });
-  };
-
+const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick }) => {
   return (
     <div className={styles.root}>
       <div className="p-4 bg-white">
@@ -94,10 +65,7 @@ const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
                 key={item.id}
                 label={item.label}
                 imageSrc={item.imageSrc}
-                checked={selected.includes(item.id)}
-                onClick={() => {
-                  handleToggleArticle(item.id);
-                }}
+                onClick={onSelect}
               />
             );
           })}
@@ -109,7 +77,7 @@ const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
           fullWidth
           size="large"
           theme="whatsapp"
-          text="Obtén una valuación por Whatsapp"
+          text="Obtén una valuación de un experto"
           onClick={onWhatsappClick}
           icon={<WhatsAppOutlined style={{ color: 'white', fontSize: 20 }} />}
         />
