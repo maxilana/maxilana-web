@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSSectionBySlug from '~/api/cms/getCMSSectionBySlug';
 import getCMSSections from '~/api/cms/getCMSSections';
 import getCMSSectionsSlugs from '~/api/cms/getCMSSectionsSlugs';
@@ -6,7 +7,7 @@ import getAllCities from '~/api/getAllCities';
 import { Layout } from '~/components/layout';
 import { SideMenu, Markdown } from '~/components/common';
 import { Collapse } from '~/components/ui';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import { CMSSection } from '~/types/Models/CMSSection';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -21,6 +22,7 @@ interface GSProps {
   cities: City[];
   section: CMSSection;
   sections: Array<Partial<CMSSection>>;
+  legalPages: CMSLegal[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
@@ -28,12 +30,14 @@ export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
   const cities = await getAllCities();
   const section = await getCMSSectionBySlug(slug as string);
   const sections = await getCMSSections();
+  const legalPages = await getAllLegalPages();
 
   return {
     props: {
       cities,
       section,
       sections,
+      legalPages,
     },
     revalidate: 60 * 60, // Each hour
   };
@@ -41,9 +45,9 @@ export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Faq: NextPage<Props> = ({ cities, section, sections }) => {
+const Faq: NextPage<Props> = ({ cities, section, sections, legalPages }) => {
   return (
-    <Layout title={section?.name} cities={cities} meta={section?.seo}>
+    <Layout title={section?.name} cities={cities} meta={section?.seo} legalPages={legalPages}>
       <main className="container mx-auto px-4 py-12 grid gap-16 lg:grid-cols-3">
         <div className="hidden lg:block">
           <SideMenu

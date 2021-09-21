@@ -5,7 +5,7 @@ import { checkLoanAccount } from '~/api/payments';
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { LoanAccountForm, LoanSelectionPaymentForm } from '~/components/payments';
 import { LoanAccount } from '~/types/Models';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -31,7 +31,7 @@ type Payment = { concept: string; amount: number } | null;
 
 type Status = 'account_status' | 'select_payment' | 'payment';
 
-const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
+const PersonalLoanPaymentPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const [payment, setPayment] = useState<Payment>(null);
   const [status, setStatus] = useState<Status>('account_status');
   const [account, setAccount] = useState<LoanAccount | null>(null);
@@ -41,6 +41,7 @@ const PersonalLoanPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
       title="Abona a tu préstamo personal en línea"
       cities={cities}
       meta={{ css: ['/antd/form.css', '/antd/radio.css'] }}
+      legalPages={legalPages}
     >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">

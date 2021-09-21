@@ -1,13 +1,13 @@
 import { NextPage } from 'next';
 import { Layout } from '~/components/layout';
 import { Card } from '~/components/ui';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
-const OtrosServicios: NextPage<PropsWithCities> = ({ cities }) => {
+const OtrosServicios: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
-    <Layout title="Otros servicios" cities={cities}>
+    <Layout title="Otros servicios" cities={cities} legalPages={legalPages}>
       <main className="container mx-auto p-4">
         <div className="max-w-5xl space-y-24 pt-12 mx-auto">
           <h1 className="text-center h2">Otros Servicios</h1>

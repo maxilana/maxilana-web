@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { PawnRequestFlow } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards, YouTube } from '~/components/common';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { Button, Card } from '~/components/ui';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
@@ -14,7 +14,7 @@ import Auto from '~/public/tarjeta-empeno-auto.png';
 import HeroEmpeno from '~/public/hero-empeno.png';
 import PagoOnline from '~/public/ilustracion-pago-online-inicio.png';
 
-const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
+const EmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
     <Layout
       title="Maxilana | Casa de empeño"
@@ -23,6 +23,7 @@ const EmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
         keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
       }}
       cities={cities}
+      legalPages={legalPages}
     >
       <div className="bg-[#F7D067] sm:p-4 lg:py-12 border-b">
         <div className="container mx-auto grid gap-6 items-center lg:gap-4 lg:grid-flow-col">

@@ -4,12 +4,14 @@ import { Form } from 'antd';
 import { PhoneFilled, QuestionCircleFilled, ShopFilled } from '@ant-design/icons';
 
 import { Container, Layout } from '~/components/layout';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { InputField, SocialMenu } from '~/components/common';
 import { Button } from '~/components/ui';
 import defaultValidateMessages from 'config/validationMessages';
 
-const ContactPage: NextPage<PropsWithCities> = ({ cities }) => {
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
+const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (data: any) => {
@@ -17,7 +19,7 @@ const ContactPage: NextPage<PropsWithCities> = ({ cities }) => {
   };
 
   return (
-    <Layout cities={cities} title="Contáctanos">
+    <Layout cities={cities} title="Contáctanos" legalPages={legalPages}>
       <Container>
         <div className="grid gap-10 my-12 sm:my-24 lg:grid-flow-col">
           <div className="lg:max-w-md">

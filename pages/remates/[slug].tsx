@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import omit from 'lodash.omit';
 import React from 'react';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSMktPagesSlugs from '~/api/cms/getCMSMktPagesSlugs';
 import getMktPageBySlug from '~/api/cms/getMktPageBySlug';
@@ -14,7 +15,7 @@ import { Layout } from '~/components/layout';
 import { ProductsFilters } from '~/components/products';
 import { Button, Img, ProductCard } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
 import { Product } from '~/types/Models/Product';
@@ -26,6 +27,7 @@ interface GSProps {
   categories?: Array<Partial<CMSCategory>>;
   page?: Partial<CMSMktPage>;
   products?: Product[];
+  legalPages: CMSLegal[];
 }
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -42,21 +44,21 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
   const cities = await getAllCities();
   const categories = await getCMSCategories();
   const page = await getMktPageBySlug(slug as string);
+  if (!page) return { notFound: true };
   const products = page?.productsFilters
     ? await getProductsFromCMSFilters(page?.productsFilters)
     : [];
-
-  if (!page) return { notFound: true };
+  const legalPages = await getAllLegalPages();
 
   return {
-    props: { cities, categories, page, products },
+    props: { cities, categories, page, products, legalPages },
     revalidate: 10 * 60, // Each 10 minutes
   };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) => {
+const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, legalPages }) => {
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
@@ -68,6 +70,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products }) 
       title={page?.title}
       meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
       cities={cities || []}
+      legalPages={legalPages}
     >
       <div className="container mx-auto p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>

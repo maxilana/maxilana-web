@@ -20,6 +20,7 @@
       "~/api/*": ["api/*"],
       "~/hooks/*": ["hooks/*"],
       "~/types/*": ["types/*"],
+      "~/types": ["types/*"],
       "~/utils/*": ["utils/*"],
       "~/public/*": ["public/*"]
     }

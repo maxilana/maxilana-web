@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { Button } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -15,9 +15,9 @@ import Remates from '../public/empresa-servicio-remates.png';
 import Vales from '../public/empresa-servicio-vales.png';
 import Trabajo from '../public/empresa-bolsa-trabajo.png';
 
-const CompanyPage: NextPage<PropsWithCities> = ({ cities }) => {
+const CompanyPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
-    <Layout cities={cities} title="Nuestra Empresa">
+    <Layout cities={cities} title="Nuestra Empresa" legalPages={legalPages}>
       <section>
         <div className="grid bg-action-primary items-center lg:grid-cols-2">
           <div className="lg:order-2">

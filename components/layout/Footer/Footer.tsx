@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { SocialMenu } from '~/components/common';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import footerMenu from '../../../config/footerMenu';
 
 import styles from './Footer.module.css';
@@ -11,9 +11,10 @@ import styles from './Footer.module.css';
 interface Props {
   variant?: 'default' | 'compact';
   cities: City[];
+  legalPages: Partial<CMSLegal>[];
 }
 
-const Footer: FC<Props> = ({ variant = 'default', cities }) => {
+const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
   if (variant === 'compact') {
     return (
       <footer className={`${styles.root} ${styles.rootCompact}`}>
@@ -60,12 +61,12 @@ const Footer: FC<Props> = ({ variant = 'default', cities }) => {
           </div>
           <div className="flex-1">
             <ul className={`sm:grid sm:grid-cols-3 xl:grid-cols-5`}>
-              {footerMenu(cities).map((section) => {
+              {footerMenu(cities, legalPages).map((section) => {
                 let items: JSX.Element[] = [];
 
                 if (section.children) {
                   items = section.children.map((link) => (
-                    <Link key={link.id} href={link.href}>
+                    <Link key={link.id} href={link.href || '#'}>
                       <a className={styles.menuLink}>{link.label}</a>
                     </Link>
                   ));

@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import { Button, Card } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import Image from 'next/image';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -49,9 +49,13 @@ const payments = [
   },
 ];
 
-const PaymentsPage: NextPage<PropsWithCities> = ({ cities }) => {
+const PaymentsPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
-    <Layout title="Paga online online directamente a tu distribuidora" cities={cities}>
+    <Layout
+      title="Paga online online directamente a tu distribuidora"
+      cities={cities}
+      legalPages={legalPages}
+    >
       <Container>
         <div className="py-12 sm:py-16">
           <div className="mb-11">

@@ -1,4 +1,4 @@
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 
 const empresa = {
   id: 1,
@@ -60,33 +60,6 @@ const servicios = {
   ],
 };
 
-const legal = {
-  id: 4,
-  label: 'Legal',
-  children: [
-    {
-      id: 1,
-      label: 'Aviso de privacidad',
-      href: '/legal/aviso-privacidad',
-    },
-    {
-      id: 2,
-      label: 'Términos y condiciones',
-      href: '/legal/terminos-condiciones',
-    },
-    {
-      id: 3,
-      label: 'Contrato de adhesión',
-      href: 'https://maxilana.com/assets/contratoadhesion.pdf',
-    },
-    {
-      id: 4,
-      label: 'Registro Público',
-      href: 'https://rpce.profeco.gob.mx/casa_empeno.php',
-    },
-  ],
-};
-
 const recursos = {
   id: 5,
   label: 'Recursos',
@@ -109,7 +82,7 @@ const recursos = {
   ],
 };
 
-const footerMenu = (cities: City[]) => {
+const footerMenu = (cities: City[], legalPages: Partial<CMSLegal>[]) => {
   const sucursales = {
     id: 3,
     label: 'Sucursales',
@@ -121,6 +94,28 @@ const footerMenu = (cities: City[]) => {
           href: `/sucursales/ciudad/${item.slug}`,
         }))
       : [],
+  };
+
+  const legal = {
+    id: 4,
+    label: 'Legal',
+    children: [
+      ...(legalPages?.map?.((item) => ({
+        id: item.id,
+        label: item.title,
+        href: `/legal/${item.slug}`,
+      })) || []),
+      {
+        id: 3,
+        label: 'Contrato de adhesión',
+        href: 'https://maxilana.com/assets/contratoadhesion.pdf',
+      },
+      {
+        id: 4,
+        label: 'Registro Público',
+        href: 'https://rpce.profeco.gob.mx/casa_empeno.php',
+      },
+    ],
   };
   return [empresa, servicios, sucursales, legal, recursos];
 };

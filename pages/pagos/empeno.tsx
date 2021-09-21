@@ -5,7 +5,7 @@ import { checkAccount } from '~/api/payments';
 import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { PawnAccountForm, PawnCalculateForm } from '~/components/payments';
 import { PawnAccount } from '~/types/Models';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -36,7 +36,7 @@ const PAYMENT_CONCEPT = [
   'ABONO A INTERÉS',
 ];
 
-const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
+const PagoEmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const [status, setStatus] = useState<FormStatus>('account_status');
   const [account, setAccount] = useState<PawnAccount | null>(null);
   const [payment, setPayment] = useState<Payment>(null);
@@ -61,6 +61,7 @@ const PagoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
       meta={{
         css: ['/antd/form.css', '/antd/radio.css', '/antd/calendar.css', '/antd/select.css'],
       }}
+      legalPages={legalPages}
     >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">

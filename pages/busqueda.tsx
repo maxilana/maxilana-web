@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { ArrowLeftOutlined, ArrowRightOutlined, FilterOutlined } from '@ant-design/icons';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 
 import getAllCities from '~/api/getAllCities';
@@ -15,7 +16,7 @@ import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
 import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
 import useToggleState from '~/hooks/useToggleState';
-import { Branch, City } from '~/types/Models';
+import { Branch, City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
 import { Pagination } from '~/types/Pagination';
@@ -32,6 +33,7 @@ interface GSSProps {
   city?: City | null;
   branches?: Branch[] | null;
   categories?: Array<Partial<CMSCategory>>;
+  legalPages?: CMSLegal[];
 }
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
@@ -53,7 +55,6 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { rows: products, ...pagination } = paginatedProducts;
   const cities = await getAllCities();
   const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
-
   const city =
     branch?.CityId || filters?.ciudad
       ? cities.find((item) =>
@@ -61,6 +62,8 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
         )
       : null;
   const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
+
+  const legalPages = await getAllLegalPages();
 
   return {
     props: {
@@ -72,6 +75,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
       city,
       branches,
       categories,
+      legalPages,
     },
   };
 };
@@ -87,6 +91,7 @@ const Busqueda: NextPage<Props> = ({
   branches,
   query,
   categories,
+  legalPages,
 }) => {
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const [loading, setLoading] = useState(false);
@@ -124,6 +129,7 @@ const Busqueda: NextPage<Props> = ({
       title="Buscador de productos"
       cities={cities || []}
       meta={{ css: ['/antd/radio.css', '/antd/checkbox.css'] }}
+      legalPages={legalPages || []}
     >
       <main className="container mx-auto grid p-4 md:px-16 lg:p-4 mb-12 mt-4 lg:grid-cols-4 lg:gap-8 lg:flex-row">
         <aside>

@@ -1,6 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getHomePage from '~/api/cms/getHomePage';
 import getAllCities from '~/api/getAllCities';
 import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
@@ -8,7 +9,7 @@ import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard, Img } from '~/components/ui';
 import { CategoryExplorer, ComissionsTable, Hero } from '~/components/common';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSHomePage } from '~/types/Models/CMSHomePage';
 import { Product } from '~/types/Models/Product';
@@ -19,6 +20,7 @@ interface GSProps {
   page: Partial<CMSHomePage>;
   categories: Array<Partial<CMSCategory>>;
   cities: City[];
+  legalPages: CMSLegal[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
@@ -30,12 +32,15 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
     page?.productFilters || { quantity: 8, order: 'rand' },
   );
 
+  const legalPages = await getAllLegalPages();
+
   return {
     props: {
       cities,
       products,
       page,
       categories,
+      legalPages,
     },
     // revalidate: 60 * 60, // Each minute
   };
@@ -43,9 +48,9 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
+const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages }) => {
   return (
-    <Layout meta={page.seo} cities={cities}>
+    <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
       <Hero
         title={`${page?.hero?.mainText}`}
         subtitle={page?.hero?.secondaryText}
@@ -69,6 +74,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories }) => {
             alt=""
             objectFit="cover"
             priority
+            quality={100}
             placeholderType="brand"
           />
         }

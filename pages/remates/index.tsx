@@ -3,6 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSRematesPage from '~/api/cms/getCMSRematesPage';
 import getAllCities from '~/api/getAllCities';
@@ -11,7 +12,7 @@ import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Banners, CategoryExplorer } from '~/components/common';
 import { Layout } from '~/components/layout';
 import useToggleState from '~/hooks/useToggleState';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
 import { ProductsCarrousel, ProductsFilters } from '~/components/products';
@@ -25,6 +26,7 @@ interface GSProps {
   page?: CMSRematesPage;
   categories?: Array<Partial<CMSCategory>>;
   categoriesProducts?: Array<Partial<CMSCategory & { products: Product[] }>>;
+  legalPages: CMSLegal[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
@@ -44,9 +46,10 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
           }),
         )
       : [];
+    const legalPages = await getAllLegalPages();
 
     return {
-      props: { cities, page, categories, categoriesProducts },
+      props: { cities, page, categories, categoriesProducts, legalPages },
       revalidate: 10 * 60, // each 10 minutes
     };
   } catch (e) {
@@ -60,7 +63,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts }) => {
+const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts, legalPages }) => {
   const { push } = useRouter();
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
 
@@ -72,6 +75,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
     <Layout
       meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
       cities={cities || []}
+      legalPages={legalPages}
     >
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>

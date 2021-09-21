@@ -1,15 +1,19 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import { GetStaticProps } from 'next';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getAllCities from '~/api/getAllCities';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 
-export const defaultGetStaticProps: GetStaticProps<{ cities: City[] }> = async () => {
-  const cities = await getAllCities();
+export const defaultGetStaticProps: GetStaticProps<{ cities: City[]; legalPages: CMSLegal[] }> =
+  async () => {
+    const cities = await getAllCities();
+    const legalPages = await getAllLegalPages();
 
-  return {
-    props: {
-      cities,
-    },
+    return {
+      props: {
+        cities,
+        legalPages,
+      },
+    };
   };
-};
 
 export default defaultGetStaticProps;
