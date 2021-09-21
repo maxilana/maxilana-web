@@ -1,10 +1,13 @@
-import { FC, useState } from 'react';
+import { FC, useReducer } from 'react';
 
 import PawnRequest from './PawnRequest';
 import Calculator from './Calculator';
 import PawnSelectableCity from './PawnSelectableCity';
-import RequestForm from './RequestForm';
 import SelectArticle from './SelectArticle';
+import RequestForm from './RequestForm';
+import { RequestPawn } from '~/types/Requests/RequestPawn';
+import getCalculatedPawn from '~/api/getCalculatedPawn';
+import { PawnCalculation } from '~/types/Models/PawnCalculation';
 
 type Status =
   | 'idle'
@@ -13,48 +16,119 @@ type Status =
   | 'show_request_form'
   | 'show_calculator';
 
-const PawnRequestFlow: FC = () => {
-  const [status, setStatus] = useState<Status>('idle');
-  const [request, setRequest] = useState(null);
-  const [category, setCategory] = useState<number | null>(null);
+type State = {
+  status: Status;
+  category: number;
+  article: number;
+  pawnConfig: PawnCalculation | null;
+};
 
-  const handleRequestPawn = (data: any) => {
-    console.log(data);
-    setRequest(data);
-    return Promise.resolve();
+const initialState: State = {
+  status: 'idle',
+  category: 0,
+  article: -1,
+  pawnConfig: null,
+};
+
+const reducer = (state: any, action: any) => {
+  const { payload, type } = action;
+
+  switch (type) {
+    case 'SHOW_START':
+      return initialState;
+    case 'SHOW_CITIES':
+      return { ...state, status: 'show_whatsapp_list' };
+    case 'SHOW_ARTICLES':
+      return {
+        ...state,
+        category: payload.category,
+        status: 'show_articles',
+      };
+    case 'SHOW_REQUEST_FORM':
+      return {
+        ...state,
+        status: 'show_request_form',
+        article: payload.article,
+      };
+    case 'SHOW_CALCULATOR':
+      return {
+        ...state,
+        status: 'show_calculator',
+        pawnConfig: payload.config,
+      };
+    default:
+      throw new Error('No existe esa acción');
+  }
+};
+
+const PawnRequestFlow: FC = () => {
+  const [state, dispatch] = useReducer<(state: State, action: any) => State>(reducer, initialState);
+
+  const handleRequestForm = async (data: RequestPawn) => {
+    const params = {
+      ...data,
+      codigoarticulo: state.article,
+    };
+
+    const config = await getCalculatedPawn(params);
+
+    dispatch({
+      type: 'SHOW_CALCULATOR',
+      payload: { config },
+    });
   };
 
   const goToStart = () => {
-    setStatus('idle');
+    dispatch({ type: 'SHOW_START' });
   };
 
-  if (status === 'idle') {
+  if (state.status === 'show_whatsapp_list') {
+    return <PawnSelectableCity onBack={goToStart} />;
+  }
+
+  if (state.status === 'show_articles') {
     return (
-      <PawnRequest
-        onSelect={(category) => {
-          setCategory(category);
-          setStatus('show_articles');
-        }}
-        onWhatsappClick={() => {
-          setStatus('show_whatsapp_list');
+      <SelectArticle
+        onBack={goToStart}
+        category={state.category}
+        onSelectArticle={(article) => {
+          dispatch({
+            type: 'SHOW_REQUEST_FORM',
+            payload: { article },
+          });
         }}
       />
     );
   }
 
-  if (status === 'show_articles' && category) {
-    return <SelectArticle onBack={goToStart} category={category} />;
+  if (state.status === 'show_request_form') {
+    return <RequestForm onBack={goToStart} onSubmit={handleRequestForm} />;
   }
 
-  if (status === 'show_request_form') {
-    return <RequestForm onBack={goToStart} onSubmit={handleRequestPawn} />;
+  if (state.status === 'show_calculator' && state.pawnConfig) {
+    return (
+      <Calculator
+        data={state.pawnConfig}
+        onWhatsappClick={() => {
+          dispatch({ type: 'SHOW_CITIES' });
+        }}
+      />
+    );
   }
 
-  if (status === 'show_calculator') {
-    return <Calculator />;
-  }
-
-  return <PawnSelectableCity onBack={goToStart} />;
+  return (
+    <PawnRequest
+      onSelect={(category) => {
+        dispatch({
+          type: 'SHOW_ARTICLES',
+          payload: { category },
+        });
+      }}
+      onWhatsappClick={() => {
+        dispatch({ type: 'SHOW_CITIES' });
+      }}
+    />
+  );
 };
 
 export default PawnRequestFlow;

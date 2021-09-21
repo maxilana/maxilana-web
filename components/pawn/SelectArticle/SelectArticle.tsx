@@ -8,9 +8,10 @@ import SelectableItem from '../SelectableItem';
 interface Props {
   category: number;
   onBack: () => void;
+  onSelectArticle: (id: number) => void;
 }
 
-const SelectArticle: FC<Props> = ({ category, onBack }) => {
+const SelectArticle: FC<Props> = ({ category, onBack, onSelectArticle }) => {
   const subcategory = subcategories.find((item) => item.categoryID === category);
 
   return (
@@ -26,7 +27,13 @@ const SelectArticle: FC<Props> = ({ category, onBack }) => {
           })}
         >
           {subcategory?.articles.map((item) => (
-            <SelectableItem key={item.id} label={item.label} />
+            <SelectableItem
+              key={item.id}
+              label={item.label}
+              onClick={() => {
+                onSelectArticle(subcategory.articleCode);
+              }}
+            />
           ))}
         </div>
       </div>
@@ -38,6 +45,7 @@ const subcategories = [
   {
     id: 1,
     categoryID: 8,
+    articleCode: 2,
     label: 'vehículo',
     articles: [
       {
@@ -57,6 +65,7 @@ const subcategories = [
   {
     id: 2,
     categoryID: 2,
+    articleCode: 2,
     label: 'herramienta',
     articles: [
       {
@@ -72,6 +81,7 @@ const subcategories = [
   {
     id: 3,
     categoryID: 5,
+    articleCode: 2,
     label: 'aparato electrónico',
     articles: [
       {
@@ -91,6 +101,7 @@ const subcategories = [
   {
     id: 4,
     categoryID: 7,
+    articleCode: 2,
     label: 'electrodoméstico',
     articles: [
       {
@@ -114,6 +125,7 @@ const subcategories = [
   {
     id: 5,
     categoryID: 6,
+    articleCode: 2,
     label: 'relojes',
     articles: [
       {
@@ -133,6 +145,7 @@ const subcategories = [
   {
     id: 6,
     categoryID: 1,
+    articleCode: 1,
     label: 'joyería y monedas',
     articles: [
       {

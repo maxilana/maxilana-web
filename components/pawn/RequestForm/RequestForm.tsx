@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Form } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 
@@ -10,12 +10,9 @@ import useCitiesForPawns from '~/hooks/useCitiesForPawns';
 
 import styles from './Form.module.css';
 import commonStyles from '../Pawn.module.css';
+import { RequestPawn } from '~/types/Requests/RequestPawn';
 
-type FormValues = {
-  monto: number;
-  plaza: number;
-  correo: string;
-};
+type FormValues = RequestPawn;
 
 interface Props {
   onBack: () => void;
@@ -24,12 +21,19 @@ interface Props {
 
 const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const { cities, isLoading, error } = useCitiesForPawns();
 
   const handleFormSubmit = async (data: FormValues) => {
+    setLoading(true);
+
     try {
       await onSubmit?.(data);
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -84,6 +88,7 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
                 <Form.Item name="plaza" rules={[{ required: true }]}>
                   <SelectField
                     name="plaza"
+                    defaultValue="---"
                     label="Selecciona tu ciudad"
                     options={
                       cities !== undefined
@@ -102,6 +107,7 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
                   <Button
                     fullWidth
                     theme="primary"
+                    loading={loading}
                     text="Ver cuánto te prestamos por tu artículo"
                   />
                 </div>
