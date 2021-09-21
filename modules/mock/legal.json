@@ -1,22 +1,12 @@
 [
   {
-    "id": 1,
-    "label": "Aviso de privacidad",
-    "href": "/legal/aviso-privacidad"
-  },
-  {
-    "id": 2,
-    "label": "Términos y condiciones",
-    "href": "/legal/terminos-condiciones"
-  },
-  {
-    "id": 3,
+    "id": 300,
     "label": "Contrato de adhesión",
     "href": "https://maxilana.com/assets/contratoadhesion.pdf",
     "external": true
   },
   {
-    "id": 4,
+    "id": 400,
     "label": "Registro público de casas de empeño",
     "href": "https://rpce.profeco.gob.mx/casa_empeno.php",
     "external": true

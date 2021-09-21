@@ -5,7 +5,7 @@ import { HelpSidebar, Layout } from '~/components/layout';
 import PaymentForm, { CouponAccountForm, CouponCheckPaymentForm } from '~/components/payments';
 import { checkCouponAccount } from '~/api/payments/coupons';
 import { CouponAccount } from '~/types/Models';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -36,7 +36,7 @@ type Payment = {
 
 const PAYMENT_CONCEPT = 'ABONO A LÍNEA DE CRÉDITO DIST.';
 
-const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
+const CouponPaymentPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const [status, setStatus] = useState<Status>('account_status');
   const [payment, setPayment] = useState<Payment | null>(null);
   const [account, setAccount] = useState<CouponAccount | null>(null);
@@ -46,6 +46,7 @@ const CouponPaymentPage: NextPage<PropsWithCities> = ({ cities }) => {
       title="Paga online online directamente a tu distribuidora"
       cities={cities}
       meta={{ css: ['/antd/form.css', '/antd/radio.css'] }}
+      legalPages={legalPages}
     >
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">

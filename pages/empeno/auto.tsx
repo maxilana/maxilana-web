@@ -6,15 +6,15 @@ import { YouTube } from '~/components/common';
 import { Button } from '~/components/ui';
 import { AutoPawnForm } from '~/components/pawn';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 import HeroAutoEmpeno from '~/public/foto-hero-auto-empeno.png';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
-const AutoEmpenoPage: NextPage<PropsWithCities> = ({ cities }) => {
+const AutoEmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
     <div>
-      <Layout title="Auto Empeño" cities={cities}>
+      <Layout title="Auto Empeño" cities={cities} legalPages={legalPages}>
         <div className="pt-[108px] bg-gradient-to-r from-[#F7D067] to-[#F1C153]">
           <div className="container mx-auto px-4 py-10 sm:py-20">
             <div className="grid gap-4 sm:grid-cols-2">

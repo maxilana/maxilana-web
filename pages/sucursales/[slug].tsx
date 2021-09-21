@@ -2,12 +2,13 @@ import { EnvironmentOutlined, PhoneOutlined, WhatsAppOutlined } from '@ant-desig
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
 import React from 'react';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
 import getBranchesSlugs from '~/api/getBranchesSlugs';
 import getProducts from '~/api/getProducts';
 import { Layout } from '~/components/layout';
-import { Branch, City } from '~/types/Models';
+import { Branch, City, CMSLegal } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
 import { CircleLink, BranchSchedule } from '~/components/Branches';
 import { Button, ProductCard } from '~/components/ui';
@@ -27,6 +28,7 @@ export const getStaticProps: GetStaticProps<{
   city?: City;
   products: Product[];
   cities: City[];
+  legalPages: CMSLegal[];
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
   try {
@@ -34,12 +36,14 @@ export const getStaticProps: GetStaticProps<{
     const cities = await getAllCities();
     const products = await getProducts({ sucursal: `${branch?.id}` });
     const city = cities.find((item) => item.id === branch.CityId);
+    const legalPages = await getAllLegalPages();
     return {
       props: {
         branch,
         city,
         products: products.rows,
         cities,
+        legalPages,
       },
     };
   } catch (e) {
@@ -50,13 +54,17 @@ export const getStaticProps: GetStaticProps<{
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const View: NextPage<Props> = ({ branch, city, products, cities }) => {
+const View: NextPage<Props> = ({ branch, city, products, cities, legalPages }) => {
   const { phone = '', whatsapp = '', email = null, imgSketch = null } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
 
   return (
-    <Layout title={`${branch.name}, ${city?.name} ${city?.state}`} cities={cities}>
+    <Layout
+      title={`${branch.name}, ${city?.name} ${city?.state}`}
+      cities={cities}
+      legalPages={legalPages}
+    >
       <main className="container mx-auto p-4 flex flex-col gap-12 md:flex-row">
         <aside className="divide-y divide-gray-300 md:min-w-[237px] xl:min-w-[300px]">
           <div className="py-4 flex flex-col items-center text-center space-y-2">

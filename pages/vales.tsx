@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import { ButtonDropdown } from '~/components/ui';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { Hero, ServicePaymentCards } from '~/components/common';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -68,9 +68,9 @@ const questionList = [
   },
 ];
 
-const ValesPage: NextPage<PropsWithCities> = ({ cities }) => {
+const ValesPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
-    <Layout title="Maxilana vales" cities={cities}>
+    <Layout title="Maxilana vales" cities={cities} legalPages={legalPages}>
       <Hero
         title="Invierte tu tiempo y gana dinero extra"
         subtitle="Conviértete en distribuidora de vales y empieza a cumplir tus metas"

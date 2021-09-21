@@ -1,25 +1,29 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
 import { RightOutlined } from '@ant-design/icons';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSSections from '~/api/cms/getCMSSections';
 import getAllCities from '~/api/getAllCities';
 import { Layout } from '~/components/layout';
-import { City } from '~/types/Models';
+import { City, CMSLegal } from '~/types/Models';
 import { CMSSection } from '~/types/Models/CMSSection';
 
 interface GSProps {
   cities: City[];
   sections?: Array<Partial<CMSSection>>;
+  legalPages: CMSLegal[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
   const cities = await getAllCities();
   const sections = await getCMSSections();
+  const legalPages = await getAllLegalPages();
 
   return {
     props: {
       cities,
       sections,
+      legalPages,
     },
     revalidate: 60 * 60, // Each hour
   };
@@ -27,9 +31,9 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Sections: NextPage<Props> = ({ cities, sections }) => {
+const Sections: NextPage<Props> = ({ cities, sections, legalPages }) => {
   return (
-    <Layout title="Preguntas frecuentes" cities={cities}>
+    <Layout title="Preguntas frecuentes" cities={cities} legalPages={legalPages}>
       <main className="container mx-auto p-4 my-12 grid gap-8 lg:grid-cols-3">
         <div>
           <h1 className="h6 text-brand uppercase mb-2">Preguntas frecuentes</h1>

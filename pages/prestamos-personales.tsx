@@ -5,7 +5,7 @@ import LoanRequestFlow from '~/components/loans';
 import { Card, ButtonDropdown } from '~/components/ui';
 import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
-import { PropsWithCities } from '~/types/PropsWithCities';
+import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 import HeroPrestamos from '~/public/demo-hero-prestamos.jpg';
 import PagarPrestamos from '~/public/pagar-prestamos.png';
@@ -63,7 +63,7 @@ const questionList = [
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
-const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
+const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   return (
     <Layout
       cities={cities}
@@ -71,6 +71,7 @@ const PrestamosPage: NextPage<PropsWithCities> = ({ cities }) => {
       meta={{
         css: ['/antd/form.css', '/antd/radio.css', '/antd/slider.css'],
       }}
+      legalPages={legalPages}
     >
       <HeroComposed
         title="Te prestamos para lo que necesites"

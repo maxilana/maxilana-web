@@ -5,6 +5,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } fro
 import { WhatsAppOutlined, LoadingOutlined, ShopFilled, PhoneOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
 
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
@@ -12,7 +13,7 @@ import getProducts from '~/api/getProducts';
 import { ShareLinks } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { usePrice } from '~/modules/hooks';
-import { Branch, City } from '~/types/Models';
+import { Branch, City, CMSLegal } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
 import generateProductGallery from '~/utils/generateProductGallery';
 import slugify from '~/utils/slugify';
@@ -29,6 +30,7 @@ interface GSProps {
   cities?: City[];
   relatedProducts?: Product[];
   branch?: Branch;
+  legalPages: CMSLegal[];
 }
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -60,6 +62,8 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 
     const gallery = await generateProductGallery(product.id);
 
+    const legalPages = await getAllLegalPages();
+
     return {
       props: {
         product,
@@ -67,6 +71,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
         branch,
         relatedProducts,
         cities,
+        legalPages,
       },
       // revalidate: 60 * 30, // Update each 30 minutes
     };
@@ -85,6 +90,7 @@ const ProductView: NextPage<Props> = ({
   relatedProducts,
   branch,
   router,
+  legalPages,
 }) => {
   // const [visibleShare, toggleShare] = useToggleState();
   const [shareURL, setShareURL] = useState<string>();
@@ -101,7 +107,7 @@ const ProductView: NextPage<Props> = ({
   }, []);
   if (isFallback || !product) {
     return (
-      <Layout title="Cargando..." cities={[]}>
+      <Layout title="Cargando..." cities={cities || []} legalPages={legalPages || []}>
         <div className="container mx-auto px4 py-48 text-center space-y-6">
           <LoadingOutlined className="text-brand text-2xl" />
           <span className="block text-secondary text-2xl md:text-3xl">
@@ -122,7 +128,7 @@ const ProductView: NextPage<Props> = ({
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
 
   return (
-    <Layout title={product?.name} cities={cities || []} bgWhite>
+    <Layout title={product?.name} cities={cities || []} bgWhite legalPages={legalPages}>
       <div className="container mx-auto pb-12">
         <div className="grid gap-6 mt-8 px-4 md:grid-cols-2 md:max-w-none lg:grid-cols-5 xl:grid-cols-3">
           <main className="md:px-0 lg:col-span-2 order-2 xl:col-span-1">
