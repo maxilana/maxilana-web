@@ -119,10 +119,19 @@ const PawnRequestFlow: FC = () => {
   return (
     <PawnRequest
       onSelect={(category) => {
-        dispatch({
-          type: 'SHOW_ARTICLES',
-          payload: { category },
-        });
+        // Computadoras y celulares no tienen
+        //  subcategorías
+        if ([3, 4].includes(category)) {
+          dispatch({
+            type: 'SHOW_REQUEST_FORM',
+            payload: { article: 2 },
+          });
+        } else {
+          dispatch({
+            type: 'SHOW_ARTICLES',
+            payload: { category },
+          });
+        }
       }}
       onWhatsappClick={() => {
         dispatch({ type: 'SHOW_CITIES' });
