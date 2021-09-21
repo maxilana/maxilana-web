@@ -1,0 +1,4 @@
+.root {
+  @apply bg-white p-4;
+  @apply sm:min-h-[512px];
+}

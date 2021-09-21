@@ -82,9 +82,12 @@ const LoanRequestFlow: FC = () => {
 
     const now = dayjs().format('DD/MM/YYYY');
     const item = whatsappList.find((item) => item.id == loanConfig.cityCode);
+    const { Nombre = '', CorreoElectronico = '', Telefono = '' } = data;
 
     const params = {
-      ...data,
+      Nombre,
+      CorreoElectronico,
+      Telefono,
       Fecha: now,
       CodigoPlaza: loanConfig.cityCode,
       MontoSolicitado: loanConfig.amount,
@@ -98,13 +101,10 @@ const LoanRequestFlow: FC = () => {
     setTimeout(() => {
       const message = `
         Hola quisiera solicitar un préstamo, mis datos son los siguientes:
-         Nombre: ${params.Nombre}
-         Correo Electrónico: ${params.CorreoElectronico}
-         Teléfono: ${params.Telefono}
-         Fecha: ${params.Fecha}
-         Monto Solicidato: ${params.MontoSolicitado}
-         Ciudad: ${item?.label}
-         CódigoPolítica: ${params.CodigoPolitica}
+         \nFecha: ${params.Fecha}
+         \nMonto Solicitado: ${params.MontoSolicitado}
+         \nCiudad: ${item?.label}
+         \nCódigoPolítica: ${params.CodigoPolitica}
       `;
 
       const location = `https://api.whatsapp.com/send?phone=521${item?.phone}&text=${message}`;

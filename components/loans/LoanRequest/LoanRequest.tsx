@@ -27,20 +27,20 @@ const LoanRequest: FC<Props> = ({ onSubmit, onWhatsapp }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFormSubmit = async (data: FormValues) => {
-    setLoading(true);
+  const catchError = (ex: Error) => {
+    const err = ex as AxiosError;
 
-    try {
-      await onSubmit(data);
-    } catch (err) {
-      setError((err as AxiosError).message);
+    if (err.response) {
+      setError(err.message);
+    } else if (err.request) {
+      setError('Ocurrió un error al solicitar la petición, por favor inténtalo en otra ocasión');
+    } else {
+      setError('Ocurrió un error desconocido, inténtalo más tarde.');
     }
-
-    setLoading(false);
   };
 
   return (
-    <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
+    <Form form={form} validateMessages={defaultValidateMessages}>
       <div className={cn(styles.root, { [styles.rootLoading]: loading })}>
         <div>
           <FormFeedback
@@ -58,17 +58,46 @@ const LoanRequest: FC<Props> = ({ onSubmit, onWhatsapp }) => {
               </p>
             </div>
             <div className="grid gap-4">
-              <Form.Item name="Nombre" rules={[{ required: true }]}>
+              <Form.Item name="Nombre">
                 <InputField label="Nombre completo" />
               </Form.Item>
-              <Form.Item name="CorreoElectronico" rules={[{ required: true }]}>
+              <Form.Item name="CorreoElectronico">
                 <InputField type="email" label="Correo electrónico" />
               </Form.Item>
-              <Form.Item name="Telefono" rules={[{ required: true }]}>
+              <Form.Item name="Telefono">
                 <InputField type="tel" label="Teléfono" maxLength={10} placeholder="##########" />
               </Form.Item>
               <div>
-                <Button fullWidth theme="primary" text="Enviar información" />
+                <Button
+                  fullWidth
+                  theme="primary"
+                  text="Enviar información"
+                  onClick={(evt) => {
+                    evt.preventDefault();
+
+                    setLoading(true);
+
+                    form
+                      .validateFields()
+                      .then((values) => {
+                        const { Nombre, CorreoElectronico, Telefono } = values;
+
+                        if (!Nombre || !CorreoElectronico || !Telefono) {
+                          throw new Error(
+                            'Para enviar una solicitud de préstamo necesitas llenar el formulario',
+                          );
+                        }
+
+                        return onSubmit(values);
+                      })
+                      .catch((err) => {
+                        setError((err as AxiosError).message);
+                      })
+                      .finally(() => {
+                        setLoading(false);
+                      });
+                  }}
+                />
               </div>
               <div>
                 <Button
@@ -81,10 +110,9 @@ const LoanRequest: FC<Props> = ({ onSubmit, onWhatsapp }) => {
 
                     setLoading(true);
 
-                    form
-                      .validateFields()
-                      .then(onWhatsapp)
-                      .catch(console.log)
+                    const data = form.getFieldsValue();
+                    onWhatsapp(data)
+                      .catch(catchError)
                       .finally(() => {
                         setLoading(false);
                       });

@@ -4,7 +4,7 @@
 }
 
 .root:hover {
-  @apply bg-surface border-surface-dark;
+  @apply bg-surface-dark border-surface-dark;
 }
 
 .wrapImage {

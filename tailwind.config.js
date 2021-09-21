@@ -14,6 +14,7 @@ module.exports = {
       mono: ['ui-monospace', 'SFMono-Regular'],
     },
     fontSize: {
+      xxs: ['10px', '12px'],
       xs: ['12px', '20px'],
       sm: ['14px', '24px'],
       base: ['16px', '28px'],
