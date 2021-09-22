@@ -1,7 +1,7 @@
 interface PawnAccountResponse {
   error?: string;
   BoletaActual: string;
-  EstadoBoleta: 'Activa';
+  EstadoBoleta: 'Activa' | 'Extraviada' | 'Vencida';
   TipoEmpeno: string;
   FechaEmpeno: string;
   FechaVencimiento: string;

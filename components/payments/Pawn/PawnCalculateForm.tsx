@@ -40,6 +40,9 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
   const dueDate = dayjs(data.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
 
+  const isPastLimitDueDays = data.dueDays > data.limitDueDays;
+  const isBlocked = data.accountBlocked || data.paymentPendingToApply;
+
   const buttonText = {
     idle: 'Pagar',
     loading: 'Pagar',
@@ -49,6 +52,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const statusStyles = {
     Activa: 'text-[#0BBF69]',
     Vencida: 'text-danger',
+    Extraviada: 'text-danger',
   };
 
   // Calcula el importe a pagar
@@ -193,71 +197,91 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                 </div>
               </div>
             </div>
-            <FormFeedback
-              visible={error !== null}
-              errorMessage={error as string}
-              onDismiss={() => {
-                setError(null);
-              }}
-            >
+            {isPastLimitDueDays ? (
               <div className="flex flex-col h-full">
-                <h2 className="text-lg mb-4">Selecciona el monto que desees pagar</h2>
                 <div className="flex-1">
-                  <Form.Item name="paymentType">
-                    <Radio.Group>
-                      <span className="block my-2">
-                        <Radio value="REFRENDO">
-                          Pago de refrendo <strong>{paymentAmount}</strong>
-                        </Radio>
-                      </span>
-                      <span className="block my-2">
-                        <Radio value="ABONO">
-                          Pago de extensión de 7 días <strong>{formattedExtensionAmount}</strong>
-                        </Radio>
-                      </span>
-                      <span className="block my-2">
-                        <Radio value="OTRO-ABONO">
-                          <div className="flex flex-row items-center space-x-3">
-                            <span>Pagar abono</span>
-                            <Form.Item noStyle shouldUpdate>
-                              {({ getFieldValue }) =>
-                                getFieldValue('paymentType') === 'OTRO-ABONO' ? (
-                                  <Form.Item
-                                    name="paymentAmount"
-                                    rules={[
-                                      {
-                                        required: true,
-                                        message: 'Campo requerido',
-                                      },
-                                    ]}
-                                    getValueFromEvent={({ target }) => target.rawValue}
-                                  >
-                                    <InputMask
-                                      options={{
-                                        prefix: '$',
-                                        numeral: true,
-                                        numeralPositiveOnly: true,
-                                        rawValueTrimPrefix: true,
-                                      }}
-                                    />
-                                  </Form.Item>
-                                ) : null
-                              }
-                            </Form.Item>
-                          </div>
-                        </Radio>
-                      </span>
-                    </Radio.Group>
-                  </Form.Item>
+                  <h2 className="text-lg mb-4">Han caducado los días de vencimiento permitido</h2>
+                  <p className="">Para pagar tu boleta por favor comunícate con una sucursal.</p>
                 </div>
-                <Button
-                  fullWidth
-                  theme="primary"
-                  text={buttonText[status]}
-                  loading={['loading', 'searching'].includes(status)}
-                />
+                <Button fullWidth href="/sucursales" text="Ver sucursales" />
               </div>
-            </FormFeedback>
+            ) : (
+              <FormFeedback
+                visible={error !== null}
+                errorMessage={error as string}
+                onDismiss={() => {
+                  setError(null);
+                }}
+              >
+                <div className="flex flex-col h-full">
+                  <h2 className="text-lg mb-4">Selecciona el monto que desees pagar</h2>
+                  <div className="flex-1">
+                    <Form.Item name="paymentType">
+                      <Radio.Group>
+                        <span className="block my-2">
+                          <Radio value="REFRENDO">
+                            Pago de refrendo <strong>{paymentAmount}</strong>
+                          </Radio>
+                        </span>
+                        <span className="block my-2">
+                          <Radio value="ABONO">
+                            Pago de extensión de 7 días <strong>{formattedExtensionAmount}</strong>
+                          </Radio>
+                        </span>
+                        <span className="block my-2">
+                          <Radio value="OTRO-ABONO">
+                            <div className="flex flex-row items-center space-x-3">
+                              <span>Pagar abono</span>
+                              <Form.Item noStyle shouldUpdate>
+                                {({ getFieldValue }) =>
+                                  getFieldValue('paymentType') === 'OTRO-ABONO' ? (
+                                    <Form.Item
+                                      name="paymentAmount"
+                                      rules={[
+                                        {
+                                          required: true,
+                                          message: 'Campo requerido',
+                                        },
+                                      ]}
+                                      getValueFromEvent={({ target }) => target.rawValue}
+                                    >
+                                      <InputMask
+                                        options={{
+                                          prefix: '$',
+                                          numeral: true,
+                                          numeralPositiveOnly: true,
+                                          rawValueTrimPrefix: true,
+                                        }}
+                                      />
+                                    </Form.Item>
+                                  ) : null
+                                }
+                              </Form.Item>
+                            </div>
+                          </Radio>
+                        </span>
+                      </Radio.Group>
+                    </Form.Item>
+                  </div>
+                  <div>
+                    {isBlocked && (
+                      <small className="inline-block text-xxs mb-2">
+                        Por el momento no es posible pagar, alguna de las razones son que tu boleta
+                        está bloqueada o ya realizaste un refrendo. Si tienes dudas comunícate con
+                        nosotros en este teléfono: 800 215 1515
+                      </small>
+                    )}
+                    <Button
+                      fullWidth
+                      theme="primary"
+                      disabled={isBlocked}
+                      text={buttonText[status]}
+                      loading={['loading', 'searching'].includes(status)}
+                    />
+                  </div>
+                </div>
+              </FormFeedback>
+            )}
           </div>
         </div>
       </div>
