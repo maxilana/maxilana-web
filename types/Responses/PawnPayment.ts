@@ -1,7 +1,7 @@
 interface PawnAccountResponse {
   error?: string;
   BoletaActual: string;
-  EstadoBoleta: 'Activa';
+  EstadoBoleta: 'Activa' | 'Extraviada' | 'Vencida';
   TipoEmpeno: string;
   FechaEmpeno: string;
   FechaVencimiento: string;
@@ -30,6 +30,7 @@ interface PawnAccountResponse {
   FechaConsulta: string;
   DiasVencidosPendientes: string; // number
   DiasPagoMinimo: string; //number
+  comision: string; // number
 }
 
 export type { PawnAccountResponse };
