@@ -10,5 +10,9 @@ export interface PawnAccount {
   paymentAmount: number;
   minPaymentAmount: number;
   totalPaymentAmount: number;
-  //...
+  dueDays: number; //DiasVencidos
+  normalDailyInterest: number; //InteresDiarioNormal
+  dueDailyInterest: number; //InteresDiarioVencido
+  minDaysToPay: number; //DiasPagoMinimo
+  amountToAply: number; //SaldoPorAplicar
 }

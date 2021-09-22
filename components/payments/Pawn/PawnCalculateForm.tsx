@@ -6,11 +6,11 @@ import { FC, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button } from '~/components/ui';
-import { usePrice } from '~/modules/hooks';
 import { PawnAccount } from '~/types/Models';
 import { FormFeedback, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
+import { formatPrice } from '~/modules/hooks/usePrice';
 
 type Status = 'idle' | 'loading' | 'searching';
 
@@ -25,15 +25,17 @@ interface Props {
 }
 
 dayjs.extend(localizedFormat);
+const LOCALE = 'es-MX';
 
 const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const [form] = Form.useForm();
 
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
-  const { price: loanAmount } = usePrice({ amount: data.loanAmount }); // PRÉSTAMO
-  const { price: paymentAmount } = usePrice({ amount: data.paymentAmount }); // REFRENDO
-  const { price: totalPaymentAmount } = usePrice({ amount: data.totalPaymentAmount }); // DESEMPEÑO (SOLO ES INFORMATIVO)
+
+  const loanAmount = formatPrice({ amount: data.loanAmount, locale: LOCALE }); // PRÉSTAMO
+  const paymentAmount = formatPrice({ amount: data.paymentAmount, locale: LOCALE }); // REFRENDO
+  const totalPaymentAmount = formatPrice({ amount: data.totalPaymentAmount, locale: LOCALE }); // DESEMPEÑO (SOLO ES INFORMATIVO)
 
   const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
   const dueDate = dayjs(data.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
@@ -49,6 +51,56 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
     Vencida: 'text-danger',
   };
 
+  // Calcula el importe a pagar
+  //  para la extensión de dias.
+  const calculatePaymentDaysExtension = (daysToExtend: number = 1) => {
+    let totalAmount = 0;
+    let subtotalAmount = 0;
+    let totalDaysAmount = 0;
+    let totalDueDaysAmount = 0;
+
+    const { dueDays, minDaysToPay, normalDailyInterest, dueDailyInterest, amountToAply } = data;
+
+    const adjustment = (total: number) => {
+      const integer = Math.trunc(total);
+      let decimal = total - integer;
+
+      if (decimal < 0.5) {
+        decimal = 0.5;
+      } else if (decimal > 0.5) {
+        decimal = 1;
+      }
+
+      return integer + decimal;
+    };
+
+    if (daysToExtend < minDaysToPay) {
+      throw new Error(`La cantidad de días mínimos son: ${minDaysToPay}`);
+    }
+
+    // Cobro de días normales
+    const daysToPay = daysToExtend - dueDays;
+
+    // Cobro de días vencidos
+    const dueDaysToPay = daysToExtend - daysToPay;
+
+    if (daysToPay > 0) {
+      totalDaysAmount = daysToPay * normalDailyInterest;
+      totalDueDaysAmount = dueDaysToPay * dueDailyInterest;
+    } else {
+      totalDueDaysAmount = daysToExtend * dueDailyInterest;
+    }
+
+    subtotalAmount = totalDaysAmount + totalDueDaysAmount - amountToAply;
+    subtotalAmount = adjustment(subtotalAmount);
+    totalAmount = subtotalAmount * 1.03; // MAGIC NUMBER - Supongo es una comisión.
+
+    return totalAmount;
+  };
+
+  const extensionAmount = calculatePaymentDaysExtension(7);
+  const formattedExtensionAmount = formatPrice({ amount: extensionAmount, locale: LOCALE });
+
   const handleFormSubmit = async (values: FormValues) => {
     setStatus('loading');
     const { paymentType } = values;
@@ -59,7 +111,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
       if (paymentType === 'REFRENDO') {
         amount = data.paymentAmount;
       } else if (paymentType === 'ABONO') {
-        amount = 63.5; // TODO: NO SE DE DÓNDE SALE ESTO
+        amount = extensionAmount;
       } else if (paymentType === 'OTRO-ABONO') {
         if (!values.paymentAmount) {
           throw new Error('Escribe una cantidad correcta para otro pago');
@@ -160,7 +212,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                       </span>
                       <span className="block my-2">
                         <Radio value="ABONO">
-                          Pago de extensión de 7 días <strong>$63.50</strong>
+                          Pago de extensión de 7 días <strong>{formattedExtensionAmount}</strong>
                         </Radio>
                       </span>
                       <span className="block my-2">

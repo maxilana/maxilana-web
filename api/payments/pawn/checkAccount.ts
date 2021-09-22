@@ -27,6 +27,11 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     InteresVencido,
     ImportePagoMinimo,
     comision,
+    SaldoPorAplicar,
+    DiasPagoMinimo,
+    DiasVencidos,
+    InteresDiarioNormal,
+    InteresDiarioVencido,
   } = response;
 
   let decimal = 0;
@@ -85,6 +90,11 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     paymentAmount: paymentAmount,
     minPaymentAmount: minPaymentAmount,
     totalPaymentAmount: totalPaymentAmount,
+    dueDays: Number(DiasVencidos),
+    normalDailyInterest: Number(InteresDiarioNormal),
+    dueDailyInterest: Number(InteresDiarioVencido),
+    minDaysToPay: Number(DiasPagoMinimo),
+    amountToAply: Number(SaldoPorAplicar),
   };
 };
 
