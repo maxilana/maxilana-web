@@ -7,6 +7,8 @@ export interface PawnAccount {
   loanAmount: number;
   accountNumber: string;
   description: string;
-  interest: number;
+  paymentAmount: number;
+  minPaymentAmount: number;
+  totalPaymentAmount: number;
   //...
 }

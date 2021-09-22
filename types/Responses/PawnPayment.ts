@@ -30,6 +30,7 @@ interface PawnAccountResponse {
   FechaConsulta: string;
   DiasVencidosPendientes: string; // number
   DiasPagoMinimo: string; //number
+  comision: string; // number
 }
 
 export type { PawnAccountResponse };

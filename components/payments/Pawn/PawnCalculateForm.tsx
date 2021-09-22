@@ -31,11 +31,12 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
 
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
-  const { price: interest } = usePrice({ amount: data.interest });
-  const { price: loanAmount } = usePrice({ amount: data.loanAmount });
+  const { price: loanAmount } = usePrice({ amount: data.loanAmount }); // PRÉSTAMO
+  const { price: paymentAmount } = usePrice({ amount: data.paymentAmount }); // REFRENDO
+  const { price: totalPaymentAmount } = usePrice({ amount: data.totalPaymentAmount }); // DESEMPEÑO (SOLO ES INFORMATIVO)
 
-  const startDate = dayjs(data.startDate).locale('es').format('DD MMMM YYYY');
-  const dueDate = dayjs(data.dueDate).locale('es').format('DD MMMM YYYY');
+  const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
+  const dueDate = dayjs(data.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
 
   const buttonText = {
     idle: 'Pagar',
@@ -48,24 +49,23 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
     Vencida: 'text-danger',
   };
 
-  // TODO: CAMBIAR ESOS DATOS FIJOS
-  const handleFormSubmit = async (data: FormValues) => {
+  const handleFormSubmit = async (values: FormValues) => {
     setStatus('loading');
-    const { paymentType, paymentAmount } = data;
+    const { paymentType } = values;
 
     try {
       let amount = 0;
 
       if (paymentType === 'REFRENDO') {
-        amount = 401.5;
+        amount = data.paymentAmount;
       } else if (paymentType === 'ABONO') {
-        amount = 63.5;
+        amount = 63.5; // TODO: NO SE DE DÓNDE SALE ESTO
       } else if (paymentType === 'OTRO-ABONO') {
-        if (!paymentAmount) {
+        if (!values.paymentAmount) {
           throw new Error('Escribe una cantidad correcta para otro pago');
         }
 
-        amount = Number(paymentAmount);
+        amount = Number(values.paymentAmount);
       }
 
       await onSubmit({ paymentType, paymentAmount: amount });
@@ -82,6 +82,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
       onFinish={handleFormSubmit}
       initialValues={{
         paymentType: 'REFRENDO',
+        paymentAmount: data.minPaymentAmount,
       }}
     >
       <div className="px-4">
@@ -129,13 +130,13 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                   </div>
                   <div className="flex flex-row justify-between items-center">
                     <span className="text-sm text-secondary">Pago de interés:</span>
-                    <span className="text-sm text-primary font-semibold">{interest}</span>
+                    <span className="text-sm text-primary font-semibold">{paymentAmount}</span>
                   </div>
                 </div>
                 <div className="py-2 border-b border-b-[#0C5E9C26]">
                   <div className="flex flex-row justify-between items-center">
                     <span className="text-sm text-secondary">Desempeño:</span>
-                    <span className="text-sm text-primary">-</span>
+                    <span className="text-sm text-primary">{totalPaymentAmount}</span>
                   </div>
                 </div>
               </div>
@@ -154,7 +155,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                     <Radio.Group>
                       <span className="block my-2">
                         <Radio value="REFRENDO">
-                          Pago de refrendo <strong>$401.60</strong>
+                          Pago de refrendo <strong>{paymentAmount}</strong>
                         </Radio>
                       </span>
                       <span className="block my-2">
@@ -208,11 +209,6 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
           </div>
         </div>
       </div>
-      {/* <div className="py-6 sm:px-4">
-        <div className={styles.root}>
-          
-        </div>
-      </div> */}
     </Form>
   );
 };
