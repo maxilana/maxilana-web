@@ -99,7 +99,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
     subtotalAmount = adjustment(subtotalAmount);
     totalAmount = subtotalAmount * 1.03; // MAGIC NUMBER - Supongo es una comisión.
 
-    return totalAmount;
+    return Math.round(totalAmount);
   };
 
   const extensionAmount = calculatePaymentDaysExtension(7);
