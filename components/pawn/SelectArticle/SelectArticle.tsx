@@ -30,6 +30,7 @@ const SelectArticle: FC<Props> = ({ category, onBack, onSelectArticle }) => {
             <SelectableItem
               key={item.id}
               label={item.label}
+              imageSrc={item.imageSrc}
               onClick={() => {
                 onSelectArticle(subcategory.articleCode);
               }}
@@ -51,14 +52,17 @@ const subcategories = [
       {
         id: 1,
         label: 'Automóviles',
+        imageSrc: '/vehiculo-auto.png',
       },
       {
         id: 2,
         label: 'Motos',
+        imageSrc: '/vehiculo-moto.png',
       },
       {
         id: 3,
         label: 'Otros',
+        imageSrc: '/vehiculo-otro.png',
       },
     ],
   },
@@ -71,10 +75,12 @@ const subcategories = [
       {
         id: 1,
         label: 'Manual',
+        imageSrc: '/herramienta-manual.png',
       },
       {
         id: 2,
         label: 'Eléctrica',
+        imageSrc: '/herramienta-electrica.png',
       },
     ],
   },
@@ -87,14 +93,17 @@ const subcategories = [
       {
         id: 1,
         label: 'Audio',
+        imageSrc: '/electronico-audio.png',
       },
       {
         id: 2,
         label: 'Pantalla',
+        imageSrc: '/electronico-pantalla.png',
       },
       {
         id: 3,
         label: 'Cámara',
+        imageSrc: '/electronico-camara.png',
       },
     ],
   },
@@ -107,19 +116,22 @@ const subcategories = [
       {
         id: 1,
         label: 'Hornos',
+        imageSrc: '/electrodomestico-horno.png',
       },
       {
         id: 2,
         label: 'Planchas',
+        imageSrc: '/electrodomestico-plancha.png',
       },
       {
         id: 3,
         label: 'Licuadoras',
+        imageSrc: '/electrodomestico-licuadora.png',
       },
-      { id: 4, label: 'Procesadores' },
-      { id: 5, label: 'Refrigeradores' },
-      { id: 6, label: 'Lavadoras' },
-      { id: 7, label: 'Secadoras' },
+      { id: 4, label: 'Procesadores', imageSrc: '/electrodomestico-procesadores.png' },
+      { id: 5, label: 'Refrigeradores', imageSrc: '/electrodomestico-refrigerador.png' },
+      { id: 6, label: 'Lavadoras', imageSrc: '/electrodomestico-lavadora.png' },
+      { id: 7, label: 'Secadoras', imageSrc: '/electrodomestico-secadora.png' },
     ],
   },
   {
@@ -131,14 +143,17 @@ const subcategories = [
       {
         id: 1,
         label: 'Pulso',
+        imageSrc: '/relojes-pulso.png',
       },
       {
         id: 2,
         label: 'Bolsillo',
+        imageSrc: '/relojes-bolsillo.png',
       },
       {
         id: 3,
         label: 'Ornato',
+        imageSrc: '/relojes-ornato.png',
       },
     ],
   },
@@ -151,18 +166,22 @@ const subcategories = [
       {
         id: 1,
         label: 'Firma',
+        imageSrc: '/joyeria-firma.png',
       },
       {
         id: 2,
         label: 'Comercial',
+        imageSrc: '/joyeria-comercial.png',
       },
       {
         id: 3,
         label: 'Monedas de inversión',
+        imageSrc: '/joyeria-inversion.png',
       },
       {
         id: 4,
         label: 'Medallas conmemorativas',
+        imageSrc: '/joyeria-conmemorativa.png',
       },
     ],
   },
