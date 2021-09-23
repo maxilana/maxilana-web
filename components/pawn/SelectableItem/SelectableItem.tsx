@@ -5,7 +5,7 @@ import styles from './SelectableItem.module.css';
 
 interface Props {
   label: string;
-  imageSrc: string;
+  imageSrc?: string;
   onClick?: () => void;
 }
 
