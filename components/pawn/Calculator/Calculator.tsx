@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import Slider from 'antd/lib/slider';
 import { FC, useMemo, useState } from 'react';
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import commonStyles from '../Pawn.module.css';
@@ -79,7 +80,7 @@ const Calculator: FC<Props> = ({ data, onWhatsappClick }) => {
         </div>
         <div className="mb-6">
           <dl className="text-center flex flex-col sm:flex-row sm:justify-between sm:text-left">
-            <dt className="text-lg">Lo que te prestamos por tu artículo es:</dt>
+            <dt className="text-lg">El préstamo aproximado por tu artículo es:</dt>
             <dd className="font-semibold text-xl text-[#0BBF69]">{amount}</dd>
           </dl>
         </div>
@@ -142,9 +143,11 @@ const Calculator: FC<Props> = ({ data, onWhatsappClick }) => {
         <div className="mb-6">
           <Button
             fullWidth
+            size="large"
             theme="whatsapp"
             text="Valuar con un experto"
             onClick={onWhatsappClick}
+            icon={<WhatsAppOutlined style={{ fontSize: 20, color: '#FFF' }} />}
           />
         </div>
         <small className="inline-block text-secondary text-xxs text-center">
