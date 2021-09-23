@@ -42,6 +42,10 @@ const BranchCard: FC<Props> = ({ data, expanded, onClick }) => {
             <div>
               <BranchSchedule branch={data} />
             </div>
+            <div className="flex justify-between">
+              <span className="block text-xs font-bold text-brand-darker">TELÉFONO:</span>
+              <span className="text-secondary">{phone}</span>
+            </div>
             <Button
               text="Ver remates de la tienda"
               fullWidth
