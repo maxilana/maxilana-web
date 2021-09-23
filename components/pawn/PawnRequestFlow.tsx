@@ -2,7 +2,7 @@ import { FC, useReducer } from 'react';
 
 import PawnRequest from './PawnRequest';
 import Calculator from './Calculator';
-import PawnSelectableCity from './PawnSelectableCity';
+import SelectCity from './SelectCity';
 import SelectArticle from './SelectArticle';
 import RequestForm from './RequestForm';
 import { RequestPawn } from '~/types/Requests/RequestPawn';
@@ -83,7 +83,7 @@ const PawnRequestFlow: FC = () => {
   };
 
   if (state.status === 'show_whatsapp_list') {
-    return <PawnSelectableCity onBack={goToStart} />;
+    return <SelectCity onBack={goToStart} />;
   }
 
   if (state.status === 'show_articles') {

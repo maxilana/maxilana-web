@@ -1,4 +1,4 @@
-export interface CalculatedPawn {
+export interface GetCalculatedPawn {
   PlazoMaximo: number;
   TasaInteresMensual: number;
   TasaInteresBronce: number;
@@ -6,8 +6,3 @@ export interface CalculatedPawn {
   TasaInteresOro: number;
   Prestamo: number;
 }
-
-// TODO: EL API NO DEBERÍA DEVOLVER UN OBJETO DE OBJETOS
-export type GetCalculatedPawn = {
-  [key: string]: CalculatedPawn;
-};

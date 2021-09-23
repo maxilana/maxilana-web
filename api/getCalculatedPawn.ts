@@ -20,7 +20,7 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
       TasaInteresPlata,
       TasaInteresOro,
       Prestamo,
-    } = response[0];
+    } = response;
 
     return {
       amount: Prestamo,

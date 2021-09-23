@@ -79,29 +79,23 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
           <React.Fragment>
             <h5 className={styles.title}>Calculadora de préstamo</h5>
             <div className={styles.field}>
-              <div className={styles.split}>
-                <label htmlFor="ciudad" className={styles.label}>
-                  Elige tu ciudad:
-                </label>
-                <div className={styles.splitAway}>
-                  <SelectField
-                    id="ciudad"
-                    name="ciudad"
-                    defaultValue="default"
-                    options={
-                      cities !== undefined
-                        ? cities.map((item) => ({
-                            value: item.code,
-                            label: item.name,
-                          }))
-                        : []
-                    }
-                    onChange={({ target }) => {
-                      setCityCode(target.value);
-                    }}
-                  />
-                </div>
-              </div>
+              <SelectField
+                id="ciudad"
+                name="ciudad"
+                defaultValue="default"
+                placeholder="Elige tu ciudad"
+                options={
+                  cities !== undefined
+                    ? cities.map((item) => ({
+                        value: item.code,
+                        label: item.name,
+                      }))
+                    : []
+                }
+                onChange={({ target }) => {
+                  setCityCode(target.value);
+                }}
+              />
             </div>
             <div className={cn(styles.field, styles.fieldCenter)}>
               <label htmlFor="monto" className={styles.label}>

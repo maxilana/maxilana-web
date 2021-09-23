@@ -11,16 +11,16 @@
 }
 
 .details {
-  @apply h-0 overflow-hidden transition transition-all space-y-4;
+  @apply max-h-0 overflow-hidden transition-all space-y-4;
 }
 
 .toggle {
-  @apply transition-all w-8 h-8 block flex items-center justify-center
+  @apply transition-all w-8 h-8 flex items-center justify-center;
 }
 
 .expanded {
   & .details {
-    @apply h-[300px];
+    @apply max-h-[999px];
   }
 
   & .toggle {
@@ -31,5 +31,3 @@
 .contactOptions {
   @apply flex justify-around text-center;
 }
-
-
