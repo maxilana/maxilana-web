@@ -33,6 +33,8 @@ const getLoansPage = async (): Promise<CMSLoans> => {
         payment {
           title
           description
+          CTAText
+          slug
           image {
             ...ImageFields
           }

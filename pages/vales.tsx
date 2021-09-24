@@ -80,8 +80,8 @@ const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
               title: page?.payment?.title,
               imageSource: PayVales,
               description: page?.payment?.description,
-              buttonLabel: 'Pagar a distribuidora',
-              buttonHref: '/pagos/vales',
+              buttonLabel: page?.payment?.CTAText,
+              buttonHref: `/pagos/${page?.payment?.slug}`,
             }}
             contextCard={{
               title: 'Realiza abonos de vales sin acudir a sucursal',

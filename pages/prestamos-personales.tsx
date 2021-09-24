@@ -96,8 +96,8 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
               title: page?.payment?.title,
               imageSource: page?.payment?.image?.url,
               description: page?.payment?.description,
-              buttonLabel: 'Pagar préstamo personal',
-              buttonHref: '/pagos/prestamo-personal',
+              buttonLabel: page?.payment?.CTAText,
+              buttonHref: `/pagos/${page?.payment?.slug}`,
             }}
             contextCard={{
               title: 'Realiza abonos de tu préstamo sin acudir a sucursal',
@@ -190,11 +190,7 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
                   size="small"
                   theme="primary"
                   label="Más información"
-                  items={page.whatsapps.map((item) => ({
-                    id: item.id,
-                    label: item.name,
-                    href: item.number,
-                  }))}
+                  items={page.whatsapps}
                 />
               </VStack>
             </div>
