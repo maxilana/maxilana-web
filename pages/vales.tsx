@@ -1,54 +1,22 @@
 import React from 'react';
 import Image from 'next/image';
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getPaybillsPage from '~/api/cms/getPaybillsPage';
+import getAllCities from '~/api/getAllCities';
 
 import { ButtonDropdown } from '~/components/ui';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { Hero, ServicePaymentCards } from '~/components/common';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
-
-import HeroValesImg from '~/public/demo-hero-vales.jpg';
 import HowWorks01 from '~/public/como-funcionan-vales-01.png';
 import HowWorks02 from '~/public/como-funcionan-vales-02.png';
 import HowWorks03 from '~/public/como-funcionan-vales-03.png';
 import HowWorks04 from '~/public/como-funcionan-vales-04.png';
 import GetMaxilanaVales from '~/public/gana-maxilana-vales.png';
 import PayVales from '~/public/pagar-vales.png';
-
-const whatsappList = [
-  {
-    id: 1,
-    label: 'Culiacán y Navolato',
-    href: '6671073945',
-  },
-  {
-    id: 2,
-    label: 'Mazatlán',
-    href: '6692405437',
-  },
-  {
-    id: 3,
-    label: 'Guadalajara',
-    href: '3318911511',
-  },
-  {
-    id: 4,
-    label: 'Hermosillo',
-    href: '6624294030',
-  },
-  {
-    id: 5,
-    label: 'Mexicali',
-    href: '6861571304',
-  },
-  {
-    id: 6,
-    label: 'Tijuana',
-    href: '664120345',
-  },
-];
+import { CMSPaybill } from '~/types/Models/CMSPaybill';
 
 const questionList = [
   {
@@ -68,38 +36,57 @@ const questionList = [
   },
 ];
 
-const ValesPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPaybill }>> = async () => {
+  const cities = await getAllCities();
+  const legalPages = await getAllLegalPages();
+  const page = await getPaybillsPage();
+  return {
+    props: {
+      cities,
+      legalPages,
+      page,
+    },
+  };
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
-    <Layout title="Maxilana vales" cities={cities} legalPages={legalPages}>
+    <Layout meta={page?.seo} cities={cities} legalPages={legalPages}>
       <Hero
-        title="Invierte tu tiempo y gana dinero extra"
-        subtitle="Conviértete en distribuidora de vales y empieza a cumplir tus metas"
+        title={page?.hero?.mainText}
+        subtitle={page?.hero?.secondaryText}
         cover={
           <Image
             layout="fill"
-            src={HeroValesImg}
+            src={page?.hero?.image?.url}
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
-            placeholder="blur"
           />
         }
         actions={
-          <ButtonDropdown theme="danger" items={whatsappList} label="Conviérte en distribuidora" />
+          <ButtonDropdown
+            theme="danger"
+            items={page?.whatsapps}
+            label="Conviérte en distribuidora"
+          />
         }
       />
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
             actionCard={{
-              title: 'Paga en línea',
+              title: page?.payment?.title,
               imageSource: PayVales,
-              description: 'Consulta el saldo de tu cuenta y paga tus vales',
+              description: page?.payment?.description,
               buttonLabel: 'Pagar a distribuidora',
               buttonHref: '/pagos/vales',
             }}
             contextCard={{
               title: 'Realiza abonos de vales sin acudir a sucursal',
               description: 'Por medio de depósito o transferencia en:',
+              bankAccount: page?.bankAccount,
             }}
           />
         </div>
@@ -240,7 +227,7 @@ const ValesPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                 <ButtonDropdown
                   size="small"
                   theme="danger"
-                  items={whatsappList}
+                  items={page?.whatsapps}
                   label="Conviérte en distribuidora"
                 />
               </div>
@@ -286,7 +273,7 @@ const ValesPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
       </section>
       <Container>
         <div className="py-10">
-          <HelpSidebar direction="horizontal" questions={questionList} />
+          <HelpSidebar direction="horizontal" questions={page?.faqs} />
         </div>
       </Container>
     </Layout>
