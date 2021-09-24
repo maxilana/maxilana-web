@@ -1,51 +1,69 @@
 import Image from 'next/image';
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getCarPawnPage from '~/api/cms/getCarPawnPage';
+import getAllCities from '~/api/getAllCities';
 import { YouTube } from '~/components/common';
 
-import { Button } from '~/components/ui';
+import { Button, Img } from '~/components/ui';
 import { AutoPawnForm } from '~/components/pawn';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-import HeroAutoEmpeno from '~/public/foto-hero-auto-empeno.png';
+import { CMSCarPawn } from '~/types/Models';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSCarPawn }>> = async () => {
+  const page = await getCarPawnPage();
+  const cities = await getAllCities();
+  const legalPages = await getAllLegalPages();
+  return {
+    props: {
+      page,
+      cities,
+      legalPages,
+    },
+  };
+};
 
-const AutoEmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+const AutoEmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
     <div>
-      <Layout title="Auto Empeño" cities={cities} legalPages={legalPages}>
+      <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
         <div className="pt-[108px] bg-gradient-to-r from-[#F7D067] to-[#F1C153]">
           <div className="container mx-auto px-4 py-10 sm:py-20">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="relative sm:order-1">
-                <Image
+                <Img
                   width={628}
                   height={347}
                   layout="responsive"
-                  src={HeroAutoEmpeno}
+                  priority
+                  src={page.hero?.image?.url}
                   alt="Imagen de un automóvil"
-                  placeholder="blur"
+                  placeholder="empty"
                 />
               </div>
               <div>
-                <h1 className="text-2xl mb-2 lg:text-4xl">
-                  Recibe hasta un 60% del valor de tu auto
-                </h1>
-                <p className="text-lg mb-4">¡En menos de 10 minutos resolvemos tus imprevistos!</p>
-                <Button
-                  size="small"
-                  theme="secondary"
-                  text="Llena la solicitud de avalúo"
-                  href="#solicitud-avaluo"
-                />
+                <h1 className="text-2xl mb-2 lg:text-4xl">{page?.hero?.mainText}</h1>
+                <p className="text-lg mb-4">{page?.hero?.secondaryText}</p>
+                {page?.hero?.actions.map((item) => (
+                  <Button
+                    key={item.id}
+                    size="small"
+                    theme="secondary"
+                    text={item.text}
+                    href={item.url}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
         <Container>
           <div className="my-12 max-w-5xl mx-auto sm:my-24">
-            <YouTube url="https://www.youtube.com/embed/5NZyvct4KK0" />
+            <YouTube url={page?.video} />
           </div>
         </Container>
         <Container>
@@ -81,7 +99,7 @@ const AutoEmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
         </section>
         <Container>
           <div className="pt-6 pb-10">
-            <HelpSidebar direction="horizontal" questions={questionList} />
+            <HelpSidebar direction="horizontal" questions={page.faqs} />
           </div>
         </Container>
       </Layout>
@@ -124,24 +142,6 @@ const steps = [
         <li>Tendra de 1 a 3 meses de plazo para pagar. Lo puede retirar cuando desee, dentro del plazo señalado, pagando el préstamo e intereses al día del desempeño.</li>
       </ul>
     `,
-  },
-];
-
-const questionList = [
-  {
-    id: 1,
-    label: '¿Qué es un refrendo?',
-    href: '/preguntas-frecuentes#que-es-refrendo',
-  },
-  {
-    id: 2,
-    label: '¿Qué es un empeño?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-  {
-    id: 3,
-    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
   },
 ];
 

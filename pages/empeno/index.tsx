@@ -1,45 +1,54 @@
 import React from 'react';
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getPawnPage from '~/api/cms/getPawnPage';
+import getAllCities from '~/api/getAllCities';
 
 import { PawnRequestFlow } from '~/components/pawn';
 import { Container, HelpSidebar, Layout } from '~/components/layout';
 import { ServicePaymentCards, YouTube } from '~/components/common';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-import { Button, Card } from '~/components/ui';
-
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
-
+import { Button, Card, Img } from '~/components/ui';
 import Auto from '~/public/tarjeta-empeno-auto.png';
-import HeroEmpeno from '~/public/hero-empeno.png';
-import PagoOnline from '~/public/ilustracion-pago-online-inicio.png';
+import PagoOnline from '~/public/ilustracion-pago-online.png';
+import { CMSPawn } from '~/types/Models';
 
-const EmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPawn }>> = async () => {
+  const page = await getPawnPage();
+  const cities = await getAllCities();
+  const legalPages = await getAllLegalPages();
+  return {
+    props: {
+      page,
+      cities,
+      legalPages,
+    },
+  };
+};
+
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
+const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
-    <Layout
-      title="Maxilana | Casa de empeño"
-      meta={{
-        description: 'Maxilana casa de empeño y prestamos',
-        keywords: 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates',
-        css: ['/antd/form.css', '/antd/slider.css'],
-      }}
-      cities={cities}
-      legalPages={legalPages}
-    >
+    <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
       <div className="bg-[#F7D067] sm:p-4 lg:py-12 border-b">
         <div className="container mx-auto grid gap-6 items-center lg:gap-4 lg:grid-flow-col">
           <div className="lg:w-[628px]">
             <div className="relative text-center mb-6">
-              <Image
+              <Img
                 priority
                 quality={100}
-                src={HeroEmpeno}
+                src={page.hero.image.url}
+                height={page.hero.image.height}
+                width={page.hero.image.width}
                 alt="Imagen de un hombre feliz con varios artículos"
+                placeholder="empty"
               />
             </div>
             <div className="px-4 space-y-2">
-              <h1 className="text-2xl sm:text-4xl">Recibimos casi todos los artículos</h1>
-              <p className="text-lg">¡Te damos más por tu prenda!</p>
+              <h1 className="text-2xl sm:text-4xl">{page.hero.mainText}</h1>
+              <p className="text-lg">{page.hero.secondaryText}</p>
             </div>
           </div>
           <PawnRequestFlow />
@@ -49,15 +58,16 @@ const EmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
         <div className="my-12 max-w-5xl mx-auto sm:my-12">
           <ServicePaymentCards
             actionCard={{
-              title: 'Paga en línea o en cualquier sucursal',
-              imageSource: PagoOnline,
-              description: 'Paga tu empeño y no pierdas tu artículo',
+              title: page?.payment?.title,
+              imageSource: page?.payment?.image?.url,
+              description: page?.payment?.description,
               buttonLabel: 'Pagar refrendo',
               buttonHref: '/pagos/empeno',
             }}
             contextCard={{
               title: 'Realiza abonos de tu empeño sin acudir a sucursal',
               description: 'Por medio de depósito o transferencia en:',
+              bankAccount: page.bankAccount,
             }}
           />
         </div>
@@ -138,7 +148,7 @@ const EmpenoPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
       </Container>
       <Container>
         <div className="pb-6">
-          <HelpSidebar direction="horizontal" questions={questionList} />
+          <HelpSidebar direction="horizontal" questions={page.faqs} />
         </div>
       </Container>
     </Layout>
@@ -195,24 +205,6 @@ const benefits = [
     imageSrc: '/svg/icono-escudo-seguridad.svg',
     title: 'Tu prenda está asegurada',
     description: 'Todos los artículos empeñados en Maxilana cuentan con un seguro que los protege.',
-  },
-];
-
-const questionList = [
-  {
-    id: 1,
-    label: '¿Qué es un refrendo?',
-    href: '/preguntas-frecuentes#que-es-refrendo',
-  },
-  {
-    id: 2,
-    label: '¿Qué es un empeño?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-  {
-    id: 3,
-    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
   },
 ];
 

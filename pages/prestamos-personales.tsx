@@ -1,14 +1,18 @@
 import Image from 'next/image';
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getLoansPage from '~/api/cms/getLoansPage';
 
 import LoanRequestFlow from '~/components/loans';
-import { Card, ButtonDropdown } from '~/components/ui';
+import { Card, ButtonDropdown, Img } from '~/components/ui';
 import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 
 import HeroPrestamos from '~/public/demo-hero-prestamos.jpg';
 import PagarPrestamos from '~/public/pagar-prestamos.png';
+import { CMSLoans } from '~/types/Models/CMSLoans';
+import getAllCities from '~/api/getAllCities';
 
 const whatsappList = [
   {
@@ -43,27 +47,21 @@ const whatsappList = [
   },
 ];
 
-const questionList = [
-  {
-    id: 1,
-    label: '¿Qué es un refrendo?',
-    href: '/preguntas-frecuentes#que-es-refrendo',
-  },
-  {
-    id: 2,
-    label: '¿Qué es un empeño?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-  {
-    id: 3,
-    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-];
+export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>> = async () => {
+  const cities = await getAllCities();
+  const legalPages = await getAllLegalPages();
+  const page = await getLoansPage();
+  return {
+    props: {
+      cities,
+      legalPages,
+      page,
+    },
+  };
+};
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
-
-const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
     <Layout
       cities={cities}
@@ -74,17 +72,17 @@ const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
       legalPages={legalPages}
     >
       <HeroComposed
-        title="Te prestamos para lo que necesites"
-        copy="¡Resuelve tus imprevistos fácil y rápido!"
-        footer={<p className="text-lg uppercase text-accent">De $2,000 hasta $20,000</p>}
+        title={page.hero.mainText}
+        copy={page.hero.secondaryText}
+        footer={<p className="text-lg uppercase text-accent">{page.hero.tertiaryText}</p>}
         cover={
-          <Image
+          <Img
             priority
             layout="fill"
-            src={HeroPrestamos}
+            src={page.hero.image.url}
             alt="Prestamos Hero Image"
             objectFit="cover"
-            placeholder="blur"
+            placeholder="empty"
             quality={100}
           />
         }
@@ -95,15 +93,16 @@ const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
             actionCard={{
-              title: 'Paga en línea',
-              imageSource: PagarPrestamos,
-              description: 'Paga tu préstamo cómodamente y sin contratiempos',
+              title: page?.payment?.title,
+              imageSource: page?.payment?.image?.url,
+              description: page?.payment?.description,
               buttonLabel: 'Pagar préstamo personal',
               buttonHref: '/pagos/prestamo-personal',
             }}
             contextCard={{
               title: 'Realiza abonos de tu préstamo sin acudir a sucursal',
               description: 'Por medio de depósito o transferencia en:',
+              bankAccount: page.bank,
             }}
           />
         </div>
@@ -191,7 +190,11 @@ const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                   size="small"
                   theme="primary"
                   label="Más información"
-                  items={whatsappList}
+                  items={page.whatsapps.map((item) => ({
+                    id: item.id,
+                    label: item.name,
+                    href: item.number,
+                  }))}
                 />
               </VStack>
             </div>
@@ -211,7 +214,7 @@ const PrestamosPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
       </section>
       <Container>
         <div className="py-10">
-          <HelpSidebar direction="horizontal" questions={questionList} />
+          <HelpSidebar direction="horizontal" questions={page.faqs} />
         </div>
       </Container>
     </Layout>

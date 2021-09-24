@@ -6,6 +6,7 @@ import { Card, Button } from '~/components/ui';
 import LogoBanorte from '~/public/logo-banorte.png';
 import LogoFarmacia from '~/public/logo-farmacia-guadalajara.png';
 import LogoSeven from '~/public/logo-7-eleven.png';
+import { CMSBackAccount } from '~/types/Models/CMSBackAccount';
 
 interface Props {
   actionCard: {
@@ -18,6 +19,7 @@ interface Props {
   contextCard: {
     title: string;
     description?: string;
+    bankAccount?: CMSBackAccount;
   };
 }
 
@@ -34,7 +36,6 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
             src={actionCard.imageSource as StaticImageData}
             alt="Logotipo Maxilana Vales"
             objectFit="contain"
-            placeholder="blur"
           />
         </div>
         <div className="space-y-3 sm:text-left lg:space-y-4">
@@ -86,12 +87,14 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
               <strong>Números de cuentra para realizar tus pagos</strong>
             </p>
             <p className="text-secondary">
-              <em className="text-primary font-normal">Cuenta Banorte: </em>
-              0262179436
+              <em className="text-primary font-normal">
+                Cuenta {contextCard?.bankAccount?.bankName}:{' '}
+              </em>
+              {contextCard?.bankAccount?.number}
             </p>
             <p className="text-secondary">
               <em className="text-primary font-normal">Transferencia CLABE: </em>
-              072730002621794363
+              {contextCard?.bankAccount?.clabe}
             </p>
           </div>
           <div>
