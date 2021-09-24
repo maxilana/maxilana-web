@@ -1,85 +1,52 @@
-import { FC, useState, useCallback } from 'react';
+import { FC } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 
 import styles from '../Pawn.module.css';
-import PawnSelectableArticle from '../PawnSelectableArticle';
-import Joyeria from '~/public/empeno-articulo-joyeria.jpg';
-import Auto from '~/public/empeno-articulo-auto.jpg';
-import Celulares from '~/public/empeno-articulo-celulares.jpg';
-import Relojes from '~/public/empeno-articulo-relojes.jpg';
-import Instrumentos from '~/public/empeno-articulo-musicales.jpg';
-import Herramientas from '~/public/empeno-articulo-herramientas.jpg';
+import SelectableItem from '../SelectableItem';
 
-const articles = [
+const categories = [
   {
     id: 1,
-    label: 'Joyería',
-    imageSrc: Joyeria,
+    label: 'Joyería y Monedas',
   },
   {
     id: 2,
-    label: 'Automóviles',
-    imageSrc: Auto,
+    label: 'Herramientas',
   },
   {
     id: 3,
-    label: 'Celulares',
-    imageSrc: Celulares,
+    label: 'Computadoras',
   },
   {
     id: 4,
-    label: 'Relojes',
-    imageSrc: Relojes,
+    label: 'Celulares',
   },
   {
     id: 5,
-    label: 'Instrumentos musicales',
-    imageSrc: Instrumentos,
+    label: 'Electrónica',
   },
   {
     id: 6,
-    label: 'Herramientas',
-    imageSrc: Herramientas,
+    label: 'Relojes',
+  },
+  {
+    id: 7,
+    label: 'Electrodomésticos',
+  },
+  {
+    id: 8,
+    label: 'Vehículos',
   },
 ];
 
 interface Props {
+  onSelect: (id: number) => void;
   onWhatsappClick: () => void;
 }
 
-const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
-  const [selected, setSelected] = useState<number[]>([]);
-
-  const handleToggleArticle = useCallback(
-    (id: number) => {
-      const found = selected.find((item) => item === id);
-
-      if (found) {
-        const newSelected = selected.filter((item) => item !== id);
-        setSelected(newSelected);
-      } else {
-        setSelected([id, ...selected]);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [selected],
-  );
-
-  const handleSubmit = (values: any) => {
-    const selectedArticles = articles
-      .filter((item) => {
-        return selected.includes(item.id);
-      })
-      .map((item) => item.label);
-
-    console.log({
-      ...values,
-      Articulos: selectedArticles,
-    });
-  };
-
+const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick }) => {
   return (
     <div className={styles.root}>
       <div className="p-4 bg-white">
@@ -88,15 +55,13 @@ const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
           <p className="text-primary">Calcula tu préstamo con nuestro simulador:</p>
         </div>
         <div className="my-6 grid gap-2 sm:grid-cols-2">
-          {articles.map((item) => {
+          {categories.map((item) => {
             return (
-              <PawnSelectableArticle
+              <SelectableItem
                 key={item.id}
                 label={item.label}
-                imageSrc={item.imageSrc}
-                checked={selected.includes(item.id)}
                 onClick={() => {
-                  handleToggleArticle(item.id);
+                  onSelect(item.id);
                 }}
               />
             );
@@ -109,7 +74,7 @@ const PawnRequest: FC<Props> = ({ onWhatsappClick }) => {
           fullWidth
           size="large"
           theme="whatsapp"
-          text="Obtén una valuación por Whatsapp"
+          text="Obtén una valuación de un experto"
           onClick={onWhatsappClick}
           icon={<WhatsAppOutlined style={{ color: 'white', fontSize: 20 }} />}
         />

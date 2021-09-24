@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { LeftOutlined, WhatsAppOutlined } from '@ant-design/icons';
 
 import containerStyles from '../Pawn.module.css';
+import { Button } from '~/components/ui';
 
 interface Props {
   onBack: () => void;
@@ -37,6 +38,9 @@ const PawnSelectableCity: FC<Props> = ({ onBack }) => {
               </span>
             </a>
           ))}
+        </div>
+        <div className="mt-4">
+          <Button fullWidth href="/sucursales" text="Contacta a tu sucursal más cercana" />
         </div>
       </div>
     </div>

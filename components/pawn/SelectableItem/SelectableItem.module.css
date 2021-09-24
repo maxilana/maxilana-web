@@ -4,7 +4,7 @@
 }
 
 .root:hover {
-  @apply bg-surface border-surface-dark;
+  @apply bg-surface-dark border-surface-dark;
 }
 
 .wrapImage {
@@ -12,7 +12,7 @@
 }
 
 .wrapBody {
-  @apply flex-grow flex flex-row justify-between items-center px-4 py-2 h-full;
+  @apply flex-grow flex flex-row items-center px-4 py-2 h-full;
 }
 
 .label {
