@@ -39,6 +39,8 @@ const getPaybillsPage = async (): Promise<CMSPaybill> => {
         payment {
           title
           description
+          CTAText
+          slug
           image {
             ...ImageFields
           }

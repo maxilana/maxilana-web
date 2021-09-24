@@ -61,8 +61,8 @@ const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
               title: page?.payment?.title,
               imageSource: page?.payment?.image?.url,
               description: page?.payment?.description,
-              buttonLabel: 'Pagar refrendo',
-              buttonHref: '/pagos/empeno',
+              buttonLabel: page?.payment?.CTAText,
+              buttonHref: `/pagos/${page?.payment?.slug}`,
             }}
             contextCard={{
               title: 'Realiza abonos de tu empeño sin acudir a sucursal',

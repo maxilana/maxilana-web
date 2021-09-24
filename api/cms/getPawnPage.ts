@@ -30,6 +30,7 @@ const getPawnPage = async () => {
           title
           description
           slug
+          CTAText
           image {
             ...ImageFields
           }
