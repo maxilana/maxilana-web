@@ -5,6 +5,9 @@ import { CMSSeo } from '~/types/Models/CMSSeo';
 export interface CMSPayment extends CMSModel {
   title: string;
   description: string;
+  slug: string;
+  CTAText: string;
+  type: 'empeno' | 'prestamo' | 'vale';
   seo: CMSSeo;
   image: CMSImage;
 }

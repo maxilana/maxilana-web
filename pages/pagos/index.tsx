@@ -1,58 +1,37 @@
-import { NextPage } from 'next';
+import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getPaymentsList from '~/api/cms/getPayments';
+import getAllCities from '~/api/getAllCities';
 
 import { Button, Card } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import Image from 'next/image';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
+import { CMSPayment } from '~/types/Models';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+export const getStaticProps: GetStaticProps<DefaultPageProps<{ payments: CMSPayment[] }>> =
+  async () => {
+    const cities = await getAllCities();
+    const legalPages = await getAllLegalPages();
+    const payments = await getPaymentsList();
+    return {
+      props: {
+        cities,
+        legalPages,
+        payments,
+      },
+    };
+  };
 
-const payments = [
-  {
-    id: 1,
-    title: 'Boleta de empeño',
-    description: 'Realiza el pago del refrendo para no perder tu artículo.',
-    image: {
-      src: '/ilustracion-pago-refrendo.png',
-      alt: 'Ilustración de pago de refrendo',
-    },
-    link: {
-      title: 'Pagar refrendo',
-      href: '/pagos/empeno',
-    },
-  },
-  {
-    id: 2,
-    title: 'Préstamo personal',
-    description: 'Abona a tu préstamo personal en línea fácil y sencillo',
-    image: {
-      src: '/ilustracion-pago-prestamo.png',
-      alt: 'Ilustración de pago de préstamo',
-    },
-    link: {
-      title: 'Pagar préstamo',
-      href: '/pagos/prestamos-personales',
-    },
-  },
-  {
-    id: 3,
-    title: 'Maxilana Vales',
-    description: 'Paga directamente a tu distribuidora.',
-    image: {
-      src: '/ilustracion-pago-vales.png',
-      alt: 'Ilustración de pago de vales',
-    },
-    link: {
-      title: 'Pagar vales',
-      href: '/pagos/vales',
-    },
-  },
-];
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const PaymentsPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+const PaymentsPage: NextPage<Props> = ({ cities, legalPages, payments }) => {
   return (
     <Layout
-      title="Paga online online directamente a tu distribuidora"
+      meta={{
+        title: 'Paga online online directamente a tu distribuidora',
+        description: 'Ahora puedes pagar nuestros servicios desde la comodidad de tu casa.',
+      }}
       cities={cities}
       legalPages={legalPages}
     >
@@ -73,15 +52,20 @@ const PaymentsPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                       width={370}
                       height={179}
                       layout="responsive"
-                      alt={item.image.alt}
-                      src={item.image.src}
+                      alt={item.image.alternativeText}
+                      src={item.image.url}
                     />
                   </div>
                   <div className="flex-grow text-center">
                     <h2 className="text-lg mb-4">{item.title}</h2>
                     <p className="text-secondary mb-4">{item.description}</p>
                   </div>
-                  <Button fullWidth theme="primary" href={item.link.href} text={item.link.title} />
+                  <Button
+                    fullWidth
+                    theme="primary"
+                    href={`/pagos/${item.slug}`}
+                    text={item?.CTAText}
+                  />
                 </div>
               </Card>
             ))}
