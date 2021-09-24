@@ -3,16 +3,12 @@ import Link from 'next/link';
 import { FC } from 'react';
 
 import { Card } from '~/components/ui';
+import { CMSFaq } from '~/types/Models/CMSFaq';
+import slugify from '~/utils/slugify';
 import styles from './HelpSidebar.module.css';
 
-type Question = {
-  id: number;
-  label: string;
-  href: string;
-};
-
 interface Props {
-  questions: Question[];
+  questions: CMSFaq[];
   direction?: 'horizontal' | 'vertical';
 }
 
@@ -24,8 +20,8 @@ const HelpSidebar: FC<Props> = ({ direction = 'vertical', questions }) => {
         <ul>
           {questions.map((item) => (
             <li key={item.id} className={styles.questionItem}>
-              <Link href={item.href}>
-                <a className={styles.questionLink}>{item.label}</a>
+              <Link href={`/preguntas-frecuentes/${item.section.slug}#${slugify(item.question)}`}>
+                <a className={styles.questionLink}>{item.question}</a>
               </Link>
             </li>
           ))}
@@ -42,7 +38,7 @@ const HelpSidebar: FC<Props> = ({ direction = 'vertical', questions }) => {
             Teléfono: <a href="tel:8002151515">800 215 1515</a>
           </p>
           <p className={styles.footerCopy}>
-            Puedes visitar nuestra página de {' '}
+            Puedes visitar nuestra página de{' '}
             <Link href="/preguntas-frecuentes">
               <a>preguntas frecuentes</a>
             </Link>

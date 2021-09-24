@@ -5,3 +5,6 @@ export * from './Coupon';
 export * from './Branch';
 export * from './LoanConfig';
 export * from './CMSLegal';
+export * from './CMSPawn';
+export * from './CMSCarPawn';
+export * from './CMSPayment';
