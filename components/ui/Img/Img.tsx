@@ -55,11 +55,12 @@ const placeholderColors = {
 
 type Props = ImageProps & {
   placeholderType?: 'default' | 'brand';
+  customLoader?: 'maxilana' | 'cloudinary';
 };
 
-const Img: FC<Props> = ({ placeholderType = 'default', ...props }) => {
-  const customLoader =
-    loaders[process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders];
+const Img: FC<Props> = ({ placeholderType = 'default', customLoader, ...props }) => {
+  const loader =
+    loaders[customLoader || (process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders)];
   return (
     <>
       {/*@ts-ignore esta mal typeado el componente Image*/}
@@ -71,7 +72,7 @@ const Img: FC<Props> = ({ placeholderType = 'default', ...props }) => {
           h: parseFloat(`${props?.height}`) || 450,
           ...placeholderColors[placeholderType],
         })}
-        loader={customLoader}
+        loader={loader}
         {...props}
       />
     </>

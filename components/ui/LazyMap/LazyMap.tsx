@@ -1,6 +1,6 @@
 import { ParsedUrlQuery } from 'querystring';
 import React, { FC, useState } from 'react';
-import Image from 'next/image';
+import { Img } from '~/components/ui';
 import parseQuery from '~/utils/parseQuery';
 import Map from '../Map';
 import { Branch } from '~/types/Models';
@@ -31,7 +31,14 @@ const LazyMap: FC<Props> = ({ branch }) => {
   return (
     <>
       <div className="absolute inset-0 cursor-pointer" onClick={showDynamicMap} role="button">
-        <Image src={src} layout="fill" objectFit="contain" alt="map" quality={100} />
+        <Img
+          src={src}
+          layout="fill"
+          objectFit="contain"
+          alt="map"
+          quality={100}
+          customLoader="maxilana"
+        />
       </div>
       {dynamicMap && <Map branches={[branch]} zoom={18} />}
     </>
