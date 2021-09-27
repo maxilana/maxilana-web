@@ -8,44 +8,8 @@ import { Card, ButtonDropdown, Img } from '~/components/ui';
 import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-
-import HeroPrestamos from '~/public/demo-hero-prestamos.jpg';
-import PagarPrestamos from '~/public/pagar-prestamos.png';
 import { CMSLoans } from '~/types/Models/CMSLoans';
 import getAllCities from '~/api/getAllCities';
-
-const whatsappList = [
-  {
-    id: 1,
-    label: 'Culiacán y Navolato',
-    href: '6675021267',
-  },
-  {
-    id: 2,
-    label: 'Mazatlán',
-    href: '6692405437',
-  },
-  {
-    id: 3,
-    label: 'Guadalajara',
-    href: '3318911511',
-  },
-  {
-    id: 4,
-    label: 'Hermosillo',
-    href: '6624294030',
-  },
-  {
-    id: 5,
-    label: 'Mexicali',
-    href: '6861571304',
-  },
-  {
-    id: 6,
-    label: 'Tijuana',
-    href: '664120345',
-  },
-];
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>> = async () => {
   const cities = await getAllCities();

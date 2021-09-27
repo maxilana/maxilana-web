@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from 'querystring';
-import React, { FC, useCallback, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import Image from 'next/image';
 import parseQuery from '~/utils/parseQuery';
 import Map from '../Map';
@@ -25,7 +25,6 @@ const LazyMap: FC<Props> = ({ branch }) => {
     markers: `icon:${icon}|${branch.latitud},${branch.longitud}`,
   };
   const src = `https://maps.googleapis.com/maps/api/staticmap?${parseQuery(params)}`;
-
   const showDynamicMap = () => {
     if (!dynamicMap) setDynamicMap(true);
   };
