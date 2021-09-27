@@ -48,15 +48,17 @@ const Searcher: FC<Props> = ({ cities }) => {
 
   const goToSearch = () => {
     const { query = {} } = router;
-    if (searchText !== query?.q || `${city?.id}` !== query?.ciudad) {
+    if (`${searchText || ''}` !== `${query?.q || ''}` || `${city?.id}` !== query?.ciudad) {
       if (searchText) {
         query.q = searchText;
       } else {
         delete query.q;
       }
       if (city) {
-        query.ciudad = `${city.id}`;
-        delete query.sucursal;
+        if (`${city?.id}` !== query?.ciudad) {
+          query.ciudad = `${city.id}`;
+          delete query.sucursal;
+        }
       } else {
         delete query.ciudad;
       }
@@ -64,7 +66,7 @@ const Searcher: FC<Props> = ({ cities }) => {
       if (!query?.orden) {
         query.orden = 'desc';
       }
-
+      console.log(`/busqueda?${parseQuery(omit(query, 'page'))}`);
       router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
     }
   };
