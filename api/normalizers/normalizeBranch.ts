@@ -27,8 +27,8 @@ export default function normalizeBranch(sucursal: Sucursal): Branch {
     saturdayClosingTime: sucursal?.HoraCierreS,
     sundayOpeningTime: sucursal?.HoraAperturaD,
     sundayClosingTime: sucursal?.HoraCierreD,
-    latitud: sucursal?.latitud,
-    longitud: sucursal?.longitud,
+    latitud: sucursal?.latitud < sucursal?.longitud ? sucursal?.longitud : sucursal?.latitud,
+    longitud: sucursal?.latitud < sucursal?.longitud ? sucursal?.latitud : sucursal?.longitud,
     slug: sucursal?.slug,
   };
 }

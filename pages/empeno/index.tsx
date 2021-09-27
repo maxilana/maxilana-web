@@ -11,7 +11,6 @@ import { ServicePaymentCards, YouTube } from '~/components/common';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { Button, Card, Img } from '~/components/ui';
 import Auto from '~/public/tarjeta-empeno-auto.png';
-import PagoOnline from '~/public/ilustracion-pago-online.png';
 import { CMSPawn } from '~/types/Models';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPawn }>> = async () => {

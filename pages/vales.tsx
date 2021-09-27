@@ -18,24 +18,6 @@ import GetMaxilanaVales from '~/public/gana-maxilana-vales.png';
 import PayVales from '~/public/pagar-vales.png';
 import { CMSPaybill } from '~/types/Models/CMSPaybill';
 
-const questionList = [
-  {
-    id: 1,
-    label: '¿Qué es un refrendo?',
-    href: '/preguntas-frecuentes#que-es-refrendo',
-  },
-  {
-    id: 2,
-    label: '¿Qué es un empeño?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-  {
-    id: 3,
-    label: '¿Por qué no se puede pagar el refrendo completo del empeño en línea?',
-    href: '/preguntas-frecuentes#que-es-un-empeno',
-  },
-];
-
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPaybill }>> = async () => {
   const cities = await getAllCities();
   const legalPages = await getAllLegalPages();
