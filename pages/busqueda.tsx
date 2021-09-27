@@ -39,7 +39,7 @@ interface GSSProps {
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
   const { page, limit, ...filters } = query || {};
-  const categories = await getCMSCategories();
+  const categories = await getCMSCategories(true);
   if (query.categoria) {
     const category = categories.find((item) => item.id === query?.categoria);
     const { filters } = category || {};

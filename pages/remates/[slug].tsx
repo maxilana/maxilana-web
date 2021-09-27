@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
   const { slug } = ctx?.params || {};
   if (!slug) return { notFound: true };
   const cities = await getAllCities();
-  const categories = await getCMSCategories();
+  const categories = await getCMSCategories(true);
   const page = await getMktPageBySlug(slug as string);
   if (!page) return { notFound: true };
   const products = page?.productsFilters

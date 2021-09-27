@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
   try {
     const cities = await getAllCities();
     const page = await getCMSRematesPage();
-    const categories = await getCMSCategories();
+    const categories = await getCMSCategories(true);
     const categoriesProducts = page?.categories?.length
       ? await Promise.all(
           page?.categories.map((item) => {
