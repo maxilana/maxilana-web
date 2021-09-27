@@ -17,7 +17,9 @@ const SideMenu: FC<Props> = ({ links, className }) => {
       {links?.map((item) => (
         <li key={item?.href}>
           <Link href={item?.href}>
-            <a className={cn(styles.link, { [styles.current]: router.asPath === item?.href })}>
+            <a
+              className={cn(styles.link, { [styles.current]: router.asPath.includes(item?.href) })}
+            >
               {item?.label}
             </a>
           </Link>

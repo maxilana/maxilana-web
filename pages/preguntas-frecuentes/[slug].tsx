@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSSectionBySlug from '~/api/cms/getCMSSectionBySlug';
 import getCMSSections from '~/api/cms/getCMSSections';
@@ -9,6 +10,7 @@ import { SideMenu, Markdown } from '~/components/common';
 import { Collapse } from '~/components/ui';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSSection } from '~/types/Models/CMSSection';
+import slugify from '~/utils/slugify';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getCMSSectionsSlugs();
@@ -46,6 +48,8 @@ export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Faq: NextPage<Props> = ({ cities, section, sections, legalPages }) => {
+  const router = useRouter();
+  const [, slug] = router.asPath.match(/#([a-zA-z0-9-_]+)/) || [];
   return (
     <Layout title={section?.name} cities={cities} meta={section?.seo} legalPages={legalPages}>
       <main className="container mx-auto px-4 py-12 grid gap-16 lg:grid-cols-3">
@@ -65,10 +69,15 @@ const Faq: NextPage<Props> = ({ cities, section, sections, legalPages }) => {
             {section?.faqs?.map?.((faq) => (
               <Collapse
                 key={faq?.id}
-                title={<h2 className="h6">{faq?.question}</h2>}
+                title={
+                  <h2 className="h6 relative">
+                    {faq?.question}
+                    <span id={slugify(`${faq?.question}`)} className="absolute top-[-108px]" />
+                  </h2>
+                }
                 className="p-4"
                 indicatorStyle="circle"
-                collapsed
+                collapsed={slug !== slugify(`${faq?.question}`)}
               >
                 <Markdown content={`${faq?.answer}`} className="prose max-w-none" />
               </Collapse>
