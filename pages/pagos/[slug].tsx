@@ -5,7 +5,7 @@ import getPaymentsList from '~/api/cms/getPayments';
 import getAllCities from '~/api/getAllCities';
 import getPaymentBySlug from '~/api/getPaymentBySlug';
 import { HelpSidebar, Layout } from '~/components/layout';
-import { LoanPaymentFlow, PawnPaymentFlow } from '~/components/payments';
+import { LoanPaymentFlow, PawnPaymentFlow, CouponPaymentFlow } from '~/components/payments';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSPayment } from '~/types/Models';
 
@@ -23,7 +23,7 @@ const paymentTypes: Record<
   },
   vale: {
     css: ['/antd/form.css', '/antd/radio.css'],
-    component: <LoanPaymentFlow />,
+    component: <CouponPaymentFlow />,
   },
 };
 
