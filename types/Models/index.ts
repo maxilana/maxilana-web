@@ -9,3 +9,4 @@ export * from './CMSPawn';
 export * from './CMSCarPawn';
 export * from './CMSPayment';
 export * from './Checkout';
+export * from './CMSOtherService';
