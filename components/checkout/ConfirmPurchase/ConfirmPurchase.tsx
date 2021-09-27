@@ -1,30 +1,88 @@
-import { FC } from 'react';
-import { Form } from 'antd';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import { Form, Radio } from 'antd';
+import { FC, useState } from 'react';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '~/components/ui';
-import { CartSummary, InputField, InputMask } from '~/components/common';
+import { BankTransactionForm } from '~/components/payments';
+import { CartSummary, FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
 
 import styles from './ConfirmPurchase.module.css';
 import formContainerStyles from '../FormContainer.module.css';
-
 import defaultValidateMessages from 'config/validationMessages';
+
+import { request3DTransaction } from '~/api/payments';
 import { Product } from '~/types/Models/Product';
+import { ProductPurchase } from '~/types/Requests';
+import { MaxilanaTransaction } from '~/types/Responses';
+import useShippingCost from '~/hooks/useShippingCost';
 
 interface Props {
   product: Product;
 }
 
-const ConfirmPurchase: FC<Props> = ({ product }) => {
-  const [form] = Form.useForm();
+type FormValues = ProductPurchase;
+type Status = 'idle' | 'submiting' | 'error';
+type Data = {
+  payment: ProductPurchase;
+  transaction: MaxilanaTransaction;
+};
 
-  const handleFormSubmit = (data: any) => {
-    console.log(data);
+dayjs.extend(customParseFormat);
+
+const ConfirmPurchase: FC<Props> = ({ product }) => {
+  const [status, setStatus] = useState<Status>('idle');
+  const [data, setData] = useState<Data | null>(null);
+
+  const [form] = Form.useForm<FormValues>();
+  const shipping = useShippingCost(product.id);
+
+  const handleFormSubmit = async (data: FormValues) => {
+    setStatus('submiting');
+    let totalPrice = 0;
+
+    if (product.netPrice) {
+      totalPrice = shipping + product.netPrice;
+    } else {
+      totalPrice = shipping + product.price;
+    }
+
+    try {
+      const params: ProductPurchase = {
+        ...data,
+        upc: product.id,
+        // importe: totalPrice, // PRECIO + ENVIO
+        importe: 10,
+      };
+
+      const maxiTransaction = await request3DTransaction(params);
+
+      setData({
+        payment: params,
+        transaction: maxiTransaction,
+      });
+    } catch (err) {
+      console.log(err);
+      setStatus('error');
+    }
   };
 
+  if (status === 'submiting') {
+    return (
+      <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
+        {data !== null && (
+          <BankTransactionForm
+            {...data}
+            forwardPath={`http://localhost:3000/checkout/response?Reference3D=${data.transaction.id}`}
+          />
+        )}
+      </PageLoader>
+    );
+  }
+
   return (
-    <Form form={form} validateMessages={defaultValidateMessages}>
+    <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
       <div className="container mx-auto md:px-4">
         <div className={styles.root}>
           <h1 className={styles.title}>Confirmar compra</h1>
@@ -34,20 +92,17 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                 <h2 className={styles.subtitle}>Dirección de envío</h2>
                 <div className="grid gap-4">
                   <div className="col-span-2">
-                    <Form.Item name="nombre" rules={[{ required: true }]}>
-                      <InputField
-                        label="Nombre completo"
-                        placeholder="Nombre del titular de la tarjeta"
-                      />
+                    <Form.Item name="nombreenvio" rules={[{ required: true }]}>
+                      <InputField label="Nombre completo" />
                     </Form.Item>
                   </div>
                   <div className="col-span-2">
-                    <Form.Item name="direccion" rules={[{ required: true }]}>
+                    <Form.Item name="domicilio" rules={[{ required: true }]}>
                       <InputField label="Dirección" />
                     </Form.Item>
                   </div>
                   <div>
-                    <Form.Item name="codigoPostal" rules={[{ required: true }]}>
+                    <Form.Item name="codigopostal" rules={[{ required: true }]}>
                       <InputField label="Código Postal" maxLength={5} />
                     </Form.Item>
                   </div>
@@ -68,7 +123,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                   </div>
                   <div>
                     <Form.Item name="celular" rules={[{ required: true }]}>
-                      <InputField label="Celular" placeholder="10 dígitos" />
+                      <InputField label="Celular" placeholder="10 dígitos" maxLength={10} />
                     </Form.Item>
                   </div>
                   <div>
@@ -89,7 +144,23 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                 <h2 className={styles.subtitle}>Información de pago</h2>
                 <div className="grid gap-4">
                   <div className="col-span-2">
-                    <Form.Item name="numeroTarjeta">
+                    <Form.Item name="cardtype" label="Tipo de tarjeta" rules={[{ required: true }]}>
+                      <Radio.Group className="flex flex-row">
+                        <Radio value="VISA">
+                          <span className="mx-2">VISA</span>
+                        </Radio>
+                        <Radio value="MC">
+                          <span className="mx-2">MASTERCARD</span>
+                        </Radio>
+                      </Radio.Group>
+                    </Form.Item>
+                  </div>
+                  <div>
+                    <Form.Item
+                      name="tarjeta"
+                      rules={[{ required: true }]}
+                      getValueFromEvent={({ target }) => target.rawValue}
+                    >
                       <InputMask
                         label="Número de la tarjeta"
                         placeholder="#### #### #### ####"
@@ -100,12 +171,19 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                     </Form.Item>
                   </div>
                   <div>
+                    <Form.Item name="titular" rules={[{ required: true }]}>
+                      <InputField label="Nombre del titular de la tarjeta" />
+                    </Form.Item>
+                  </div>
+                  <div>
                     <Form.Item
-                      name="fechaVencimiento"
+                      name="vencimiento"
                       rules={[
                         {
                           required: true,
                           validator: (_, value) => {
+                            console.log(value);
+
                             const dt = dayjs(value, 'MM/YY');
                             const isFuture = dt.isAfter(dayjs());
 
@@ -130,7 +208,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                     </Form.Item>
                   </div>
                   <div>
-                    <Form.Item name="codigoSeguridad">
+                    <Form.Item name="ccv" rules={[{ required: true }]}>
                       <InputMask
                         type="password"
                         label="Cod. de seguridad"
@@ -147,23 +225,30 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
             </div>
             <div className="lg:max-w-[520px]">
               <div className={formContainerStyles.root}>
-                <div>
-                  <CartSummary data={product} />
-                  <hr className="my-4" />
+                <FormFeedback
+                  visible={status === 'error'}
+                  onDismiss={() => {
+                    setStatus('idle');
+                  }}
+                >
                   <div>
-                    <Button fullWidth size="large" theme="primary" text="Proceder al pago" />
+                    <CartSummary data={product} />
+                    <hr className="my-4" />
+                    <div>
+                      <Button fullWidth size="large" theme="primary" text="Proceder al pago" />
+                    </div>
+                    <hr className="my-4" />
+                    <div className="text-center">
+                      <small>
+                        Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los{' '}
+                        <Link href="/legal/terminos-condiciones">
+                          <a className="text-price">TÉRMINOS Y CONDICIONES</a>
+                        </Link>{' '}
+                        de Maxilana.
+                      </small>
+                    </div>
                   </div>
-                  <hr className="my-4" />
-                  <div className="text-center">
-                    <small>
-                      Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los{' '}
-                      <Link href="/legal/terminos-condiciones">
-                        <a className="text-price">TÉRMINOS Y CONDICIONES</a>
-                      </Link>{' '}
-                      de Maxilana.
-                    </small>
-                  </div>
-                </div>
+                </FormFeedback>
               </div>
             </div>
           </div>

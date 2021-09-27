@@ -51,6 +51,7 @@
     "postcss": "^8.3.5",
     "preact": "^10.5.14",
     "preact-render-to-string": "^5.1.19",
+    "raw-body": "^2.4.1",
     "react": "npm:@preact/compat",
     "react-device-detect": "^1.17.0",
     "react-dom": "npm:@preact/compat",
