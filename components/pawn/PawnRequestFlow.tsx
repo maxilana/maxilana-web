@@ -92,9 +92,11 @@ const PawnRequestFlow: FC<Props> = ({ categories }) => {
   }, [state.status, state.article]);
 
   useEffectOnUpdate(() => {
+    let payload = { ...state, ...router.query };
+    if (!Object.keys(router.query).length) payload = initialState;
     dispatch({
       type: 'SET',
-      payload: { ...state, ...router.query },
+      payload,
     });
   }, [router.query]);
 
