@@ -83,7 +83,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
         <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
           {page?.directAccess?.map?.((card) => (
             <Card key={card.id} className="overflow-hidden" noPadding>
-              <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between pl-4 md:pl-6">
+              <div className="p-4 flex flex-col items-center justify-center space-y-4 sm:p-0 sm:pl-4 sm:flex-row-reverse sm:space-y-0 sm:justify-between md:pl-6">
                 <div className="relative mr-2 min-w-[150px] lg:min-w-[200px]">
                   <Image
                     width={250}
