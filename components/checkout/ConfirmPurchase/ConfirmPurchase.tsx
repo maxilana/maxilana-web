@@ -71,7 +71,10 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
     return (
       <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
         {data !== null && (
-          <BankTransactionForm {...data} forwardPath={`http://localhost:3000/checkout/response`} />
+          <BankTransactionForm
+            {...data}
+            forwardPath={`http://localhost:3000/checkout/response?scost=${shipping}`}
+          />
         )}
       </PageLoader>
     );

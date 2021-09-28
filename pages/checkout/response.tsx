@@ -9,10 +9,14 @@ import { request2DTransaction } from '~/api/payments/checkout';
 import { Secure3DTransaction } from '~/types/Responses';
 import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
 
+interface Transaction extends Secure3DTransaction {
+  envio: number;
+}
+
 type SSRProps = {
   error?: boolean;
   errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
-  response?: Secure3DTransaction;
+  response?: Transaction;
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
@@ -50,7 +54,11 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
       error = true;
       errorCode = params.Status !== '200' ? (params.Status as ErrorCodes) : '200';
     } else {
-      response = params;
+      const shipping = Number(query.scost);
+      response = {
+        ...params,
+        envio: shipping,
+      };
     }
   }
 
@@ -70,8 +78,8 @@ const CheckoutResponsePage: NextPage<Props> = ({ error = false, errorCode, respo
   const [data, setData] = useState<CheckoutData | null>(null);
 
   const processFinalTransaction = async () => {
-    const bankTxn = response as Secure3DTransaction;
-    const success = await request2DTransaction({ ...bankTxn, envio: 300 });
+    const bankTxn = response as Transaction;
+    const success = await request2DTransaction(bankTxn);
 
     setData(success);
     setLoading(false);
