@@ -5,64 +5,60 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { BareLayout } from '~/components/layout';
 import { PageLoader } from '~/components/common';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
+import { request2DTransaction } from '~/api/payments/checkout';
 import { Secure3DTransaction } from '~/types/Responses';
 import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
-import { request2DTransaction } from '~/api/payments/checkout';
-
-/**
- * CÓDIGOS DE ERROR
- * 100 - NO EXISTE LA VARIABLE DE ENTORNO CON LA URL DEL BANCO
- * 200 - EL BANCO REGRESÓ ERRORES CON EL PAGO
- */
 
 type SSRProps = {
   error?: boolean;
-  errorCode?: ErrorCodes;
+  errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
   response?: Secure3DTransaction;
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
+  let error = false;
+  let response = undefined;
+  let errorCode: ErrorCodes = '0';
   const { query, req } = context;
 
   if (req.method === 'GET') {
     // PETICIÓN INTERNA
-    //  LA URL SE ESCRIBIÓ O REDIRECCIONAMOS DE UN ERROR
-    let errorCode: ErrorCodes = '0';
-
-    if (query?.errorCode) {
-      errorCode = query.errorCode as ErrorCodes;
+    //  LA URL SE ESCRIBIÓ REDIRECCIONAMOS AL HOME
+    if (!query?.error && !query?.errorCode) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
     }
 
-    return { props: { error: true, errorCode } };
+    // O SI EXISTEN LAS VARIABLES DE ERROR
+    //  MOSTRAMOS UN ERROR
+    error = true;
+    errorCode = query.errorCode as ErrorCodes;
   } else if (req.method === 'POST') {
     // RESPUESTA DEL BANCO
-    //  REVISAMOS STATUS Y RESPUESTA
+    //  OBTENEMOS LA RESPUESTA
     const body = await getRawBody(req);
     const parsedString = body.toString('utf8');
     //@ts-ignore
     const params: Secure3DTransaction = Object.fromEntries(new URLSearchParams(parsedString));
 
+    //  REVISAMOS STATUS Y RESPUESTA
     if (params.Status !== '200' || !params?.CAVV || !params?.ECI || !params?.XID) {
-      return {
-        props: {
-          error: true,
-          errorCode: '200',
-        },
-      };
+      error = true;
+      errorCode = params.Status !== '200' ? (params.Status as ErrorCodes) : '200';
+    } else {
+      response = params;
     }
-
-    return {
-      props: {
-        response: params,
-      },
-    };
   }
 
-  // CUALQUIER OTRA PETICIÓN DEBERÍA SER UN ERROR
   return {
     props: {
-      error: true,
-      errorCode: '0',
+      error,
+      errorCode,
+      ...(response !== undefined ? response : undefined),
     },
   };
 };
@@ -70,12 +66,12 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const CheckoutResponsePage: NextPage<Props> = ({ error = false, errorCode, response = null }) => {
-  const [data, setData] = useState<CheckoutData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<CheckoutData | null>(null);
 
   const processFinalTransaction = async () => {
     const bankTxn = response as Secure3DTransaction;
-    const success = await request2DTransaction({ ...bankTxn, envio: 100 });
+    const success = await request2DTransaction({ ...bankTxn, envio: 300 });
 
     setData(success);
     setLoading(false);
@@ -100,7 +96,7 @@ const CheckoutResponsePage: NextPage<Props> = ({ error = false, errorCode, respo
           return <CheckoutError code={errorCode || '0'} />;
         }
 
-        return <CheckoutSuccess />;
+        return <CheckoutSuccess data={data as CheckoutData} />;
       })()}
     </BareLayout>
   );

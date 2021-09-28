@@ -52,8 +52,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
       const params: ProductPurchase = {
         ...data,
         upc: product.id,
-        // importe: totalPrice, // PRECIO + ENVIO
-        importe: 10,
+        importe: totalPrice, // PRECIO + ENVIO
       };
 
       const maxiTransaction = await request3DTransaction(params);
@@ -72,10 +71,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
     return (
       <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
         {data !== null && (
-          <BankTransactionForm
-            {...data}
-            forwardPath={`http://localhost:3000/checkout/response?Reference3D=${data.transaction.id}`}
-          />
+          <BankTransactionForm {...data} forwardPath={`http://localhost:3000/checkout/response`} />
         )}
       </PageLoader>
     );
