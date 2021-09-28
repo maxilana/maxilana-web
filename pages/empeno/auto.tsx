@@ -30,7 +30,14 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const AutoEmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
     <div>
-      <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
+      <Layout
+        meta={{
+          ...page.seo,
+          css: ['/antd/form.css'],
+        }}
+        cities={cities}
+        legalPages={legalPages}
+      >
         <div className="pt-[108px] bg-gradient-to-r from-[#F7D067] to-[#F1C153]">
           <div className="container mx-auto px-4 py-10 sm:py-20">
             <div className="grid gap-4 sm:grid-cols-2">
