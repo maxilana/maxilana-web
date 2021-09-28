@@ -7,6 +7,7 @@ import LoanRequestFlow from '~/components/loans';
 import { Card, ButtonDropdown, Img } from '~/components/ui';
 import { HeroComposed, ServicePaymentCards } from '~/components/common';
 import { Layout, VStack, Container, HelpSidebar } from '~/components/layout';
+import useResponsive from '~/hooks/useResponsive';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSLoans } from '~/types/Models/CMSLoans';
 import getAllCities from '~/api/getAllCities';
@@ -26,6 +27,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
+  const { isNotMobile } = useResponsive();
   return (
     <Layout
       cities={cities}
@@ -40,15 +42,17 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
         copy={page.hero.secondaryText}
         footer={<p className="text-lg uppercase text-accent">{page.hero.tertiaryText}</p>}
         cover={
-          <Img
-            priority
-            layout="fill"
-            src={page.hero.image.url}
-            alt="Prestamos Hero Image"
-            objectFit="cover"
-            placeholder="empty"
-            quality={100}
-          />
+          isNotMobile ? (
+            <Img
+              priority
+              layout="fill"
+              src={page.hero.image.url}
+              alt="Prestamos Hero Image"
+              objectFit="cover"
+              placeholder="empty"
+              quality={100}
+            />
+          ) : null
         }
       >
         <LoanRequestFlow />

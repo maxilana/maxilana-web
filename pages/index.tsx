@@ -1,6 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
+
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getHomePage from '~/api/cms/getHomePage';
 import getAllCities from '~/api/getAllCities';
@@ -9,6 +10,7 @@ import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Container, Layout } from '~/components/layout';
 import { Card, Button, ProductCard, Img } from '~/components/ui';
 import { CategoryExplorer, ComissionsTable, Hero } from '~/components/common';
+import useResponsive from '~/hooks/useResponsive';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSHomePage } from '~/types/Models/CMSHomePage';
@@ -49,9 +51,21 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages }) => {
+  const { type } = useResponsive();
+  const heroImage = (() => {
+    switch (type) {
+      case 'tablet':
+        return `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/image/upload/c_fill,g_auto,f_auto,w_840,h_400,q_80/${page?.hero?.image?.hash}${page?.hero?.image?.ext}`;
+      case 'desktop':
+        return `${page?.hero?.image?.url}`;
+      default:
+        return `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/image/upload/c_fill,g_auto,f_auto,w_720,h_840,q_80/${page?.hero?.image?.hash}${page?.hero?.image?.ext}`;
+    }
+  })();
   return (
     <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
       <Hero
+        key={process.browser && type ? type : 'mobile'}
         title={`${page?.hero?.mainText}`}
         subtitle={page?.hero?.secondaryText}
         actions={
@@ -70,7 +84,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
         cover={
           <Img
             layout="fill"
-            src={`${page?.hero?.image?.url}`}
+            src={heroImage}
             alt=""
             objectFit="cover"
             priority
@@ -119,11 +133,11 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
             ))}
           </div>
         </section>
-        <section className="my-12 lg:my-24">
-          <h3 className="text-2xl text-center">Consulta los costos y comisiones</h3>
-          <ComissionsTable />
-        </section>
       </Container>
+      <section className="my-12 lg:my-24">
+        <h3 className="text-2xl text-center">Consulta los costos y comisiones</h3>
+        <ComissionsTable />
+      </section>
     </Layout>
   );
 };

@@ -8,12 +8,12 @@ const ComissionsTable: FC = () => {
         <table className="w-full table-auto text-center text-sm">
           <thead>
             <tr>
-              <th className="p-2 bg-surface-dark text-left">Plaza</th>
-              <th className="p-2 bg-surface-dark">
+              <th className="sm:p-2 bg-surface-dark text-left text-xs">Plaza</th>
+              <th className="sm:p-2 bg-surface-dark text-xs">
                 <span className="text-base">CAT</span> Promedio
               </th>
-              <th className="p-2 bg-surface-dark">Costo Mensual Totalizado</th>
-              <th className="p-2 bg-surface-dark">Costo Diario Totalizado</th>
+              <th className="sm:p-2 bg-surface-dark text-xs">Costo Mensual Totalizado</th>
+              <th className="sm:p-2 bg-surface-dark text-xs">Costo Diario Totalizado</th>
             </tr>
           </thead>
           <tbody>

@@ -5,6 +5,8 @@ const IMAGE_FIELDS_FRAGMENT = gql`
     id
     alternativeText
     url
+    hash
+    ext
     width
     height
   }

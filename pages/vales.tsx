@@ -45,6 +45,7 @@ const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
             src={page?.hero?.image?.url}
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
+            priority
           />
         }
         actions={

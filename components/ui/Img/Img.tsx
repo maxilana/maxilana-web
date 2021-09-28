@@ -29,17 +29,27 @@ const toBase64 = (str: string) =>
   typeof window === 'undefined' ? Buffer.from(str).toString('base64') : window.btoa(str);
 
 const loaders = {
-  cloudinary: ({ src, width, quality = 75 }: ImageLoaderProps) => {
-    if (!process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL) {
-      throw Error('Environment variable NEXT_PUBLIC_CLOUDINARY_BASEURL is missing');
-    }
-    const baseURL = process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL;
-    return `${baseURL}/image/fetch/f_auto,w_${width},q_${quality}/${src}`;
-  },
-  maxilana: ({ src, width, quality = 75 }: ImageLoaderProps) =>
-    `${process.env.NEXT_PUBLIC_API_BASEURL}/image?url=${encodeURIComponent(
-      src,
-    )}&w=${width}&q=${quality}`,
+  cloudinary:
+    (options?: string[]) =>
+    ({ src, width, quality = 75 }: ImageLoaderProps & { cloudinaryOptions?: string[] }) => {
+      if (!process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL) {
+        throw Error('Environment variable NEXT_PUBLIC_CLOUDINARY_BASEURL is missing');
+      }
+      const baseURL = process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL;
+      const cloudinaryOptions = ['f_auto', `w_${width}`, `q_${quality}`];
+      console.log(
+        `${baseURL}/image/fetch/${[...cloudinaryOptions, ...(options || [])].join(',')}/${src}`,
+      );
+      return `${baseURL}/image/fetch/${[...cloudinaryOptions, ...(options || [])].join(
+        ',',
+      )}/${src}`;
+    },
+  maxilana:
+    () =>
+    ({ src, width, quality = 75 }: ImageLoaderProps) =>
+      `${process.env.NEXT_PUBLIC_API_BASEURL}/image?url=${encodeURIComponent(
+        src,
+      )}&w=${width}&q=${quality}`,
 };
 
 const placeholderColors = {
@@ -56,9 +66,15 @@ const placeholderColors = {
 type Props = ImageProps & {
   placeholderType?: 'default' | 'brand';
   customLoader?: 'maxilana' | 'cloudinary';
+  cloudinaryOptions?: string[];
 };
 
-const Img: FC<Props> = ({ placeholderType = 'default', customLoader, ...props }) => {
+const Img: FC<Props> = ({
+  placeholderType = 'default',
+  customLoader,
+  cloudinaryOptions,
+  ...props
+}) => {
   const loader =
     loaders[customLoader || (process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders)];
   return (
@@ -72,7 +88,7 @@ const Img: FC<Props> = ({ placeholderType = 'default', customLoader, ...props })
           h: parseFloat(`${props?.height}`) || 450,
           ...placeholderColors[placeholderType],
         })}
-        loader={loader}
+        loader={loader?.(cloudinaryOptions)}
         {...props}
       />
     </>
