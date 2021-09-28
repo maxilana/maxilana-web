@@ -1,25 +1,47 @@
-import { NextPage } from 'next';
 import Link from 'next/link';
 import { Form } from 'antd';
+import { NextPage } from 'next';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
 import { PhoneFilled, QuestionCircleFilled, ShopFilled } from '@ant-design/icons';
 
+import { Button } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-import { InputField, SocialMenu } from '~/components/common';
-import { Button } from '~/components/ui';
+import { FormFeedback, InputField, SelectField, SocialMenu } from '~/components/common';
 import defaultValidateMessages from 'config/validationMessages';
+import { Contact } from '~/types/Requests';
+import sendContact from '~/api/sendContact';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
-const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
-  const [form] = Form.useForm();
+type FormValues = Contact;
+type Status = 'idle' | 'loading' | 'submitted';
 
-  const handleFormSubmit = (data: any) => {
-    console.log(data);
+const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+  const [form] = Form.useForm<FormValues>();
+  const [status, setStatus] = useState<Status>('idle');
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFormSubmit = async (data: FormValues) => {
+    setStatus('loading');
+
+    try {
+      await sendContact(data);
+      setStatus('submitted');
+    } catch (err) {
+      setError((err as AxiosError).message);
+      setStatus('idle');
+    }
   };
 
   return (
-    <Layout cities={cities} title="Contáctanos" legalPages={legalPages}>
+    <Layout
+      cities={cities}
+      meta={{ css: ['/antd/form.css'] }}
+      title="Contáctanos"
+      legalPages={legalPages}
+    >
       <Container>
         <div className="grid gap-10 my-12 sm:my-24 lg:grid-flow-col">
           <div className="lg:max-w-md">
@@ -37,48 +59,82 @@ const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
             <div className="bg-white rounded overflow-hidden">
               <div className="grid sm:grid-cols-2">
                 <div className="p-6">
-                  <Form
-                    form={form}
-                    onFinish={handleFormSubmit}
-                    validateMessages={defaultValidateMessages}
-                  >
-                    <h2 className="text-xl">Tu opinión es importante para nosotros</h2>
-                    <div className="grid gap-4 grid-cols-2 my-4">
-                      <div className="col-span-2">
-                        <Form.Item name="tema" rules={[{ required: true }]}>
-                          <InputField label="Tema" />
-                        </Form.Item>
-                      </div>
-                      <div className="col-span-2">
-                        <Form.Item name="nombre" rules={[{ required: true }]}>
-                          <InputField label="Nombre" />
-                        </Form.Item>
-                      </div>
-                      <div>
-                        <Form.Item name="correoElectronico" rules={[{ required: true }]}>
-                          <InputField type="email" label="Correo Electrónico" />
-                        </Form.Item>
-                      </div>
-                      <div>
-                        <Form.Item name="ciudad">
-                          <InputField label="Ciudad" />
-                        </Form.Item>
-                      </div>
-                      <div className="col-span-2">
-                        <Form.Item name="asunto">
-                          <InputField label="Asunto" />
-                        </Form.Item>
-                      </div>
-                      <div className="col-span-2">
-                        <Form.Item name="mensaje">
-                          <InputField label="Mensaje" />
-                        </Form.Item>
-                      </div>
-                      <div className="col-span-2">
-                        <Button fullWidth theme="secondary" text="Enviar" />
-                      </div>
+                  {status !== 'submitted' ? (
+                    <Form
+                      form={form}
+                      onFinish={handleFormSubmit}
+                      validateMessages={defaultValidateMessages}
+                    >
+                      <FormFeedback
+                        visible={error !== null}
+                        errorMessage={error as string}
+                        onDismiss={() => {
+                          setError(null);
+                        }}
+                      >
+                        <h2 className="text-xl">Tu opinión es importante para nosotros</h2>
+                        <div className="grid gap-4 grid-cols-2 my-4">
+                          <div className="col-span-2">
+                            <Form.Item name="tema" rules={[{ required: true }]}>
+                              <SelectField
+                                name="tema"
+                                label="Tema"
+                                placeholder="Elige un tema"
+                                options={[
+                                  { label: 'Información', value: 'Información' },
+                                  { label: 'Recursos Humanos', value: 'Recursos Humanos' },
+                                  { label: 'Empeño', value: 'Empeño' },
+                                  { label: 'Préstamos', value: 'Préstamos' },
+                                  { label: 'Vales', value: 'Vales' },
+                                ]}
+                              />
+                            </Form.Item>
+                          </div>
+                          <div className="col-span-2">
+                            <Form.Item name="nombre" rules={[{ required: true }]}>
+                              <InputField label="Nombre" />
+                            </Form.Item>
+                          </div>
+                          <div>
+                            <Form.Item name="email" rules={[{ required: true }]}>
+                              <InputField type="email" label="Correo Electrónico" />
+                            </Form.Item>
+                          </div>
+                          <div>
+                            <Form.Item name="ciudad">
+                              <InputField label="Ciudad" />
+                            </Form.Item>
+                          </div>
+                          <div className="col-span-2">
+                            <Form.Item name="asunto">
+                              <InputField label="Asunto" />
+                            </Form.Item>
+                          </div>
+                          <div className="col-span-2">
+                            <Form.Item name="mensaje" rules={[{ required: true }]}>
+                              <InputField label="Mensaje" />
+                            </Form.Item>
+                          </div>
+                          <div className="col-span-2">
+                            <Button
+                              fullWidth
+                              theme="secondary"
+                              text="Enviar"
+                              loading={status === 'loading'}
+                            />
+                          </div>
+                        </div>
+                      </FormFeedback>
+                    </Form>
+                  ) : (
+                    <div>
+                      <h2 className="text-xl mb-4">¡Gracias por contactarnos!</h2>
+                      <p>
+                        Enviaremos tu solicitud al área correspondiente y en breve nos comunicaremos
+                        contigo.
+                      </p>
                     </div>
-                  </Form>
+                  )}
                 </div>
                 <div className="bg-gradient-to-br from-[#1E83E1] to-[#1362AB] p-6">
                   <div className="flex flex-col justify-center h-full text-white">
