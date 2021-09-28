@@ -1,34 +1,31 @@
 import Link from 'next/link';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import { CartSummary } from '~/components/common';
 
+import useCart from '~/hooks/cart/useCart';
 import styles from './Response.module.css';
+import { Product } from '~/types/Models/Product';
+import useRemoveItem from '~/hooks/cart/useRemoveItem';
+import { CheckoutSuccess as CheckoutData } from '~/types/Models';
 
 interface Props {
+  data?: CheckoutData;
   children?: ReactNode;
 }
 
-const product = {
-  id: '1',
-  name: 'ANILLO C/ BRILLANTES 3.80 GRAMOS 14 KILATES',
-  CategoryId: 2,
-  Category: 'H',
-  BranchId: 3,
-  Branch: '',
-  price: 4308.25,
-  netPrice: 4308.25,
-  brand: '',
-  observations: '',
-  image: '',
-  precod: 0,
-  slug: '',
-  saleOnline: true,
-};
+const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
+  const { data } = useCart();
+  const removeItem = useRemoveItem();
+  const [product, setProduct] = useState<Product | null>(null);
 
-const CheckoutSuccess: FC<Props> = ({ children = null }) => {
+  useEffect(() => {
+    setProduct(data);
+    removeItem();
+  }, []);
+
   return (
     <div className={styles.root}>
       <div className={styles.wrapper}>
@@ -36,7 +33,7 @@ const CheckoutSuccess: FC<Props> = ({ children = null }) => {
           <CheckCircleTwoTone twoToneColor="#0BBF69" style={{ fontSize: 60 }} />
           <h1 className={styles.headerTitle}>Gracias por su compra</h1>
           <p>Un email de confirmación ha sido enviado con todos los detalles de su pedido.</p>
-          <p className="font-semibold text-lg">Pedido #91</p>
+          <p className="text-center text-lg">{info?.reference}</p>
         </div>
         <div className={styles.innerSection}>
           <h2 className={styles.subtitle}>Datos de entrega:</h2>
@@ -44,26 +41,28 @@ const CheckoutSuccess: FC<Props> = ({ children = null }) => {
             <div>
               <h3 className={styles.subheading}>Tu pedido se enviará a:</h3>
               <div className="space-y-2">
-                <p>Ezequiel Rangel Ibarra</p>
-                <p>Teléfono: 6674794283</p>
-                <p>Dirección: Palmela 4921 Portalegre Villas Culiacán, Sinaloa, México.</p>
+                <p>{info?.shipping.contactName}</p>
+                <p>
+                  {`Dirección: ${info?.shipping.address} ${info?.shipping.locality} ${info?.shipping.city}`}
+                </p>
               </div>
             </div>
             <div>
-              <h3 className={styles.subheading}>Fecha estimada de entrega:</h3>
+              <h3 className={styles.subheading}>Entrega estimada:</h3>
               <div className="space-y-2">
-                <p className="text-[#0BBF69]">20 de octubre de 2021</p>
+                <p className="text-[#0BBF69]">de 1 a 7 días laborales</p>
               </div>
             </div>
           </div>
         </div>
-        <div className={styles.innerSection}>
-          <h2 className={styles.subtitle}>Resumen del pedido:</h2>
-          <div>
-            {/** @ts-ignore */}
-            <CartSummary data={product} />
+        {product !== null && (
+          <div className={styles.innerSection}>
+            <h2 className={styles.subtitle}>Resumen del pedido:</h2>
+            <div>
+              <CartSummary data={product} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="text-center p-4">
         <Button theme="primary" text="Seguir comprando" href="/remates" />

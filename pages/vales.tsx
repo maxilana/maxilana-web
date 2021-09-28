@@ -228,13 +228,19 @@ const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
           </p>
           <div className="mt-4 max-w-[510px] mx-auto flex flex-col items-center gap-1 sm:flex-row">
             <div className="flex-grow">
-              <Image
-                width={250}
-                height={65}
-                layout="fixed"
-                src="/appstore-badge.svg"
-                alt="Badge de descarga en AppStore"
-              />
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://apps.apple.com/mx/app/maxilanavales/id1347748194"
+              >
+                <Image
+                  width={250}
+                  height={65}
+                  layout="fixed"
+                  src="/appstore-badge.svg"
+                  alt="Badge de descarga en AppStore"
+                />
+              </a>
             </div>
             <div className="flex-grow">
               <a

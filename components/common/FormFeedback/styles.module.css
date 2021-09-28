@@ -3,7 +3,7 @@
 }
 
 .overlay {
-  @apply absolute top-0 left-0 w-full h-full z-50 bg-white opacity-90;
+  @apply absolute top-0 left-0 w-full h-full z-10 bg-white opacity-90;
 }
 
 .body {
