@@ -2,51 +2,18 @@ import { FC } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 
 import styles from '../Pawn.module.css';
 import SelectableItem from '../SelectableItem';
 
-const categories = [
-  {
-    id: 1,
-    label: 'Joyería y Monedas',
-  },
-  {
-    id: 2,
-    label: 'Herramientas',
-  },
-  {
-    id: 3,
-    label: 'Computadoras',
-  },
-  {
-    id: 4,
-    label: 'Celulares',
-  },
-  {
-    id: 5,
-    label: 'Electrónica',
-  },
-  {
-    id: 6,
-    label: 'Relojes',
-  },
-  {
-    id: 7,
-    label: 'Electrodomésticos',
-  },
-  {
-    id: 8,
-    label: 'Vehículos',
-  },
-];
-
 interface Props {
-  onSelect: (id: number) => void;
+  onSelect: (id: CMSCategory) => void;
   onWhatsappClick: () => void;
+  categories: CMSCategory[];
 }
 
-const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick }) => {
+const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick, categories }) => {
   return (
     <div className={styles.root}>
       <div className="p-4 bg-white">
@@ -59,9 +26,10 @@ const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick }) => {
             return (
               <SelectableItem
                 key={item.id}
-                label={item.label}
+                imageSrc={item?.image?.url}
+                label={item.name}
                 onClick={() => {
-                  onSelect(item.id);
+                  onSelect(item);
                 }}
               />
             );

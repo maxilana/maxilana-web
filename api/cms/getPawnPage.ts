@@ -43,6 +43,22 @@ const getPawnPage = async () => {
           number
           clabe
         }
+        categories {
+          id
+          name
+          code
+          image {
+            ...ImageFields
+          }
+          subcategories {
+            id
+            name
+            code
+            image {
+              ...ImageFields
+            }
+          }
+        }
       }
     }
   `);

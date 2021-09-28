@@ -1,4 +1,9 @@
+import { useRouter } from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
 import { FC, useReducer } from 'react';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
+import { CMSCategory } from '~/types/Models/CMSCategory';
+import parseQuery from '~/utils/parseQuery';
 
 import PawnRequest from './PawnRequest';
 import Calculator from './Calculator';
@@ -18,14 +23,18 @@ type Status =
 
 type State = {
   status: Status;
-  category: number;
+  category: number | null;
   article: number;
   pawnConfig: PawnCalculation | null;
 };
 
+interface Props {
+  categories: CMSCategory[];
+}
+
 const initialState: State = {
   status: 'idle',
-  category: 0,
+  category: null,
   article: -1,
   pawnConfig: null,
 };
@@ -36,19 +45,21 @@ const reducer = (state: any, action: any) => {
   switch (type) {
     case 'SHOW_START':
       return initialState;
-    case 'SHOW_CITIES':
+    case 'IDLE':
+      return initialState;
+    case 'SHOW_WHATSAPP_LIST':
       return { ...state, status: 'show_whatsapp_list' };
     case 'SHOW_ARTICLES':
       return {
         ...state,
-        category: payload.category,
+        category: payload?.category || state.category,
         status: 'show_articles',
       };
     case 'SHOW_REQUEST_FORM':
       return {
         ...state,
         status: 'show_request_form',
-        article: payload.article,
+        ...(payload.article ? { article: payload.article } : {}),
       };
     case 'SHOW_CALCULATOR':
       return {
@@ -56,13 +67,36 @@ const reducer = (state: any, action: any) => {
         status: 'show_calculator',
         pawnConfig: payload.config,
       };
+    case 'SET':
+      return {
+        ...state,
+        ...payload,
+      };
     default:
-      throw new Error('No existe esa acción');
+      console.log(type);
+    // throw new Error('No existe esa acción');
   }
 };
 
-const PawnRequestFlow: FC = () => {
+const PawnRequestFlow: FC<Props> = ({ categories }) => {
+  const router = useRouter();
   const [state, dispatch] = useReducer<(state: State, action: any) => State>(reducer, initialState);
+
+  useEffectOnUpdate(() => {
+    const query: ParsedUrlQuery = { status: state.status };
+    if (state.category) query.category = `${state?.category}`;
+    if (state.article > -1) query.article = `${state?.article}`;
+    if (state.status !== 'idle' || Object.keys(router.query).length) {
+      router.push(`?${parseQuery(query)}`, undefined, { shallow: true });
+    }
+  }, [state.status, state.article]);
+
+  useEffectOnUpdate(() => {
+    dispatch({
+      type: 'SET',
+      payload: { ...state, ...router.query },
+    });
+  }, [router.query]);
 
   const handleRequestForm = async (data: RequestPawn) => {
     const params = {
@@ -78,19 +112,15 @@ const PawnRequestFlow: FC = () => {
     });
   };
 
-  const goToStart = () => {
-    dispatch({ type: 'SHOW_START' });
-  };
-
   if (state.status === 'show_whatsapp_list') {
-    return <SelectCity onBack={goToStart} />;
+    return <SelectCity onBack={router.back} />;
   }
 
-  if (state.status === 'show_articles') {
+  if (state.status === 'show_articles' && state.category !== null) {
     return (
       <SelectArticle
-        onBack={goToStart}
-        category={state.category}
+        onBack={router.back}
+        category={categories.find((item) => item.id === state.category)}
         onSelectArticle={(article) => {
           dispatch({
             type: 'SHOW_REQUEST_FORM',
@@ -102,7 +132,7 @@ const PawnRequestFlow: FC = () => {
   }
 
   if (state.status === 'show_request_form') {
-    return <RequestForm onBack={goToStart} onSubmit={handleRequestForm} />;
+    return <RequestForm onBack={router.back} onSubmit={handleRequestForm} />;
   }
 
   if (state.status === 'show_calculator' && state.pawnConfig) {
@@ -118,23 +148,22 @@ const PawnRequestFlow: FC = () => {
 
   return (
     <PawnRequest
+      categories={categories}
       onSelect={(category) => {
-        // Computadoras y celulares no tienen
-        //  subcategorías
-        if ([3, 4].includes(category)) {
+        if (category?.subcategories?.length) {
           dispatch({
-            type: 'SHOW_REQUEST_FORM',
-            payload: { article: 2 },
+            type: 'SHOW_ARTICLES',
+            payload: { category: category.id },
           });
         } else {
           dispatch({
-            type: 'SHOW_ARTICLES',
-            payload: { category },
+            type: 'SHOW_REQUEST_FORM',
+            payload: { article: category?.code || 2 },
           });
         }
       }}
       onWhatsappClick={() => {
-        dispatch({ type: 'SHOW_CITIES' });
+        dispatch({ type: 'SHOW_WHATSAPP_LIST' });
       }}
     />
   );

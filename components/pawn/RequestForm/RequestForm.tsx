@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { FC, useState } from 'react';
 import { Form } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
+import BackButton from '~/components/pawn/BackButton';
 
 import { Button } from '~/components/ui';
 import { InputField, InputMask, SelectField } from '~/components/common';
@@ -60,14 +60,7 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
         return (
           <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
             <div>
-              <span
-                role="button"
-                onClick={onBack}
-                className="uppercase text-price text-sm inline-flex items-center mb-3"
-              >
-                <LeftOutlined />
-                Regresar
-              </span>
+              <BackButton onBack={onBack} />
               <h3 className={commonStyles.title}>Contesta las siguientes preguntas</h3>
               <div className="grid gap-8">
                 <Form.Item

@@ -7,4 +7,11 @@ export interface CMSCategory extends CMSModel {
   products_page_mkt: number | null;
   filters: CMSFilters;
   image: CMSImage;
+  code: string;
+  subcategories: Array<{
+    id: number;
+    name: string;
+    image: CMSImage;
+    code: string;
+  }>;
 }

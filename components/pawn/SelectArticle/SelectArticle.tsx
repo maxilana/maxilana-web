@@ -1,38 +1,37 @@
 import cn from 'classnames';
 import { FC } from 'react';
+import { CMSCategory } from '~/types/Models/CMSCategory';
 import BackButton from '../BackButton';
 
 import commonStyles from '../Pawn.module.css';
 import SelectableItem from '../SelectableItem';
 
 interface Props {
-  category: number;
+  category: CMSCategory | undefined;
   onBack: () => void;
-  onSelectArticle: (id: number) => void;
+  onSelectArticle: (id: string) => void;
 }
 
 const SelectArticle: FC<Props> = ({ category, onBack, onSelectArticle }) => {
-  const subcategory = subcategories.find((item) => item.categoryID === category);
-
   return (
     <div className={commonStyles.root}>
       <div className="bg-white p-4">
         <BackButton onBack={onBack} />
         <div className="mb-6">
-          <h3 className={commonStyles.title}>{`Selecciona el tipo de ${subcategory?.label}`}</h3>
+          <h3 className={commonStyles.title}>{`Selecciona el tipo de ${category?.name}`}</h3>
         </div>
         <div
           className={cn('grid gap-4', {
-            ['grid-cols-2']: subcategory && subcategory.articles.length > 6,
+            ['grid-cols-2']: category && category?.subcategories?.length > 6,
           })}
         >
-          {subcategory?.articles.map((item) => (
+          {category?.subcategories?.map?.((item) => (
             <SelectableItem
               key={item.id}
-              label={item.label}
-              imageSrc={item.imageSrc}
+              label={item.name}
+              imageSrc={item?.image?.url}
               onClick={() => {
-                onSelectArticle(subcategory.articleCode);
+                onSelectArticle(category?.code || item?.code);
               }}
             />
           ))}

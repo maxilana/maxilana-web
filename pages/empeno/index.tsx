@@ -54,7 +54,7 @@ const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
               <p className="text-lg">{page.hero.secondaryText}</p>
             </div>
           </div>
-          <PawnRequestFlow />
+          <PawnRequestFlow categories={page?.categories} />
         </div>
       </div>
       <Container>

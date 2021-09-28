@@ -1,9 +1,10 @@
 import cn from 'classnames';
 import { FC } from 'react';
-import { LeftOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import { WhatsAppOutlined } from '@ant-design/icons';
 
 import containerStyles from '../Pawn.module.css';
 import { Button } from '~/components/ui';
+import BackButton from '../BackButton';
 
 interface Props {
   onBack: () => void;
@@ -16,14 +17,7 @@ const PawnSelectableCity: FC<Props> = ({ onBack }) => {
   return (
     <div className={containerStyles.root}>
       <div className="bg-white p-4">
-        <span
-          role="button"
-          className="uppercase text-price text-sm inline-flex items-center mb-3"
-          onClick={onBack}
-        >
-          <LeftOutlined />
-          Regresar
-        </span>
+        <BackButton onBack={onBack} />
         <h3 className={containerStyles.title}>Selecciona tu ciudad</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           {cities.map((item) => (
