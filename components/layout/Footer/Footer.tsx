@@ -65,9 +65,11 @@ const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
                 let items: JSX.Element[] = [];
 
                 if (section.children) {
-                  items = section.children.map((link) => (
-                    <Link key={link.id} href={link.href || '#'}>
-                      <a className={styles.menuLink}>{link.label}</a>
+                  items = section.children.map(({ id, href, label, ...linkProps }) => (
+                    <Link key={id} href={href || '#'}>
+                      <a className={styles.menuLink} {...linkProps}>
+                        {label}
+                      </a>
                     </Link>
                   ));
                 }
