@@ -16,8 +16,8 @@ const Banners: FC<Props> = ({ items = [] }) => {
     <div className={styles.root}>
       {items
         .filter((item) => Boolean(item?.banner?.id))
-        .map((item) => (
-          <Banner key={item?.id} data={item?.banner} />
+        .map((item, index) => (
+          <Banner key={item?.id} data={item?.banner} priority={index < 2} />
         ))}
     </div>
   );
