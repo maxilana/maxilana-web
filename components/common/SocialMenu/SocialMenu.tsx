@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import {
-  FacebookOutlined,
-  InstagramOutlined,
-  LinkedinOutlined,
+  FacebookFilled,
+  InstagramFilled,
+  LinkedinFilled,
   TwitterOutlined,
 } from '@ant-design/icons';
 
@@ -13,12 +13,12 @@ const SocialMenu: FC = () => {
     <ul className={styles.root}>
       <li className={styles.item}>
         <a href="https://www.facebook.com/maxilana" target="_blank" rel="noopener noreferrer">
-          <FacebookOutlined />
+          <FacebookFilled />
         </a>
       </li>
       <li className={styles.item}>
         <a href="https://www.instagram.com/maxilanamx/" target="_blank" rel="noopener noreferrer">
-          <InstagramOutlined />
+          <InstagramFilled />
         </a>
       </li>
       <li className={styles.item}>
@@ -27,7 +27,7 @@ const SocialMenu: FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <LinkedinOutlined />
+          <LinkedinFilled />
         </a>
       </li>
       <li className={styles.item}>
