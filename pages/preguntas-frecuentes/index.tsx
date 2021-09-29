@@ -1,12 +1,12 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
-import { RightOutlined } from '@ant-design/icons';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSSections from '~/api/cms/getCMSSections';
 import getAllCities from '~/api/getAllCities';
 import { Layout } from '~/components/layout';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSSection } from '~/types/Models/CMSSection';
+import { CardLink } from '~/components/ui';
 
 interface GSProps {
   cities: City[];
@@ -48,13 +48,8 @@ const Sections: NextPage<Props> = ({ cities, sections, legalPages }) => {
         <div className="grid gap-4 md:col-span-2 md:grid-cols-2">
           {sections?.map?.((section) => (
             <Link href={`/preguntas-frecuentes/${section.slug}`} key={section.id}>
-              <a className="rounded bg-white border hover:bg-surface-dark">
-                <div className="px-6 py-6 flex justify-between items-center space-x-4 h-full">
-                  <h3 className="h6">{section.name}</h3>
-                  <span className="circleRight">
-                    <RightOutlined />
-                  </span>
-                </div>
+              <a>
+                <CardLink label={section.name as string} />
               </a>
             </Link>
           ))}
