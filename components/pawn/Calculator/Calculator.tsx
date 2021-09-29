@@ -2,8 +2,10 @@ import cn from 'classnames';
 import Slider from 'antd/lib/slider';
 import { FC, useMemo, useState } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
+import BackButton from '~/components/pawn/BackButton';
 
 import { Button } from '~/components/ui';
+import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
 import commonStyles from '../Pawn.module.css';
 import { PawnCalculation } from '~/types/Models/PawnCalculation';
 import { usePrice } from '~/modules/hooks';
@@ -11,7 +13,8 @@ import { formatPrice } from '~/modules/hooks/usePrice';
 
 interface Props {
   data: PawnCalculation;
-  onWhatsappClick: () => void;
+  whatsapp: CMSWhatsApp;
+  onBack: () => void;
 }
 
 const datatable = [
@@ -45,7 +48,7 @@ const datatable = [
   },
 ];
 
-const Calculator: FC<Props> = ({ data, onWhatsappClick }) => {
+const Calculator: FC<Props> = ({ data, whatsapp, onBack }) => {
   const [monthlySpan, setMonthlySpan] = useState(1);
   const { price: amount } = usePrice({ amount: data.amount });
 
@@ -75,6 +78,7 @@ const Calculator: FC<Props> = ({ data, onWhatsappClick }) => {
   return (
     <div className={commonStyles.root}>
       <div className="bg-white p-4">
+        <BackButton onBack={onBack} />
         <div className="text-center mb-6">
           <h3 className={commonStyles.title}>Valuación de empeño</h3>
         </div>
@@ -146,8 +150,9 @@ const Calculator: FC<Props> = ({ data, onWhatsappClick }) => {
             size="large"
             theme="whatsapp"
             text="Valuar con un experto"
-            onClick={onWhatsappClick}
+            href={`https://api.whatsapp.com/send?phone=521${whatsapp.number}/text=Hola me gustaría solicitar un empeño`}
             icon={<WhatsAppOutlined style={{ fontSize: 20, color: '#FFF' }} />}
+            target="_blank"
           />
         </div>
         <small className="inline-block text-secondary text-xxs text-center">

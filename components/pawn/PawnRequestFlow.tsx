@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import { FC, useReducer } from 'react';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
 import parseQuery from '~/utils/parseQuery';
 
 import PawnRequest from './PawnRequest';
@@ -26,10 +27,12 @@ type State = {
   category: number | null;
   article: number;
   pawnConfig: PawnCalculation | null;
+  whatsapp: CMSWhatsApp | null;
 };
 
 interface Props {
   categories: CMSCategory[];
+  whatsapps: CMSWhatsApp[];
 }
 
 const initialState: State = {
@@ -37,6 +40,7 @@ const initialState: State = {
   category: null,
   article: -1,
   pawnConfig: null,
+  whatsapp: null,
 };
 
 const reducer = (state: any, action: any) => {
@@ -66,6 +70,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         status: 'show_calculator',
         pawnConfig: payload.config,
+        whatsapp: payload.whatsapp,
       };
     case 'SET':
       return {
@@ -78,7 +83,7 @@ const reducer = (state: any, action: any) => {
   }
 };
 
-const PawnRequestFlow: FC<Props> = ({ categories }) => {
+const PawnRequestFlow: FC<Props> = ({ categories, whatsapps }) => {
   const router = useRouter();
   const [state, dispatch] = useReducer<(state: State, action: any) => State>(reducer, initialState);
 
@@ -110,12 +115,15 @@ const PawnRequestFlow: FC<Props> = ({ categories }) => {
 
     dispatch({
       type: 'SHOW_CALCULATOR',
-      payload: { config },
+      payload: {
+        config,
+        whatsapp: whatsapps?.find?.((item) => `${item.cityCode}` === `${data.plaza}`),
+      },
     });
   };
 
   if (state.status === 'show_whatsapp_list') {
-    return <SelectCity onBack={router.back} />;
+    return <SelectCity onBack={router.back} items={whatsapps} />;
   }
 
   if (state.status === 'show_articles' && state.category !== null) {
@@ -137,15 +145,8 @@ const PawnRequestFlow: FC<Props> = ({ categories }) => {
     return <RequestForm onBack={router.back} onSubmit={handleRequestForm} />;
   }
 
-  if (state.status === 'show_calculator' && state.pawnConfig) {
-    return (
-      <Calculator
-        data={state.pawnConfig}
-        onWhatsappClick={() => {
-          dispatch({ type: 'SHOW_CITIES' });
-        }}
-      />
-    );
+  if (state.status === 'show_calculator' && state.pawnConfig && state.whatsapp) {
+    return <Calculator data={state.pawnConfig} whatsapp={state.whatsapp} onBack={router.back} />;
   }
 
   return (

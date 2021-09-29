@@ -43,6 +43,12 @@ const getPawnPage = async () => {
           number
           clabe
         }
+        whatsapp {
+          id
+          name
+          number
+          cityCode
+        }
         categories {
           id
           name

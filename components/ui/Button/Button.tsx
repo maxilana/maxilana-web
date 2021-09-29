@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import cn from 'classnames';
-import { FC, MouseEvent, ReactElement } from 'react';
+import { FC, HTMLProps, MouseEvent, ReactElement } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import styles from './Button.module.css';
@@ -8,6 +8,7 @@ import styles from './Button.module.css';
 export interface Props {
   text: string;
   href?: string;
+  target?: HTMLProps<HTMLAnchorElement>['target'];
   loading?: boolean;
   fullWidth?: boolean;
   icon?: ReactElement;
@@ -39,6 +40,7 @@ const classStyles = {
 const Button: FC<Props> = ({
   text,
   href,
+  target,
   icon,
   rightIcon,
   onClick,
@@ -74,7 +76,7 @@ const Button: FC<Props> = ({
   if (href !== undefined) {
     return (
       <Link href={href} prefetch={prefetch}>
-        <a className={rootClassName}>
+        <a className={rootClassName} target={target}>
           {icon && iconElement}
           <span className={styles.label}>{text}</span>
           {rightIcon}
