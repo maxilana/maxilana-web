@@ -72,7 +72,8 @@ const recursos = {
     {
       id: 2,
       label: 'Facturación',
-      href: 'https://facturacion.maxilana.com/',
+      href: 'http://facturacion.maxilana.com/',
+      target: '_blank',
     },
     {
       id: 3,
