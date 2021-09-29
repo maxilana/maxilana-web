@@ -50,7 +50,7 @@ const Sections: NextPage<Props> = ({ cities, sections, legalPages }) => {
             <Link href={`/preguntas-frecuentes/${section.slug}`} key={section.id}>
               <a className="rounded bg-white border hover:bg-surface-dark">
                 <div className="px-6 py-6 flex justify-between items-center space-x-4 h-full">
-                  <h3 className="h5">{section.name}</h3>
+                  <h3 className="h6">{section.name}</h3>
                   <span className="circleRight">
                     <RightOutlined />
                   </span>
