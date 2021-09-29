@@ -14,7 +14,7 @@
 }
 
 .brandingArea {
-  @apply flex flex-row justify-start items-center relative;
+  @apply flex flex-row justify-center items-center relative;
 }
 
 .navigationArea {
@@ -37,12 +37,17 @@
 }
 
 .drawerTrigger {
-  @apply mr-4;
+  /*@apply mr-4;*/
+  @apply absolute top-1/2 left-0 -translate-y-1/2;
   @apply lg:hidden;
 }
 
+.logoWrapper {
+  @apply flex-1 flex  justify-center;
+}
+
 .logo {
-  @apply w-[127px] h-[32px];
+  @apply w-[127px] h-[32px] block;
   @apply lg:ml-0 lg:mr-8;
   @apply xl:w-[228px] xl:h-[58px];
 }
@@ -59,8 +64,20 @@
 }
 
 .navigationItem {
-  @apply block py-3 px-4 text-brand;
-  @apply lg:text-white lg:inline-block lg:px-2;
+  @apply block py-4 px-4 text-brand;
+  @apply lg:text-white lg:inline-block lg:px-2 lg:py-0 lg:pt-2;
+
+  & a {
+    @apply transition lg:hover:text-accent;
+  }
+}
+
+.current {
+  @apply bg-surface-dark lg:bg-transparent;
+}
+
+.current a {
+  @apply lg:text-accent;
 }
 
 .menuControl {
