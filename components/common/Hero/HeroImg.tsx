@@ -20,10 +20,17 @@ const HeroImg: FC<Props> = ({ placeholder, mobile, tablet, desktop }) => {
       <picture className={styles.picture}>
         <source srcSet={desktop} media="(min-width: 991px)" />
         <source srcSet={tablet} media="(min-width: 768px) and (max-width: 991px)" />
-        <img ref={ref} src={mobile} alt="" className={styles.img} />
+        <img ref={ref} src={mobile} alt="" className={styles.img} sizes="100vw" />
       </picture>
       <span className={cn(styles.placeholder, { [styles.hidePlaceholder]: loaded })}>
-        <img src={placeholder} className={styles.placeholderImg} alt="" />
+        <img
+          src={placeholder}
+          className={styles.placeholderImg}
+          alt=""
+          sizes="100vw"
+          width="100%"
+          height="100%"
+        />
       </span>
     </>
   );
