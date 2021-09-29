@@ -5,6 +5,7 @@ import { CMSHero } from '~/types/Models/CMSHero';
 import { CMSModel } from '~/types/Models/CMSModel';
 import { CMSPayment } from '~/types/Models/CMSPayment';
 import { CMSSeo } from '~/types/Models/CMSSeo';
+import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
 
 export interface CMSPawn extends CMSModel {
   seo: CMSSeo;
@@ -14,4 +15,5 @@ export interface CMSPawn extends CMSModel {
   bankAccount: CMSBackAccount;
   payment: CMSPayment;
   categories: CMSCategory[];
+  whatsapp: CMSWhatsApp[];
 }

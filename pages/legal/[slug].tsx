@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } fro
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getLegalPageBySlug from '~/api/cms/getLegalPageBySlug';
 import getAllCities from '~/api/getAllCities';
-import { Markdown, SideMenu } from '~/components/common';
+import { CMSContent, SideMenu } from '~/components/common';
 import { Layout } from '~/components/layout';
 import legalLinks from '~/modules/mock/legal.json';
 import { City, CMSLegal } from '~/types/Models';
@@ -53,7 +53,7 @@ const LegalPage: NextPage<Props> = ({ cities, legalPages, page }) => {
           />
         </div>
         <div className="lg:col-span-2 prose">
-          <Markdown content={page?.content} />
+          <CMSContent content={page?.content} />
         </div>
       </main>
     </Layout>

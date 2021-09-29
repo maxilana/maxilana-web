@@ -6,7 +6,7 @@ import getCMSSections from '~/api/cms/getCMSSections';
 import getCMSSectionsSlugs from '~/api/cms/getCMSSectionsSlugs';
 import getAllCities from '~/api/getAllCities';
 import { Layout } from '~/components/layout';
-import { SideMenu, Markdown } from '~/components/common';
+import { SideMenu, CMSContent } from '~/components/common';
 import { Collapse } from '~/components/ui';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSSection } from '~/types/Models/CMSSection';
@@ -79,7 +79,7 @@ const Faq: NextPage<Props> = ({ cities, section, sections, legalPages }) => {
                 indicatorStyle="circle"
                 collapsed={slug !== slugify(`${faq?.question}`)}
               >
-                <Markdown content={`${faq?.answer}`} className="prose max-w-none" />
+                <CMSContent content={`${faq?.answer}`} className="prose max-w-none" />
               </Collapse>
             ))}
           </div>

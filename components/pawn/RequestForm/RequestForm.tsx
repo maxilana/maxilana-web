@@ -58,7 +58,12 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
         }
 
         return (
-          <Form form={form} onFinish={handleFormSubmit} validateMessages={defaultValidateMessages}>
+          <Form
+            form={form}
+            onFinish={handleFormSubmit}
+            validateMessages={defaultValidateMessages}
+            initialValues={{ plaza: '---' }}
+          >
             <div>
               <BackButton onBack={onBack} />
               <h3 className={commonStyles.title}>Contesta las siguientes preguntas</h3>
@@ -81,7 +86,7 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
                 <Form.Item name="plaza" rules={[{ required: true }]} initialValue="default">
                   <SelectField
                     name="plaza"
-                    placeholder="Selecciona tu ciudad"
+                    label="Selecciona tu ciudad"
                     options={
                       cities !== undefined
                         ? cities.map((item) => ({

@@ -10,7 +10,7 @@ import getCMSMktPagesSlugs from '~/api/cms/getCMSMktPagesSlugs';
 import getMktPageBySlug from '~/api/cms/getMktPageBySlug';
 import getAllCities from '~/api/getAllCities';
 import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
-import { Markdown } from '~/components/common';
+import { CMSContent } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { ProductsFilters } from '~/components/products';
 import { Button, Img, ProductCard } from '~/components/ui';
@@ -91,7 +91,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
           )}
           <h1 className="h4 mb-8">{page?.title}</h1>
           {!!page?.content && (
-            <Markdown content={page?.content} className="prose max-w-none mb-6" />
+            <CMSContent content={page?.content} className="prose max-w-none mb-6" />
           )}
           <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
             <Button

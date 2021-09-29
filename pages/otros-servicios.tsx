@@ -3,7 +3,7 @@ import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getOtherServices from '~/api/cms/getOtherServices';
 import getAllCities from '~/api/getAllCities';
 import { Layout } from '~/components/layout';
-import { Markdown } from '~/components/common';
+import { CMSContent } from '~/components/common';
 import { Card } from '~/components/ui';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSOtherService } from '~/types/Models';
@@ -32,7 +32,7 @@ const OtrosServicios: NextPage<Props> = ({ cities, legalPages, otherServices }) 
             {otherServices.map((item) => (
               <Card className="prose max-w-none" key={item.id}>
                 <h2>{item.title}</h2>
-                <Markdown content={item.description} />
+                <CMSContent content={item.description} />
               </Card>
             ))}
           </div>
