@@ -46,7 +46,7 @@ const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): num
     subtotalAmount = adjustment(subtotalAmount);
     totalAmount = subtotalAmount * 1.03; // MAGIC NUMBER - Supongo es una comisión.
 
-    return Math.round(totalAmount);
+    return totalAmount;
   }, [daysToExtend]);
 
   return extensionAmount;
