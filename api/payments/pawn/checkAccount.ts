@@ -79,7 +79,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     totalPaymentAmount = Math.round(subtotal + (0.5 + decimalTotal));
   }
 
-  totalPaymentAmount = Math.round(totalPaymentAmount + Number(comision));
+  totalPaymentAmount = totalPaymentAmount + Number(comision);
 
   return {
     name: Cliente,
