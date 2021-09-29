@@ -78,11 +78,10 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item name="plaza" rules={[{ required: true }]}>
+                <Form.Item name="plaza" rules={[{ required: true }]} initialValue="default">
                   <SelectField
                     name="plaza"
-                    defaultValue="---"
-                    label="Selecciona tu ciudad"
+                    placeholder="Selecciona tu ciudad"
                     options={
                       cities !== undefined
                         ? cities.map((item) => ({
