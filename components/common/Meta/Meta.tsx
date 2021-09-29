@@ -9,14 +9,17 @@ export interface MetaProps extends Partial<CMSSeo> {
   keywords?: string;
   shareImage?: string | CMSImage;
   css?: string[];
+  images?: string[];
 }
 
-const Meta: FC<MetaProps> = ({ title, description, keywords, css }) => {
+const Meta: FC<MetaProps> = ({ title, description, keywords, css, images }) => {
   const metaTitle = title ? `${title} | Maxilana` : 'Maxilana | Casa de empeño';
+  // @ts-ignore
   return (
     <Head>
       <title>{metaTitle}</title>
       <meta name="description" content={description || 'Maxilana casa de empeño y prestamos'} />
+      <meta httpEquiv="Accept-CH" content="DPR,Width,Viewport-Width" />
       <meta
         name="keywords"
         content={keywords || 'empeño, empeno, facil empeño, prestamos, maxilana, joyeria, remates'}
@@ -36,6 +39,10 @@ const Meta: FC<MetaProps> = ({ title, description, keywords, css }) => {
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
       <meta name="theme-color" content="#ffffff" />
+      {images?.map?.((src) => {
+        // @ts-ignore
+        return <link rel="preload" as="image" imageSrcSet={src} imageSizes="100vw" key={src} />;
+      })}
       {css?.map?.((href) => (
         <link href={href} as="style" rel="preload" key={href} />
       ))}
