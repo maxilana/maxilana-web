@@ -27,6 +27,8 @@ type Data = {
   concepto: string;
   // VALES
   cdistribuidora?: string;
+  // PRESTAMOS
+  codigoprestamo?: string;
 };
 
 interface Props {
@@ -46,6 +48,9 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit, formType }
     if (formType === 'coupon') {
       const { importe, cdistribuidora } = data;
       return { importe, cdistribuidora };
+    } else if (formType === 'loan') {
+      const { importe, codigoprestamo } = data;
+      return { importe, codigoprestamo };
     }
   };
 
