@@ -7,8 +7,8 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   content: string;
 }
 
-const Markdown: FC<Props> = ({ content, ...props }) => {
+const CMSContent: FC<Props> = ({ content, ...props }) => {
   return <div {...props} dangerouslySetInnerHTML={{ __html: converter.makeHtml(content) }} />;
 };
 
-export default Markdown;
+export default CMSContent;

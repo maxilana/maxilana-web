@@ -8,7 +8,7 @@ export { default as Meta } from './Meta';
 export { default as HeroComposed } from './HeroComposed';
 export { default as FormFeedback } from './FormFeedback';
 export { default as Banners } from './Banners';
-export { default as Markdown } from './Markdown';
+export { default as CMSContent } from './CMSContent';
 export { default as SideMenu } from './SideMenu';
 export { default as ComissionsTable } from './ComissionsTable';
 export { default as CartSummary } from './CartSummary';
