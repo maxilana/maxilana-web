@@ -8,43 +8,56 @@ import { Button } from '../ui';
 import { InputField, InputMask } from '../common';
 import styles from './FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
+import {
+  CouponPaymentRequest,
+  LoanPaymentRequest,
+  PawnPaymentRequest,
+  CreditCard,
+} from '~/types/Requests';
 
-type FormValues = {
+type PaymentRequest = Partial<CouponPaymentRequest | LoanPaymentRequest | PawnPaymentRequest>;
+
+interface FormValues extends CreditCard {
   concepto: string;
-  importe: number;
-  titular: string;
-  numeroTarjeta: string;
-  fechaVencimiento: string;
-  codigoSeguridad: string;
-  correoElectronico: string;
-};
+  correoelectronico: string;
+}
 
 type Data = {
-  concept: string;
-  amount: number;
+  importe: number;
+  concepto: string;
+  // VALES
+  cdistribuidora?: string;
 };
 
 interface Props {
   data: Data;
   title: string;
   description: string;
-  onSubmit: (data: FormValues) => Promise<void>;
+  formType: 'pawn' | 'loan' | 'coupon';
+  onSubmit: (data: PaymentRequest) => Promise<void>;
 }
 
 dayjs.extend(customParseFormat);
 
-const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
+const PaymentForm: FC<Props> = ({ data, title, description, onSubmit, formType }) => {
   const [form] = Form.useForm();
 
+  const getDataFromType = () => {
+    if (formType === 'coupon') {
+      const { importe, cdistribuidora } = data;
+      return { importe, cdistribuidora };
+    }
+  };
+
   const handleFormSubmit = (values: FormValues) => {
-    const newValues = {
+    const datarequest = getDataFromType();
+    const params: PaymentRequest = {
       ...values,
-      importe: data.amount,
-      concepto: data.concept,
+      ...datarequest,
     };
 
     try {
-      onSubmit(newValues);
+      onSubmit(params);
     } catch (err) {
       console.log(err);
     }
@@ -56,8 +69,8 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
       onFinish={handleFormSubmit}
       validateMessages={defaultValidateMessages}
       initialValues={{
-        concepto: data.concept,
-        importe: data.amount,
+        concepto: data.concepto,
+        importe: data.importe,
       }}
     >
       <div className="px-4">
@@ -80,12 +93,12 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
                 </Form.Item>
               </div>
               <div className="col-span-2">
-                <Form.Item name="tipoTarjeta" label="Tipo de tarjeta">
+                <Form.Item name="cardtype" label="Tipo de tarjeta" rules={[{ required: true }]}>
                   <Radio.Group className="flex flex-row">
-                    <Radio value="visa">
+                    <Radio value="VISA">
                       <span>VISA</span>
                     </Radio>
-                    <Radio value="mastercard">
+                    <Radio value="MC">
                       <span>MASTERCARD</span>
                     </Radio>
                   </Radio.Group>
@@ -100,7 +113,11 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
                 </Form.Item>
               </div>
               <div className="col-span-2">
-                <Form.Item name="numeroTarjeta" rules={[{ required: true }]}>
+                <Form.Item
+                  name="tarjeta"
+                  rules={[{ required: true }]}
+                  getValueFromEvent={({ target }) => target.rawValue}
+                >
                   <InputMask
                     label="Número de la tarjeta"
                     placeholder="#### #### #### ####"
@@ -112,7 +129,7 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
               </div>
               <div>
                 <Form.Item
-                  name="fechaVencimiento"
+                  name="vencimiento"
                   rules={[
                     {
                       required: true,
@@ -141,7 +158,7 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
                 </Form.Item>
               </div>
               <div>
-                <Form.Item name="codigoSeguridad" rules={[{ required: true }]}>
+                <Form.Item name="ccv" rules={[{ required: true }]}>
                   <InputMask
                     type="password"
                     label="Cod. de seguridad"
@@ -154,7 +171,7 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
                 </Form.Item>
               </div>
               <div className="col-span-2">
-                <Form.Item name="correoElectronico" rules={[{ required: true }]}>
+                <Form.Item name="correoelectronico" rules={[{ required: true }]}>
                   <InputField type="email" label="Correo Electrónico" />
                 </Form.Item>
               </div>
