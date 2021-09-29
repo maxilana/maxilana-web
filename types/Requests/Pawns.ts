@@ -6,14 +6,15 @@ import { CreditCard } from './CreditCard';
  * 2 - Compra de días
  * 3 - Abono de cantidad
  */
-export interface PawnPaymentRequest extends CreditCard {
-  sucursal: number;
+export interface PawnPaymentRequest {
+  sucursal: string;
   boleta: string;
-  email: string;
   prestamo: number;
-  codigotipopago: '1' | '2' | '3';
+  codigotipopago: string; // '1' | '2' | '3';
   fechaconsulta: string;
   diaspagados: number;
+  importe: number;
+  // email?: string;
 }
 
 export interface PawnRequest {

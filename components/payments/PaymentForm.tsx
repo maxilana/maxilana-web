@@ -29,6 +29,13 @@ type Data = {
   cdistribuidora?: string;
   // PRESTAMOS
   codigoprestamo?: string;
+  // BOLETA
+  sucursal?: string;
+  boleta?: string;
+  prestamo?: number;
+  codigotipopago?: string; // '1' | '2' | '3';
+  fechaconsulta?: string;
+  diaspagados?: number;
 };
 
 interface Props {

@@ -35,6 +35,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     InteresDiarioVencido,
     RefrendoPendienteAplicar,
     BoletaBloqueada,
+    CodigoSucursal,
   } = response;
 
   let decimal = 0;
@@ -101,6 +102,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     amountToAply: Number(SaldoPorAplicar),
     paymentPendingToApply: Number(RefrendoPendienteAplicar) === 1,
     accountBlocked: BoletaBloqueada === 'true',
+    branch: CodigoSucursal,
   };
 };
 
