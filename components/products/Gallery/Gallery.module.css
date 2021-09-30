@@ -3,7 +3,7 @@
 }
 
 .image {
-  @apply aspect-w-14 aspect-h-9 rounded border;
+  @apply aspect-w-14 aspect-h-9 rounded border overflow-hidden;
 }
 
 .thumbnails {
