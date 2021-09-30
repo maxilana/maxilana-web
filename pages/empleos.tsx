@@ -2,6 +2,7 @@ import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getAllCities from '~/api/getAllCities';
+import { CMSContent } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { City, CMSLegal } from '~/types/Models';
 import { CardLink } from '~/components/ui';
@@ -37,10 +38,8 @@ const JobsPage: NextPage<Props> = ({ page, cities, legalPages }) => {
     <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
       <main className="container mx-auto p-4 my-12 grid gap-8 lg:grid-cols-3">
         <div>
-          <h1 className="h4 mb-4">Empleos</h1>
-          <p className="text-secondary">
-            Permítenos ser parte de tu desarrollo personal y profesional
-          </p>
+          <h1 className="h4 mb-4">{page?.title}</h1>
+          <CMSContent content={page?.description} className="prose text-secondary" />
         </div>
         <div className="grid gap-4 md:col-span-2 md:grid-cols-2">
           {jobsPlatforms?.map?.((item) => (
