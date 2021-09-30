@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { FC } from 'react';
 import {
   FacebookFilled,
@@ -8,9 +9,14 @@ import {
 
 import styles from './SocialMenu.module.css';
 
-const SocialMenu: FC = () => {
+interface Props {
+  brand?: boolean;
+  size?: 'default' | 'small';
+}
+
+const SocialMenu: FC<Props> = ({ brand, size = 'default' }) => {
   return (
-    <ul className={styles.root}>
+    <ul className={cn(styles.root, styles[size], { [styles.brandColor]: brand })}>
       <li className={styles.item}>
         <a href="https://www.facebook.com/maxilana" target="_blank" rel="noopener noreferrer">
           <FacebookFilled />

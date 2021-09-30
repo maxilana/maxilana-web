@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
+import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { City } from '~/types/Models';
 
@@ -48,8 +49,17 @@ const Navbar: FC<Props> = ({ cities }) => {
                   </Link>
                 </li>
               ))}
-              <li className="px-4 lg:hidden">
-                <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
+              <li className={cn(styles.navigationItem, styles.navigationItemPayment)}>
+                <Button
+                  size="small"
+                  theme="primary"
+                  text="Pagar en línea"
+                  href="/pagos"
+                  fullWidth
+                />
+              </li>
+              <li className={styles.navigationItemSocial}>
+                <SocialMenu brand size="small" />
               </li>
             </ul>
             <Searcher cities={cities} />
