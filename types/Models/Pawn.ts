@@ -19,4 +19,5 @@ export interface PawnAccount {
   paymentPendingToApply: boolean; // RefrendoPendienteAplicar
   accountBlocked: boolean; // BoletaBloqueada
   branch: string; // CodigoSucursal
+  extraCharge: number; //comision
 }

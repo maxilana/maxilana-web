@@ -115,7 +115,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
         if (changedValues?.paymentExtension) {
           const extension = Number(changedValues.paymentExtension);
 
-          if (!(extension === NaN) && extension >= data.minDaysToPay) {
+          if (!Number.isNaN(extension) && extension >= data.minDaysToPay) {
             setDaysToExtend(extension);
           }
         }

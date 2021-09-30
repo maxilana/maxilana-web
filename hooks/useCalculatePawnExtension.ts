@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { PawnAccount } from '~/types/Models';
+import roundDecimals from '~/utils/roundDecimals';
 
 const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): number => {
   // Calcula el importe a pagar
@@ -44,7 +45,7 @@ const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): num
 
     subtotalAmount = totalDaysAmount + totalDueDaysAmount - amountToAply;
     subtotalAmount = adjustment(subtotalAmount);
-    totalAmount = subtotalAmount * 1.03; // MAGIC NUMBER - Supongo es una comisión.
+    totalAmount = roundDecimals(subtotalAmount * data.extraCharge); // Agrega comisión
 
     return totalAmount;
   }, [daysToExtend]);
