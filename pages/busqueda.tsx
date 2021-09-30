@@ -143,18 +143,23 @@ const Busqueda: NextPage<Props> = ({
           />
         </aside>
         <div className={cn('lg:col-span-3', { 'opacity-50': loading })}>
-          <h2 className="h4">
+          <h2 className="h4 line-clamp-1">
             {(() => {
               if (category?.name) {
                 return query?.q ? (
                   <span>
-                    {category.name}: <span className="text-secondary">{query.q}</span>
+                    {category.name}:{' '}
+                    <span className="text-secondary ">
+                      {query.q.includes('|')
+                        ? `${query.q}`.split('|').map((item) => <span key={item}>{item} </span>)
+                        : query.q}
+                    </span>
                   </span>
                 ) : (
                   category.name
                 );
               }
-              return query?.q || 'Lista de productos en remate!';
+              return `${query?.q}`.replace?.(/\|/gm, ' | ') || 'Lista de productos en remate!';
             })()}
           </h2>
           <p className="text-secondary">{pagination?.count} productos</p>

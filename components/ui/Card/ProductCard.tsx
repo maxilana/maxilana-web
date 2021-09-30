@@ -51,30 +51,32 @@ const ProductCard: FC<Props> = ({ data, className }) => {
         </div>
       </div>
       <div className={styles.productBody}>
-        <VStack spacing="sm">
-          <h3 className={styles.productTitle}>
-            {!!href ? (
-              <Link href={href}>
-                <a>{name}</a>
-              </Link>
-            ) : (
-              name
-            )}
-          </h3>
-          <div className={styles.productPrice}>
-            {netPrice ? (
-              <>
-                <span className={styles.productPriceSale}>{discountPrice}</span>
+        <h3 className={styles.productTitle}>
+          {!!href ? (
+            <Link href={href}>
+              <a>{name}</a>
+            </Link>
+          ) : (
+            name
+          )}
+        </h3>
+        <div className={styles.productPrice}>
+          {netPrice ? (
+            <>
+              <span className={styles.productPriceSale}>{discountPrice}</span>{' '}
+              {basePrice > discountPrice && (
                 <span className={styles.productCompareAtPrice}>{basePrice}</span>
-              </>
-            ) : (
-              <span className={styles.productPriceSale}>{basePrice}</span>
-            )}
-          </div>
-          <span className={styles.productBranch}>
+              )}
+            </>
+          ) : (
+            <span className={styles.productPriceSale}>{basePrice}</span>
+          )}
+        </div>
+        <span className={styles.productBranch}>
+          <span className="block line-clamp-1">
             {Branch?.name}, {Branch?.City?.name}
           </span>
-        </VStack>
+        </span>
       </div>
       {/* TODO: como sabes cuando un producto esta en oferta? */}
       {/*onSale && <span className={styles.productSaleBadge}>Oferta</span>*/}
