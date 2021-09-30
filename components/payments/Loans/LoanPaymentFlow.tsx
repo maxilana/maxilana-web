@@ -3,7 +3,11 @@ import { checkLoanAccount } from '~/api/payments';
 import PaymentForm, { LoanAccountForm, LoanSelectionPaymentForm } from '~/components/payments';
 import { LoanAccount } from '~/types/Models';
 
-type Payment = { concept: string; amount: number } | null;
+type Payment = {
+  concepto: string;
+  importe: number;
+  codigoprestamo: LoanAccount['clientCode'];
+} | null;
 
 type Status = 'account_status' | 'select_payment' | 'payment';
 
@@ -27,8 +31,9 @@ const LoanPaymentFlow: FC = () => {
           account={account}
           onSubmit={(data) => {
             setPayment({
-              amount: data.pago,
-              concept: `ABONO A PRÉSTAMO NÚMERO ${account.clientCode}`,
+              importe: data.pago,
+              concepto: `ABONO A PRÉSTAMO NÚMERO ${account.clientCode}`,
+              codigoprestamo: account.clientCode,
             });
 
             setStatus('payment');
@@ -39,6 +44,7 @@ const LoanPaymentFlow: FC = () => {
       {status === 'payment' && payment && (
         <PaymentForm
           data={payment}
+          formType="loan"
           title="Préstamos personales"
           description="Abona a tu préstamo personal en línea"
           onSubmit={(data) => {

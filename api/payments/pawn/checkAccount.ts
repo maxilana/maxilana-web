@@ -2,6 +2,7 @@ import axios from '~/api/axios';
 import parseQuery from '~/utils/parseQuery';
 import { PawnAccount } from '~/types/Models';
 import { PawnAccountResponse } from '~/types/Responses';
+import roundDecimals from '~/utils/roundDecimals';
 
 type Body = { [key: string]: any };
 
@@ -35,14 +36,16 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     InteresDiarioVencido,
     RefrendoPendienteAplicar,
     BoletaBloqueada,
+    CodigoSucursal,
   } = response;
 
   let decimal = 0;
   let decimalTotal = 0;
   let loan = Number(Prestamo);
   let paymentAmount = 0; // REFRENDO
-  let minPaymentAmount = Number(ImportePagoMinimo); // PAGO MÍNIMO
   let totalPaymentAmount = 0; // DESEMPEÑO
+  const extraCharge = Number(comision); // COMISION
+  const minPaymentAmount = roundDecimals(Number(ImportePagoMinimo) * extraCharge); // PAGO MÍNIMO
 
   /** CÁLCULO DE PAGO DE REFRENDO */
   const interest = Number(InteresNormal) + Number(InteresVencido);
@@ -60,7 +63,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     paymentAmount = Math.round(interest + (0.5 + decimal));
   }
 
-  paymentAmount = Math.round(paymentAmount + Number(comision));
+  paymentAmount = roundDecimals(paymentAmount * extraCharge);
 
   /** CÁLCULO DE PAGO DE DESEMPEÑO */
   // SOLO INFORMATIVO, NO SE PUEDE PAGAR
@@ -79,7 +82,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     totalPaymentAmount = Math.round(subtotal + (0.5 + decimalTotal));
   }
 
-  totalPaymentAmount = totalPaymentAmount + Number(comision);
+  totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
   return {
     name: Cliente,
@@ -101,6 +104,8 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     amountToAply: Number(SaldoPorAplicar),
     paymentPendingToApply: Number(RefrendoPendienteAplicar) === 1,
     accountBlocked: BoletaBloqueada === 'true',
+    branch: CodigoSucursal,
+    extraCharge,
   };
 };
 

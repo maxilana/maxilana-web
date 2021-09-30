@@ -73,7 +73,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`http://localhost:3000/checkout/response?scost=${shipping}`}
+            forwardPath={`${window.location.origin}/checkout/response?scost=${shipping}`}
           />
         )}
       </PageLoader>

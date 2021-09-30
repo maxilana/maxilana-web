@@ -53,7 +53,7 @@ const CouponCheckPaymentForm: FC<Props> = ({ account, onSubmit }) => {
                 </p>
               </div>
               <Form.Item name="paymentAmount" rules={[{ required: true }]}>
-                <Radio value={account.amount}>
+                <Radio value={account.amount} defaultChecked>
                   <span>
                     Pagar <strong>{paymentAmount}</strong>
                   </span>

@@ -6,8 +6,9 @@ import { CouponAccount } from '~/types/Models';
 type Status = 'account_status' | 'confirm_payment' | 'payment';
 
 type Payment = {
-  concept: string;
-  amount: number;
+  concepto: string;
+  importe: number;
+  cdistribuidora: CouponAccount['partnerNumber'];
 };
 
 const PAYMENT_CONCEPT = 'ABONO A LÍNEA DE CRÉDITO DIST.';
@@ -16,6 +17,7 @@ const CouponPaymentFlow: FC = () => {
   const [status, setStatus] = useState<Status>('account_status');
   const [payment, setPayment] = useState<Payment | null>(null);
   const [account, setAccount] = useState<CouponAccount | null>(null);
+
   return (
     <div>
       {status === 'account_status' && (
@@ -34,8 +36,9 @@ const CouponPaymentFlow: FC = () => {
           onSubmit={(data) => {
             const { paymentAmount } = data;
             setPayment({
-              amount: paymentAmount,
-              concept: `${PAYMENT_CONCEPT} #${account.partnerNumber}`,
+              importe: paymentAmount,
+              concepto: `${PAYMENT_CONCEPT} #${account.partnerNumber}`,
+              cdistribuidora: account.partnerNumber,
             });
 
             setStatus('payment');
@@ -46,6 +49,7 @@ const CouponPaymentFlow: FC = () => {
       {status === 'payment' && payment && (
         <PaymentForm
           data={payment}
+          formType="coupon"
           title="Maxilana Vales"
           description="Paga directamente a tu distribuidora"
           onSubmit={(data) => {
