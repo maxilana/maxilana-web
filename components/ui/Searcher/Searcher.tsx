@@ -21,11 +21,22 @@ const locations = [
   { name: 'Tijuana', id: 6 },
 ];
 
+const placeholders = [
+  'Busca un celular',
+  'Busca una computadora',
+  'Busca un reloj',
+  'Busca un anillo',
+  'Busca un televisor',
+  'Busca un iPhone',
+  'Busca un iPad',
+];
+
 interface Props {
   cities?: City[];
 }
 
 const Searcher: FC<Props> = ({ cities }) => {
+  const [placeHolder, setPlaceHolder] = useState(0);
   const router = useRouter();
   const [searchText, setSearchText] = useState('');
   const [visible, toggleDropdown] = useState(false);
@@ -34,6 +45,16 @@ const Searcher: FC<Props> = ({ cities }) => {
   const {
     query: { q, ciudad },
   } = router;
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (placeHolder < placeholders.length - 1) {
+        setPlaceHolder(placeHolder + 1);
+      } else {
+        setPlaceHolder(0);
+      }
+    }, 5000);
+  }, [placeHolder]);
 
   useEffect(() => {
     if (q || ciudad) {
@@ -86,7 +107,7 @@ const Searcher: FC<Props> = ({ cities }) => {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           className={cn(styles.inputControl, styles.searchInput)}
-          placeholder="Encuentra celulares"
+          placeholder={placeholders[placeHolder]}
         />
       </div>
       <div className={styles.selectorWrap}>

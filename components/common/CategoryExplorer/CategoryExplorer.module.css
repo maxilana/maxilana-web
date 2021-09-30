@@ -4,7 +4,7 @@
 
 .gridWrapper {
   @apply grid gap-[2px] grid-cols-2;
-  @apply sm:grid-cols-5;
+  @apply md:grid-cols-5;
 }
 
 .gridElement {

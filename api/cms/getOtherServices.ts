@@ -9,6 +9,10 @@ const getOtherServices = async (): Promise<Array<CMSOtherService>> => {
         id
         title
         description
+        image {
+          alternativeText
+          url
+        }
       }
     }
   `);

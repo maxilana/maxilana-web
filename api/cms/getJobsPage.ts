@@ -9,6 +9,8 @@ const getJobsPage = async (): Promise<CMSJobsPage> => {
     ${SEO_FIELDS_FRAGMENT}
     query JobsPlatformPage {
       page: vacancy {
+        title
+        description
         seo {
           ...SeoFields
         }

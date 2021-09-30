@@ -1,3 +1,5 @@
+import cn from 'classnames';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import Link from 'next/link';
 import { MenuOutlined } from '@ant-design/icons';
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const Navbar: FC<Props> = ({ cities }) => {
+  const { asPath } = useRouter();
   return (
     <header className={styles.root}>
       <div className={styles.wrapper}>
@@ -34,12 +37,20 @@ const Navbar: FC<Props> = ({ cities }) => {
             <label className={styles.backdrop} role="button" htmlFor="menuControl" />
             <ul className={styles.navigationMenu}>
               {mainMenu.map((item) => (
-                <li key={item.id} className={styles.navigationItem}>
+                <li
+                  key={item.id}
+                  className={cn(styles.navigationItem, {
+                    [styles.current]: asPath !== '/' && item.href.includes(asPath),
+                  })}
+                >
                   <Link href={item.href} prefetch={false}>
                     <a target={item?.target || '_self'}>{item.label}</a>
                   </Link>
                 </li>
               ))}
+              <li className="px-4 lg:hidden">
+                <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
+              </li>
             </ul>
             <Searcher cities={cities} />
           </div>

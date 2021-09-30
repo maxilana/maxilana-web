@@ -10,6 +10,8 @@ type JobPlatform = {
 };
 
 export interface CMSJobsPage extends CMSModel {
+  title: string;
+  description: string;
   seo: CMSSeo;
   jobsPlatform: JobPlatform[];
 }
