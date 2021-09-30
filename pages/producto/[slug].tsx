@@ -20,6 +20,7 @@ import slugify from '~/utils/slugify';
 import getProductById from '~/api/getProductById';
 import { Button, LazyMap, ProductCard } from '~/components/ui';
 import { ProductBadge, Gallery } from '~/components/products';
+import { Truck } from '~/components/svg';
 
 import LogoRedondo from '../../public/logo-redondo.png';
 import useAddItem from '~/hooks/cart/useAddItem';
@@ -191,7 +192,7 @@ const ProductView: NextPage<Props> = ({
               )}
               <ShareLinks url={`${shareURL}`} text={product?.name} className="border-t border-b" />
               <div className="flex items-center gap-4 border-b py-4">
-                <div className="shadow rounded-full overflow-hidden w-[72px] h-[72px]">
+                <div className="shadow rounded-full overflow-hidden w-[48px] h-[48px] sm:w-[72px] sm:h-[72px]">
                   <Image src={LogoRedondo} width={72} height={72} alt="Logo Maxilana" />
                 </div>
                 <div>
@@ -202,19 +203,34 @@ const ProductView: NextPage<Props> = ({
                   <span className="text-secondary text-sm">{product?.Branch?.City?.name}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-4 py-4">
-                <span className="text-white text-xl bg-brand rounded-full min-w-[72px] min-h-[72px] border-accent border-4 flex justify-center items-center">
-                  <ShopFilled />
-                </span>
-                <div>
-                  <span className="block font-bold">
-                    Producto de venta exclusiva solo en sucursal.
+              {product?.saleOnline ? (
+                <div className="flex items-center gap-4 py-4">
+                  <span className="text-white text-xl bg-brand rounded-full min-w-[48px] min-h-[48px] sm:min-w-[72px] sm:min-h-[72px] border-accent border-4 flex justify-center items-center">
+                    <Truck />
                   </span>
-                  <span className="text-secondary">
-                    Este producto solo esta disponible en esta sucursal
-                  </span>
+                  <div>
+                    <span className="block font-bold">Producto con entrega en tu domicilio</span>
+                    <span className="text-secondary">
+                      Este producto puede ser comprados en sucursal y en línea pagando con tu
+                      tarjeta de crédito o débito
+                    </span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-center gap-4 py-4">
+                  <span className="text-white text-xl bg-brand rounded-full min-w-[72px] min-h-[72px] border-accent border-4 flex justify-center items-center">
+                    <ShopFilled />
+                  </span>
+                  <div>
+                    <span className="block font-bold">
+                      Producto de venta exclusiva solo en sucursal.
+                    </span>
+                    <span className="text-secondary">
+                      Este producto solo esta disponible en esta sucursal
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </main>
           <div className="contents md:block md:order-1 lg:col-span-3 xl:col-span-2">
