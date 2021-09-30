@@ -4,7 +4,7 @@
 }
 
 .wrapper {
-  @apply px-4;
+  @apply px-2 sm:px-4;
   @apply xl:container xl:mx-auto;
 }
 
@@ -37,8 +37,7 @@
 }
 
 .drawerTrigger {
-  /*@apply mr-4;*/
-  @apply absolute top-1/2 left-0 -translate-y-1/2;
+  @apply absolute top-1/2 left-2 -translate-y-1/2;
   @apply lg:hidden;
 }
 
