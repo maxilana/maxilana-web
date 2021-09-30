@@ -138,9 +138,11 @@ const ProductView: NextPage<Props> = ({
                 <h1 className="h6">{product.name}</h1>
                 <span className="text-secondary block">Código: {product.id}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="h4 text-danger">{discountPrice}</span>
-                <span className="h5 text-secondary line-through">{basePrice}</span>
+              <div className="mt-4">
+                <span className="h4 text-danger">{discountPrice}</span>{' '}
+                {basePrice > discountPrice && (
+                  <span className="h5 text-secondary line-through">{basePrice}</span>
+                )}
               </div>
               {product?.observations && (
                 <div>
