@@ -1,6 +1,7 @@
-import { CarFilled, ShopFilled } from '@ant-design/icons';
+import { ShopFilled } from '@ant-design/icons';
 import cn from 'classnames';
 import React, { FC } from 'react';
+import { Truck } from '~/components/svg';
 
 import styles from './ProductBadge.module.css';
 
@@ -11,7 +12,7 @@ interface Props {
 const ProductBadge: FC<Props> = ({ type }) => {
   return (
     <span className={cn(styles.root, styles[type])}>
-      {type === 'shop' ? <ShopFilled /> : <CarFilled />}
+      {type === 'shop' ? <ShopFilled /> : <Truck />}
     </span>
   );
 };

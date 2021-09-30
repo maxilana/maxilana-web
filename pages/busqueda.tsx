@@ -148,13 +148,22 @@ const Busqueda: NextPage<Props> = ({
               if (category?.name) {
                 return query?.q ? (
                   <span>
-                    {category.name}: <span className="text-secondary">{query.q}</span>
+                    {category.name}:{' '}
+                    <span className="text-secondary line-clamp-1">
+                      {query.q.includes('|')
+                        ? `${query.q}`.split('|').map((item) => <span key={item}>{item} </span>)
+                        : query.q}
+                    </span>
                   </span>
                 ) : (
                   category.name
                 );
               }
-              return query?.q || 'Lista de productos en remate!';
+              return query?.q ? (
+                <span>{`${query?.q}`.replace?.(/\|/gm, ' | ')}</span>
+              ) : (
+                'Lista de productos en remate!'
+              );
             })()}
           </h2>
           <p className="text-secondary">{pagination?.count} productos</p>

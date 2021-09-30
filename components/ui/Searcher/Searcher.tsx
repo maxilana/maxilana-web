@@ -125,7 +125,7 @@ const Searcher: FC<Props> = ({ cities }) => {
               }}
             >
               {!city ? (
-                <span role="option" className="flex items-center space-x-2">
+                <span role="option" className="flex items-center sm:space-x-2">
                   <div className="hidden md:inline-block">
                     <Image src={MexicoMap} alt="Mexico" />
                   </div>

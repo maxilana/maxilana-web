@@ -4,7 +4,7 @@
 }
 
 .wrapper {
-  @apply px-4;
+  @apply px-2 sm:px-4;
   @apply xl:container xl:mx-auto;
 }
 
@@ -37,8 +37,7 @@
 }
 
 .drawerTrigger {
-  /*@apply mr-4;*/
-  @apply absolute top-1/2 left-0 -translate-y-1/2;
+  @apply absolute top-1/2 left-2 -translate-y-1/2;
   @apply lg:hidden;
 }
 
@@ -58,18 +57,26 @@
 }
 
 .navigationMenu {
-  @apply fixed left-0 top-[104px] bottom-0 w-[162px] bg-white text-base shadow-lg;
-  @apply transform -translate-x-60 transition duration-300 transition-all;
+  @apply flex flex-col fixed left-0 top-[104px] bottom-0 w-[200px] bg-white text-base shadow-lg;
+  @apply transform -translate-x-60 transition duration-300 transition-all overflow-y-auto;
   @apply lg:block lg:opacity-100 lg:static lg:bg-transparent lg:shadow-none lg:w-auto lg:transform-none lg:transition-none;
 }
 
 .navigationItem {
-  @apply block py-4 px-4 text-brand;
+  @apply block py-3 px-4 text-brand;
   @apply lg:text-white lg:inline-block lg:px-2 lg:py-0 lg:pt-2;
 
   & a {
     @apply transition lg:hover:text-accent;
   }
+}
+
+.navigationItemPayment {
+  @apply lg:hidden border-t;
+}
+
+.navigationItemSocial {
+  @apply flex-1 flex justify-center items-end pb-6 lg:hidden;
 }
 
 .current {

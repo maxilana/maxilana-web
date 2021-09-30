@@ -13,7 +13,7 @@
 }
 
 .inputControl {
-  @apply bg-transparent p-2 pl-3 text-sm text-white w-full h-full;
+  @apply bg-transparent p-2 text-sm text-white w-full h-full;
   @apply placeholder-shown:text-white focus:outline-none;
 }
 

@@ -96,7 +96,7 @@ const View: NextPage<Props> = ({ branch, city, products, cities, legalPages }) =
         </aside>
         <section className="mb-16">
           <h2 className="h5 my-6">Algunos productos que puedes encontrar en nuestra sucursal</h2>
-          <div className="grid grid-cols-2 gap-4 mb-12 md:grid-cols-3 xl:grid-cols-4">
+          <div className="productsGrid md:gap-2 md:grid-cols-2">
             {!!products?.length &&
               products.map((product) => <ProductCard key={product.id} data={product} />)}
           </div>

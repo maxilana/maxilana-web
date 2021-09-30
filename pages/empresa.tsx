@@ -188,11 +188,7 @@ const CompanyPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                   Uno de nuestros propósitos es ser una empresa donde los colaboradores logren un
                   desarrollo personal y profesional.
                 </p>
-                <Button
-                  theme="primary"
-                  text="Buscar empleo"
-                  href="https://www.occ.com.mx/perfiles-empresas/163104194179693-la-nacional-pignoraciones-y-remates-de-cv"
-                />
+                <Button theme="primary" text="Buscar empleo" href="/empleos" />
               </div>
             </div>
             <div className="mr-4 flex-grow">

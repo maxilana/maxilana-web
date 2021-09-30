@@ -31,7 +31,7 @@
 }
 
 .productBody {
-  @apply flex-grow-0 p-2;
+  @apply p-2 space-y-2 flex-1 flex flex-col;
   @apply md:p-4;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .productPrice {
-  @apply space-x-1 font-semibold text-sm text-price line-clamp-1;
+  @apply font-semibold text-sm text-price;
   @apply sm:text-base;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .productBranch {
-  @apply text-xs text-secondary line-clamp-1;
+  @apply text-xs text-secondary flex-1 justify-end flex flex-col;
 }
 
 .productBadge {
