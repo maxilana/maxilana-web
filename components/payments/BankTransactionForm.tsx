@@ -1,24 +1,36 @@
 import { useRouter } from 'next/router';
 import { FC, useEffect, useRef } from 'react';
-import { ProductPurchase } from '~/types/Requests';
-import { MaxilanaTransaction } from '~/types/Responses';
 
-interface FormValues {
-  Card: string;
-  Expires: string;
-  Total: number;
-  CardType: 'VISA' | 'MC';
-  MerchantId: number;
-  MerchantName: string;
-  MerchantCity: string;
-  ForwardPath: string;
-  Cert3D: string;
-  Reference3D: string;
-}
+import { MaxilanaTransaction } from '~/types/Responses';
+import {
+  CouponPaymentRequest,
+  LoanPaymentRequest,
+  PawnPaymentRequest,
+  ProductPurchase,
+} from '~/types/Requests';
+
+// interface FormValues {
+//   Card: string;
+//   Expires: string;
+//   Total: number;
+//   CardType: 'VISA' | 'MC';
+//   MerchantId: number;
+//   MerchantName: string;
+//   MerchantCity: string;
+//   ForwardPath: string;
+//   Cert3D: string;
+//   Reference3D: string;
+// }
+
+type PaymentRequest =
+  | ProductPurchase
+  | CouponPaymentRequest
+  | LoanPaymentRequest
+  | PawnPaymentRequest;
 
 interface Props {
   forwardPath: string;
-  payment: ProductPurchase;
+  payment: PaymentRequest;
   transaction: MaxilanaTransaction;
 }
 

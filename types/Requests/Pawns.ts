@@ -6,7 +6,7 @@ import { CreditCard } from './CreditCard';
  * 2 - Compra de días
  * 3 - Abono de cantidad
  */
-export interface PawnPaymentRequest {
+export interface PawnPaymentRequest extends CreditCard {
   sucursal: string;
   boleta: string;
   prestamo: number;
