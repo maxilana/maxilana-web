@@ -8,10 +8,10 @@ import { FormFeedback, InputField, InputMask } from '~/components/common';
 
 import formStyles from '../../payments/FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
-import { AutoPawn } from '~/types/Requests';
 import saveAutoPawnProspect from '~/api/saveAutoPawnProspect';
+import { AutoPawnRequest } from '~/types/Requests';
 
-type FormValues = AutoPawn;
+type FormValues = AutoPawnRequest;
 type Status = 'idle' | 'loading' | 'finished';
 
 const AutoPawnForm: FC = () => {

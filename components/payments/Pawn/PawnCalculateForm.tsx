@@ -2,16 +2,17 @@ import dayjs from 'dayjs';
 import cn from 'classnames';
 import { AxiosError } from 'axios';
 import { Radio, Form } from 'antd';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button } from '~/components/ui';
 import { PawnAccount } from '~/types/Models';
-import { FormFeedback, InputField, InputMask } from '~/components/common';
+import { FormFeedback, InputMask } from '~/components/common';
 
 import styles from '../FormContainer.module.css';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import useCalculatePawnExtension from '~/hooks/useCalculatePawnExtension';
+import { PawnPaymentRequest } from '~/types/Requests';
 
 type Status = 'idle' | 'loading' | 'searching';
 
@@ -23,7 +24,7 @@ type FormValues = {
 
 interface Props {
   data: PawnAccount;
-  onSubmit: (data: FormValues) => Promise<void>;
+  onSubmit: (data: PawnPaymentRequest) => Promise<void>;
 }
 
 dayjs.extend(localizedFormat);
@@ -66,20 +67,34 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
 
     try {
       let amount = 0;
+      let paymentCode = '1';
 
       if (paymentType === 'REFRENDO') {
         amount = data.paymentAmount;
       } else if (paymentType === 'ABONO') {
         amount = extensionAmount;
+        paymentCode = '2';
       } else if (paymentType === 'OTRO-ABONO') {
         if (!values.paymentAmount) {
           throw new Error('Escribe una cantidad correcta para otro pago');
         }
 
         amount = Number(values.paymentAmount);
+        paymentCode = '3';
       }
 
-      await onSubmit({ paymentType, paymentAmount: amount });
+      const paymentRequest: PawnPaymentRequest = {
+        sucursal: data.branch,
+        boleta: data.accountNumber,
+        prestamo: data.loanAmount,
+        fechaconsulta: data.requestDate,
+        diaspagados: data.minDaysToPay, // NO SE QUÉ VALOR DEBE TENER ESTO
+        codigotipopago: paymentCode,
+        importe: amount,
+      };
+
+      await onSubmit(paymentRequest);
+      // await onSubmit({ paymentType, paymentAmount: amount });
     } catch (err) {
       setError((err as AxiosError).message);
     }
@@ -100,7 +115,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
         if (changedValues?.paymentExtension) {
           const extension = Number(changedValues.paymentExtension);
 
-          if (!(extension === NaN) && extension >= data.minDaysToPay) {
+          if (!Number.isNaN(extension) && extension >= data.minDaysToPay) {
             setDaysToExtend(extension);
           }
         }

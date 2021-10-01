@@ -1,9 +1,7 @@
 import getRawBody from 'raw-body';
-import { useEffect, useState } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 
 import { BareLayout } from '~/components/layout';
-import { PageLoader } from '~/components/common';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
 import { request2DTransaction } from '~/api/payments/checkout';
 import { Secure3DTransaction } from '~/types/Responses';
@@ -15,8 +13,8 @@ interface Transaction extends Secure3DTransaction {
 
 type SSRProps = {
   error?: boolean;
+  response?: CheckoutData;
   errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
-  response?: Transaction;
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
@@ -55,10 +53,12 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
       errorCode = params.Status !== '200' ? (params.Status as ErrorCodes) : '200';
     } else {
       const shipping = Number(query.scost);
-      response = {
+      const request2D: Transaction = {
         ...params,
         envio: shipping,
       };
+
+      response = await request2DTransaction(request2D);
     }
   }
 
@@ -73,38 +73,19 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const CheckoutResponsePage: NextPage<Props> = ({ error = false, errorCode, response = null }) => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CheckoutData | null>(null);
-
-  const processFinalTransaction = async () => {
-    const bankTxn = response as Transaction;
-    const success = await request2DTransaction(bankTxn);
-
-    setData(success);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (!error && response !== null) {
-      processFinalTransaction();
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
+const CheckoutResponsePage: NextPage<Props> = ({
+  error = false,
+  errorCode = '0',
+  response = null,
+}) => {
   return (
     <BareLayout>
       {(() => {
-        if (loading) {
-          return <PageLoader text="Terminando de procesar el pago..." />;
+        if (response !== null && !error) {
+          return <CheckoutSuccess data={response} />;
         }
 
-        if (error) {
-          return <CheckoutError code={errorCode || '0'} />;
-        }
-
-        return <CheckoutSuccess data={data as CheckoutData} />;
+        return <CheckoutError code={errorCode} />;
       })()}
     </BareLayout>
   );

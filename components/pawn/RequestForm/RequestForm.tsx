@@ -83,7 +83,7 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit }) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item name="plaza" rules={[{ required: true }]}>
+                <Form.Item name="plaza" rules={[{ required: true }]} initialValue="default">
                   <SelectField
                     name="plaza"
                     label="Selecciona tu ciudad"

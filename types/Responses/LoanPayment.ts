@@ -5,6 +5,7 @@ interface LoanAccountResponse {
   dblMontoAlCorriente: number;
   strFechaVencimiento: string;
   strMensaje: string;
+  comision: string; //number
 }
 
 export type { LoanAccountResponse };

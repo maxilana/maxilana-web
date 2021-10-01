@@ -1,11 +1,11 @@
 import maxAxios from './axios';
-import { AutoPawn } from '~/types/Requests';
+import { AutoPawnRequest } from '~/types/Requests';
 
 type Response = {
   GrabarSolicitudDeAvaluoDeAutoResult: boolean;
 };
 
-const saveAutoPawnProspect = async (data: AutoPawn): Promise<boolean> => {
+const saveAutoPawnProspect = async (data: AutoPawnRequest): Promise<boolean> => {
   const response = await maxAxios.post<Response>('/avaluodeAuto', data, {
     timeout: 10000,
   });
