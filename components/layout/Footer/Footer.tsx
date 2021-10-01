@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { FC } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -96,7 +97,24 @@ const Copyright = () => {
   return (
     <div>
       <small className={styles.copy}>
-        &copy; Copyright {currentYear} - Todos los derechos reservados
+        &copy; Copyright {currentYear} - La nacional Pignoraciones y Remates. Todos los derechos
+        reservados.
+      </small>
+      <small className={cn(styles.powered, 'flex items-center')}>
+        <span className="text-sm">Powered by </span>
+        <a
+          className="inline-flex items-center"
+          href="https://www.adhocti.com/"
+          title="Desarrollado con &hearts; por AdhocTI: Consultoría y desarrollo de Sitios Web y Apps"
+        >
+          <Image
+            src="/logo-adhoc.svg"
+            width={70}
+            height={16}
+            layout="fixed"
+            alt="Desarrollado con &hearts; por AdhocTI: Consultoría y desarrollo de Sitios Web y Apps"
+          />
+        </a>
       </small>
     </div>
   );
