@@ -1,13 +1,13 @@
-import getRawBody from 'raw-body';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 
 import { BareLayout } from '~/components/layout';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
+import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
-import { Secure3DTransaction } from '~/types/Responses';
 import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
+import { PaymentTransactionRequest } from '~/types/Requests';
 
-interface Transaction extends Secure3DTransaction {
+interface PaymentRequest extends PaymentTransactionRequest {
   envio: number;
 }
 
@@ -18,55 +18,47 @@ type SSRProps = {
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
-  let error = false;
-  let response = undefined;
-  let errorCode: ErrorCodes = '0';
-  const { query, req } = context;
+  const { query } = context;
+  const validation = await validatePayment(context);
 
-  if (req.method === 'GET') {
-    // PETICIÓN INTERNA
-    //  LA URL SE ESCRIBIÓ REDIRECCIONAMOS AL HOME
-    if (!query?.error && !query?.errorCode) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        },
-      };
-    }
-
-    // O SI EXISTEN LAS VARIABLES DE ERROR
-    //  MOSTRAMOS UN ERROR
-    error = true;
-    errorCode = query.errorCode as ErrorCodes;
-  } else if (req.method === 'POST') {
-    // RESPUESTA DEL BANCO
-    //  OBTENEMOS LA RESPUESTA
-    const body = await getRawBody(req);
-    const parsedString = body.toString('utf8');
-    //@ts-ignore
-    const params: Secure3DTransaction = Object.fromEntries(new URLSearchParams(parsedString));
-
-    //  REVISAMOS STATUS Y RESPUESTA
-    if (params.Status !== '200' || !params?.CAVV || !params?.ECI || !params?.XID) {
-      error = true;
-      errorCode = params.Status !== '200' ? (params.Status as ErrorCodes) : '200';
-    } else {
-      const shipping = Number(query.scost);
-      const request2D: Transaction = {
-        ...params,
-        envio: shipping,
-      };
-
-      response = await request2DTransaction(request2D);
-    }
+  if (validation?.redirect) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
   }
+
+  if (validation?.error) {
+    return {
+      props: {
+        error: true,
+        errorCode: validation.error.errorCode,
+      },
+    };
+  }
+
+  if (!validation?.transaction) {
+    return {
+      props: {
+        error: true,
+        errorCode: '0',
+      },
+    };
+  }
+
+  const shipping = Number(query.scost);
+  const request2D: PaymentRequest = {
+    ...validation.transaction,
+    envio: shipping,
+  };
+
+  const response = await request2DTransaction(request2D);
 
   return {
     props: {
-      error,
-      errorCode,
-      ...(response !== undefined ? response : undefined),
+      response,
     },
   };
 };
