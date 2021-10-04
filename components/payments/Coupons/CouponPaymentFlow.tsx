@@ -1,63 +1,134 @@
-import React, { FC, useState } from 'react';
-import { checkCouponAccount } from '~/api/payments/coupons';
-import PaymentForm, { CouponAccountForm, CouponCheckPaymentForm } from '~/components/payments';
-import { CouponAccount } from '~/types/Models';
+import React, { FC, useReducer } from 'react';
 
-type Status = 'account_status' | 'confirm_payment' | 'payment';
+import { PageLoader } from '~/components/common';
+import PaymentForm, {
+  BankTransactionForm,
+  CouponAccountForm,
+  CouponCheckPaymentForm,
+} from '~/components/payments';
+import { checkCouponAccount, requestCoupon3DTransaction } from '~/api/payments/coupons';
+
+import { CouponAccount } from '~/types/Models';
+import { CouponPaymentRequest } from '~/types/Requests';
+import { MaxilanaTransaction } from '~/types/Responses';
+
+type Status = 'idle' | 'check_payment' | 'confirm_payment' | 'submit_payment';
 
 type Payment = {
-  concepto: string;
-  importe: number;
-  cdistribuidora: CouponAccount['partnerNumber'];
+  concept: string;
+  amount: number;
+};
+
+type Transaction = {
+  payment: CouponPaymentRequest;
+  transaction: MaxilanaTransaction;
+};
+
+type State = {
+  status: Status;
+  account: CouponAccount | null;
+  paymentRequest: Payment | null;
+  transactionRequest: Transaction | null;
 };
 
 const PAYMENT_CONCEPT = 'ABONO A LÍNEA DE CRÉDITO DIST.';
 
+const initialState: State = {
+  status: 'idle',
+  account: null,
+  paymentRequest: null,
+  transactionRequest: null,
+};
+
+const reducer = (state: State, action: any): State => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case 'CHECK_PAYMENT':
+      return {
+        ...state,
+        status: 'check_payment',
+        account: payload.account,
+      };
+    case 'CONFIRM_PAYMENT':
+      return {
+        ...state,
+        status: 'confirm_payment',
+        paymentRequest: payload.paymentRequest,
+      };
+    case 'SUBMIT_PAYMENT':
+      return {
+        ...state,
+        status: 'submit_payment',
+        transactionRequest: payload.transactionRequest,
+      };
+    default:
+      return initialState;
+  }
+};
+
 const CouponPaymentFlow: FC = () => {
-  const [status, setStatus] = useState<Status>('account_status');
-  const [payment, setPayment] = useState<Payment | null>(null);
-  const [account, setAccount] = useState<CouponAccount | null>(null);
+  const [state, dispatch] = useReducer<typeof reducer>(reducer, initialState);
+
+  const handleSignAccount = async (data: any) => {
+    const account = await checkCouponAccount(data);
+    dispatch({ type: 'CHECK_PAYMENT', payload: { account } });
+  };
+
+  const handleCheckPayment = async (data: any) => {
+    const { paymentAmount } = data;
+    const paymentRequest = {
+      amount: paymentAmount,
+      concept: `${PAYMENT_CONCEPT} #${state.account?.partnerNumber}`,
+    };
+
+    dispatch({ type: 'CONFIRM_PAYMENT', payload: { paymentRequest } });
+  };
+
+  const handleSubmitPayment = async (data: any) => {
+    const paymentRequest: CouponPaymentRequest = {
+      ...data,
+      cdistribuidora: state.account?.partnerNumber,
+    };
+
+    const maxilanaTransaction = await requestCoupon3DTransaction(paymentRequest);
+
+    const transactionRequest = {
+      payment: paymentRequest,
+      transaction: maxilanaTransaction,
+    };
+
+    dispatch({
+      type: 'SUBMIT_PAYMENT',
+      payload: {
+        transactionRequest,
+      },
+    });
+  };
 
   return (
     <div>
-      {status === 'account_status' && (
-        <CouponAccountForm
-          onSubmit={async (data) => {
-            const account = await checkCouponAccount(data);
-
-            setAccount(account);
-            setStatus('confirm_payment');
-          }}
-        />
+      {state.status === 'idle' && <CouponAccountForm onSubmit={handleSignAccount} />}
+      {state.status === 'check_payment' && state.account !== null && (
+        <CouponCheckPaymentForm account={state.account} onSubmit={handleCheckPayment} />
       )}
-      {status === 'confirm_payment' && account && (
-        <CouponCheckPaymentForm
-          account={account}
-          onSubmit={(data) => {
-            const { paymentAmount } = data;
-            setPayment({
-              importe: paymentAmount,
-              concepto: `${PAYMENT_CONCEPT} #${account.partnerNumber}`,
-              cdistribuidora: account.partnerNumber,
-            });
-
-            setStatus('payment');
-            return Promise.resolve();
-          }}
-        />
-      )}
-      {status === 'payment' && payment && (
+      {state.status === 'confirm_payment' && state.paymentRequest && (
         <PaymentForm
-          data={payment}
-          formType="coupon"
           title="Maxilana Vales"
+          data={state.paymentRequest}
           description="Paga directamente a tu distribuidora"
-          onSubmit={(data) => {
-            console.log(data);
-
-            return Promise.resolve();
-          }}
+          onSubmit={handleSubmitPayment}
         />
+      )}
+      {state.status === 'submit_payment' && state.transactionRequest && (
+        <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
+          {state.transactionRequest !== null && (
+            <BankTransactionForm
+              {...state.transactionRequest}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=coupons`}
+            />
+          )}
+        </PageLoader>
       )}
     </div>
   );

@@ -55,9 +55,17 @@ export const getStaticProps: GetStaticProps<{
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const View: NextPage<Props> = ({ branch, city, products, cities, legalPages }) => {
-  const { phone = '', whatsapp = '', email = null, imgSketch = null } = branch || {};
+  const {
+    phone = '',
+    whatsapp = '',
+    email = null,
+    branchEmail = null,
+    imgSketch = null,
+  } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
+
+  console.log(branch);
 
   return (
     <Layout
@@ -89,9 +97,14 @@ const View: NextPage<Props> = ({ branch, city, products, cities, legalPages }) =
           <div className="py-4 text-secondary">
             <BranchSchedule branch={branch} />
           </div>
-          <div className="py-4 text-secondary">
+          <div className="py-4 text-secondary space-y-2">
             <span className="block text-brand-dark text-xs font-semibold uppercase">Contacto</span>
-            <a href={`mailto:${email}`}>{email}</a>
+            <p>
+              <a href={`mailto:${email}`}>{email}</a>
+            </p>
+            <p>
+              <a href={`mailto:${branchEmail}`}>{branchEmail}</a>
+            </p>
           </div>
         </aside>
         <section className="mb-16">

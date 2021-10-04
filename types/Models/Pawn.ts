@@ -21,3 +21,13 @@ export interface PawnAccount {
   branch: string; // CodigoSucursal
   extraCharge: number; //comision
 }
+
+export interface PawnPaymentSuccess {
+  reference3D: string;
+  branchCode: string;
+  branchName: string;
+  accountNumber: string;
+  paymentAmount: number;
+  authCode: string;
+  reference: string;
+}

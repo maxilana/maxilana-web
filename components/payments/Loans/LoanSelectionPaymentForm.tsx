@@ -10,17 +10,17 @@ import { LoanAccount } from '~/types/Models';
 import { usePrice } from '~/modules/hooks';
 
 type FormValues = {
-  pago: number;
-  otropago?: number;
+  fixedAmount: number;
+  customAmount?: number;
 };
 
 interface Props {
   account: LoanAccount;
-  onSubmit: (data: FormValues) => Promise<void>;
+  onSubmit: (data: number) => Promise<void>;
 }
 
 const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,18 +29,18 @@ const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
 
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-    const { pago, otropago } = data;
+    const { fixedAmount, customAmount } = data;
 
     try {
-      let amount = pago;
+      let amount = fixedAmount;
 
-      if (pago === -1 && !otropago) {
+      if (fixedAmount === -1 && !customAmount) {
         throw new Error('Escribe una cantidad correcta para otro pago');
-      } else if (pago === -1) {
-        amount = otropago as number;
+      } else if (fixedAmount === -1) {
+        amount = customAmount as number;
       }
 
-      await onSubmit({ pago: amount });
+      await onSubmit(amount);
     } catch (err) {
       setError((err as AxiosError).message);
     }
@@ -53,7 +53,7 @@ const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
       form={form}
       onFinish={handleFormSubmit}
       initialValues={{
-        pago: account.minPayment,
+        fixedAmount: account.minPayment,
       }}
     >
       <div className="px-4">
@@ -83,7 +83,7 @@ const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
                   <p className="text-primary font-semibold mb-4">
                     ¿Qué desea hacer con su préstamo?
                   </p>
-                  <Form.Item name="pago">
+                  <Form.Item name="fixedAmount">
                     <Radio.Group>
                       <span className="block my-2">
                         <Radio value={account.minPayment}>
@@ -102,9 +102,9 @@ const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
                             <span>Otro importe</span>
                             <Form.Item noStyle shouldUpdate>
                               {({ getFieldValue }) =>
-                                getFieldValue('pago') === -1 ? (
+                                getFieldValue('fixedAmount') === -1 ? (
                                   <Form.Item
-                                    name="otropago"
+                                    name="customAmount"
                                     rules={[
                                       {
                                         required: true,

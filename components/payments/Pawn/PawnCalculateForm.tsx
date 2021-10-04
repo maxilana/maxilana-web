@@ -12,7 +12,6 @@ import { FormFeedback, InputMask } from '~/components/common';
 import styles from '../FormContainer.module.css';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import useCalculatePawnExtension from '~/hooks/useCalculatePawnExtension';
-import { PawnPaymentRequest } from '~/types/Requests';
 
 type Status = 'idle' | 'loading' | 'searching';
 
@@ -24,7 +23,7 @@ type FormValues = {
 
 interface Props {
   data: PawnAccount;
-  onSubmit: (data: PawnPaymentRequest) => Promise<void>;
+  onSubmit: (data: FormValues) => Promise<void>;
 }
 
 dayjs.extend(localizedFormat);
@@ -67,34 +66,20 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
 
     try {
       let amount = 0;
-      let paymentCode = '1';
 
       if (paymentType === 'REFRENDO') {
         amount = data.paymentAmount;
       } else if (paymentType === 'ABONO') {
         amount = extensionAmount;
-        paymentCode = '2';
       } else if (paymentType === 'OTRO-ABONO') {
         if (!values.paymentAmount) {
           throw new Error('Escribe una cantidad correcta para otro pago');
         }
 
         amount = Number(values.paymentAmount);
-        paymentCode = '3';
       }
 
-      const paymentRequest: PawnPaymentRequest = {
-        sucursal: data.branch,
-        boleta: data.accountNumber,
-        prestamo: data.loanAmount,
-        fechaconsulta: data.requestDate,
-        diaspagados: data.minDaysToPay, // NO SE QUÉ VALOR DEBE TENER ESTO
-        codigotipopago: paymentCode,
-        importe: amount,
-      };
-
-      await onSubmit(paymentRequest);
-      // await onSubmit({ paymentType, paymentAmount: amount });
+      await onSubmit({ paymentType, paymentAmount: amount });
     } catch (err) {
       setError((err as AxiosError).message);
     }
