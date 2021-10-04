@@ -3,14 +3,18 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { BareLayout } from '~/components/layout';
 import { PaymentError, PaymentSuccess } from '~/components/payments';
 import validatePayment from '~/utils/validatePayment';
-import { requestCoupon2DTransaction, requestLoan2DTransaction } from '~/api/payments';
-import { ErrorCodes } from '~/types/Models';
+import {
+  requestCoupon2DTransaction,
+  requestLoan2DTransaction,
+  requestPawn2DTransaction,
+} from '~/api/payments';
+import { ErrorCodes, PawnPaymentSuccess } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
 
 interface SSRProps {
   error?: boolean;
   errorCode?: ErrorCodes;
-  response?: boolean;
+  response?: boolean | PawnPaymentSuccess;
 }
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
@@ -51,6 +55,8 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     response = await requestCoupon2DTransaction(request2D);
   } else if (query?.type === 'loans') {
     response = await requestLoan2DTransaction(request2D);
+  } else if (query?.type === 'pawns') {
+    response = await requestPawn2DTransaction(request2D);
   }
 
   return {

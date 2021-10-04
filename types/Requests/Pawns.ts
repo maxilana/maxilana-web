@@ -14,7 +14,7 @@ export interface PawnPaymentRequest extends CreditCard {
   fechaconsulta: string;
   diaspagados: number;
   importe: number;
-  // email?: string;
+  email: string;
 }
 
 export interface PawnRequest {

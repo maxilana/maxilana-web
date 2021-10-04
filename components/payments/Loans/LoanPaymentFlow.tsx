@@ -116,7 +116,7 @@ const LoanPaymentFlow: FC = () => {
         />
       )}
       {state.status === 'submit_payment' && state.transactionRequest && (
-        <PageLoader text="En un momento serás redirigido a la pasarela de pagos">
+        <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
           {state.transactionRequest !== null && (
             <BankTransactionForm
               {...state.transactionRequest}
