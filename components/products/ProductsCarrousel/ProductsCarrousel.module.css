@@ -4,7 +4,7 @@
   &:after,
   &:before {
     content: ' ';
-    @apply absolute inset-y-0 w-24 pointer-events-none block;
+    @apply absolute inset-y-0 w-6 md:w-24 pointer-events-none block;
   }
 
   &:hover .rightButton,

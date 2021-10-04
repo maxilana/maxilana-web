@@ -35,7 +35,12 @@
   @apply text-sm text-white block mb-2;
 }
 
-.copy {
-  @apply block text-base text-center;
-  color: #ffffff99;
+.copy,
+.powered {
+  @apply block text-base text-center text-white/60;
+}
+
+
+.powered {
+  @apply flex items-center justify-center;
 }
