@@ -17,7 +17,7 @@
     "paths": {
       "~/modules/*": ["modules/*"],
       "~/components/*": ["components/*"],
-      "~/api/*": ["api/*"],
+      "~/api/*": ["modules/api/*"],
       "~/hooks/*": ["hooks/*"],
       "~/types/*": ["types/*"],
       "~/types": ["types/*"],
