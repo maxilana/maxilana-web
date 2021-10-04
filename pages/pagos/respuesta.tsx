@@ -3,7 +3,7 @@ import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import { BareLayout } from '~/components/layout';
 import { PaymentError, PaymentSuccess } from '~/components/payments';
 import validatePayment from '~/utils/validatePayment';
-import { requestCoupon2DTransaction } from '~/api/payments';
+import { requestCoupon2DTransaction, requestLoan2DTransaction } from '~/api/payments';
 import { ErrorCodes } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
 
@@ -49,6 +49,8 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
 
   if (query?.type === 'coupons') {
     response = await requestCoupon2DTransaction(request2D);
+  } else if (query?.type === 'loans') {
+    response = await requestLoan2DTransaction(request2D);
   }
 
   return {
