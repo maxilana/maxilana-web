@@ -17,6 +17,7 @@ export interface Sucursal {
   whatsapp: string;
   HorarioConFormato: string;
   whatsappConFormato: string;
+  correoelectronico: string;
   correoelectronicooficial: string;
   HoraAperturaLV: string;
   HoraCierreLV: string;

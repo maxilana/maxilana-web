@@ -20,6 +20,7 @@ export interface Branch {
   formattedSchedule: string;
   formattedWhatsApp: string;
   email: string;
+  branchEmail: string;
   mondayToFridayOpeningTime: string;
   mondayToFridayClosingTime: string;
   saturdayOpeningTime: string;
