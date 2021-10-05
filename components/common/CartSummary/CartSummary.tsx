@@ -13,18 +13,18 @@ interface Props {
 }
 
 const CartSummary: FC<Props> = ({ data }) => {
-  const { name, price, image, netPrice } = data;
+  const { name, price, image, netPrice, observations, brand } = data;
   const shipping = useShippingCost(data.id);
 
-  const { price: basePrice } = usePrice({ amount: price });
-  const { price: discountPrice } = usePrice(
-    netPrice ? { amount: netPrice, baseAmount: price } : undefined,
-  );
-
-  const { price: shippingPrice } = usePrice(shipping ? { amount: shipping } : undefined);
+  const { price: shippingPrice } = usePrice({ amount: shipping });
+  const {
+    price: discountPrice,
+    basePrice,
+    discount,
+  } = usePrice({ amount: netPrice, baseAmount: price });
 
   const { price: totalPrice } = usePrice(
-    shipping && netPrice ? { amount: netPrice + shipping } : { amount: price + shipping },
+    shipping && discount ? { amount: netPrice + shipping } : { amount: price + shipping },
   );
 
   return (
@@ -37,23 +37,35 @@ const CartSummary: FC<Props> = ({ data }) => {
         </div>
         <div className="flex-1 space-y-2">
           <h5 className={styles.productTitle}>{name}</h5>
-          <div className={styles.productPrice}>
-            {netPrice ? (
-              <>
-                <span className={styles.productPriceSale}>{discountPrice}</span>
-                <span className={styles.productCompareAtPrice}>{basePrice}</span>
-              </>
-            ) : (
-              <span className={styles.productPriceSale}>{basePrice}</span>
-            )}
+          <div>
+            <div className="text-xs mb-2">
+              <p className="text-secondary">Marca:</p>
+              <p>{brand}</p>
+            </div>
+            <div className="text-xs mb-2">
+              <p className="text-secondary">Descripción:</p>
+              <p>{observations}</p>
+            </div>
           </div>
         </div>
       </div>
       <div className="space-y-2">
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio del artículo</span>
-          <span className={styles.amount}>{discountPrice ?? basePrice}</span>
+          <span className={styles.amount}>{basePrice}</span>
         </div>
+        {discount && (
+          <div className={styles.rowSplit}>
+            <span className="text-secondary">Descuento</span>
+            <span className={styles.amount}>{discount}</span>
+          </div>
+        )}
+        {discount && (
+          <div className={styles.rowSplit}>
+            <span className="text-secondary">Precio con descuento</span>
+            <span className={styles.amount}>{discountPrice}</span>
+          </div>
+        )}
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio de envio</span>
           <span className={styles.amount}>{shippingPrice}</span>
