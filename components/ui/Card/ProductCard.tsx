@@ -1,8 +1,7 @@
 import cn from 'classnames';
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import { PictureOutlined } from '@ant-design/icons';
 
-import { VStack } from '~/components/layout';
 import { usePrice } from '~/modules/hooks';
 import { Img } from '~/components/ui';
 import { Product } from '~/types/Models/Product';
@@ -18,13 +17,21 @@ interface Props {
 }
 
 const ProductCard: FC<Props> = ({ data, className }) => {
-  const { image, name, price, Branch, saleOnline, netPrice, id } = data;
+  const {
+    image,
+    name,
+    price: productBasePrice,
+    Branch,
+    saleOnline,
+    netPrice: productDiscountPrice,
+    id,
+  } = data;
   const href = `/producto/${id}-${slugify(name)}`;
 
-  const { price: basePrice } = usePrice({ amount: price });
-  const { price: discountPrice } = usePrice(
-    netPrice ? { amount: netPrice, baseAmount: price } : undefined,
-  );
+  const { price, discount, basePrice } = usePrice({
+    amount: productDiscountPrice,
+    baseAmount: productBasePrice,
+  });
 
   return (
     <div
@@ -61,15 +68,13 @@ const ProductCard: FC<Props> = ({ data, className }) => {
           )}
         </h3>
         <div className={styles.productPrice}>
-          {netPrice ? (
+          {discount ? (
             <>
-              <span className={styles.productPriceSale}>{discountPrice}</span>{' '}
-              {basePrice > discountPrice && (
-                <span className={styles.productCompareAtPrice}>{basePrice}</span>
-              )}
+              <span className={styles.productPriceSale}>{price}</span>{' '}
+              <span className={styles.productCompareAtPrice}>{basePrice}</span>
             </>
           ) : (
-            <span className={styles.productPriceSale}>{basePrice}</span>
+            <span>{price}</span>
           )}
         </div>
         <span className={styles.productBranch}>
