@@ -47,6 +47,8 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
     onSubmit(data);
   };
 
+  const canRequest = cityCode !== '' && policy !== null;
+
   return (
     <div className={cn(styles.root, { [styles.rootLoading]: isUpdating })}>
       {(() => {
@@ -145,12 +147,18 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
             <div className={cn(styles.field, styles.fieldCenter)}>
               <h6>Esto pagarías cada período</h6>
               <span className={cn(styles.result, styles.resultFinal)}>
-                {loanAtPeriod !== '' ? loanAtPeriod : '...'}
+                {loanAtPeriod !== '' ? `${loanAtPeriod}*` : '...'}
               </span>
             </div>
             <div className="text-center">
-              <Button fullWidth theme="primary" text="Solicitar préstamo" onClick={handleSubmit} />
-              <small className="my-2">Importe más comisión por apertura e IVA</small>
+              <Button
+                fullWidth
+                theme="primary"
+                text="Solicitar préstamo"
+                onClick={handleSubmit}
+                disabled={!canRequest}
+              />
+              <small className="my-2">*Importe más comisión por apertura e IVA</small>
             </div>
             {isUpdating && (
               <div className={styles.loaderOverlay}>
