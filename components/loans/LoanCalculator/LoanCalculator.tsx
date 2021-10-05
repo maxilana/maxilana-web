@@ -15,14 +15,16 @@ import styles from './LoanCalculator.module.css';
 import useCalculateLoan from '~/hooks/useCalculateLoan';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 
+interface Props {
+  onSubmit: (data: { [key: string]: any }) => void;
+}
+
 const humanizedTimeLimit: { [key: string]: string } = {
   A: 'semanales',
   C: 'quincenales',
 };
 
-interface Props {
-  onSubmit: (data: { [key: string]: any }) => void;
-}
+const MIN_LOAN_AMOUNT = 5000;
 
 const LoanCalculator: FC<Props> = ({ onSubmit }) => {
   const [cityCode, setCityCode] = useState('');
@@ -30,7 +32,7 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
   const { config, isLoading: isUpdating } = useLoanConfig(cityCode);
 
   const [policy, setPolicy] = useState(null);
-  const [uiAmount, setUIAmount] = useState(2000);
+  const [uiAmount, setUIAmount] = useState(MIN_LOAN_AMOUNT);
   const [amount, setAmount] = useState(uiAmount);
 
   const loanAtPeriod = useCalculateLoan(policy ?? '', amount);
@@ -38,8 +40,8 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
 
   useEffectOnUpdate(() => {
     setPolicy(null);
-    setAmount(2000);
-    setUIAmount(2000);
+    setAmount(MIN_LOAN_AMOUNT);
+    setUIAmount(MIN_LOAN_AMOUNT);
   }, [cityCode]);
 
   const handleSubmit = () => {
