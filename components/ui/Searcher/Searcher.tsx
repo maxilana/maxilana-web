@@ -112,6 +112,7 @@ const Searcher: FC<Props> = ({ cities }) => {
       </div>
       <div className={styles.selectorWrap}>
         <Dropdown
+          position="right"
           visible={visible}
           onClose={() => {
             toggleDropdown(false);
