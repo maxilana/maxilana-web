@@ -94,18 +94,20 @@ const ProductView: NextPage<Props> = ({
   legalPages,
 }) => {
   // const [visibleShare, toggleShare] = useToggleState();
-  const [shareURL, setShareURL] = useState<string>();
   const { isFallback } = router;
   const addItem = useAddItem();
-  const { price: basePrice } = usePrice({ amount: product?.price });
-  const { price: discountPrice } = usePrice(
-    product?.netPrice ? { amount: product?.netPrice, baseAmount: product?.price } : undefined,
-  );
+  const [shareURL, setShareURL] = useState<string>();
+  const { price, discount, basePrice } = usePrice({
+    amount: product?.netPrice,
+    baseAmount: product?.price,
+  });
+
   useEffect(() => {
     if (process.browser) {
       setShareURL(window?.location?.toString());
     }
   }, []);
+
   if (isFallback || !product) {
     return (
       <Layout title="Cargando..." cities={cities || []} legalPages={legalPages || []}>
@@ -139,9 +141,13 @@ const ProductView: NextPage<Props> = ({
                 <span className="text-secondary block">Código: {product.id}</span>
               </div>
               <div className="mt-4">
-                <span className="h4 text-danger">{discountPrice}</span>{' '}
-                {basePrice > discountPrice && (
-                  <span className="h5 text-secondary line-through">{basePrice}</span>
+                {discount ? (
+                  <>
+                    <span className="h4 text-danger">{price}</span>{' '}
+                    <span className="h5 text-secondary line-through">{basePrice}</span>
+                  </>
+                ) : (
+                  <span className="h4 text-price">{price}</span>
                 )}
               </div>
               {product?.observations && (
