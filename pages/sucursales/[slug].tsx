@@ -65,8 +65,6 @@ const View: NextPage<Props> = ({ branch, city, products, cities, legalPages }) =
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
 
-  console.log(branch);
-
   return (
     <Layout
       title={`${branch.name}, ${city?.name} ${city?.state}`}

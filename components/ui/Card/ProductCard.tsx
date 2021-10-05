@@ -17,14 +17,21 @@ interface Props {
 }
 
 const ProductCard: FC<Props> = ({ data, className }) => {
-  const { image, name, price, Branch, saleOnline, netPrice, id } = data;
+  const {
+    image,
+    name,
+    price: productBasePrice,
+    Branch,
+    saleOnline,
+    netPrice: productDiscountPrice,
+    id,
+  } = data;
   const href = `/producto/${id}-${slugify(name)}`;
 
-  const {
-    price: discountPrice,
-    basePrice,
-    discount,
-  } = usePrice({ amount: netPrice, baseAmount: price });
+  const { price, discount, basePrice } = usePrice({
+    amount: productDiscountPrice,
+    baseAmount: productBasePrice,
+  });
 
   return (
     <div
@@ -63,11 +70,11 @@ const ProductCard: FC<Props> = ({ data, className }) => {
         <div className={styles.productPrice}>
           {discount ? (
             <>
-              <span className={styles.productPriceSale}>{discountPrice}</span>{' '}
+              <span className={styles.productPriceSale}>{price}</span>{' '}
               <span className={styles.productCompareAtPrice}>{basePrice}</span>
             </>
           ) : (
-            <span className={styles.productPriceSale}>{basePrice}</span>
+            <span>{price}</span>
           )}
         </div>
         <span className={styles.productBranch}>
