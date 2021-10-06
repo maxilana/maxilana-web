@@ -8,6 +8,7 @@ export interface CMSCategory extends CMSModel {
   filters: CMSFilters;
   image: CMSImage;
   code: string;
+  formType: 'default' | 'relojes' | 'joyas';
   subcategories: Array<{
     id: number;
     name: string;

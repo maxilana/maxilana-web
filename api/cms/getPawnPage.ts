@@ -53,6 +53,7 @@ const getPawnPage = async () => {
           id
           name
           code
+          formType
           image {
             ...ImageFields
           }
