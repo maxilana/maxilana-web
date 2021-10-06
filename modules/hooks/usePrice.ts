@@ -1,21 +1,15 @@
-import { useMemo } from 'react'
+import { useMemo } from 'react';
 
-const locale = "es-MX";
-const currencyCode = "MXN";
+const locale = 'es-MX';
+const currencyCode = 'MXN';
 
-export function formatPrice({
-  amount,
-  locale,
-}: {
-  amount: number
-  locale: string
-}) {
+export function formatPrice({ amount, locale: locale }: { amount: number; locale?: string }) {
   const formatCurrency = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currencyCode,
-  })
+  });
 
-  return formatCurrency.format(amount)
+  return formatCurrency.format(amount);
 }
 
 export function formatVariantPrice({
@@ -23,39 +17,44 @@ export function formatVariantPrice({
   baseAmount,
   locale,
 }: {
-  baseAmount: number
-  amount: number
-  locale: string
+  baseAmount: number;
+  amount: number;
+  locale: string;
 }) {
-  const hasDiscount = baseAmount > amount
-  const formatDiscount = new Intl.NumberFormat(locale, { style: 'percent' })
-  const discount = hasDiscount
-    ? formatDiscount.format((baseAmount - amount) / baseAmount)
-    : null
+  const hasDiscount = baseAmount > amount;
+  const formatDiscount = new Intl.NumberFormat(locale, { style: 'percent' });
+  const discount = hasDiscount ? formatDiscount.format((baseAmount - amount) / baseAmount) : null;
 
-  const price = formatPrice({ amount, locale })
-  const basePrice = hasDiscount
-    ? formatPrice({ amount: baseAmount, locale })
-    : null
+  const price = formatPrice({ amount, locale });
+  const basePrice = hasDiscount ? formatPrice({ amount: baseAmount, locale }) : null;
 
-  return { price, basePrice, discount }
+  return { price, basePrice, discount };
 }
 
-export default function usePrice(
-  data?: {
-    amount: number
-    baseAmount?: number
-  } | null
-) {
-  const { amount, baseAmount } = data ?? {}
+type HookParams = { amount: number; baseAmount?: number };
+type HookResult = {
+  price: string;
+  basePrice: string | null;
+  discount: string | null;
+};
+
+const usePrice = (data: HookParams): HookResult => {
+  const { amount, baseAmount } = data ?? {};
+
   const value = useMemo(() => {
-    if (typeof amount !== 'number') return ''
+    if (typeof amount !== 'number') return '';
 
     return baseAmount
       ? formatVariantPrice({ amount, baseAmount, locale })
-      : formatPrice({ amount, locale })
+      : formatPrice({ amount, locale });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, baseAmount])
+  }, [amount, baseAmount]);
 
-  return typeof value === 'string' ? { price: value } : value
-}
+  if (typeof value === 'string') {
+    return { price: value, basePrice: null, discount: null };
+  }
+
+  return value;
+};
+
+export default usePrice;

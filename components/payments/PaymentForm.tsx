@@ -8,68 +8,33 @@ import { Button } from '../ui';
 import { InputField, InputMask } from '../common';
 import styles from './FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
-import {
-  CouponPaymentRequest,
-  LoanPaymentRequest,
-  PawnPaymentRequest,
-  CreditCard,
-} from '~/types/Requests';
-
-type PaymentRequest = Partial<CouponPaymentRequest | LoanPaymentRequest | PawnPaymentRequest>;
+import { CreditCard } from '~/types/Requests';
 
 interface FormValues extends CreditCard {
   concepto: string;
   correoelectronico: string;
 }
 
-type Data = {
-  importe: number;
-  concepto: string;
-  // VALES
-  cdistribuidora?: string;
-  // PRESTAMOS
-  codigoprestamo?: string;
-  // BOLETA
-  sucursal?: string;
-  boleta?: string;
-  prestamo?: number;
-  codigotipopago?: string; // '1' | '2' | '3';
-  fechaconsulta?: string;
-  diaspagados?: number;
-};
+interface PaymentData {
+  concept: string;
+  amount: number;
+}
 
 interface Props {
-  data: Data;
   title: string;
   description: string;
-  formType: 'pawn' | 'loan' | 'coupon';
-  onSubmit: (data: PaymentRequest) => Promise<void>;
+  data: PaymentData;
+  onSubmit: (data: FormValues) => Promise<void>;
 }
 
 dayjs.extend(customParseFormat);
 
-const PaymentForm: FC<Props> = ({ data, title, description, onSubmit, formType }) => {
-  const [form] = Form.useForm();
+const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
+  const [form] = Form.useForm<FormValues>();
 
-  const getDataFromType = () => {
-    if (formType === 'coupon') {
-      const { importe, cdistribuidora } = data;
-      return { importe, cdistribuidora };
-    } else if (formType === 'loan') {
-      const { importe, codigoprestamo } = data;
-      return { importe, codigoprestamo };
-    }
-  };
-
-  const handleFormSubmit = (values: FormValues) => {
-    const datarequest = getDataFromType();
-    const params: PaymentRequest = {
-      ...values,
-      ...datarequest,
-    };
-
+  const handleFormSubmit = async (values: FormValues) => {
     try {
-      onSubmit(params);
+      onSubmit(values);
     } catch (err) {
       console.log(err);
     }
@@ -81,8 +46,8 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit, formType }
       onFinish={handleFormSubmit}
       validateMessages={defaultValidateMessages}
       initialValues={{
-        concepto: data.concepto,
-        importe: data.importe,
+        importe: data.amount,
+        concepto: data.concept,
       }}
     >
       <div className="px-4">

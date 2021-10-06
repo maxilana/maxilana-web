@@ -1,21 +1,21 @@
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 
 import { BareLayout } from '~/components/layout';
-import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
+import { PaymentError, PaymentSuccess } from '~/components/payments';
 import validatePayment from '~/utils/validatePayment';
-import { request2DTransaction } from '~/api/payments/checkout';
-import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
+import {
+  requestCoupon2DTransaction,
+  requestLoan2DTransaction,
+  requestPawn2DTransaction,
+} from '~/api/payments';
+import { ErrorCodes, PawnPaymentSuccess } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
 
-interface PaymentRequest extends PaymentTransactionRequest {
-  envio: number;
-}
-
-type SSRProps = {
+interface SSRProps {
   error?: boolean;
-  response?: CheckoutData;
-  errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
-};
+  errorCode?: ErrorCodes;
+  response?: boolean | PawnPaymentSuccess;
+}
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
   const { query } = context;
@@ -48,13 +48,16 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     };
   }
 
-  const shipping = Number(query.scost);
-  const request2D: PaymentRequest = {
-    ...validation.transaction,
-    envio: shipping,
-  };
+  let response;
+  const request2D: PaymentTransactionRequest = validation.transaction;
 
-  const response = await request2DTransaction(request2D);
+  if (query?.type === 'coupons') {
+    response = await requestCoupon2DTransaction(request2D);
+  } else if (query?.type === 'loans') {
+    response = await requestLoan2DTransaction(request2D);
+  } else if (query?.type === 'pawns') {
+    response = await requestPawn2DTransaction(request2D);
+  }
 
   return {
     props: {
@@ -65,22 +68,18 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const CheckoutResponsePage: NextPage<Props> = ({
-  error = false,
-  errorCode = '0',
-  response = null,
-}) => {
+const PaymentResponsePage: NextPage<Props> = ({ error = false, errorCode, response = null }) => {
   return (
     <BareLayout>
       {(() => {
-        if (response !== null && !error) {
-          return <CheckoutSuccess data={response} />;
+        if (response && !error) {
+          return <PaymentSuccess />;
         }
 
-        return <CheckoutError code={errorCode} />;
+        return <PaymentError code={errorCode} />;
       })()}
     </BareLayout>
   );
 };
 
-export default CheckoutResponsePage;
+export default PaymentResponsePage;

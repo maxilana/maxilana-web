@@ -10,7 +10,7 @@ export interface MaxilanaTransaction {
 }
 
 // Response de la transacción del banco
-export interface Secure3DTransaction {
+export interface BankTransaction {
   ECI: string;
   XID: string;
   CAVV: string;

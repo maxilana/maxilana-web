@@ -240,7 +240,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                     <div className="text-center">
                       <small>
                         Al hacer clic en &ldquo;Proceder al pago&rdquo; confirmas que aceptas los{' '}
-                        <Link href="/legal/terminos-condiciones">
+                        <Link href="/legal/terminos-y-condiciones">
                           <a className="text-price">TÉRMINOS Y CONDICIONES</a>
                         </Link>{' '}
                         de Maxilana.

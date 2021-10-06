@@ -1,57 +1,129 @@
-import React, { FC, useState } from 'react';
-import { checkLoanAccount } from '~/api/payments';
-import PaymentForm, { LoanAccountForm, LoanSelectionPaymentForm } from '~/components/payments';
+import React, { FC, useReducer } from 'react';
+import { checkLoanAccount, requestLoan3DTransaction } from '~/api/payments';
+import { PageLoader } from '~/components/common';
+import PaymentForm, {
+  BankTransactionForm,
+  LoanAccountForm,
+  LoanSelectionPaymentForm,
+} from '~/components/payments';
 import { LoanAccount } from '~/types/Models';
+import { LoanPaymentRequest } from '~/types/Requests';
+import { MaxilanaTransaction } from '~/types/Responses';
+
+type Status = 'idle' | 'select_payment' | 'confirm_payment' | 'submit_payment';
 
 type Payment = {
-  concepto: string;
-  importe: number;
-  codigoprestamo: LoanAccount['clientCode'];
-} | null;
+  concept: string;
+  amount: number;
+};
 
-type Status = 'account_status' | 'select_payment' | 'payment';
+type Transaction = {
+  payment: LoanPaymentRequest;
+  transaction: MaxilanaTransaction;
+};
+
+type State = {
+  status: Status;
+  account: LoanAccount | null;
+  paymentRequest: Payment | null;
+  transactionRequest: Transaction | null;
+};
+
+const initialState: State = {
+  status: 'idle',
+  account: null,
+  paymentRequest: null,
+  transactionRequest: null,
+};
+
+const reducer = (state: State, action: any): State => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case 'SELECT_PAYMENT':
+      return {
+        ...state,
+        status: 'select_payment',
+        account: payload.account,
+      };
+    case 'CONFIRM_PAYMENT':
+      return {
+        ...state,
+        status: 'confirm_payment',
+        paymentRequest: payload.paymentRequest,
+      };
+    case 'SUBMIT_PAYMENT':
+      return {
+        ...state,
+        status: 'submit_payment',
+        transactionRequest: payload.transactionRequest,
+      };
+    default:
+      return initialState;
+  }
+};
 
 const LoanPaymentFlow: FC = () => {
-  const [payment, setPayment] = useState<Payment>(null);
-  const [status, setStatus] = useState<Status>('account_status');
-  const [account, setAccount] = useState<LoanAccount | null>(null);
+  const [state, dispatch] = useReducer<typeof reducer>(reducer, initialState);
+
+  const handleSignAccount = async (data: any) => {
+    const account = await checkLoanAccount(data);
+    dispatch({ type: 'SELECT_PAYMENT', payload: { account } });
+  };
+
+  const handleSelectPayment = async (amount: number) => {
+    const paymentRequest = {
+      amount,
+      concept: `ABONO A PRÉSTAMO NÚMERO ${state?.account?.clientCode}`,
+    };
+
+    dispatch({ type: 'CONFIRM_PAYMENT', payload: { paymentRequest } });
+  };
+
+  const handleSubmitPayment = async (data: any) => {
+    const paymentRequest: LoanPaymentRequest = {
+      ...data,
+      codigoprestamo: state.account?.clientCode,
+    };
+
+    const maxilanaTransaction = await requestLoan3DTransaction(paymentRequest);
+
+    const transactionRequest = {
+      payment: paymentRequest,
+      transaction: maxilanaTransaction,
+    };
+
+    dispatch({
+      type: 'SUBMIT_PAYMENT',
+      payload: {
+        transactionRequest,
+      },
+    });
+  };
+
   return (
     <div>
-      {status === 'account_status' && (
-        <LoanAccountForm
-          onSubmit={async (data) => {
-            const account = await checkLoanAccount(data);
-            setAccount(account);
-            setStatus('select_payment');
-          }}
-        />
+      {state.status === 'idle' && <LoanAccountForm onSubmit={handleSignAccount} />}
+      {state.status === 'select_payment' && state.account && (
+        <LoanSelectionPaymentForm account={state.account} onSubmit={handleSelectPayment} />
       )}
-      {status === 'select_payment' && account && (
-        <LoanSelectionPaymentForm
-          account={account}
-          onSubmit={(data) => {
-            setPayment({
-              importe: data.pago,
-              concepto: `ABONO A PRÉSTAMO NÚMERO ${account.clientCode}`,
-              codigoprestamo: account.clientCode,
-            });
-
-            setStatus('payment');
-            return Promise.resolve();
-          }}
-        />
-      )}
-      {status === 'payment' && payment && (
+      {state.status === 'confirm_payment' && state.paymentRequest && (
         <PaymentForm
-          data={payment}
-          formType="loan"
+          data={state.paymentRequest}
           title="Préstamos personales"
           description="Abona a tu préstamo personal en línea"
-          onSubmit={(data) => {
-            console.log(data);
-            return Promise.resolve();
-          }}
+          onSubmit={handleSubmitPayment}
         />
+      )}
+      {state.status === 'submit_payment' && state.transactionRequest && (
+        <PageLoader text="En un momento serás redirigido a la pasarela de pagos...">
+          {state.transactionRequest !== null && (
+            <BankTransactionForm
+              {...state.transactionRequest}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=loans`}
+            />
+          )}
+        </PageLoader>
       )}
     </div>
   );

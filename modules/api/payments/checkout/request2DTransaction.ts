@@ -1,8 +1,9 @@
 import maxAxios from '~/api/axios';
 import { CheckoutSuccess } from '~/types/Models';
-import { MaxilanaSecure2DResponse, Secure3DTransaction } from '~/types/Responses';
+import { PaymentTransactionRequest } from '~/types/Requests';
+import { MaxilanaSecure2DResponse } from '~/types/Responses';
 
-interface Body extends Secure3DTransaction {
+interface Body extends PaymentTransactionRequest {
   envio: number;
 }
 

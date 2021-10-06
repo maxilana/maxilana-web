@@ -15,14 +15,16 @@ import styles from './LoanCalculator.module.css';
 import useCalculateLoan from '~/hooks/useCalculateLoan';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 
+interface Props {
+  onSubmit: (data: { [key: string]: any }) => void;
+}
+
 const humanizedTimeLimit: { [key: string]: string } = {
   A: 'semanales',
   C: 'quincenales',
 };
 
-interface Props {
-  onSubmit: (data: { [key: string]: any }) => void;
-}
+const MIN_LOAN_AMOUNT = 5000;
 
 const LoanCalculator: FC<Props> = ({ onSubmit }) => {
   const [cityCode, setCityCode] = useState('');
@@ -30,7 +32,7 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
   const { config, isLoading: isUpdating } = useLoanConfig(cityCode);
 
   const [policy, setPolicy] = useState(null);
-  const [uiAmount, setUIAmount] = useState(2000);
+  const [uiAmount, setUIAmount] = useState(MIN_LOAN_AMOUNT);
   const [amount, setAmount] = useState(uiAmount);
 
   const loanAtPeriod = useCalculateLoan(policy ?? '', amount);
@@ -38,14 +40,16 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
 
   useEffectOnUpdate(() => {
     setPolicy(null);
-    setAmount(2000);
-    setUIAmount(2000);
+    setAmount(MIN_LOAN_AMOUNT);
+    setUIAmount(MIN_LOAN_AMOUNT);
   }, [cityCode]);
 
   const handleSubmit = () => {
     const data = { cityCode, policy, amount };
     onSubmit(data);
   };
+
+  const canRequest = cityCode !== '' && policy !== null;
 
   return (
     <div className={cn(styles.root, { [styles.rootLoading]: isUpdating })}>
@@ -145,12 +149,18 @@ const LoanCalculator: FC<Props> = ({ onSubmit }) => {
             <div className={cn(styles.field, styles.fieldCenter)}>
               <h6>Esto pagarías cada período</h6>
               <span className={cn(styles.result, styles.resultFinal)}>
-                {loanAtPeriod !== '' ? loanAtPeriod : '...'}
+                {loanAtPeriod !== '' ? `${loanAtPeriod}*` : '...'}
               </span>
             </div>
             <div className="text-center">
-              <Button fullWidth theme="primary" text="Solicitar préstamo" onClick={handleSubmit} />
-              <small className="my-2">Importe más comisión por apertura e IVA</small>
+              <Button
+                fullWidth
+                theme="primary"
+                text="Solicitar préstamo"
+                onClick={handleSubmit}
+                disabled={!canRequest}
+              />
+              <small className="my-2">*Importe más comisión por apertura e IVA</small>
             </div>
             {isUpdating && (
               <div className={styles.loaderOverlay}>

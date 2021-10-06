@@ -16,21 +16,12 @@ const checkLoanAccount = async (data: Body): Promise<LoanAccount> => {
     throw new Error(response.strMensaje);
   }
 
-  const {
-    strNombreCliente,
-    dblMontoLiquidaCon,
-    dblMontoAlCorriente,
-    strFechaVencimiento,
-    comision,
-  } = response;
-
-  // COMISIÓN Y NÚMERO CON 2 DECIMALES
-  const minPayment = Math.round(dblMontoAlCorriente * Number(comision) * 100) / 100;
-  const settlePayment = Math.round(dblMontoLiquidaCon * Number(comision) * 100) / 100;
+  const { strNombreCliente, dblMontoLiquidaCon, dblMontoAlCorriente, strFechaVencimiento } =
+    response;
 
   return {
-    minPayment,
-    settlePayment,
+    minPayment: dblMontoAlCorriente,
+    settlePayment: dblMontoLiquidaCon,
     clientCode: data.codigoprestamo,
     clientName: strNombreCliente,
     dueDate: strFechaVencimiento,

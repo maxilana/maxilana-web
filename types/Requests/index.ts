@@ -4,3 +4,4 @@ export * from './Loans';
 export * from './Coupons';
 export * from './CreditCard';
 export * from './ProductPurchase';
+export * from './PaymentTransactionRequest';
