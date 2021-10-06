@@ -1,3 +1,4 @@
+import ms from 'ms';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { ReactElement } from 'react';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
@@ -48,6 +49,7 @@ export const getStaticProps: GetStaticProps<
       legalPages,
       payment,
     },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 

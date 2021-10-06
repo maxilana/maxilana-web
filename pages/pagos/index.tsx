@@ -1,8 +1,9 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import ms from 'ms';
+
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getPaymentsList from '~/api/cms/getPayments';
 import getAllCities from '~/api/getAllCities';
-
 import { Button, Card } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import Image from 'next/image';
@@ -20,6 +21,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ payments: CMSPaym
         legalPages,
         payments,
       },
+      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
     };
   };
 

@@ -1,5 +1,7 @@
+import ms from 'ms';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
+
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getAllCities from '~/api/getAllCities';
 import { CMSContent } from '~/components/common';
@@ -26,6 +28,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       cities,
       legalPages,
     },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 

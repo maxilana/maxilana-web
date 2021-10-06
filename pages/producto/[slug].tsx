@@ -2,6 +2,7 @@ import { WithRouterProps } from 'next/dist/client/with-router';
 import { withRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import ms from 'ms';
 import { WhatsAppOutlined, LoadingOutlined, ShopFilled, PhoneOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -74,7 +75,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
         cities,
         legalPages,
       },
-      // revalidate: 60 * 30, // Update each 30 minutes
+      revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m'),
     };
   } catch (e) {
     console.log('getStaticProps ERROR:', e);

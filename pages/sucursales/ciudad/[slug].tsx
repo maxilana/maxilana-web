@@ -1,3 +1,4 @@
+import ms from 'ms';
 import React from 'react';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
@@ -33,6 +34,7 @@ export const getStaticProps: GetStaticProps<{
 
   return {
     props: { cities, branches, currentCity, legalPages },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 

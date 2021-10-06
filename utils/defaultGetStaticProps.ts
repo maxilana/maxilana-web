@@ -1,3 +1,4 @@
+import ms from 'ms';
 import { GetStaticProps } from 'next';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getAllCities from '~/api/getAllCities';
@@ -13,6 +14,7 @@ export const defaultGetStaticProps: GetStaticProps<{ cities: City[]; legalPages:
         cities,
         legalPages,
       },
+      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
     };
   };
 

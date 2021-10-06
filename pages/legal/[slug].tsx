@@ -1,3 +1,4 @@
+import ms from 'ms';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getLegalPageBySlug from '~/api/cms/getLegalPageBySlug';
@@ -33,6 +34,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
       legalPages,
       page,
     },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 type Props = InferGetStaticPropsType<typeof getStaticProps>;

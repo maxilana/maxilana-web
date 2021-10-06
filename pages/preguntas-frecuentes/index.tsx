@@ -1,5 +1,6 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Link from 'next/link';
+import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSSections from '~/api/cms/getCMSSections';
 import getAllCities from '~/api/getAllCities';
@@ -25,7 +26,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       sections,
       legalPages,
     },
-    revalidate: 60 * 60, // Each hour
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 

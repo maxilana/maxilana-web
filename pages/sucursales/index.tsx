@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import ms from 'ms';
+import React from 'react';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 
@@ -24,6 +25,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
   return {
     props: { cities, branches: allBranches, legalPages },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 

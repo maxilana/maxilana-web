@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import ms from 'ms';
+
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getLoansPage from '~/api/cms/getLoansPage';
-
 import LoanRequestFlow from '~/components/loans';
 import { Card, ButtonDropdown, Img } from '~/components/ui';
 import { HeroComposed, ServicePaymentCards } from '~/components/common';
@@ -22,6 +23,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>
       legalPages,
       page,
     },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
 };
 type Props = InferGetStaticPropsType<typeof getStaticProps>;

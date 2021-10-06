@@ -1,6 +1,7 @@
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
+import ms from 'ms';
 
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getHomePage from '~/api/cms/getHomePage';
@@ -42,7 +43,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       categories,
       legalPages,
     },
-    // revalidate: 60 * 60, // Each minute
+    revalidate: ms(process.env.HOME_REVALIDATE || '10m'),
   };
 };
 

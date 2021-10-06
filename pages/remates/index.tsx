@@ -3,6 +3,7 @@ import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
+import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSRematesPage from '~/api/cms/getCMSRematesPage';
@@ -50,7 +51,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
     return {
       props: { cities, page, categories, categoriesProducts, legalPages },
-      revalidate: 10 * 60, // each 10 minutes
+      revalidate: ms(process.env.REMATE_REVALIDATE || '10m'),
     };
   } catch (e) {
     console.log('Error getStaticProps');

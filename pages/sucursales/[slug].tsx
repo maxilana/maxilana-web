@@ -1,4 +1,5 @@
 import { EnvironmentOutlined, PhoneOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import ms from 'ms';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Image from 'next/image';
 import React from 'react';
@@ -45,6 +46,7 @@ export const getStaticProps: GetStaticProps<{
         cities,
         legalPages,
       },
+      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
     };
   } catch (e) {
     console.log(e);

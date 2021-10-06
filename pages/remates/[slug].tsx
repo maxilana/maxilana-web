@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import omit from 'lodash.omit';
 import React from 'react';
+import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
 import getCMSMktPagesSlugs from '~/api/cms/getCMSMktPagesSlugs';
@@ -52,7 +53,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 
   return {
     props: { cities, categories, page, products, legalPages },
-    revalidate: 10 * 60, // Each 10 minutes
+    revalidate: ms(process.env.REMATE_REVALIDATE || '10m'),
   };
 };
 
