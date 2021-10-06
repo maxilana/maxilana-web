@@ -11,5 +11,5 @@ export interface ProductPurchase extends CreditCard {
   colonia: string;
   municipio: string;
   estado: string;
-  instrucciones?: string;
+  instrucciones: string;
 }

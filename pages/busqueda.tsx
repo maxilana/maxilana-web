@@ -165,7 +165,7 @@ const Busqueda: NextPage<Props> = ({
               return query?.q ? (
                 <span>{`${query?.q}`.replace?.(/\|/gm, ' | ')}</span>
               ) : (
-                'Lista de productos en remate!'
+                '¡Lista de productos en remate!'
               );
             })()}
           </h2>

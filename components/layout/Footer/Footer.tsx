@@ -97,7 +97,7 @@ const Copyright = () => {
   return (
     <div>
       <small className={styles.copy}>
-        &copy; Copyright {currentYear} - La nacional Pignoraciones y Remates. Todos los derechos
+        &copy; Copyright {currentYear} - La Nacional Pignoraciones y Remates. Todos los derechos
         reservados.
       </small>
       <small className={cn(styles.powered, 'flex items-center')}>
@@ -105,14 +105,14 @@ const Copyright = () => {
         <a
           className="inline-flex items-center"
           href="https://www.adhocti.com/"
-          title="Desarrollado con &hearts; por AdhocTI: Consultoría y desarrollo de Sitios Web y Apps"
+          title="Desarrollado con &hearts; por ADHOC TI: Consultoría y desarrollo de Sitios Web y Apps"
         >
           <Image
             src="/logo-adhoc.svg"
             width={70}
             height={16}
             layout="fixed"
-            alt="Desarrollado con &hearts; por AdhocTI: Consultoría y desarrollo de Sitios Web y Apps"
+            alt="Desarrollado con &hearts; por ADHOC TI: Consultoría y desarrollo de Sitios Web y Apps"
           />
         </a>
       </small>
