@@ -24,9 +24,11 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
-  const page = await getLegalPageBySlug(`${ctx?.params?.slug}`);
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
+  const [page, cities, legalPages] = await Promise.all([
+    getLegalPageBySlug(`${ctx?.params?.slug}`),
+    getAllCities(),
+    getAllLegalPages(),
+  ]);
 
   return {
     props: {

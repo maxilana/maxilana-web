@@ -12,9 +12,11 @@ import { CMSPayment } from '~/types/Models';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ payments: CMSPayment[] }>> =
   async () => {
-    const cities = await getAllCities();
-    const legalPages = await getAllLegalPages();
-    const payments = await getPaymentsList();
+    const [cities, legalPages, payments] = await Promise.all([
+      getAllCities(),
+      getAllLegalPages(),
+      getPaymentsList(),
+    ]);
     return {
       props: {
         cities,

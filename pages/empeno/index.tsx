@@ -15,9 +15,11 @@ import Auto from '~/public/tarjeta-empeno-auto.png';
 import { CMSPawn } from '~/types/Models';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPawn }>> = async () => {
-  const page = await getPawnPage();
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
+  const [page, cities, legalPages] = await Promise.all([
+    getPawnPage(),
+    getAllCities(),
+    getAllLegalPages(),
+  ]);
   return {
     props: {
       page,

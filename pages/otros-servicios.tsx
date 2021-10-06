@@ -13,9 +13,11 @@ import { CMSOtherService } from '~/types/Models';
 export const getStaticProps: GetStaticProps<
   DefaultPageProps<{ otherServices: CMSOtherService[] }>
 > = async () => {
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
-  const otherServices = await getOtherServices();
+  const [cities, legalPages, otherServices] = await Promise.all([
+    getAllCities(),
+    getAllLegalPages(),
+    getOtherServices(),
+  ]);
 
   return {
     props: { cities, legalPages, otherServices },

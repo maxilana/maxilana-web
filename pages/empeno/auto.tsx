@@ -14,9 +14,12 @@ import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSCarPawn } from '~/types/Models';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSCarPawn }>> = async () => {
-  const page = await getCarPawnPage();
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
+  const [page, cities, legalPages] = await Promise.all([
+    getCarPawnPage(),
+    getAllCities(),
+    getAllLegalPages(),
+  ]);
+
   return {
     props: {
       page,

@@ -6,8 +6,7 @@ import { City, CMSLegal } from '~/types/Models';
 
 export const defaultGetStaticProps: GetStaticProps<{ cities: City[]; legalPages: CMSLegal[] }> =
   async () => {
-    const cities = await getAllCities();
-    const legalPages = await getAllLegalPages();
+    const [cities, legalPages] = await Promise.all([getAllCities(), getAllLegalPages()]);
 
     return {
       props: {

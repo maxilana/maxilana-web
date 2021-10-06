@@ -39,7 +39,12 @@ interface GSSProps {
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
   const { page, limit, ...filters } = query || {};
-  const categories = await getCMSCategories(true);
+  const [categories, cities, legalPages] = await Promise.all([
+    getCMSCategories(true),
+    getAllCities(),
+    getAllLegalPages(),
+  ]);
+
   if (query.categoria) {
     const category = categories.find((item) => item.id === query?.categoria);
     const { filters } = category || {};
@@ -53,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
 
   const paginatedProducts = await getProducts(query);
   const { rows: products, ...pagination } = paginatedProducts;
-  const cities = await getAllCities();
+
   const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
   const city =
     branch?.CityId || filters?.ciudad
@@ -62,8 +67,6 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
         )
       : null;
   const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
-
-  const legalPages = await getAllLegalPages();
 
   return {
     props: {

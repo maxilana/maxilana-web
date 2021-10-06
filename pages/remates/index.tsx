@@ -32,9 +32,12 @@ interface GSProps {
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
   try {
-    const cities = await getAllCities();
-    const page = await getCMSRematesPage();
-    const categories = await getCMSCategories(true);
+    const [cities, page, categories, legalPages] = await Promise.all([
+      getAllCities(),
+      getCMSRematesPage(),
+      getCMSCategories(true),
+      getAllLegalPages(),
+    ]);
     const categoriesProducts = page?.categories?.length
       ? await Promise.all(
           page?.categories.map((item) => {
@@ -47,7 +50,6 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
           }),
         )
       : [];
-    const legalPages = await getAllLegalPages();
 
     return {
       props: { cities, page, categories, categoriesProducts, legalPages },

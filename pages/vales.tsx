@@ -20,9 +20,11 @@ import PayVales from '~/public/pagar-vales.png';
 import { CMSPaybill } from '~/types/Models/CMSPaybill';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPaybill }>> = async () => {
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
-  const page = await getPaybillsPage();
+  const [cities, legalPages, page] = await Promise.all([
+    getAllCities(),
+    getAllLegalPages(),
+    getPaybillsPage(),
+  ]);
   return {
     props: {
       cities,

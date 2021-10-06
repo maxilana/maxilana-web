@@ -14,9 +14,11 @@ import { CMSLoans } from '~/types/Models/CMSLoans';
 import getAllCities from '~/api/getAllCities';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>> = async () => {
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
-  const page = await getLoansPage();
+  const [cities, legalPages, page] = await Promise.all([
+    getAllCities(),
+    getAllLegalPages(),
+    getLoansPage(),
+  ]);
   return {
     props: {
       cities,

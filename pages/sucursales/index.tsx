@@ -15,13 +15,12 @@ interface GSProps {
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
-  const response = await getAllBranches();
+  const [response, legalPages] = await Promise.all([getAllBranches(), getAllLegalPages()]);
   let allBranches: Branch[] = [];
   const cities = response.map(({ branches, ...city }) => {
     allBranches = [...allBranches, ...branches];
     return city;
   });
-  const legalPages = await getAllLegalPages();
 
   return {
     props: { cities, branches: allBranches, legalPages },

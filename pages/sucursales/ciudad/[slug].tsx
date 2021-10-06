@@ -26,11 +26,11 @@ export const getStaticProps: GetStaticProps<{
   legalPages?: CMSLegal[];
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
-  const cities = await getAllCities();
+  const [cities, legalPages] = await Promise.all([getAllCities(), getAllLegalPages()]);
+
   const currentCity = cities.find((city) => city.slug === slug);
 
   const branches = currentCity ? await getCityBranchesBySlug(slug) : [];
-  const legalPages = await getAllLegalPages();
 
   return {
     props: { cities, branches, currentCity, legalPages },

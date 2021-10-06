@@ -33,11 +33,13 @@ export const getStaticProps: GetStaticProps<{
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
   try {
-    const branch = await getBranch(slug);
-    const cities = await getAllCities();
+    const [branch, cities, legalPages] = await Promise.all([
+      getBranch(slug),
+      getAllCities(),
+      getAllLegalPages(),
+    ]);
     const products = await getProducts({ sucursal: `${branch?.id}` });
     const city = cities.find((item) => item.id === branch.CityId);
-    const legalPages = await getAllLegalPages();
     return {
       props: {
         branch,

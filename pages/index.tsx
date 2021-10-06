@@ -25,15 +25,16 @@ interface GSProps {
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
-  const cities = await getAllCities();
-  const page = await getHomePage();
+  const [cities, page, legalPages] = await Promise.all([
+    getAllCities(),
+    getHomePage(),
+    getAllLegalPages(),
+  ]);
   const categories = page?.categories?.length ? page?.categories : await getCMSCategories();
 
   const products = await getProductsFromCMSFilters(
     page?.productFilters || { quantity: 8, order: 'rand' },
   );
-
-  const legalPages = await getAllLegalPages();
 
   return {
     props: {

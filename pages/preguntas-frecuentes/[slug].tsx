@@ -30,10 +30,12 @@ interface GSProps {
 
 export const getStaticProps: GetStaticProps<GSProps> = async (ctx) => {
   const { slug } = ctx?.params || {};
-  const cities = await getAllCities();
-  const section = await getCMSSectionBySlug(slug as string);
-  const sections = await getCMSSections();
-  const legalPages = await getAllLegalPages();
+  const [cities, section, sections, legalPages] = await Promise.all([
+    getAllCities(),
+    getCMSSectionBySlug(slug as string),
+    getCMSSections(),
+    getAllLegalPages(),
+  ]);
 
   return {
     props: {

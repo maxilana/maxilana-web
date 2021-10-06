@@ -52,26 +52,25 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
     const id = slug.split('-')[0];
     const product = await getProductById(id);
     if (!product) return { notFound: true };
-    const { rows: relatedProducts } = await getProducts({
-      limit: '4',
-      ciudad: `${product?.Branch?.CityId}`,
-      categoria: `${product.CategoryId}`,
-    });
 
-    const branch = await getBranch(product?.BranchId);
-
-    const cities = await getAllCities();
-
-    const gallery = await generateProductGallery(product.id);
-
-    const legalPages = await getAllLegalPages();
+    const [products, branch, cities, gallery, legalPages] = await Promise.all([
+      getProducts({
+        limit: '4',
+        ciudad: `${product?.Branch?.CityId}`,
+        categoria: `${product.CategoryId}`,
+      }),
+      getBranch(product?.BranchId),
+      getAllCities(),
+      generateProductGallery(product.id),
+      getAllLegalPages(),
+    ]);
 
     return {
       props: {
         product,
         gallery,
         branch,
-        relatedProducts,
+        relatedProducts: products.rows,
         cities,
         legalPages,
       },

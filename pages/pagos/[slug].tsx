@@ -40,9 +40,11 @@ export const getStaticProps: GetStaticProps<
   DefaultPageProps<{ payment: CMSPayment }>,
   { slug: string }
 > = async (ctx) => {
-  const cities = await getAllCities();
-  const legalPages = await getAllLegalPages();
-  const payment = await getPaymentBySlug(`${ctx?.params?.slug}`);
+  const [cities, legalPages, payment] = await Promise.all([
+    getAllCities(),
+    getAllLegalPages(),
+    getPaymentBySlug(`${ctx?.params?.slug}`),
+  ]);
   return {
     props: {
       cities,

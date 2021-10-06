@@ -42,14 +42,18 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (ctx) => {
   const { slug } = ctx?.params || {};
   if (!slug) return { notFound: true };
-  const cities = await getAllCities();
-  const categories = await getCMSCategories(true);
-  const page = await getMktPageBySlug(slug as string);
+
+  const [cities, categories, page, legalPages] = await Promise.all([
+    getAllCities(),
+    getCMSCategories(true),
+    getMktPageBySlug(slug as string),
+    getAllLegalPages(),
+  ]);
+
   if (!page) return { notFound: true };
   const products = page?.productsFilters
     ? await getProductsFromCMSFilters(page?.productsFilters)
     : [];
-  const legalPages = await getAllLegalPages();
 
   return {
     props: { cities, categories, page, products, legalPages },
