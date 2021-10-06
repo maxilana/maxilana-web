@@ -35,6 +35,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
   const products = await getProductsFromCMSFilters(
     page?.productFilters || { quantity: 8, order: 'rand' },
   );
+  console.log('HOME_REVALIDATE', process.env.HOME_REVALIDATE);
 
   return {
     props: {
@@ -44,7 +45,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       categories,
       legalPages,
     },
-    revalidate: ms(process.env.HOME_REVALIDATE || '10m'),
+    revalidate: ms(process.env.HOME_REVALIDATE || '10m') / 1000,
   };
 };
 
