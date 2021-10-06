@@ -13,7 +13,7 @@ const useCalculateLoan = (policyCode: string, amount: number) => {
   );
 
   const { price: loanAmount } = usePrice(
-    data !== undefined ? { amount: Number(data.MontoAbono) } : null,
+    data !== undefined ? { amount: Number(data.MontoAbono) } : undefined,
   );
 
   return loanAmount;

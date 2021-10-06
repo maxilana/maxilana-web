@@ -38,7 +38,7 @@ type HookResult = {
   discount: string | null;
 };
 
-const usePrice = (data: HookParams): HookResult => {
+const usePrice = (data?: HookParams): HookResult => {
   const { amount, baseAmount } = data ?? {};
 
   const value = useMemo(() => {
