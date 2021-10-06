@@ -28,6 +28,7 @@ type State = {
   article: number;
   pawnConfig: PawnCalculation | null;
   whatsapp: CMSWhatsApp | null;
+  requestFormType: CMSCategory['formType'];
 };
 
 interface Props {
@@ -41,6 +42,7 @@ const initialState: State = {
   article: -1,
   pawnConfig: null,
   whatsapp: null,
+  requestFormType: 'default',
 };
 
 const reducer = (state: any, action: any) => {
@@ -63,7 +65,9 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         status: 'show_request_form',
-        ...(payload.article ? { article: payload.article } : {}),
+        ...(payload.article
+          ? { article: payload.article, requestFormType: payload.requestFormType }
+          : {}),
       };
     case 'SHOW_CALCULATOR':
       return {
@@ -131,10 +135,10 @@ const PawnRequestFlow: FC<Props> = ({ categories, whatsapps }) => {
       <SelectArticle
         onBack={router.back}
         category={categories.find((item) => item.id === state.category)}
-        onSelectArticle={(article) => {
+        onSelectArticle={(article, requestFormType) => {
           dispatch({
             type: 'SHOW_REQUEST_FORM',
-            payload: { article },
+            payload: { article, requestFormType },
           });
         }}
       />
@@ -142,7 +146,13 @@ const PawnRequestFlow: FC<Props> = ({ categories, whatsapps }) => {
   }
 
   if (state.status === 'show_request_form') {
-    return <RequestForm onBack={router.back} onSubmit={handleRequestForm} />;
+    return (
+      <RequestForm
+        onBack={router.back}
+        formType={state.requestFormType}
+        onSubmit={handleRequestForm}
+      />
+    );
   }
 
   if (state.status === 'show_calculator' && state.pawnConfig && state.whatsapp) {
