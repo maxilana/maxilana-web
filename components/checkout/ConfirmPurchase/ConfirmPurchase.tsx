@@ -14,7 +14,7 @@ import defaultValidateMessages from 'config/validationMessages';
 
 import { request3DTransaction } from '~/api/payments';
 import { Product } from '~/types/Models/Product';
-import { ProductPurchase } from '~/types/Requests';
+import { CreditCard, ProductPurchase } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
 import useShippingCost from '~/hooks/useShippingCost';
 
@@ -22,12 +22,23 @@ interface Props {
   product: Product;
 }
 
-type FormValues = ProductPurchase;
 type Status = 'idle' | 'submiting' | 'error';
 type Data = {
   payment: ProductPurchase;
   transaction: MaxilanaTransaction;
 };
+
+interface FormValues extends CreditCard {
+  nombreenvio: string;
+  celular: string;
+  correo: string;
+  domicilio: string;
+  codigopostal: string;
+  colonia: string;
+  municipio: string;
+  estado: string;
+  instrucciones: string;
+}
 
 dayjs.extend(customParseFormat);
 
@@ -51,6 +62,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
     try {
       const params: ProductPurchase = {
         ...data,
+        sucursal: product.BranchId,
         upc: product.id,
         importe: totalPrice, // PRECIO + ENVIO
       };
@@ -131,7 +143,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                     </Form.Item>
                   </div>
                   <div className="col-span-2">
-                    <Form.Item name="instrucciones">
+                    <Form.Item name="instrucciones" rules={[{ required: true }]}>
                       <InputField
                         label="Instrucciones de entrega"
                         placeholder="Escribe referencias de cómo localizar tu casa"
