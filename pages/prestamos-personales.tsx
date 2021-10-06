@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>
       legalPages,
       page,
     },
-    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
   };
 };
 type Props = InferGetStaticPropsType<typeof getStaticProps>;

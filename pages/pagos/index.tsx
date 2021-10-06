@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ payments: CMSPaym
         legalPages,
         payments,
       },
-      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
+      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
     };
   };
 

@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 
   return {
     props: { cities, categories, page, products, legalPages },
-    revalidate: ms(process.env.REMATE_REVALIDATE || '10m'),
+    revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
   };
 };
 

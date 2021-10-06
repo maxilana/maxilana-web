@@ -48,7 +48,7 @@ export const getStaticProps: GetStaticProps<{
         cities,
         legalPages,
       },
-      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
+      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
     };
   } catch (e) {
     console.log(e);

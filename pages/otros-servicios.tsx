@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps<
 
   return {
     props: { cities, legalPages, otherServices },
-    revalidate: ms(process.env.DEFAULT_REVALIDATE || '1d'),
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '1d') / 1000,
   };
 };
 
