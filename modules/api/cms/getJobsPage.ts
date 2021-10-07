@@ -1,12 +1,9 @@
 import gql from 'graphql-tag';
-import { IMAGE_FIELDS_FRAGMENT, SEO_FIELDS_FRAGMENT } from './fragments';
 import graphqlFetcher from '../graphqlFetcher';
 import { CMSJobsPage } from '~/types/Models/CMSJobsPage';
 
 const getJobsPage = async (): Promise<CMSJobsPage> => {
   const response = await graphqlFetcher<{ page: CMSJobsPage }>(gql`
-    ${IMAGE_FIELDS_FRAGMENT}
-    ${SEO_FIELDS_FRAGMENT}
     query JobsPlatformPage {
       page: vacancy {
         title
