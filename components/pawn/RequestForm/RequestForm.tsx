@@ -36,18 +36,22 @@ const RequestForm: FC<Props> = ({ onBack, onSubmit, formType = 'default' }) => {
       {(() => {
         if (error) {
           return (
-            <div className={commonStyles.loaderOverlay}>
-              <span className={commonStyles.loader}>
-                Ocurrió un error vuelve en otra ocasión para poder usar la calculadora.
-              </span>
+            <div className="min-h-[512px]">
+              <div className={commonStyles.loaderOverlay}>
+                <span className={commonStyles.loader}>
+                  Ocurrió un error vuelve en otra ocasión para poder usar la calculadora.
+                </span>
+              </div>
             </div>
           );
         }
 
         if (isLoading) {
           return (
-            <div className={commonStyles.loaderOverlay}>
-              <span className={commonStyles.loader}>Cargando datos...</span>
+            <div className="min-h-[512px]">
+              <div className={commonStyles.loaderOverlay}>
+                <span className={commonStyles.loader}>Cargando datos...</span>
+              </div>
             </div>
           );
         }
