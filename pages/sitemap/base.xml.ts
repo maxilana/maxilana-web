@@ -31,52 +31,53 @@ const generateLegalPages = (legalPages: CMSLegal[]) =>
     .join('');
 
 const generateSiteMap = ({ legalPages, payments }: GenerateSiteMapOptions): string => {
+  // language=XML
   return `<?xml version="1.0" encoding="UTF-8"?>
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-     <!--We manually set the two URLs we know already-->
-     <url>
-       <loc>https://www.maxilana.com</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/empresa</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/contacto</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/otros-servicios</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/preguntas-frecuentes</loc>
-     </url>    
-     <url>
-       <loc>https://www.maxilana.com/remates</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/busqueda</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/empeno</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/empeno/auto</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/prestamos-personales</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/vales</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/sucursales</loc>
-     </url>
-     <url>
-       <loc>https://www.maxilana.com/pagos</loc>
-     </url>
-     ${generatePayments(payments)}
-     ${generateLegalPages(legalPages)}
-   </urlset>
- `;
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!--We manually set the two URLs we know already-->
+    <url>
+      <loc>https://www.maxilana.com</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/empresa</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/contacto</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/otros-servicios</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/preguntas-frecuentes</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/remates</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/busqueda</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/empeno</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/empeno/auto</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/prestamos-personales</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/vales</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/sucursales</loc>
+    </url>
+    <url>
+      <loc>https://www.maxilana.com/pagos</loc>
+    </url>
+    ${generatePayments(payments)}
+    ${generateLegalPages(legalPages)}
+  </urlset>
+  `;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
@@ -86,6 +87,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const [legalPages, payments] = await Promise.all([getAllLegalPages(), getPaymentsList()]);
   const sitemap = generateSiteMap({ legalPages, payments });
 
+  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
   res.setHeader('Content-Type', 'text/xml');
   // we send the XML to the browser
   res.write(sitemap);

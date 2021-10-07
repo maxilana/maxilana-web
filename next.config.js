@@ -29,5 +29,13 @@ module.exports = withPreact(
       deviceSizes: process.env.IMAGES_DEVICE_SIZES.split(',').map((item) => parseInt(item)),
       imageSizes: process.env.IMAGES_SIZES.split(',').map((item) => parseInt(item)),
     },
+    async rewrites() {
+      return [
+        {
+          source: '/sitemap.xml',
+          destination: '/sitemap',
+        },
+      ];
+    },
   }),
 );
