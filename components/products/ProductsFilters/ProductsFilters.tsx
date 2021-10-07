@@ -214,7 +214,7 @@ const ProductsFilters: FC<Props> = ({
                       <span>
                         Venta en línea
                         <span className="block text-secondary line-clamp-1">
-                          Envíos a todo méxico
+                          Envíos a todo México
                         </span>
                       </span>
                       <ProductBadge type="car" />
