@@ -39,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const cityBranches = await getAllBranches();
   const sitemap = generateSiteMap(cityBranches);
 
+  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate');
   res.setHeader('Content-Type', 'text/xml');
   // we send the XML to the browser
   res.write(sitemap);

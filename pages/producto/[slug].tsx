@@ -74,7 +74,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
         cities,
         legalPages,
       },
-      revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m'),
+      revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m') / 1000,
     };
   } catch (e) {
     console.log('getStaticProps ERROR:', e);

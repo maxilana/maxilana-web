@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
       categories,
       legalPages,
     },
-    revalidate: ms(process.env.HOME_REVALIDATE || '10m'),
+    revalidate: ms(process.env.HOME_REVALIDATE || '10m') / 1000,
   };
 };
 

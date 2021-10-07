@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
   return {
     props: { cities, branches: allBranches, legalPages },
-    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
   };
 };
 

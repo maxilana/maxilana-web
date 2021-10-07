@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 
     return {
       props: { cities, page, categories, categoriesProducts, legalPages },
-      revalidate: ms(process.env.REMATE_REVALIDATE || '10m'),
+      revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
     };
   } catch (e) {
     console.log('Error getStaticProps');
