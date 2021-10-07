@@ -1,11 +1,4 @@
 import gql from 'graphql-tag';
-import {
-  BANNER_FIELDS_FRAGMENT,
-  CATEGORY_FIELDS_FRAGMENT,
-  FILTERS_FIELDS_FRAGMENT,
-  IMAGE_FIELDS_FRAGMENT,
-  SEO_FIELDS_FRAGMENT,
-} from '~/api/cms/fragments';
 import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
 import graphqlFetcher from '~/api/graphqlFetcher';
 
@@ -14,11 +7,6 @@ import graphqlFetcher from '~/api/graphqlFetcher';
  */
 const getCMSRematesPage = async (): Promise<CMSRematesPage> => {
   const response = await graphqlFetcher<{ remate: CMSRematesPage }>(gql`
-    ${IMAGE_FIELDS_FRAGMENT}
-    ${SEO_FIELDS_FRAGMENT}
-    ${FILTERS_FIELDS_FRAGMENT}
-    ${CATEGORY_FIELDS_FRAGMENT}
-    ${BANNER_FIELDS_FRAGMENT}
     query Remates {
       remate {
         id
