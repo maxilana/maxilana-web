@@ -45,7 +45,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
   let paymentAmount = 0; // REFRENDO
   let totalPaymentAmount = 0; // DESEMPEÑO
   const extraCharge = Number(comision); // COMISION
-  const minPaymentAmount = roundDecimals(Number(ImportePagoMinimo) * extraCharge); // PAGO MÍNIMO
+  const minPaymentAmount = roundDecimals(Math.round(Number(ImportePagoMinimo)) * extraCharge); // PAGO MÍNIMO
 
   /** CÁLCULO DE PAGO DE REFRENDO */
   const interest = Number(InteresNormal) + Number(InteresVencido);
