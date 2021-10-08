@@ -15,6 +15,7 @@ interface Props {
   data: PawnCalculation;
   whatsapp: CMSWhatsApp;
   onBack: () => void;
+  onRestart: () => void;
 }
 
 const datatable = [
@@ -48,7 +49,7 @@ const datatable = [
   },
 ];
 
-const Calculator: FC<Props> = ({ data, whatsapp, onBack }) => {
+const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
   const [monthlySpan, setMonthlySpan] = useState(1);
   const { price: amount } = usePrice({ amount: data.amount });
 
@@ -78,7 +79,10 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack }) => {
   return (
     <div className={commonStyles.root}>
       <div className="bg-white p-4">
-        <BackButton onBack={onBack} />
+        <div className="flex justify-between items-center">
+          <BackButton onBack={onBack} />
+          <BackButton restart onBack={onRestart} />
+        </div>
         <div className="text-center mb-6">
           <h3 className={commonStyles.title}>Valuación de empeño</h3>
         </div>

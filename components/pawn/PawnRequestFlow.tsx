@@ -156,7 +156,16 @@ const PawnRequestFlow: FC<Props> = ({ categories, whatsapps }) => {
   }
 
   if (state.status === 'show_calculator' && state.pawnConfig && state.whatsapp) {
-    return <Calculator data={state.pawnConfig} whatsapp={state.whatsapp} onBack={router.back} />;
+    return (
+      <Calculator
+        data={state.pawnConfig}
+        whatsapp={state.whatsapp}
+        onBack={router.back}
+        onRestart={() => {
+          dispatch({ type: 'SHOW_START' });
+        }}
+      />
+    );
   }
 
   return (

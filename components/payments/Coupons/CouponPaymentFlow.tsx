@@ -75,10 +75,9 @@ const CouponPaymentFlow: FC = () => {
     dispatch({ type: 'CHECK_PAYMENT', payload: { account } });
   };
 
-  const handleCheckPayment = async (data: any) => {
-    const { paymentAmount } = data;
+  const handleCheckPayment = async (amount: number) => {
     const paymentRequest = {
-      amount: paymentAmount,
+      amount,
       concept: `${PAYMENT_CONCEPT} #${state.account?.partnerNumber}`,
     };
 
