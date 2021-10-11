@@ -67,6 +67,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
+    toggleVisibleFilter();
     push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
   };
 
@@ -98,7 +99,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
           {!!page?.content && (
             <CMSContent content={page?.content} className="prose max-w-none mb-6" />
           )}
-          <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
+          <div className="fixed inset-x-6 bottom-4 z-10 flex justify-start lg:hidden">
             <Button
               icon={<FilterOutlined />}
               text="Filtros y orden"

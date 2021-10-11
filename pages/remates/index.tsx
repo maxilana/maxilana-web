@@ -70,6 +70,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
   const [visibleFilter, toggleVisibleFilter] = useToggleState();
 
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
+    toggleVisibleFilter();
     push(`/busqueda?${parseQuery(queryParams)}`);
   };
 
@@ -89,7 +90,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
             onFiltersChange={handleFiltersChanges}
           />
         </aside>
-        <div className="fixed inset-x-8 bottom-6 z-10 flex justify-center lg:hidden">
+        <div className="fixed inset-x-6 bottom-4 z-10 flex justify-start lg:hidden">
           <Button
             icon={<FilterOutlined />}
             text="Filtros y orden"

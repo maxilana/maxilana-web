@@ -17,7 +17,7 @@ const AppliedFilters: FC<Props> = ({ city, branch, onFiltersChange }) => {
   const { query, push } = useRouter();
 
   return (
-    <div className="my-4 gap-2 flex overflow-x-auto pb-2">
+    <div className="my-4 gap-2 flex overflow-x-auto pb-2 flex-wrap">
       {!!city && (
         <Tag
           closable
