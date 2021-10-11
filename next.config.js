@@ -35,6 +35,10 @@ module.exports = withPreact(
           source: '/sitemap.xml',
           destination: '/sitemap',
         },
+        {
+          source: '/api/:path*',
+          destination: 'https://www.maxilana.com/api/:path*',
+        },
       ];
     },
   }),
