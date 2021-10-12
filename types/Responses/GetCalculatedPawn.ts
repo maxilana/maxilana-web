@@ -1,3 +1,8 @@
+interface SpanRate {
+  CodigoPlazo: number;
+  Tasa: number;
+}
+
 export interface GetCalculatedPawn {
   PlazoMaximo: number;
   TasaInteresMensual: number;
@@ -9,4 +14,5 @@ export interface GetCalculatedPawn {
   TasaPrestamoOro: number;
   TasaPrestamoPlata: number;
   TasaPrestamoBronce: number;
+  TasaPlazo: SpanRate[];
 }

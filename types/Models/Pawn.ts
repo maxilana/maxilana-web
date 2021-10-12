@@ -32,6 +32,11 @@ export interface PawnPaymentSuccess {
   reference: string;
 }
 
+type SpanRate = {
+  span: number;
+  rate: number;
+};
+
 export interface PawnCalculation {
   monthlyInterest: number;
   bronzeInterest: number;
@@ -43,4 +48,5 @@ export interface PawnCalculation {
   bronzeAmountRate: number;
   silverAmountRate: number;
   goldAmountRate: number;
+  spanRates: SpanRate[];
 }

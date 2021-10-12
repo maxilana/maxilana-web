@@ -73,7 +73,7 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
             <span className="text-sm text-secondary">Cliente</span>
             <span className="text-sm text-secondary">Préstamo / Refrendo</span>
           </div>
-          {config.reverse().map((item) => (
+          {config.map((item) => (
             <div key={item.id} className="mt-4">
               <dl className="grid grid-flow-col items-center sm:grid-cols-2">
                 <dt className="text-sm">{`${item.label}:`}</dt>

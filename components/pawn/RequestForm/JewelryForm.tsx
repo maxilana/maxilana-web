@@ -82,24 +82,20 @@ const JewelryForm: FC<Props> = ({ onSubmit, cities = null }) => {
             );
           }}
         </Form.Item>
-        <Form.Item name="gramos">
-          <InputField label="¿Cuál es el peso de tu joya en gramos?" placeholder="0.00 gramos" />
-        </Form.Item>
-        <Form.Item
-          name="monto"
-          rules={[{ required: true }]}
-          getValueFromEvent={({ target }) => target.rawValue} // rawValue viene de Cleave.js
-        >
-          <InputMask
-            label="¿Cuánto vale tu joya en el mercado?"
-            options={{
-              prefix: '$',
-              numeral: true,
-              numeralPositiveOnly: true,
-              rawValueTrimPrefix: true,
-            }}
-          />
-        </Form.Item>
+        <div className="col-span-2">
+          <Form.Item name="gramos" getValueFromEvent={({ target }) => target.rawValue}>
+            <InputMask
+              label="¿Cuál es el peso de tu joya en gramos?"
+              options={{
+                numeral: true,
+                numeralDecimalScale: 2,
+                rawValueTrimPrefix: true,
+                prefix: 'g',
+                tailPrefix: true,
+              }}
+            />
+          </Form.Item>
+        </div>
         <div className="col-span-2">
           <Form.Item name="plaza" rules={[{ required: true }]}>
             <SelectField

@@ -17,24 +17,24 @@ const defaultTable = [
     label: 'Cliente bronce',
     payment: 10,
     amount: 10,
-    amountClass: 'text-white bg-[#CE9550]',
     paymentClass: 'border-[#CE9550]',
+    amountClass: 'text-white bg-[#CE9550]',
   },
   {
     id: 3,
     label: 'Cliente plata',
     payment: 10,
     amount: 10,
-    amountClass: 'bg-gray-300',
     paymentClass: 'border-gray-300',
+    amountClass: 'bg-gray-300',
   },
   {
     id: 4,
     label: 'Cliente oro',
     payment: 10,
     amount: 10,
-    amountClass: 'bg-accent-dark',
-    paymentClass: 'border-accent-dark',
+    paymentClass: 'border-[#F0CE21]',
+    amountClass: 'bg-[#F0CE21]',
   },
 ];
 
@@ -48,18 +48,19 @@ const useCalculatePawn = (data: PawnCalculation, monthlySpan: number) => {
     ];
 
     const table = defaultTable.map((item, idx) => {
-      const span = data.amount / monthlySpan;
-      const amount = (rates[idx].amount + 1) * data.amount;
-      const payment = span * rates[idx].interest + span;
+      const span = data.spanRates.find((s) => s.span === monthlySpan);
+      const spanRate = (span?.rate ?? 0) + 1;
+      const amount = (rates[idx].amount + 1) * data.amount * spanRate;
+      const payment = (rates[idx].interest + 1) * data.amount * spanRate;
 
       return {
         ...item,
-        payment: formatPrice({ amount: payment, locale: 'es-MX' }),
         amount: formatPrice({ amount, locale: 'es-MX' }),
+        payment: formatPrice({ amount: payment, locale: 'es-MX' }),
       };
     });
 
-    return table;
+    return table.reverse();
   }, [monthlySpan]);
 
   return config;

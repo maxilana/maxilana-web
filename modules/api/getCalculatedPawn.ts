@@ -24,6 +24,7 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
       TasaPrestamoBronce,
       TasaPrestamoPlata,
       TasaPrestamoOro,
+      TasaPlazo,
     } = response;
 
     return {
@@ -37,6 +38,7 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
       bronzeAmountRate: TasaPrestamoBronce,
       silverAmountRate: TasaPrestamoPlata,
       goldAmountRate: TasaPrestamoOro,
+      spanRates: TasaPlazo.map((item, idx) => ({ span: idx + 1, rate: item.Tasa })),
     };
   }
 
