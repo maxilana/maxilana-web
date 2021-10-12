@@ -6,29 +6,33 @@ import useCitiesForPawns from '~/hooks/useCitiesForPawns';
 
 import styles from './Form.module.css';
 import commonStyles from '../Pawn.module.css';
-import { RequestPawn } from '~/types/Requests/RequestPawn';
-import JewelryForm from './JewelryForm';
-import WatchesForm from './WatchesForm';
+import JewelryForm, { FormValues as JewelryFormValues } from './JewelryForm';
+import WatchesForm, { FormValues as WatchesFormValues } from './WatchesForm';
 import CommonForm from './CommonForm';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 
-type FormValues = RequestPawn;
 type FormType = CMSCategory['formType'];
+type FormRequest =
+  | JewelryFormValues
+  | WatchesFormValues
+  | { plaza: number; monto: number; correo: string };
 
 interface Props {
   formType: FormType;
   onBack: () => void;
-  onSubmit: (data: FormValues) => Promise<void>;
+  onSubmit: (data: FormRequest) => Promise<void>;
 }
 
 const RequestForm: FC<Props> = ({ onBack, onSubmit, formType = 'default' }) => {
   const { cities, isLoading, error } = useCitiesForPawns();
-  let Form = CommonForm;
+  let Form = null;
 
   if (formType === 'joyas') {
     Form = JewelryForm;
   } else if (formType === 'relojes') {
     Form = WatchesForm;
+  } else {
+    Form = CommonForm;
   }
 
   return (
