@@ -5,10 +5,14 @@ import { Button } from '~/components/ui';
 import { InputField, SelectField, InputMask } from '~/components/common';
 import defaultValidateMessages from 'config/validationMessages';
 import { City } from '~/types/Models';
-import { RequestPawn } from '~/types/Requests/RequestPawn';
 import useBrandWatchesForPawns from '~/hooks/useBrandWatchesForPawns';
 
-type FormValues = RequestPawn;
+export interface FormValues {
+  codigomarca: number;
+  monto: number;
+  plaza: number;
+  correo: string;
+}
 
 interface Props {
   cities?: City[];
@@ -42,9 +46,9 @@ const WatchesForm: FC<Props> = ({ onSubmit, cities = null }) => {
       initialValues={{ plaza: 'default' }}
     >
       <div className="grid gap-8">
-        <Form.Item name="marca" initialValue="default" rules={[{ required: true }]}>
+        <Form.Item name="codigomarca" initialValue="default" rules={[{ required: true }]}>
           <SelectField
-            name="marca"
+            name="codigomarca"
             label="¿Cuál es la marca de tu reloj?"
             placeholder="Selecciona la marca"
             options={brands}

@@ -1,19 +1,28 @@
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useReducer } from 'react';
-import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
-import { CMSCategory } from '~/types/Models/CMSCategory';
-import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
-import parseQuery from '~/utils/parseQuery';
 
 import PawnRequest from './PawnRequest';
 import Calculator from './Calculator';
 import SelectCity from './SelectCity';
 import SelectArticle from './SelectArticle';
 import RequestForm from './RequestForm';
-import { RequestPawn } from '~/types/Requests/RequestPawn';
+
 import getCalculatedPawn from '~/api/getCalculatedPawn';
-import { PawnCalculation } from '~/types/Models/PawnCalculation';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
+import parseQuery from '~/utils/parseQuery';
+import { PawnCalculation } from '~/types/Models';
+import { CMSCategory } from '~/types/Models/CMSCategory';
+import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
+
+type FormRequest = {
+  codigokilataje?: number;
+  gramos?: string;
+  codigomarca?: number;
+  plaza: number;
+  correo: string;
+  monto: number;
+};
 
 type Status =
   | 'idle'
@@ -109,7 +118,7 @@ const PawnRequestFlow: FC<Props> = ({ categories, whatsapps }) => {
     });
   }, [router.query]);
 
-  const handleRequestForm = async (data: RequestPawn) => {
+  const handleRequestForm = async (data: FormRequest) => {
     const params = {
       ...data,
       codigoarticulo: state.article,
