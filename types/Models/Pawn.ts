@@ -31,3 +31,16 @@ export interface PawnPaymentSuccess {
   authCode: string;
   reference: string;
 }
+
+export interface PawnCalculation {
+  monthlyInterest: number;
+  bronzeInterest: number;
+  silverInterest: number;
+  goldInterest: number;
+  amount: number;
+  maxMonthlyPaymentLimit: number;
+  commonAmountRate: number;
+  bronzeAmountRate: number;
+  silverAmountRate: number;
+  goldAmountRate: number;
+}

@@ -5,4 +5,8 @@ export interface GetCalculatedPawn {
   TasaInteresPlata: number;
   TasaInteresOro: number;
   Prestamo: number;
+  TasaPrestamoMensual: number;
+  TasaPrestamoOro: number;
+  TasaPrestamoPlata: number;
+  TasaPrestamoBronce: number;
 }

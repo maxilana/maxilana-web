@@ -1,15 +1,15 @@
 import cn from 'classnames';
 import Slider from 'antd/lib/slider';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 import BackButton from '~/components/pawn/BackButton';
 
 import { Button } from '~/components/ui';
+import useCalculatePawn from '~/hooks/useCalculatePawn';
+import { PawnCalculation } from '~/types/Models';
 import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
+
 import commonStyles from '../Pawn.module.css';
-import { PawnCalculation } from '~/types/Models/PawnCalculation';
-import { usePrice } from '~/modules/hooks';
-import { formatPrice } from '~/modules/hooks/usePrice';
 
 interface Props {
   data: PawnCalculation;
@@ -18,63 +18,9 @@ interface Props {
   onRestart: () => void;
 }
 
-const datatable = [
-  {
-    id: 1,
-    label: 'Público general',
-    percent: 100,
-    amount: 10,
-    customClass: '',
-  },
-  {
-    id: 2,
-    label: 'Cliente bronce',
-    percent: 100,
-    amount: 10,
-    customClass: 'text-white bg-[#CE9550]',
-  },
-  {
-    id: 3,
-    label: 'Cliente plata',
-    percent: 100,
-    amount: 10,
-    customClass: 'bg-gray-300',
-  },
-  {
-    id: 4,
-    label: 'Cliente oro',
-    percent: 100,
-    amount: 10,
-    customClass: 'bg-accent-dark',
-  },
-];
-
 const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
   const [monthlySpan, setMonthlySpan] = useState(1);
-  const { price: amount } = usePrice({ amount: data.amount });
-
-  const config = useMemo(() => {
-    const interestArray = [
-      data.monthlyInterest,
-      data.bronzeInterest,
-      data.silverInterest,
-      data.goldInterest,
-    ];
-
-    const table = datatable.map((item, idx) => {
-      const span = data.amount / monthlySpan;
-      const amount = span * interestArray[idx] + span;
-      const percent = interestArray[idx] * 100;
-
-      return {
-        ...item,
-        percent,
-        amount: formatPrice({ amount, locale: 'es-MX' }),
-      };
-    });
-
-    return table;
-  }, [monthlySpan]);
+  const config = useCalculatePawn(data, monthlySpan);
 
   return (
     <div className={commonStyles.root}>
@@ -86,18 +32,12 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
         <div className="text-center mb-6">
           <h3 className={commonStyles.title}>Valuación de empeño</h3>
         </div>
-        <div className="mb-6">
-          <dl className="text-center flex flex-col sm:flex-row sm:justify-between sm:text-left">
-            <dt className="text-lg">El préstamo aproximado por tu artículo es:</dt>
-            <dd className="font-semibold text-xl text-[#0BBF69]">{amount}</dd>
-          </dl>
-        </div>
         {data.maxMonthlyPaymentLimit > 1 ? (
           <div className="mb-6">
             <dl className="text-center flex flex-col sm:flex-row sm:justify-between sm:text-left">
               <dt className="text-lg">Elige el período de pagos:</dt>
               <dd className="text-lg text-brand">
-                {monthlySpan > 1 ? `${monthlySpan} pagos mensuales` : '1 solo pago'}
+                {monthlySpan > 1 ? `${monthlySpan} pagos mensuales` : '1 pago mensual'}
               </dd>
             </dl>
             <div className="my-4">
@@ -126,22 +66,34 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
           </div>
         )}
         <div className="mb-6">
-          <p className="text-center text-lg sm:text-left">¿Cuánto pagarías en el período?</p>
-          {config.map((item) => (
+          <p className="text-center text-lg sm:text-left">
+            El préstamo y refrendo aproximado por tu artículo es:
+          </p>
+          <div className="mt-4 grid grid-cols-2">
+            <span className="text-sm text-secondary">Cliente</span>
+            <span className="text-sm text-secondary">Préstamo / Refrendo</span>
+          </div>
+          {config.reverse().map((item) => (
             <div key={item.id} className="mt-4">
-              <dl className="grid grid-cols-2 items-center">
+              <dl className="grid grid-flow-col items-center sm:grid-cols-2">
                 <dt className="text-sm">{`${item.label}:`}</dt>
-                <dd>
+                <dd className="text-sm text-right sm:text-left">
                   <span
                     className={cn(
                       'p-2 rounded-sm text-sm text-secondary font-semibold',
-                      item.customClass,
+                      item.amountClass,
                     )}
                   >
                     {item.amount}
                   </span>
-                  <span className="block p-2 text-xs text-secondary sm:inline-block sm:ml-4 sm:p-0">
-                    {`${item.percent.toFixed(2)}% Tasa de interés`}
+                  <span>&nbsp;/&nbsp;</span>
+                  <span
+                    className={cn(
+                      'p-2 rounded-sm text-sm text-secondary font-semibold border',
+                      item.paymentClass,
+                    )}
+                  >
+                    {item.payment}
                   </span>
                 </dd>
               </dl>
@@ -154,7 +106,7 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
             size="large"
             theme="whatsapp"
             text="Valuar con un experto"
-            href={`https://api.whatsapp.com/send?phone=521${whatsapp.number}/text=Hola me gustaría solicitar un empeño`}
+            href={`https://api.whatsapp.com/send?phone=521${whatsapp.number}&text=Hola me gustaría solicitar un empeño`}
             icon={<WhatsAppOutlined style={{ fontSize: 20, color: '#FFF' }} />}
             target="_blank"
           />

@@ -2,7 +2,7 @@ import maxAxios from './axios';
 import parseQuery from '~/utils/parseQuery';
 import { RequestPawn } from '~/types/Requests/RequestPawn';
 import { GetCalculatedPawn } from '~/types/Responses/GetCalculatedPawn';
-import { PawnCalculation } from '~/types/Models/PawnCalculation';
+import { PawnCalculation } from '~/types/Models';
 
 const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> => {
   // @ts-ignore
@@ -20,6 +20,10 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
       TasaInteresPlata,
       TasaInteresOro,
       Prestamo,
+      TasaPrestamoMensual,
+      TasaPrestamoBronce,
+      TasaPrestamoPlata,
+      TasaPrestamoOro,
     } = response;
 
     return {
@@ -29,6 +33,10 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
       bronzeInterest: TasaInteresBronce,
       silverInterest: TasaInteresPlata,
       goldInterest: TasaInteresOro,
+      commonAmountRate: TasaPrestamoMensual,
+      bronzeAmountRate: TasaPrestamoBronce,
+      silverAmountRate: TasaPrestamoPlata,
+      goldAmountRate: TasaPrestamoOro,
     };
   }
 
