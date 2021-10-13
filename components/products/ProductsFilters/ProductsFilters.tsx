@@ -102,7 +102,6 @@ const ProductsFilters: FC<Props> = ({
   }, [min, max]);
 
   const handleChange: FormProps['onValuesChange'] = (changes) => {
-    console.log({ changes });
     if (!changes || isEqual(changes, initialFormValues)) return null;
     const { CityId, saleOnline, BranchId, priceRange, order } = changes;
     if (CityId) {
