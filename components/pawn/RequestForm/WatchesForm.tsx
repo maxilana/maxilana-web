@@ -5,9 +5,14 @@ import { Button } from '~/components/ui';
 import { InputField, SelectField, InputMask } from '~/components/common';
 import defaultValidateMessages from 'config/validationMessages';
 import { City } from '~/types/Models';
-import { RequestPawn } from '~/types/Requests/RequestPawn';
+import useBrandWatchesForPawns from '~/hooks/useBrandWatchesForPawns';
 
-type FormValues = RequestPawn;
+export interface FormValues {
+  codigomarca: number;
+  monto: number;
+  plaza: number;
+  correo: string;
+}
 
 interface Props {
   cities?: City[];
@@ -17,6 +22,7 @@ interface Props {
 const WatchesForm: FC<Props> = ({ onSubmit, cities = null }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const { data } = useBrandWatchesForPawns();
 
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
@@ -30,24 +36,22 @@ const WatchesForm: FC<Props> = ({ onSubmit, cities = null }) => {
     setLoading(false);
   };
 
+  const brands = data ? data.map((item) => ({ label: item.label, value: item.id })) : [];
+
   return (
     <Form
       form={form}
       onFinish={handleFormSubmit}
       validateMessages={defaultValidateMessages}
-      initialValues={{ plaza: '---' }}
+      initialValues={{ plaza: 'default' }}
     >
       <div className="grid gap-8">
-        <Form.Item name="marca" initialValue="default" rules={[{ required: true }]}>
+        <Form.Item name="codigomarca" initialValue="default" rules={[{ required: true }]}>
           <SelectField
-            name="marca"
-            label="¿Cuál la marca de tu reloj?"
-            placeholder="Selecciona marca"
-            options={[
-              { label: 'Casio', value: 'casio' },
-              { label: 'Rolex', value: 'rolex' },
-              { label: 'Nixon', value: 'nixon' },
-            ]}
+            name="codigomarca"
+            label="¿Cuál es la marca de tu reloj?"
+            placeholder="Selecciona la marca"
+            options={brands}
           />
         </Form.Item>
         <Form.Item

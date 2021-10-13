@@ -4,10 +4,14 @@ import React, { InputHTMLAttributes, Ref } from 'react';
 
 import styles from './InputField.module.css';
 
+interface Options extends CleaveOptions {
+  tailPrefix?: boolean;
+}
+
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   label?: string;
-  options: CleaveOptions;
+  options: Options;
   errors?: { [key: string]: any };
 }
 

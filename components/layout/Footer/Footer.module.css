@@ -33,13 +33,13 @@
 
 .menuLink {
   @apply text-sm text-white block mb-2;
+  @apply hover:text-accent;
 }
 
 .copy,
 .powered {
   @apply block text-base text-center text-white/60;
 }
-
 
 .powered {
   @apply flex items-center justify-center;
