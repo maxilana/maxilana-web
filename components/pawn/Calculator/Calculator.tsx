@@ -1,15 +1,16 @@
 import cn from 'classnames';
 import Slider from 'antd/lib/slider';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { WhatsAppOutlined } from '@ant-design/icons';
 import BackButton from '~/components/pawn/BackButton';
 
 import { Button } from '~/components/ui';
-import useCalculatePawn from '~/hooks/useCalculatePawn';
+
 import { PawnCalculation } from '~/types/Models';
 import { CMSWhatsApp } from '~/types/Models/CMSWhatsApp';
 
 import commonStyles from '../Pawn.module.css';
+import { formatPrice } from '~/modules/hooks/usePrice';
 
 interface Props {
   data: PawnCalculation;
@@ -18,9 +19,67 @@ interface Props {
   onRestart: () => void;
 }
 
+const defaultTable = [
+  {
+    id: 1,
+    label: 'Público general',
+    payment: 10,
+    amount: 10,
+    paymentClass: 'border-[#DEEAF5]',
+    amountClass: 'bg-[#DEEAF5]',
+  },
+  {
+    id: 2,
+    label: 'Cliente bronce',
+    payment: 10,
+    amount: 10,
+    paymentClass: 'border-[#CE9550]',
+    amountClass: 'text-white bg-[#CE9550]',
+  },
+  {
+    id: 3,
+    label: 'Cliente plata',
+    payment: 10,
+    amount: 10,
+    paymentClass: 'border-gray-300',
+    amountClass: 'bg-gray-300',
+  },
+  {
+    id: 4,
+    label: 'Cliente oro',
+    payment: 10,
+    amount: 10,
+    paymentClass: 'border-[#F0CE21]',
+    amountClass: 'bg-[#F0CE21]',
+  },
+];
+
 const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
   const [monthlySpan, setMonthlySpan] = useState(1);
-  const config = useCalculatePawn(data, monthlySpan);
+
+  const config = useMemo(() => {
+    const rates = [
+      { interest: data.monthlyInterest, amount: data.commonAmountRate },
+      { interest: data.bronzeInterest, amount: data.bronzeAmountRate },
+      { interest: data.silverInterest, amount: data.silverAmountRate },
+      { interest: data.goldInterest, amount: data.goldAmountRate },
+    ];
+
+    const table = defaultTable.map((item, idx) => {
+      const span = data.spanRates.find((s) => s.span === monthlySpan);
+      const spanRate = (span?.rate ?? 0) + 1;
+      const amount = (rates[idx].amount + 1) * data.amount * spanRate;
+      const payment = (rates[idx].interest + 1) * data.amount * spanRate;
+
+      return {
+        ...item,
+        amount: formatPrice({ amount, locale: 'es-MX' }),
+        payment: formatPrice({ amount: payment, locale: 'es-MX' }),
+      };
+    });
+
+    return table.reverse();
+  }, [monthlySpan]);
 
   return (
     <div className={commonStyles.root}>
@@ -73,32 +132,29 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
             <span className="text-sm text-secondary">Cliente</span>
             <span className="text-sm text-secondary">Préstamo / Refrendo</span>
           </div>
-          {config.map((item) => (
-            <div key={item.id} className="mt-4">
-              <dl className="grid grid-flow-col items-center sm:grid-cols-2">
-                <dt className="text-sm">{`${item.label}:`}</dt>
-                <dd className="text-sm text-right sm:text-left">
-                  <span
-                    className={cn(
-                      'p-2 rounded-sm text-sm text-secondary font-semibold',
-                      item.amountClass,
-                    )}
-                  >
-                    {item.amount}
-                  </span>
-                  <span>&nbsp;/&nbsp;</span>
-                  <span
-                    className={cn(
-                      'p-2 rounded-sm text-sm text-secondary font-semibold border',
-                      item.paymentClass,
-                    )}
-                  >
-                    {item.payment}
-                  </span>
-                </dd>
-              </dl>
-            </div>
-          ))}
+          {config?.map((item) => {
+            const composedBackground = cn(
+              'p-2 rounded-sm text-sm text-secondary font-semibold',
+              item.amountClass,
+            );
+            const composedBorder = cn(
+              'p-2 rounded-sm text-sm text-secondary font-semibold border',
+              item.paymentClass,
+            );
+
+            return (
+              <div key={item.id} className="mt-4">
+                <dl className="grid grid-flow-col items-center sm:grid-cols-2">
+                  <dt className="text-sm">{`${item.label}:`}</dt>
+                  <dd className="text-sm text-right sm:text-left">
+                    <span className={composedBackground}>{item.amount}</span>
+                    <span>&nbsp;/&nbsp;</span>
+                    <span className={composedBorder}>{item.payment}</span>
+                  </dd>
+                </dl>
+              </div>
+            );
+          })}
         </div>
         <div className="mb-6">
           <Button
