@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           rel="stylesheet"
         />
       </Head>
-      <Script strategy="lazyOnload" src="https://embed.tawk.to/573b5cc8bf3b0fde536a3ddc/default" />
+      <Script strategy="lazyOnload" src={process.env.NEXT_PUBLIC_TWAK_TO_SRC} />
       <Component {...pageProps} />
       <NextNprogress
         color="#FDD426"
