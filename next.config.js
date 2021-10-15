@@ -29,7 +29,16 @@ module.exports = withPreact(
       deviceSizes: process.env.IMAGES_DEVICE_SIZES.split(',').map((item) => parseInt(item)),
       imageSizes: process.env.IMAGES_SIZES.split(',').map((item) => parseInt(item)),
     },
-    async rewrites() {
+    redirects() {
+      return [
+        {
+          source: '/aviso-de-privacidad',
+          destination: '/legal/aviso-de-privacidad',
+          permanent: true,
+        },
+      ];
+    },
+    rewrites() {
       return [
         {
           source: '/sitemap.xml',
