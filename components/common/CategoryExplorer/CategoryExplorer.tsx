@@ -1,7 +1,9 @@
+import omit from 'lodash.omit';
 import { FC } from 'react';
 import Link from 'next/link';
 import { Img } from '~/components/ui';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import generateCategoryURL from '~/utils/generateCategoryURL';
 
 import styles from './CategoryExplorer.module.css';
 
@@ -15,7 +17,7 @@ const CategoryExplorer: FC<Props> = ({ categories }) => {
       <div className={styles.gridWrapper}>
         {categories.map((item) => (
           <div key={item.id} className={styles.gridElement}>
-            <Link href={`/busqueda?categoria=${item?.id}&orden=desc`}>
+            <Link href={generateCategoryURL(item)}>
               <a className={styles.link}>
                 <div className="w-[56px] h-[56px]">
                   {!!item?.image?.url && (
