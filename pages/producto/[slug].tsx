@@ -125,10 +125,13 @@ const ProductView: NextPage<Props> = ({
     addItem(product);
     router.push('/checkout');
   };
-
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
-  const whatsappLink = `https://api.whatsapp.com/send?phone=521${whatsapp.replace(/\s/g, '')}`;
+  const message = encodeURIComponent(
+    `Hola me gustaría comprar el producto: *${product?.name}* con código *${product?.id}* que cuesta *$${product?.netPrice}*`,
+  );
+  const number = whatsapp.replace(/\s/g, '');
+  const whatsappLink = `https://api.whatsapp.com/send?phone=521${number}&text=${message}`;
 
   return (
     <Layout title={product?.name} cities={cities || []} bgWhite legalPages={legalPages}>
@@ -187,6 +190,7 @@ const ProductView: NextPage<Props> = ({
                 fullWidth
                 theme="whatsapp"
                 text="Comprar en sucursal"
+                target="__blank"
                 href={whatsappLink}
                 icon={<WhatsAppOutlined />}
               />
