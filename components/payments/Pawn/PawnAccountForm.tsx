@@ -27,12 +27,12 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
     try {
+      setLoading(false);
       await onSubmit(data);
     } catch (err) {
       setError((err as AxiosError).message);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

@@ -1,3 +1,4 @@
+import { CreditCard } from './CreditCard';
 export interface PaymentTransactionRequest {
   eci: string;
   xid: string;
@@ -11,4 +12,9 @@ export interface PaymentTransactionRequest {
   // MerchantCity: string;
   // MerchantName: string;
   // MerchantId: string;
+}
+
+export interface ServicePaymentRequest extends CreditCard {
+  concepto: string;
+  correoelectronico: string;
 }

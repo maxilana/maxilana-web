@@ -23,7 +23,7 @@ const CouponCheckPaymentForm: FC<Props> = ({ account, onSubmit }) => {
   const [form] = Form.useForm<FormValues>();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>('Escribe una cantidad correcta para otro pago');
+  const [error, setError] = useState<string | null>(null);
   const { price: paymentAmount } = usePrice({ amount: account.amount });
 
   const handleFormSubmit = async (data: FormValues) => {

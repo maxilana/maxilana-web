@@ -3,6 +3,7 @@ import parseQuery from '~/utils/parseQuery';
 import { PawnAccount } from '~/types/Models';
 import { PawnAccountResponse } from '~/types/Responses';
 import roundDecimals from '~/utils/roundDecimals';
+import roundUpToFifty from '~/utils/roundUpToFifty';
 
 type Body = { [key: string]: any };
 
@@ -45,7 +46,8 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
   let paymentAmount = 0; // REFRENDO
   let totalPaymentAmount = 0; // DESEMPEÑO
   const extraCharge = Number(comision); // COMISION
-  const minPaymentAmount = roundDecimals(Math.round(Number(ImportePagoMinimo)) * extraCharge); // PAGO MÍNIMO
+  const minPaymentAmount = roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge; // PAGO MÍNIMO
+  // const minPaymentAmount = roundDecimals(Math.round(Number(ImportePagoMinimo)) * extraCharge);
 
   /** CÁLCULO DE PAGO DE REFRENDO */
   const interest = Number(InteresNormal) + Number(InteresVencido);
@@ -85,8 +87,10 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
   totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
   return {
+    extraCharge,
     name: Cliente,
     accountNumber: BoletaActual,
+    accountLetter: data.letra,
     loanAmount: loan,
     startDate: FechaEmpeno,
     status: EstadoBoleta,
@@ -105,7 +109,6 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     paymentPendingToApply: Number(RefrendoPendienteAplicar) === 1,
     accountBlocked: BoletaBloqueada === 'true',
     branch: CodigoSucursal,
-    extraCharge,
   };
 };
 

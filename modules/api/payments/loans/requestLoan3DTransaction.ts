@@ -3,9 +3,11 @@ import { LoanPaymentRequest } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
 
 const requestLoan3DTransaction = async (data: LoanPaymentRequest): Promise<MaxilanaTransaction> => {
+  const { cardtype, ...params } = data;
+
   const response = await maxAxios.post<MaxilanaTransaction>(
     '/procesar3dsecure/prestamopersonal',
-    data,
+    params,
   );
 
   if (!response.id) {

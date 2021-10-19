@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
 import { PawnAccount } from '~/types/Models';
 import roundDecimals from '~/utils/roundDecimals';
+import roundUpToFifty from '~/utils/roundUpToFifty';
 
+/**
+ * Calcula el importe a pagar para la
+ *  extensión de días.
+ */
 const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): number => {
-  // Calcula el importe a pagar
-  //  para la extensión de dias.
   const extensionAmount = useMemo(() => {
     let totalAmount = 0;
     let subtotalAmount = 0;
@@ -12,19 +15,6 @@ const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): num
     let totalDueDaysAmount = 0;
 
     const { dueDays, minDaysToPay, normalDailyInterest, dueDailyInterest, amountToAply } = data;
-
-    const adjustment = (total: number) => {
-      const integer = Math.trunc(total);
-      let decimal = total - integer;
-
-      if (decimal < 0.5) {
-        decimal = 0.5;
-      } else if (decimal > 0.5) {
-        decimal = 1;
-      }
-
-      return integer + decimal;
-    };
 
     if (daysToExtend < minDaysToPay) {
       throw new Error(`La cantidad de días mínimos son: ${minDaysToPay}`);
@@ -44,7 +34,7 @@ const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): num
     }
 
     subtotalAmount = totalDaysAmount + totalDueDaysAmount - amountToAply;
-    subtotalAmount = adjustment(subtotalAmount);
+    subtotalAmount = roundUpToFifty(subtotalAmount);
     totalAmount = roundDecimals(subtotalAmount * data.extraCharge); // Agrega comisión
 
     return totalAmount;

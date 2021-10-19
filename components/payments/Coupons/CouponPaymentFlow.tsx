@@ -9,8 +9,10 @@ import PaymentForm, {
 import { checkCouponAccount, requestCoupon3DTransaction } from '~/api/payments/coupons';
 
 import { CouponAccount } from '~/types/Models';
-import { CouponPaymentRequest } from '~/types/Requests';
+import { CouponPaymentRequest, ServicePaymentRequest } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
+
+type PaymentRequest = ServicePaymentRequest;
 
 type Status = 'idle' | 'check_payment' | 'confirm_payment' | 'submit_payment';
 
@@ -84,10 +86,17 @@ const CouponPaymentFlow: FC = () => {
     dispatch({ type: 'CONFIRM_PAYMENT', payload: { paymentRequest } });
   };
 
-  const handleSubmitPayment = async (data: any) => {
-    const paymentRequest: CouponPaymentRequest = {
-      ...data,
-      cdistribuidora: state.account?.partnerNumber,
+  const handleSubmitPayment = async (data: PaymentRequest) => {
+    const { concepto, ...rest } = data;
+    const { account } = state;
+
+    if (!account) {
+      throw new Error('No fue posible procesar el pago, vuelve a iniciar el proceso.');
+    }
+
+    const paymentRequest = {
+      ...rest,
+      cdistribuidora: account.partnerNumber,
     };
 
     const maxilanaTransaction = await requestCoupon3DTransaction(paymentRequest);

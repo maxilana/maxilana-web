@@ -7,8 +7,10 @@ import PaymentForm, {
   LoanSelectionPaymentForm,
 } from '~/components/payments';
 import { LoanAccount } from '~/types/Models';
-import { LoanPaymentRequest } from '~/types/Requests';
+import { LoanPaymentRequest, ServicePaymentRequest } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
+
+type PaymentRequest = ServicePaymentRequest;
 
 type Status = 'idle' | 'select_payment' | 'confirm_payment' | 'submit_payment';
 
@@ -80,10 +82,21 @@ const LoanPaymentFlow: FC = () => {
     dispatch({ type: 'CONFIRM_PAYMENT', payload: { paymentRequest } });
   };
 
-  const handleSubmitPayment = async (data: any) => {
-    const paymentRequest: LoanPaymentRequest = {
-      ...data,
-      codigoprestamo: state.account?.clientCode,
+  const handleSubmitPayment = async (data: PaymentRequest) => {
+    const { concepto, ...rest } = data;
+    const { account } = state;
+
+    // NO REGRESAN LA SUCURSAL, LA TENGO QUE SACAR DESDE LA CUENTA
+    const [sucursal, codigoprestamo] = account?.clientCode.split('-') || [];
+
+    if (!account || (!sucursal && !codigoprestamo)) {
+      throw new Error('No fue posible procesar el pago, vuelve a iniciar el proceso.');
+    }
+
+    const paymentRequest = {
+      ...rest,
+      sucursal,
+      codigoprestamo,
     };
 
     const maxilanaTransaction = await requestLoan3DTransaction(paymentRequest);

@@ -8,8 +8,10 @@ import PaymentForm, {
   PawnCalculateForm,
 } from '~/components/payments';
 import { PawnAccount } from '~/types/Models';
-import { PawnPaymentRequest } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
+import { PawnPaymentRequest, ServicePaymentRequest } from '~/types/Requests';
+
+type PaymentRequest = ServicePaymentRequest;
 
 type Status = 'idle' | 'account_set' | 'payment_selected' | 'payment_submitted';
 
@@ -17,6 +19,7 @@ type Payment = {
   concept: string;
   amount: number;
   paymentCode: '1' | '2' | '3';
+  paymentExtension: number;
 };
 
 type Transaction = {
@@ -81,11 +84,13 @@ const PawnPaymentFlow: FC = () => {
   const handlePaymentSelection = (data: any) => {
     let paymentCode = '1'; // REFRENDO
     let concept = PAYMENT_CONCEPT[1]; // ABONOS
+    let paymentExtension = 0;
 
     if (data.paymentType === 'REFRENDO') {
       concept = PAYMENT_CONCEPT[0];
     } else if (data.paymentType === 'ABONO') {
       paymentCode = '2';
+      paymentExtension = data.paymentExtension;
     } else {
       paymentCode = '3';
     }
@@ -93,6 +98,7 @@ const PawnPaymentFlow: FC = () => {
     const paymentRequest = {
       concept,
       paymentCode,
+      paymentExtension,
       amount: data.paymentAmount,
     };
 
@@ -101,18 +107,29 @@ const PawnPaymentFlow: FC = () => {
     return Promise.resolve();
   };
 
-  const handleSubmitPayment = async (data: any) => {
+  const handleSubmitPayment = async (data: PaymentRequest) => {
     const { account, paymentRequest } = state;
-    const request: PawnPaymentRequest = {
-      ...data,
-      email: data.correoelectronico,
-      sucursal: account?.branch,
-      boleta: account?.accountNumber,
-      prestamo: account?.loanAmount,
-      codigotipopago: paymentRequest?.paymentCode,
-      fechaconsulta: account?.requestDate,
-      diaspagados: account?.minDaysToPay, // TODO: PREGUNTAR DE DÓNDE SALE ESTO
-      importe: paymentRequest?.amount,
+    const { concepto, correoelectronico, ...rest } = data;
+
+    if (!account || !paymentRequest) {
+      throw new Error('No fue posible procesar el pago, vuelve a iniciar el proceso.');
+    }
+
+    const request = {
+      ...rest,
+      email: correoelectronico,
+      detallepago: [
+        {
+          sucursal: account.branch,
+          letra: account.accountLetter,
+          boleta: account.accountNumber,
+          fechaconsulta: account.requestDate,
+          prestamo: account.loanAmount.toString(),
+          codigotipopago: paymentRequest.paymentCode,
+          monto: paymentRequest.amount.toString(),
+          diaspagados: paymentRequest.paymentExtension.toString(), // Pago de días (si se eligió)
+        },
+      ],
     };
 
     const maxilanaTransaction = await requestPawn3DTransaction(request);
@@ -145,7 +162,7 @@ const PawnPaymentFlow: FC = () => {
           {state.transactionRequest !== null && (
             <BankTransactionForm
               {...state.transactionRequest}
-              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns`}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns&client=${state.account?.name}&total=${state.paymentRequest?.amount}`}
             />
           )}
         </PageLoader>

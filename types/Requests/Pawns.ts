@@ -1,4 +1,16 @@
 import { CreditCard } from './CreditCard';
+import { PaymentTransactionRequest } from './PaymentTransactionRequest';
+
+interface PawnAccount {
+  boleta: string;
+  monto: string;
+  sucursal: string;
+  prestamo: string;
+  codigotipopago: string; // '1' | '2' | '3'
+  fechaconsulta: string;
+  diaspagados: string;
+  letra: string;
+}
 
 /**
  * Códigos de pago
@@ -7,16 +19,16 @@ import { CreditCard } from './CreditCard';
  * 3 - Abono de cantidad
  */
 export interface PawnPaymentRequest extends CreditCard {
-  sucursal: string;
-  boleta: string;
-  prestamo: number;
-  codigotipopago: string; // '1' | '2' | '3';
-  fechaconsulta: string;
-  diaspagados: number;
-  importe: number;
   email: string;
+  detallepago: PawnAccount[];
 }
 
+export interface Pawn2DRequest extends PaymentTransactionRequest {
+  Cliente: string;
+  total: number;
+}
+
+// PETICIÓN DE EMPEÑO
 export interface PawnRequest {
   codigoarticulo: number;
   monto: number;
@@ -24,6 +36,7 @@ export interface PawnRequest {
   correo: string;
 }
 
+// PETICIÓN DE AUTOEMPEÑO
 export interface AutoPawnRequest {
   ciudad: string;
   marca: string;
