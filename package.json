@@ -28,6 +28,7 @@
     "@types/body-scroll-lock": "^3.1.0",
     "@types/google.maps": "^3.45.6",
     "@types/lodash.difference": "^4.5.6",
+    "@types/lodash.isequal": "^4.5.5",
     "@types/lodash.omit": "^4.5.6",
     "@types/lodash.uniq": "^4.5.6",
     "@types/sharp": "^0.28.5",

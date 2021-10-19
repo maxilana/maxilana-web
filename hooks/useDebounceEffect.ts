@@ -1,8 +1,4 @@
 import { useEffect } from 'react';
-/*
-type UDEff<Deps = any[]> = (cb: (...deps: Deps[]) => void, delay:
- number,deps: any[]) => void;
- */
 
 const useDebounceEffect = <Deps = any[]>(
   cb: (...deps: Deps[]) => void,

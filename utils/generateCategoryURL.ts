@@ -4,12 +4,19 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import { filtersToQueryParams } from '~/utils/filtersToQueryString';
 import parseQuery from '~/utils/parseQuery';
 
-const generateCategoryURL = (item: Partial<CMSCategory>, query?: ParsedUrlQuery): string => {
-  return `/busqueda?${parseQuery({
+export const generateCategoryQueryParams = (
+  item: Partial<CMSCategory>,
+  query?: ParsedUrlQuery,
+): ParsedUrlQuery => {
+  return {
     ...omit(query || {}, 'q'),
     categoria: `${item?.id}`,
     ...(item?.filters ? filtersToQueryParams(item?.filters) : {}),
-  })}`;
+  };
+};
+
+const generateCategoryURL = (item: Partial<CMSCategory>, query?: ParsedUrlQuery): string => {
+  return `/busqueda?${parseQuery(generateCategoryQueryParams(item, query))}`;
 };
 
 export default generateCategoryURL;

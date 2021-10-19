@@ -3,6 +3,7 @@ import cn from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ParsedUrlQuery } from 'querystring';
+import isEqual from 'lodash.isequal';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Radio, Space, Checkbox, Form, FormProps } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -11,13 +12,14 @@ import ClickOutside from '~/modules/lib/click-outside';
 
 import { Branch, City } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
-import generateCategoryURL from '~/utils/generateCategoryURL';
+import generateCategoryURL, { generateCategoryQueryParams } from '~/utils/generateCategoryURL';
 import parseQuery from '~/utils/parseQuery';
 import { Collapse } from '~/components/ui';
 import { PriceRangeInput } from '~/components/products';
 import ProductBadge from '../ProductBadge';
 import styles from './ProductsFilters.module.css';
 import { InputField } from '~/components/common';
+import useDebounceEffect from '~/hooks/useDebounceEffect';
 
 interface Props {
   cities?: City[];
@@ -48,6 +50,15 @@ const ProductsFilters: FC<Props> = ({
     query || {},
     initialValues || {},
   );
+  const initialFormValues = {
+    CityId: ciudad ? parseInt(ciudad as string) : 'all',
+    saleOnline: vtalinea ? [vtalinea] : ['0', '1'],
+    BranchId: sucursal ? parseInt(sucursal as string) : 'all',
+    priceRange: { min: min || '', max: max || '' },
+    order: orden || 'desc',
+  };
+
+  const [formChanges, setFormChanges] = useState(initialFormValues);
 
   useEffect(() => {
     if (ref.current) {
@@ -91,6 +102,7 @@ const ProductsFilters: FC<Props> = ({
   }, [min, max]);
 
   const handleChange: FormProps['onValuesChange'] = (changes) => {
+    if (!changes || isEqual(changes, initialFormValues)) return null;
     const { CityId, saleOnline, BranchId, priceRange, order } = changes;
     if (CityId) {
       if (CityId === 'all') {
@@ -126,18 +138,14 @@ const ProductsFilters: FC<Props> = ({
     }
   };
 
+  useDebounceEffect((debouncedChanges) => handleChange(debouncedChanges, null), 500, [formChanges]);
+
   return (
     <Form
       className={cn(styles.root, { [styles.visible]: visible })}
       form={form}
-      onValuesChange={handleChange}
-      initialValues={{
-        CityId: ciudad ? parseInt(ciudad as string) : 'all',
-        saleOnline: vtalinea ? [vtalinea] : ['0', '1'],
-        BranchId: sucursal ? parseInt(sucursal as string) : 'all',
-        priceRange: { min: min || '', max: max || '' },
-        order: orden || 'desc',
-      }}
+      onValuesChange={(changes) => setFormChanges(changes)}
+      initialValues={initialFormValues}
       id="productFilters"
     >
       <ClickOutside active={!!visible} onClick={() => onClose?.()}>
@@ -146,7 +154,15 @@ const ProductsFilters: FC<Props> = ({
             <span className="h6">Filtros</span>
             <CloseOutlined onClick={onClose} className="text-secondary lg:hidden" />
             <Link href="/busqueda">
-              <a className="uppercase text-price text-xs hidden lg:inline-block">Borrar filtros</a>
+              <a
+                className="uppercase text-price text-xs hidden lg:inline-block"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onFiltersChange({});
+                }}
+              >
+                Borrar filtros
+              </a>
             </Link>
           </div>
           <div className={styles.scroll} ref={ref}>
@@ -158,6 +174,10 @@ const ProductsFilters: FC<Props> = ({
                   <Link href={`/busqueda?${parseQuery(omit(query, 'categoria'))}`}>
                     <a
                       className={cn(styles.categoryItem, { [styles.categorySelected]: !category })}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onFiltersChange(omit(query, 'categoria'));
+                      }}
                     >
                       Todas las categorías
                     </a>
@@ -170,6 +190,12 @@ const ProductsFilters: FC<Props> = ({
                         className={cn(styles.categoryItem, {
                           [styles.categorySelected]: item.id === category?.id,
                         })}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onFiltersChange(
+                            generateCategoryQueryParams(item, omit(query, 'slug', 'q')),
+                          );
+                        }}
                       >
                         {item.name}
                       </a>
