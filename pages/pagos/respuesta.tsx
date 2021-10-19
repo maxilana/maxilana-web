@@ -9,7 +9,7 @@ import {
   requestPawn2DTransaction,
 } from '~/api/payments';
 import { ErrorCodes, PawnPaymentSuccess } from '~/types/Models';
-import { PaymentTransactionRequest } from '~/types/Requests';
+import { Pawn2DRequest } from '~/types/Requests';
 
 interface SSRProps {
   error?: boolean;
@@ -48,22 +48,38 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     };
   }
 
-  let response;
-  const request2D: PaymentTransactionRequest = validation.transaction;
+  try {
+    let response;
+    const request2D = validation.transaction;
 
-  if (query?.type === 'coupons') {
-    response = await requestCoupon2DTransaction(request2D);
-  } else if (query?.type === 'loans') {
-    response = await requestLoan2DTransaction(request2D);
-  } else if (query?.type === 'pawns') {
-    response = await requestPawn2DTransaction(request2D);
+    if (query?.type === 'coupons') {
+      response = await requestCoupon2DTransaction(request2D);
+    } else if (query?.type === 'loans') {
+      response = await requestLoan2DTransaction(request2D);
+    } else if (query?.type === 'pawns') {
+      // ASÍ ME LO PIDEN...
+      const pawn2DRequest = {
+        ...request2D,
+        Cliente: query?.client,
+        total: query?.total ? Number(query?.total) : undefined,
+      } as Pawn2DRequest;
+
+      response = await requestPawn2DTransaction(pawn2DRequest);
+    }
+
+    return {
+      props: {
+        response,
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        error: true,
+        errorCode: '0',
+      },
+    };
   }
-
-  return {
-    props: {
-      response,
-    },
-  };
 };
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import cn from 'classnames';
 import { AxiosError } from 'axios';
 import { Radio, Form } from 'antd';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button } from '~/components/ui';
@@ -62,7 +62,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
 
   const handleFormSubmit = async (values: FormValues) => {
     setStatus('loading');
-    const { paymentType } = values;
+    const { paymentType, paymentExtension } = values;
 
     try {
       let amount = 0;
@@ -79,12 +79,12 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
         amount = Number(values.paymentAmount);
       }
 
-      await onSubmit({ paymentType, paymentAmount: amount });
+      setStatus('idle');
+      await onSubmit({ paymentType, paymentExtension, paymentAmount: amount });
     } catch (err) {
       setError((err as AxiosError).message);
+      setStatus('idle');
     }
-
-    setStatus('idle');
   };
 
   return (

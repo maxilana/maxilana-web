@@ -6,6 +6,7 @@ export interface PawnAccount {
   dueDate: string;
   loanAmount: number;
   accountNumber: string;
+  accountLetter: string;
   description: string;
   paymentAmount: number;
   minPaymentAmount: number;
