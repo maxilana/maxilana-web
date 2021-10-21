@@ -67,6 +67,7 @@ module.exports = {
         disabled: '#0000003D',
         price: '#1E83E1',
         discount: '#C4C9CE',
+        link: '#1E83E1',
       },
       colors: {
         transparent: 'transparent',
