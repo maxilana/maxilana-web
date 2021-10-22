@@ -2,9 +2,9 @@ import { Form } from 'antd';
 import Link from 'next/link';
 
 import { Logo } from '~/components/svg';
-import { InputField } from '~/components/common';
-import { BareLayout } from '~/components/layout';
 import { Button } from '~/components/ui';
+import { InputField } from '~/components/common';
+import { BareLayout, AuthFooter } from '~/components/layout';
 import defaultValidateMessages from 'config/validationMessages';
 
 const LoginPage = () => {
@@ -53,25 +53,7 @@ const LoginPage = () => {
             </div>
           </Form>
         </div>
-        <footer className="my-12 mx-auto sm:max-w-xl">
-          <ul className="flex flex-col items-center justify-between text-sm sm:flex-row">
-            <li className="text-link uppercase p-1">
-              <Link href="/contacto">
-                <a>Contacto</a>
-              </Link>
-            </li>
-            <li className="text-link uppercase p-1">
-              <Link href="/legal/terminos-y-condiciones">
-                <a>Términos y Condiciones</a>
-              </Link>
-            </li>
-            <li className="text-link uppercase p-1">
-              <Link href="/legal/aviso-de-privacidad">
-                <a>Aviso de privacidad</a>
-              </Link>
-            </li>
-          </ul>
-        </footer>
+        <AuthFooter />
       </div>
     </BareLayout>
   );
