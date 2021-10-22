@@ -30,6 +30,10 @@
   @apply disabled:bg-surface disabled:text-disabled;
 }
 
+.inputCode {
+  @apply w-10 h-10 text-center text-lg mx-1;
+}
+
 .input.error {
   @apply border-red-500;
 }
