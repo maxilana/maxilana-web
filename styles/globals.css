@@ -103,4 +103,10 @@ body {
   .circleRight {
     @apply rounded-full bg-surface flex justify-center items-center block min-w-[32px] min-h-[32px];
   }
+
+  .formContainer {
+    border-color: #0c5e9c26;
+    @apply border-t border-b p-6 bg-white;
+    @apply sm:rounded sm:border-l sm:border-r;
+  }
 }
