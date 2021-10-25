@@ -9,7 +9,6 @@ import { BankTransactionForm } from '~/components/payments';
 import { CartSummary, FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
 
 import styles from './ConfirmPurchase.module.css';
-import formContainerStyles from '../FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 
 import { request3DTransaction } from '~/api/payments';
@@ -99,7 +98,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
           <h1 className={styles.title}>Confirmar compra</h1>
           <div className={styles.gridContainer}>
             <div>
-              <div className={formContainerStyles.root}>
+              <div className="formContainer">
                 <h2 className={styles.subtitle}>Dirección de envío</h2>
                 <div className="grid gap-4">
                   <div className="col-span-2">
@@ -235,7 +234,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
               </div>
             </div>
             <div className="lg:max-w-[520px]">
-              <div className={formContainerStyles.root}>
+              <div className="formContainer">
                 <FormFeedback
                   visible={status === 'error'}
                   onDismiss={() => {

@@ -6,7 +6,6 @@ import { CheckCircleTwoTone } from '@ant-design/icons';
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
 
-import formStyles from '../../payments/FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 import saveAutoPawnProspect from '~/api/saveAutoPawnProspect';
 import { AutoPawnRequest } from '~/types/Requests';
@@ -34,7 +33,7 @@ const AutoPawnForm: FC = () => {
 
   if (status === 'finished') {
     return (
-      <div className={formStyles.root}>
+      <div className="formContainer">
         <div className="w-full p-4">
           <div className="flex flex-col gap-4 items-center justify-center">
             <div>
@@ -52,7 +51,7 @@ const AutoPawnForm: FC = () => {
 
   return (
     <Form form={form} onFinish={handleSubmit} validateMessages={defaultValidateMessages}>
-      <div className={formStyles.root}>
+      <div className="formContainer">
         <FormFeedback
           visible={error !== null}
           errorMessage={error as string}

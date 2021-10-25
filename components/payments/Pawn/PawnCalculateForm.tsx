@@ -2,14 +2,13 @@ import dayjs from 'dayjs';
 import cn from 'classnames';
 import { AxiosError } from 'axios';
 import { Radio, Form } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button } from '~/components/ui';
 import { PawnAccount } from '~/types/Models';
 import { FormFeedback, InputMask } from '~/components/common';
 
-import styles from '../FormContainer.module.css';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import useCalculatePawnExtension from '~/hooks/useCalculatePawnExtension';
 
@@ -114,7 +113,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
         </p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className={cn(styles.root, 'relative')}>
+        <div className="relative formContainer">
           <div className="grid gap-10 sm:grid-cols-2">
             <div>
               <p className="text-sm text-secondary">Cliente:</p>
