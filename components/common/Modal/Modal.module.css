@@ -1,0 +1,12 @@
+.root {
+  @apply fixed w-full h-screen top-0 left-0 z-50;
+}
+
+.modal {
+  @apply absolute w-full h-full bg-black/20;
+}
+
+.content {
+  @apply absolute top-1/2 left-1/2 overflow-y-auto;
+  @apply transform -translate-x-1/2 -translate-y-1/2;
+}

@@ -15,3 +15,4 @@ export { default as CartSummary } from './CartSummary';
 export { default as ShareLinks } from './ShareLinks';
 export { default as YouTube } from './YouTube';
 export { default as PageLoader } from './PageLoader';
+export { default as Modal } from './Modal';
