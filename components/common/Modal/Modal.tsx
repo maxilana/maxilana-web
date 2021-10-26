@@ -47,16 +47,16 @@ const Modal: FC<Props> = ({ children, open, onClose, title, onEnter = null }) =>
       {open ? (
         <div className={s.root}>
           <div className={s.modal} role="dialog" ref={ref}>
-            <div className="flex justify-end px-4 pr-2 py-2 items-center">
-              <button
-                onClick={() => onClose()}
-                aria-label="Close panel"
-                className="transition rounded duration-150 w-8 h-8 focus:outline-none hover:bg-primary/30"
-              >
-                <Cross className="h-6 w-6" style={{ color: '#FFF' }} />
-              </button>
-            </div>
             <div className={s.content}>
+              <div className="flex justify-end items-center">
+                <button
+                  onClick={() => onClose()}
+                  aria-label="Close modal"
+                  className="transition rounded duration-150 w-8 h-8 focus:outline-none hover:bg-primary/30"
+                >
+                  <Cross className="h-6 w-6" style={{ color: '#FFF' }} />
+                </button>
+              </div>
               <FocusTrap focusFirst>{children}</FocusTrap>
             </div>
           </div>

@@ -109,4 +109,8 @@ body {
     @apply border-t border-b p-6 bg-white;
     @apply sm:rounded sm:border-l sm:border-r;
   }
+
+  .formContainerModal {
+    @apply p-6 bg-white rounded;
+  }
 }

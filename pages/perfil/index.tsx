@@ -9,6 +9,8 @@ import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { PawnList, PawnProfileForm } from '~/components/profile';
 import useToggleState from '~/hooks/useToggleState';
 
+export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+
 const { TabPane } = Tabs;
 
 const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
