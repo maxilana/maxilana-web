@@ -68,8 +68,8 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
     const table = defaultTable.map((item, idx) => {
       const span = data.spanRates.find((s) => s.span === monthlySpan);
       const spanRate = (span?.rate ?? 0) + 1;
-      const amount = (rates[idx].amount + 1) * data.amount * spanRate;
-      const payment = (rates[idx].interest + 1) * data.amount * spanRate;
+      const amount = (rates[idx].amount + 1) * data.amount * spanRate; // PRÉSTAMO
+      const payment = rates[idx].interest * data.amount; // REFRENDO
 
       return {
         ...item,
