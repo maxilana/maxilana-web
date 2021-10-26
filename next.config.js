@@ -21,13 +21,14 @@ if (!`${process.env.IMAGES_DOMAINS}`.includes('img.youtube.com')) {
 }
 module.exports = withPreact(
   withBundleAnalyzer({
-    target: 'serverless',
     generateBuildId: () => buildId,
     reactStrictMode: true,
+    swcMinify: true,
     images: {
       domains: process.env.IMAGES_DOMAINS.split(','),
       deviceSizes: process.env.IMAGES_DEVICE_SIZES.split(',').map((item) => parseInt(item)),
       imageSizes: process.env.IMAGES_SIZES.split(',').map((item) => parseInt(item)),
+      formats: ['image/avif', 'image/webp'],
     },
     redirects() {
       return [
