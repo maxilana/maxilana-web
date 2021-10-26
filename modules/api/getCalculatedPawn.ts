@@ -13,32 +13,23 @@ const getCalculatedPawn = async (data: RequestPawn): Promise<PawnCalculation> =>
   );
 
   if (response) {
-    const {
-      PlazoMaximo,
-      TasaInteresMensual,
-      TasaInteresBronce,
-      TasaInteresPlata,
-      TasaInteresOro,
-      Prestamo,
-      TasaPrestamoMensual,
-      TasaPrestamoBronce,
-      TasaPrestamoPlata,
-      TasaPrestamoOro,
-      TasaPlazo,
-    } = response;
+    const months = Object.keys(response).map((m) => Number(m));
+    const maxMonthlyPaymentLimit = Math.max(...months);
+    const config = months.map((item) => ({
+      month: item,
+      commonLoan: response[item].Prestamonormal,
+      commonInterest: response[item].Interesnormal,
+      bronzeLoan: response[item].Prestamobronce,
+      bronzeInterest: response[item].Interesbronce,
+      silverLoan: response[item].Prestamoplata,
+      silverInterest: response[item].Interesplata,
+      goldenLoan: response[item].Prestamooro,
+      goldenInterest: response[item].Interesoro,
+    }));
 
     return {
-      amount: Prestamo,
-      maxMonthlyPaymentLimit: PlazoMaximo,
-      monthlyInterest: TasaInteresMensual,
-      bronzeInterest: TasaInteresBronce,
-      silverInterest: TasaInteresPlata,
-      goldInterest: TasaInteresOro,
-      commonAmountRate: TasaPrestamoMensual,
-      bronzeAmountRate: TasaPrestamoBronce,
-      silverAmountRate: TasaPrestamoPlata,
-      goldAmountRate: TasaPrestamoOro,
-      spanRates: TasaPlazo.map((item, idx) => ({ span: idx + 1, rate: item.Tasa })),
+      maxMonthlyPaymentLimit,
+      config,
     };
   }
 
