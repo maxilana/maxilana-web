@@ -3,19 +3,23 @@ import { Tabs } from 'antd';
 import { NextPage } from 'next';
 import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@ant-design/icons';
 
+import { Modal } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-import { PawnList } from '~/components/profile';
+import { PawnList, PawnProfileForm } from '~/components/profile';
+import useToggleState from '~/hooks/useToggleState';
 
 const { TabPane } = Tabs;
 
 const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+  const [showModal, toggleModal] = useToggleState(false);
+
   return (
     <Layout
       cities={cities}
       legalPages={legalPages}
       title="Perfil de usuario"
-      meta={{ css: ['/antd/tabs.css'] }}
+      meta={{ css: ['/antd/tabs.css', '/antd/form.css'] }}
     >
       <section className="max-w-2xl mx-auto py-4 sm:px-4 sm:py-8">
         <header className="flex items-center mb-6 px-4 sm:px-0">
@@ -46,7 +50,11 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                 </span>
               }
             >
-              <PawnList />
+              <PawnList
+                onAddAccount={() => {
+                  toggleModal();
+                }}
+              />
             </TabPane>
             <TabPane
               key="compras"
@@ -62,6 +70,13 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
           </Tabs>
         </div>
       </section>
+      <Modal open={showModal} onClose={() => toggleModal()}>
+        <PawnProfileForm
+          onSubmit={async (data) => {
+            console.log(data);
+          }}
+        />
+      </Modal>
     </Layout>
   );
 };
