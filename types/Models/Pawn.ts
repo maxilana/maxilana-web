@@ -33,21 +33,19 @@ export interface PawnPaymentSuccess {
   reference: string;
 }
 
-type SpanRate = {
-  span: number;
-  rate: number;
-};
+interface PawnByMonth {
+  month: number;
+  commonLoan: number;
+  commonInterest: number;
+  bronzeLoan: number;
+  bronzeInterest: number;
+  silverLoan: number;
+  silverInterest: number;
+  goldenLoan: number;
+  goldenInterest: number;
+}
 
 export interface PawnCalculation {
-  monthlyInterest: number;
-  bronzeInterest: number;
-  silverInterest: number;
-  goldInterest: number;
-  amount: number;
-  maxMonthlyPaymentLimit: number;
-  commonAmountRate: number;
-  bronzeAmountRate: number;
-  silverAmountRate: number;
-  goldAmountRate: number;
-  spanRates: SpanRate[];
+  maxMonthlyPaymentLimit: number; // Plazo Máximo
+  config: PawnByMonth[];
 }
