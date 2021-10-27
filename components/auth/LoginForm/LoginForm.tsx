@@ -1,17 +1,38 @@
 import Link from 'next/link';
 import { Form } from 'antd';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
-import defaultValidateMessages from 'config/validationMessages';
+import { CustomForm, InputField } from '~/components/common';
+import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
+
+type FormValues = {
+  user: string;
+  password: string;
+};
 
 const LoginForm: FC = () => {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const handleSubmit = async (values: FormValues) => {
+    setLoading(true);
+
+    try {
+      const authUser = await NextAPIMutator({
+        endpoint: '/api/login',
+        method: 'POST',
+        body: JSON.stringify(values),
+      });
+
+      console.log(authUser);
+    } catch (err) {
+      setLoading(false);
+      throw err;
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -28,14 +49,14 @@ const LoginForm: FC = () => {
   }, []);
 
   return (
-    <Form
+    <CustomForm
       form={form}
       name="loginForm"
-      onFinish={handleSubmit}
-      validateMessages={defaultValidateMessages}
       className="max-w-lg"
+      containerType="modal"
+      onSubmit={handleSubmit}
     >
-      <div className="formContainerModal">
+      <>
         <header className="text-center">
           <Link href="/">
             <a className="inline-flex">
@@ -53,7 +74,7 @@ const LoginForm: FC = () => {
               <Form.Item name="password" rules={[{ required: true }]}>
                 <InputField type="password" label="Contraseña" />
               </Form.Item>
-              <Button fullWidth theme="primary" text="Iniciar Sesión" />
+              <Button fullWidth theme="primary" loading={loading} text="Iniciar Sesión" />
             </div>
             <hr className="my-6" />
             <div className="text-center text-sm">
@@ -66,8 +87,8 @@ const LoginForm: FC = () => {
             </div>
           </div>
         </div>
-      </div>
-    </Form>
+      </>
+    </CustomForm>
   );
 };
 
