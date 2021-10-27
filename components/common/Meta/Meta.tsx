@@ -49,6 +49,7 @@ const Meta: FC<MetaProps> = ({ title, description, keywords, css, images }) => {
       {css?.map?.((href) => (
         <link
           href={href}
+          id={href}
           type="text/css"
           rel="stylesheet"
           key={href}

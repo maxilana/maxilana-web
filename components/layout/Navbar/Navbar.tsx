@@ -1,10 +1,12 @@
 import cn from 'classnames';
-import { useRouter } from 'next/router';
 import { FC } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
+import { LoginForm } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { City } from '~/types/Models';
@@ -12,13 +14,18 @@ import { City } from '~/types/Models';
 import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
 import { Button } from '~/components/ui';
+import useToggleState from '~/hooks/useToggleState';
 
 interface Props {
   cities?: City[];
 }
 
+const Modal = dynamic(() => import('../../common/Modal'));
+
 const Navbar: FC<Props> = ({ cities }) => {
   const { asPath } = useRouter();
+  const [showModal, toggleModal] = useToggleState(false);
+
   return (
     <header className={styles.root}>
       <div className={styles.wrapper}>
@@ -65,12 +72,20 @@ const Navbar: FC<Props> = ({ cities }) => {
             <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
+            <span role="button" className="text-xs text-white block" onClick={toggleModal}>
+              Iniciar Sesión
+            </span>
             <span className={styles.payOnlineLink}>
               <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
             </span>
           </div>
         </nav>
       </div>
+      {showModal && (
+        <Modal open onClose={toggleModal}>
+          <LoginForm />
+        </Modal>
+      )}
     </header>
   );
 };
