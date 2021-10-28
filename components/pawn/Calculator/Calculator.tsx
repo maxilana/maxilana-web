@@ -58,23 +58,27 @@ const Calculator: FC<Props> = ({ data, whatsapp, onBack, onRestart }) => {
   const [monthlySpan, setMonthlySpan] = useState(1);
 
   const config = useMemo(() => {
+    const monthlyConfig = data.config.find((item) => item.month === monthlySpan);
+
+    if (!monthlyConfig) {
+      return [];
+    }
+
     const rates = [
-      { interest: data.monthlyInterest, amount: data.commonAmountRate },
-      { interest: data.bronzeInterest, amount: data.bronzeAmountRate },
-      { interest: data.silverInterest, amount: data.silverAmountRate },
-      { interest: data.goldInterest, amount: data.goldAmountRate },
+      { interest: monthlyConfig?.commonInterest, amount: monthlyConfig?.commonLoan },
+      { interest: monthlyConfig?.bronzeInterest, amount: monthlyConfig?.bronzeLoan },
+      { interest: monthlyConfig?.silverInterest, amount: monthlyConfig?.silverLoan },
+      { interest: monthlyConfig?.goldenInterest, amount: monthlyConfig?.goldenLoan },
     ];
 
     const table = defaultTable.map((item, idx) => {
-      const span = data.spanRates.find((s) => s.span === monthlySpan);
-      const spanRate = (span?.rate ?? 0) + 1;
-      const amount = (rates[idx].amount + 1) * data.amount * spanRate;
-      const payment = (rates[idx].interest + 1) * data.amount * spanRate;
+      const amount = formatPrice({ amount: rates[idx].amount, locale: 'es-MX' });
+      const payment = formatPrice({ amount: rates[idx].interest, locale: 'es-MX' });
 
       return {
         ...item,
-        amount: formatPrice({ amount, locale: 'es-MX' }),
-        payment: formatPrice({ amount: payment, locale: 'es-MX' }),
+        amount,
+        payment,
       };
     });
 
