@@ -41,7 +41,7 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
       validateMessages={validationMessages}
       className="max-w-sm mx-auto"
     >
-      <div className="formContainerModal">
+      <div className="formContainer">
         <FormFeedback
           visible={error !== null}
           errorMessage={error as string}
