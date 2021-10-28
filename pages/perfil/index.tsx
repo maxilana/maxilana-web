@@ -72,13 +72,15 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
           </Tabs>
         </div>
       </section>
-      <Modal open={showModal} onClose={() => toggleModal()}>
-        <PawnProfileForm
-          onSubmit={async (data) => {
-            console.log(data);
-          }}
-        />
-      </Modal>
+      {showModal && (
+        <Modal open onClose={() => toggleModal()}>
+          <PawnProfileForm
+            onSubmit={async (data) => {
+              console.log(data);
+            }}
+          />
+        </Modal>
+      )}
     </Layout>
   );
 };
