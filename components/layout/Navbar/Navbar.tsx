@@ -26,7 +26,7 @@ const Modal = dynamic(() => import('../../common/Modal'));
 const Navbar: FC<Props> = ({ cities }) => {
   const { asPath } = useRouter();
   const [showModal, toggleModal] = useToggleState(false);
-  const { user } = useUser({ redirectTo: '', redirectIfFound: false });
+  const { user } = useUser();
 
   return (
     <header className={styles.root}>
