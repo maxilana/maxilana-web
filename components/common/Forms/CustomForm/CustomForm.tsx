@@ -6,7 +6,6 @@ import { FetcherError } from '~/modules/lib/errors';
 import FormFeedback from '../../FormFeedback';
 
 interface Props extends FormProps {
-  containerType?: 'default' | 'modal';
   onSubmit: (data: any) => Promise<any>;
 }
 
@@ -16,15 +15,9 @@ interface Props extends FormProps {
  *
  * TODO: Valorar si es posible cambiarlo en todas partes
  */
-const CustomForm: FC<PropsWithChildren<Props>> = ({
-  children,
-  onSubmit,
-  containerType = 'default',
-  ...antdFormProps
-}) => {
+const CustomForm: FC<PropsWithChildren<Props>> = ({ children, onSubmit, ...antdFormProps }) => {
   const [error, setError] = useState<string>('');
   const [showFeedback, toggleFeedback] = useToggleState(false);
-  const containerClass = containerType === 'default' ? 'formContainer' : 'formContainerModal';
 
   const handleSubmit = (values: any) => {
     setError('');
@@ -37,7 +30,7 @@ const CustomForm: FC<PropsWithChildren<Props>> = ({
 
   return (
     <Form {...antdFormProps} onFinish={handleSubmit} validateMessages={defaultValidateMessages}>
-      <div className={containerClass}>
+      <div className="formContainer">
         <FormFeedback errorMessage={error} visible={showFeedback} onDismiss={toggleFeedback}>
           {children}
         </FormFeedback>

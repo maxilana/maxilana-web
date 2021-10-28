@@ -49,13 +49,7 @@ const LoginForm: FC = () => {
   }, []);
 
   return (
-    <CustomForm
-      form={form}
-      name="loginForm"
-      className="max-w-lg"
-      containerType="modal"
-      onSubmit={handleSubmit}
-    >
+    <CustomForm form={form} name="loginForm" className="max-w-lg" onSubmit={handleSubmit}>
       <>
         <header className="text-center">
           <Link href="/">
