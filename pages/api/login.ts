@@ -1,12 +1,9 @@
-import { NextApiResponse } from 'next';
-
 import maxAxios from '~/modules/api/axios';
 import withSession from '~/modules/lib/withSession';
-import { MaxilanaLoginResponse } from '~/types/Responses';
-import { NextIronRequest } from '~/types/IronSession';
 import { User } from '~/types/Models';
+import { MaxilanaLoginResponse } from '~/types/Responses';
 
-export default withSession(async (req: NextIronRequest, res: NextApiResponse) => {
+export default withSession(async (req, res) => {
   const { user, password } = req.body;
 
   try {
@@ -33,9 +30,9 @@ export default withSession(async (req: NextIronRequest, res: NextApiResponse) =>
 
     res.json(authUser);
   } catch (error) {
-    // @ts-ignore
     res
       .status(422)
+      // @ts-ignore
       .json({ errors: [{ message: `Ocurrió un error al iniciar sesión. ${error?.message}` }] });
   }
 });
