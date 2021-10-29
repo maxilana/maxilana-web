@@ -1,9 +1,11 @@
 import { FC } from 'react';
 
 import { Button } from '~/components/ui';
+import { PawnAccount } from '~/types/Models';
 import { EmptyPawns } from '../svg';
 
 interface Props {
+  data: PawnAccount[];
   onAddAccount?: () => void;
 }
 
