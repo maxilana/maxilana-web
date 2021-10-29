@@ -144,7 +144,7 @@ const Searcher: FC<Props> = ({ cities }) => {
             </div>
           }
         >
-          <div role="menu">
+          <div role="menu" className="w-64">
             {city && (
               <span role="menuitem" className={styles.categoryItem} onClick={() => setCity(null)}>
                 <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />

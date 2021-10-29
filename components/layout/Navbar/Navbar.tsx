@@ -3,10 +3,10 @@ import { FC } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
-import { LoginForm } from '~/components/auth';
+import { AuthUser, LoginForm } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { Button } from '~/components/ui';
@@ -75,11 +75,7 @@ const Navbar: FC<Props> = ({ cities }) => {
           </div>
           <div className={styles.contextualArea}>
             {user !== undefined ? (
-              <Link href="/perfil">
-                <a className="text-white text-sm inline-flex items-center">
-                  <UserOutlined /> <span className="hidden ml-2 sm:inline-block">{user.name}</span>
-                </a>
-              </Link>
+              <AuthUser username={user?.name} />
             ) : (
               <span role="button" className="text-xs text-white block" onClick={toggleModal}>
                 Iniciar Sesión
