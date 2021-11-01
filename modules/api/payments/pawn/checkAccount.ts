@@ -86,9 +86,14 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
 
   totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
+  const accountBlocked = BoletaBloqueada === 'true';
+  const accountBlockedMessage = accountBlocked ? response?.Mensaje ?? '' : '';
+
   return {
     extraCharge,
     name: Cliente,
+    accountBlocked,
+    accountBlockedMessage,
     accountNumber: BoletaActual,
     accountLetter: data.letra,
     loanAmount: loan,
@@ -107,7 +112,6 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     minDaysToPay: Number(DiasPagoMinimo),
     amountToAply: Number(SaldoPorAplicar),
     paymentPendingToApply: Number(RefrendoPendienteAplicar) === 1,
-    accountBlocked: BoletaBloqueada === 'true',
     branch: CodigoSucursal,
   };
 };
