@@ -13,6 +13,7 @@ export interface PawnAccount {
   totalPaymentAmount: number;
   dueDays: number; //DiasVencidos
   limitDueDays: number; //DiasVencidosPermitidos
+  pendingDueDays: number; //DiasVencidosPendientes
   normalDailyInterest: number; //InteresDiarioNormal
   dueDailyInterest: number; //InteresDiarioVencido
   minDaysToPay: number; //DiasPagoMinimo
