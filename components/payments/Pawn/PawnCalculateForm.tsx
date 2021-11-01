@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import cn from 'classnames';
 import { AxiosError } from 'axios';
 import { Radio, Form } from 'antd';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { Button } from '~/components/ui';
@@ -45,8 +45,20 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
   const dueDate = dayjs(data.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
 
+  let reason = '';
   const isPastLimitDueDays = data.dueDays > data.limitDueDays;
-  const isBlocked = data.accountBlocked || data.paymentPendingToApply;
+  const cannotBePaid = isPastLimitDueDays || data.accountBlocked || data.paymentPendingToApply;
+
+  if (cannotBePaid) {
+    if (isPastLimitDueDays || data.paymentPendingToApply) {
+      reason =
+        'Por el momento no es posible pagar, alguna de las razones son' +
+        ' ya realizaste un refrendo o tu límite de días para pagar vencieron.' +
+        ' Si tienes dudas comunícate con nosotros en este teléfono: 800 215 1515.';
+    } else {
+      reason = data.accountBlockedMessage;
+    }
+  }
 
   const buttonText = {
     idle: 'Pagar',
@@ -291,20 +303,19 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                     </Form.Item>
                   </div>
                   <div>
-                    {isBlocked && (
-                      <small className="inline-block text-xxs mb-2">
-                        Por el momento no es posible pagar, alguna de las razones son que tu boleta
-                        está bloqueada o ya realizaste un refrendo. Si tienes dudas comunícate con
-                        nosotros en este teléfono: 800 215 1515
-                      </small>
+                    {cannotBePaid ? (
+                      <>
+                        <small className="inline-block text-xxs mb-2">{reason}</small>
+                        <Button fullWidth text="Ver sucursales" href="/sucursales" />
+                      </>
+                    ) : (
+                      <Button
+                        fullWidth
+                        theme="primary"
+                        text={buttonText[status]}
+                        loading={['loading', 'searching'].includes(status)}
+                      />
                     )}
-                    <Button
-                      fullWidth
-                      theme="primary"
-                      disabled={isBlocked}
-                      text={buttonText[status]}
-                      loading={['loading', 'searching'].includes(status)}
-                    />
                   </div>
                 </div>
               </FormFeedback>

@@ -31,6 +31,7 @@ interface PawnAccountResponse {
   DiasVencidosPendientes: string; // number
   DiasPagoMinimo: string; //number
   comision: string; // number
+  Mensaje?: string; // Solo aparece cuando la boleta está bloqueada
 }
 
 export type { PawnAccountResponse };
