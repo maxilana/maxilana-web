@@ -5,7 +5,7 @@ import roundUpToFifty from '~/utils/roundUpToFifty';
 
 /**
  * Calcula el importe a pagar para la
- *  extensión de días.
+ *  compra de días.
  */
 const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): number => {
   const extensionAmount = useMemo(() => {
@@ -14,14 +14,15 @@ const useCalculatePawnExtension = (data: PawnAccount, daysToExtend: number): num
     let totalDaysAmount = 0;
     let totalDueDaysAmount = 0;
 
-    const { dueDays, minDaysToPay, normalDailyInterest, dueDailyInterest, amountToAply } = data;
+    const { pendingDueDays, minDaysToPay, normalDailyInterest, dueDailyInterest, amountToAply } =
+      data;
 
     if (daysToExtend < minDaysToPay) {
       throw new Error(`La cantidad de días mínimos son: ${minDaysToPay}`);
     }
 
     // Cobro de días normales
-    const daysToPay = daysToExtend - dueDays;
+    const daysToPay = daysToExtend - pendingDueDays;
 
     // Cobro de días vencidos
     const dueDaysToPay = daysToExtend - daysToPay;

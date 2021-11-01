@@ -36,10 +36,10 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [daysToExtend, setDaysToExtend] = useState(data.minDaysToPay);
 
+  const extensionAmount = useCalculatePawnExtension(data, daysToExtend); // PAGO DE EXTENSIÓN DE DÍAS
   const loanAmount = formatPrice({ amount: data.loanAmount, locale: LOCALE }); // PRÉSTAMO DEL CLIENTE
   const paymentAmount = formatPrice({ amount: data.paymentAmount, locale: LOCALE }); // PAGO DE REFRENDO
   const totalPaymentAmount = formatPrice({ amount: data.totalPaymentAmount, locale: LOCALE }); // DESEMPEÑO (SOLO ES INFORMATIVO)
-  const extensionAmount = useCalculatePawnExtension(data, daysToExtend); // PAGO DE EXTENSIÓN DE DÍAS
   const formattedExtensionAmount = formatPrice({ amount: extensionAmount, locale: LOCALE });
 
   const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
