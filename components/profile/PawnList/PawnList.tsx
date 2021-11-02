@@ -52,7 +52,7 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
 
           return (
             <li key={item.accountNumber} className={cn('block border-l-4 border-b', borderStyle)}>
-              <Link href="/perfil">
+              <Link href={`/perfil/boleta?id=${item.accountNumber}`}>
                 <a className={cn('flex justify-between px-4 py-2 flex-wrap', 'sm:py-8')}>
                   <div>
                     <span className="block text-xs text-secondary">Estado:</span>

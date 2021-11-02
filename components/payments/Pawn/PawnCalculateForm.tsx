@@ -121,8 +121,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
       <div className="px-4">
         <h1 className="text-2xl mb-4">Boleta de empeño</h1>
         <p>
-          La consulta muestra la información al dia de hoy, al seleccionar una fecha de cálculo
-          diferente los montos cambiarán automaticamente
+          La consulta muestra la información al dia de hoy, selecciona el monto que desees pagar.
         </p>
       </div>
       <div className="py-6 sm:px-4">

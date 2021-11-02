@@ -54,7 +54,9 @@ export default function useAccountStatus(userCode?: number) {
         let paymentAmount = Number(Refrendo); // REFRENDO
         let totalPaymentAmount = 0; // DESEMPEÑO
         const extraCharge = comision; // COMISION
-        const minPaymentAmount = roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge; // PAGO MÍNIMO
+        const minPaymentAmount = roundDecimals(
+          roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge,
+        ); // PAGO MÍNIMO
 
         /** CÁLCULO DE PAGO DE REFRENDO */
         // TODO: Preguntar si estos son los intereses para hacer en este cálculo
@@ -97,8 +99,13 @@ export default function useAccountStatus(userCode?: number) {
 
         totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
+        const accountBlocked = BoletaBloqueada === 'true';
+        const accountBlockedMessage = accountBlocked ? Mensaje ?? '' : '';
+
         return {
           extraCharge,
+          accountBlocked,
+          accountBlockedMessage,
           name: `${Nombre} ${ApellidoP} ${ApellidoM}`.trim(),
           accountNumber: Boleta,
           accountLetter: Prefijo,
@@ -113,12 +120,12 @@ export default function useAccountStatus(userCode?: number) {
           totalPaymentAmount: totalPaymentAmount,
           dueDays: Number(DiasVencidosPendientes),
           limitDueDays: Number(DiasVencidosPendientes), // TODO: Preguntar si este dato es diferente, no viene
+          pendingDueDays: Number(DiasVencidosPendientes),
           normalDailyInterest: Number(InteresdiarioActivo),
           dueDailyInterest: Number(InteresDiarioVencido),
           minDaysToPay: Number(DiasPagoMinimo),
           amountToAply: Number(SaldoPorAplicar),
           paymentPendingToApply: Number(PagoEnProceso) === 1, // TODO: Preguntar si PagoEnProceso es el RefrendoPendientedeAplicar.
-          accountBlocked: Number(BoletaBloqueada) === 1,
           branch: Codigosucursal,
         };
       });
