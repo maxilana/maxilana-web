@@ -8,11 +8,11 @@ import roundDecimals from '~/utils/roundDecimals';
 import roundUpToFifty from '~/utils/roundUpToFifty';
 
 export default function useAccountStatus(userCode?: number) {
-  const { data, error } = useSWR<GetAccountStatus>(
+  const { data, error, isValidating } = useSWR<GetAccountStatus>(
     userCode !== undefined ? `/usuarios/estadodecuenta?codigousuario=${userCode}` : null,
     {
       fetcher: fetcher,
-      revalidateOnFocus: true,
+      revalidateOnFocus: false,
     },
   );
 
@@ -45,6 +45,7 @@ export default function useAccountStatus(userCode?: number) {
           PagoEnProceso,
           SaldoPorAplicar,
           // PermitirPago,
+          comision,
         } = ballot;
 
         // let decimal = 0;
@@ -52,8 +53,7 @@ export default function useAccountStatus(userCode?: number) {
         let loan = Number(Prestamo);
         let paymentAmount = Number(Refrendo); // REFRENDO
         let totalPaymentAmount = 0; // DESEMPEÑO
-        // TODO: No viene en el endpoint
-        const extraCharge = 1.03; // COMISION
+        const extraCharge = comision; // COMISION
         const minPaymentAmount = roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge; // PAGO MÍNIMO
 
         /** CÁLCULO DE PAGO DE REFRENDO */
@@ -74,6 +74,7 @@ export default function useAccountStatus(userCode?: number) {
         //   paymentAmount = Math.round(interest + (0.5 + decimal));
         // }
 
+        // TODO: Preguntar si la cantidad de refrendo ya viene con la comisión
         // paymentAmount = roundDecimals(paymentAmount * extraCharge);
 
         /** CÁLCULO DE PAGO DE DESEMPEÑO */
@@ -126,5 +127,5 @@ export default function useAccountStatus(userCode?: number) {
     return [];
   }, [data]);
 
-  return { account, error };
+  return { account, error, loading: isValidating };
 }

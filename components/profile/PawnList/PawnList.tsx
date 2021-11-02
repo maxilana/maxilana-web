@@ -11,6 +11,7 @@ import { formatPrice } from '~/modules/hooks/usePrice';
 
 interface Props {
   data: PawnAccount[];
+  onAddAccount: () => void;
 }
 
 const statusStyles = {
@@ -19,8 +20,8 @@ const statusStyles = {
     borderColor: 'border-l-[#0BBF69]',
   },
   'Proceso comercial': {
-    textColor: 'text-[#0BBF69]',
-    borderColor: 'border-l-[#0BBF69]',
+    textColor: 'text-danger',
+    borderColor: 'border-l-[#EF3A3ADE]',
   },
   Vencida: {
     textColor: 'text-danger',
@@ -35,11 +36,11 @@ const statusStyles = {
 dayjs.extend(localizedFormat);
 const LOCALE = 'es-MX';
 
-const PawnList: FC<Props> = ({ data }) => {
+const PawnList: FC<Props> = ({ data, onAddAccount }) => {
   return (
     <div className="relative">
       <div className="sticky top-0 border-gray-200 border-b flex px-2 pb-4 justify-between items-center">
-        <Button size="small" text="Agregar boleta" onClick={() => {}} />
+        <Button size="small" text="Agregar boleta" onClick={onAddAccount} />
         <Button size="small" theme="primary" text="Pagar boletas" onClick={() => {}} />
       </div>
       <ul>

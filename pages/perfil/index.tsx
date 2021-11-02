@@ -9,7 +9,6 @@ import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { PawnProfileForm, PawnProfileHub } from '~/components/profile';
 import useUser from '~/hooks/useUser';
 import useToggleState from '~/hooks/useToggleState';
-import useAccountStatus from '~/hooks/useAccountStatus';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
@@ -17,7 +16,6 @@ const { TabPane } = Tabs;
 
 const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const { user } = useUser();
-  const { account } = useAccountStatus(4);
   const [showModal, toggleModal] = useToggleState(false);
 
   return (
@@ -69,7 +67,7 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                   }
                 >
                   <PawnProfileHub
-                    data={account}
+                    user={user}
                     onAddAccount={() => {
                       toggleModal();
                     }}

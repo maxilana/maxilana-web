@@ -26,6 +26,7 @@ export interface MaxilanaPawnBallot {
   PagoEnProceso: string;
   SaldoPorAplicar: string;
   PermitirPago: string;
+  comision: number;
 }
 
 export type GetAccountStatus = MaxilanaPawnBallot[];
