@@ -1,15 +1,13 @@
 import { FC } from 'react';
 
+import { EmptyPawns } from '../../svg';
 import { Button } from '~/components/ui';
-import { PawnAccount } from '~/types/Models';
-import { EmptyPawns } from '../svg';
 
 interface Props {
-  data: PawnAccount[];
-  onAddAccount?: () => void;
+  onAddAccount: () => void;
 }
 
-const Empty = ({ onAddAccount }: { onAddAccount?: () => void }) => (
+const PawnEmptyList: FC<Props> = ({ onAddAccount }) => (
   <div className="px-4 py-6">
     <div className="flex flex-col items-center justify-center gap-3">
       <EmptyPawns />
@@ -20,12 +18,4 @@ const Empty = ({ onAddAccount }: { onAddAccount?: () => void }) => (
   </div>
 );
 
-const PawnList: FC<Props> = ({ onAddAccount }) => {
-  return (
-    <div>
-      <Empty onAddAccount={onAddAccount} />
-    </div>
-  );
-};
-
-export default PawnList;
+export default PawnEmptyList;

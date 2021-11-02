@@ -6,9 +6,9 @@ import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@
 import { Modal } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
-import { PawnList, PawnProfileForm } from '~/components/profile';
-import useToggleState from '~/hooks/useToggleState';
+import { PawnProfileForm, PawnProfileHub } from '~/components/profile';
 import useUser from '~/hooks/useUser';
+import useToggleState from '~/hooks/useToggleState';
 import useAccountStatus from '~/hooks/useAccountStatus';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
@@ -17,7 +17,7 @@ const { TabPane } = Tabs;
 
 const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const { user } = useUser();
-  const { account } = useAccountStatus(user?.userCode);
+  const { account } = useAccountStatus(4);
   const [showModal, toggleModal] = useToggleState(false);
 
   return (
@@ -68,7 +68,7 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
                     </span>
                   }
                 >
-                  <PawnList
+                  <PawnProfileHub
                     data={account}
                     onAddAccount={() => {
                       toggleModal();
@@ -94,11 +94,7 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
 
       {showModal && (
         <Modal open onClose={() => toggleModal()}>
-          <PawnProfileForm
-            onSubmit={async (data) => {
-              console.log(data);
-            }}
-          />
+          <PawnProfileForm />
         </Modal>
       )}
     </Layout>

@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 
 import { Button } from '~/components/ui';
 import { CustomForm, InputField, InputMask } from '~/components/common';
+import { checkAccount } from '~/modules/api';
 
 type FormValues = {
   boleta: string;
@@ -11,10 +12,10 @@ type FormValues = {
 };
 
 interface Props {
-  onSubmit: (data: FormValues) => Promise<void>;
+  onSuccess?: () => void;
 }
 
-const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
+const PawnAccountForm: FC<Props> = ({ onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
     setLoading(true);
 
     try {
-      await onSubmit(data);
+      await checkAccount(data);
       setLoading(false);
     } catch (err) {
       setLoading(false);
