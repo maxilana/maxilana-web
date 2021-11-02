@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
-import { AuthUser, LoginForm } from '~/components/auth';
+import { AuthComponent, LoginForm } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { Button } from '~/components/ui';
@@ -14,7 +14,6 @@ import { Button } from '~/components/ui';
 import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
 import useToggleState from '~/hooks/useToggleState';
-import useUser from '~/hooks/useUser';
 import { City } from '~/types/Models';
 
 interface Props {
@@ -26,7 +25,6 @@ const Modal = dynamic(() => import('../../common/Modal'));
 const Navbar: FC<Props> = ({ cities }) => {
   const { asPath } = useRouter();
   const [showModal, toggleModal] = useToggleState(false);
-  const { user } = useUser();
 
   return (
     <header className={styles.root}>
@@ -74,13 +72,7 @@ const Navbar: FC<Props> = ({ cities }) => {
             <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
-            {user !== undefined ? (
-              <AuthUser username={user?.name} />
-            ) : (
-              <span role="button" className="text-xs text-white block" onClick={toggleModal}>
-                Iniciar Sesión
-              </span>
-            )}
+            <AuthComponent onClickLogin={toggleModal} />
             <span className={styles.payOnlineLink}>
               <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
             </span>
@@ -89,7 +81,7 @@ const Navbar: FC<Props> = ({ cities }) => {
       </div>
       {showModal && (
         <Modal open onClose={toggleModal}>
-          <LoginForm />
+          <LoginForm onSuccess={toggleModal} />
         </Modal>
       )}
     </header>

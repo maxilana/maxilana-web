@@ -6,13 +6,19 @@ import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { CustomForm, InputField } from '~/components/common';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
+import useUser from '~/hooks/useUser';
 
 type FormValues = {
   user: string;
   password: string;
 };
 
-const LoginForm: FC = () => {
+interface Props {
+  onSuccess: () => void;
+}
+
+const LoginForm: FC<Props> = ({ onSuccess }) => {
+  const { mutateUser } = useUser();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +32,8 @@ const LoginForm: FC = () => {
         body: JSON.stringify(values),
       });
 
-      console.log(authUser);
+      mutateUser(authUser);
+      onSuccess();
     } catch (err) {
       setLoading(false);
       throw err;
