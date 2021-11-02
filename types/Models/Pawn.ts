@@ -15,6 +15,7 @@ export interface PawnAccount {
   totalPaymentAmount: number;
   dueDays: number; //DiasVencidos
   limitDueDays: number; //DiasVencidosPermitidos
+  pendingDueDays: number; //DiasVencidosPendientes
   normalDailyInterest: number; //InteresDiarioNormal
   dueDailyInterest: number; //InteresDiarioVencido
   minDaysToPay: number; //DiasPagoMinimo
@@ -23,6 +24,7 @@ export interface PawnAccount {
   accountBlocked: boolean; // BoletaBloqueada
   branch: string; // CodigoSucursal
   extraCharge: number; //comision
+  accountBlockedMessage: string; // Cuando accountBlocked es TRUE
 }
 
 export interface PawnPaymentSuccess {

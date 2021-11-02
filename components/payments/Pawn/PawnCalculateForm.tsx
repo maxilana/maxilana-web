@@ -35,17 +35,29 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [daysToExtend, setDaysToExtend] = useState(data.minDaysToPay);
 
+  const extensionAmount = useCalculatePawnExtension(data, daysToExtend); // PAGO DE EXTENSIÓN DE DÍAS
   const loanAmount = formatPrice({ amount: data.loanAmount, locale: LOCALE }); // PRÉSTAMO DEL CLIENTE
   const paymentAmount = formatPrice({ amount: data.paymentAmount, locale: LOCALE }); // PAGO DE REFRENDO
   const totalPaymentAmount = formatPrice({ amount: data.totalPaymentAmount, locale: LOCALE }); // DESEMPEÑO (SOLO ES INFORMATIVO)
-  const extensionAmount = useCalculatePawnExtension(data, daysToExtend); // PAGO DE EXTENSIÓN DE DÍAS
   const formattedExtensionAmount = formatPrice({ amount: extensionAmount, locale: LOCALE });
 
   const startDate = dayjs(data.startDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
   const dueDate = dayjs(data.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMMM YYYY');
 
+  let reason = '';
   const isPastLimitDueDays = data.dueDays > data.limitDueDays;
-  const isBlocked = data.accountBlocked || data.paymentPendingToApply;
+  const cannotBePaid = isPastLimitDueDays || data.accountBlocked || data.paymentPendingToApply;
+
+  if (cannotBePaid) {
+    if (isPastLimitDueDays || data.paymentPendingToApply) {
+      reason =
+        'Por el momento no es posible pagar, alguna de las razones son' +
+        ' ya realizaste un refrendo o tu límite de días para pagar vencieron.' +
+        ' Si tienes dudas comunícate con nosotros en este teléfono: 800 215 1515.';
+    } else {
+      reason = data.accountBlockedMessage;
+    }
+  }
 
   const buttonText = {
     idle: 'Pagar',
@@ -291,20 +303,19 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                     </Form.Item>
                   </div>
                   <div>
-                    {isBlocked && (
-                      <small className="inline-block text-xxs mb-2">
-                        Por el momento no es posible pagar, alguna de las razones son que tu boleta
-                        está bloqueada o ya realizaste un refrendo. Si tienes dudas comunícate con
-                        nosotros en este teléfono: 800 215 1515
-                      </small>
+                    {cannotBePaid ? (
+                      <>
+                        <small className="inline-block text-xxs mb-2">{reason}</small>
+                        <Button fullWidth text="Ver sucursales" href="/sucursales" />
+                      </>
+                    ) : (
+                      <Button
+                        fullWidth
+                        theme="primary"
+                        text={buttonText[status]}
+                        loading={['loading', 'searching'].includes(status)}
+                      />
                     )}
-                    <Button
-                      fullWidth
-                      theme="primary"
-                      disabled={isBlocked}
-                      text={buttonText[status]}
-                      loading={['loading', 'searching'].includes(status)}
-                    />
                   </div>
                 </div>
               </FormFeedback>
