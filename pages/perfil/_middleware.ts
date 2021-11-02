@@ -4,7 +4,7 @@ export function middleware(req: NextRequest, evt: NextFetchEvent) {
   const cookie = req.cookies[process.env?.AUTH_COOKIE_NAME ?? ''];
 
   if (!cookie) {
-    return NextResponse.rewrite('/');
+    return NextResponse.redirect('/');
   }
 
   return NextResponse.next();
