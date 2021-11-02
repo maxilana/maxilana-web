@@ -57,6 +57,7 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
     Activa: 'text-[#0BBF69]',
     Vencida: 'text-danger',
     Extraviada: 'text-danger',
+    'Proceso comercial': 'text-danger',
   };
 
   const handleFormSubmit = async (values: FormValues) => {

@@ -1,4 +1,4 @@
-export type PawnStatus = 'Activa' | 'Extraviada' | 'Vencida';
+export type PawnStatus = 'Activa' | 'Extraviada' | 'Vencida' | 'Proceso comercial';
 
 export interface PawnAccount {
   name: string;
