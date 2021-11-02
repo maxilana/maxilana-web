@@ -32,6 +32,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     SaldoPorAplicar,
     DiasPagoMinimo,
     DiasVencidos,
+    DiasVencidosPendientes,
     DiasVencidosPermitidos,
     InteresDiarioNormal,
     InteresDiarioVencido,
@@ -46,8 +47,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
   let paymentAmount = 0; // REFRENDO
   let totalPaymentAmount = 0; // DESEMPEÑO
   const extraCharge = Number(comision); // COMISION
-  const minPaymentAmount = roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge; // PAGO MÍNIMO
-  // const minPaymentAmount = roundDecimals(Math.round(Number(ImportePagoMinimo)) * extraCharge);
+  const minPaymentAmount = roundDecimals(roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge); // PAGO MÍNIMO
 
   /** CÁLCULO DE PAGO DE REFRENDO */
   const interest = Number(InteresNormal) + Number(InteresVencido);
@@ -86,9 +86,14 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
 
   totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
+  const accountBlocked = BoletaBloqueada === 'true';
+  const accountBlockedMessage = accountBlocked ? response?.Mensaje ?? '' : '';
+
   return {
     extraCharge,
     name: Cliente,
+    accountBlocked,
+    accountBlockedMessage,
     accountNumber: BoletaActual,
     accountLetter: data.letra,
     loanAmount: loan,
@@ -102,12 +107,12 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     totalPaymentAmount: totalPaymentAmount,
     dueDays: Number(DiasVencidos),
     limitDueDays: Number(DiasVencidosPermitidos),
+    pendingDueDays: Number(DiasVencidosPendientes),
     normalDailyInterest: Number(InteresDiarioNormal),
     dueDailyInterest: Number(InteresDiarioVencido),
     minDaysToPay: Number(DiasPagoMinimo),
     amountToAply: Number(SaldoPorAplicar),
     paymentPendingToApply: Number(RefrendoPendienteAplicar) === 1,
-    accountBlocked: BoletaBloqueada === 'true',
     branch: CodigoSucursal,
   };
 };
