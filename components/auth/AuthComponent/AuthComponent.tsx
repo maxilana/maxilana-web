@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import Link from 'next/link';
 import { FC, useState } from 'react';
+import { useRouter } from 'next/router';
 import { DownOutlined as ArrowDown } from '@ant-design/icons';
 
 import { Dropdown } from '~/components/ui';
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const AuthComponent: FC<Props> = ({ onClickLogin }) => {
+  const router = useRouter();
   const { user, mutateUser } = useUser();
   const [loading, setLoading] = useState(false);
   const [visible, toggleVisibility] = useState(false);
@@ -30,6 +32,7 @@ const AuthComponent: FC<Props> = ({ onClickLogin }) => {
       mutateUser(auth);
       setLoading(false);
       toggleVisibility(false);
+      router.push('/');
     } catch (err) {
       setLoading(false);
       console.log(err);
