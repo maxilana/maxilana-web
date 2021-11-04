@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 import { NextPage } from 'next';
 import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@ant-design/icons';
 
-import { Modal } from '~/components/common';
+import { Modal, PageLoader } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { PawnProfileForm, PawnProfileHub } from '~/components/profile';
@@ -29,7 +29,7 @@ const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
         if (!user || user.isLoggedIn === false) {
           return (
             <div className="max-w-2xl mx-auto py-4 sm:px-4 sm:py-8">
-              <p className="text-secondary">Cargando...</p>
+              <PageLoader text="Cargando perfil de usuario..." />
             </div>
           );
         }

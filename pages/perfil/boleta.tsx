@@ -7,12 +7,14 @@ import { PageLoader } from '~/components/common';
 import PaymentFlow from '~/components/profile/PaymentFlow';
 import useAccountStatus from '~/hooks/useAccountStatus';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
+import useUser from '~/hooks/useUser';
 
 export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 
 const PawnBallotProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const router = useRouter();
-  const { account } = useAccountStatus(4);
+  const { user } = useUser();
+  const { account } = useAccountStatus(user?.userCode);
   const { ids, status = 'idle' } = router.query;
   let ballots = undefined;
 

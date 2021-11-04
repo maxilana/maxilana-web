@@ -14,7 +14,7 @@ interface Props {
 const noop = () => {};
 
 const PawnProfileHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
-  const { account: data, loading } = useAccountStatus(4);
+  const { account: data, loading } = useAccountStatus(user?.userCode);
 
   if (loading) {
     return <PageLoader text="Obteniendo la información..." />;
@@ -23,8 +23,6 @@ const PawnProfileHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
   if (data.length < 1) {
     return <PawnEmptyList onAddAccount={onAddAccount} />;
   }
-
-  console.log(data);
 
   return <PawnList data={data} onAddAccount={onAddAccount} />;
 };
