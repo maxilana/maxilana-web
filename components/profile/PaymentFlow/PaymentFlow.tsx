@@ -1,4 +1,4 @@
-import React, { FC, useReducer } from 'react';
+import React, { FC, useEffect, useReducer } from 'react';
 
 import { PageLoader } from '~/components/common';
 import { requestPawn3DTransaction } from '~/api/payments';
@@ -6,6 +6,7 @@ import PaymentForm, { BankTransactionForm, PawnCalculateForm } from '~/component
 import { PawnAccount } from '~/types/Models';
 import { MaxilanaTransaction } from '~/types/Responses';
 import { PawnPaymentRequest, ServicePaymentRequest } from '~/types/Requests';
+import roundDecimals from '~/utils/roundDecimals';
 
 type PaymentRequest = ServicePaymentRequest;
 
@@ -64,11 +65,58 @@ const PAYMENT_CONCEPT = [
 ];
 
 interface Props {
-  data: PawnAccount;
+  status?: Status;
+  accounts: PawnAccount[];
 }
 
-const PawnPaymentFlow: FC<Props> = ({ data: account }) => {
+const PawnPaymentFlow: FC<Props> = ({ status = 'idle', accounts }) => {
+  let singleAccount = undefined;
   const [state, dispatch] = useReducer<typeof reducer>(reducer, initialState);
+
+  useEffect(() => {
+    if (status === 'payment_selected') {
+      const subtotal = accounts.reduce((sum, curr) => {
+        return sum + curr.paymentAmount;
+      }, 0);
+
+      const total = roundDecimals(subtotal);
+
+      const paymentRequest = {
+        paymentCode: '1',
+        paymentExtension: 0,
+        amount: total.toString(),
+        concept: PAYMENT_CONCEPT[0],
+      };
+
+      dispatch({ type: 'SET_PAYMENT', payload: { paymentRequest } });
+    }
+  }, []);
+
+  const retrievePaymentDetails = (paymentRequest: Payment) => {
+    let isMultiple = true;
+
+    if (accounts.length === 1) {
+      isMultiple = false;
+    }
+
+    const details = accounts.map((item) => {
+      const { amount, paymentCode, paymentExtension } = paymentRequest;
+      const { branch, accountLetter, accountNumber, requestDate, loanAmount } = item;
+
+      return {
+        sucursal: branch,
+        letra: accountLetter,
+        boleta: accountNumber,
+        fechaconsulta: requestDate,
+        prestamo: loanAmount.toString(),
+        codigotipopago: paymentCode,
+        diaspagados: paymentExtension.toString(),
+        monto: isMultiple ? item.paymentAmount.toString() : amount.toString(),
+      };
+    });
+
+    return details;
+  };
 
   const handlePaymentSelection = (data: any) => {
     let paymentCode = '1'; // REFRENDO
@@ -100,25 +148,16 @@ const PawnPaymentFlow: FC<Props> = ({ data: account }) => {
     const { paymentRequest } = state;
     const { concepto, correoelectronico, ...rest } = data;
 
-    if (!account || !paymentRequest) {
+    if (!paymentRequest) {
       throw new Error('No fue posible procesar el pago, vuelve a iniciar el proceso.');
     }
+
+    const paymentDetails = retrievePaymentDetails(paymentRequest);
 
     const request = {
       ...rest,
       email: correoelectronico,
-      detallepago: [
-        {
-          sucursal: account.branch,
-          letra: account.accountLetter,
-          boleta: account.accountNumber,
-          fechaconsulta: account.requestDate,
-          prestamo: account.loanAmount.toString(),
-          codigotipopago: paymentRequest.paymentCode,
-          monto: paymentRequest.amount.toString(),
-          diaspagados: paymentRequest.paymentExtension.toString(), // Pago de días (si se eligió)
-        },
-      ],
+      detallepago: paymentDetails,
     };
 
     const maxilanaTransaction = await requestPawn3DTransaction(request);
@@ -131,10 +170,14 @@ const PawnPaymentFlow: FC<Props> = ({ data: account }) => {
     dispatch({ type: 'SUBMIT_PAYMENT', payload: { transactionRequest } });
   };
 
+  if (accounts.length === 1) {
+    singleAccount = accounts[0];
+  }
+
   return (
     <div>
-      {state.status === 'idle' && account && (
-        <PawnCalculateForm data={account} onSubmit={handlePaymentSelection} />
+      {state.status === 'idle' && singleAccount && (
+        <PawnCalculateForm data={singleAccount} onSubmit={handlePaymentSelection} />
       )}
       {state.status === 'payment_selected' && state.paymentRequest && (
         <PaymentForm
@@ -150,7 +193,7 @@ const PawnPaymentFlow: FC<Props> = ({ data: account }) => {
           {state.transactionRequest !== null && (
             <BankTransactionForm
               {...state.transactionRequest}
-              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns&client=${account?.name}&total=${state.paymentRequest?.amount}`}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns&client=${singleAccount?.name}&total=${state.paymentRequest?.amount}`}
             />
           )}
         </PageLoader>

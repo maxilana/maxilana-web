@@ -99,7 +99,7 @@ export default function useAccountStatus(userCode?: number) {
 
         totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
 
-        const accountBlocked = BoletaBloqueada === 'true';
+        const accountBlocked = BoletaBloqueada === '1';
         const accountBlockedMessage = accountBlocked ? Mensaje ?? '' : '';
 
         return {
@@ -114,7 +114,7 @@ export default function useAccountStatus(userCode?: number) {
           status: Estatus,
           requestDate: fechaConsulta,
           dueDate: FecVen,
-          description: Mensaje,
+          description: '', // TODO: No existe este dato (TipoEmpeno)
           paymentAmount: paymentAmount,
           minPaymentAmount: minPaymentAmount,
           totalPaymentAmount: totalPaymentAmount,

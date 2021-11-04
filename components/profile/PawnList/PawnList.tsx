@@ -1,7 +1,8 @@
 import cn from 'classnames';
-import { FC, useCallback, useMemo, useState } from 'react';
 import dayjs from 'dayjs';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { FC, useCallback, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { RightOutlined as ArrowRight } from '@ant-design/icons';
 
@@ -41,6 +42,7 @@ dayjs.extend(localizedFormat);
 const LOCALE = 'es-MX';
 
 const PawnList: FC<Props> = ({ data, onAddAccount }) => {
+  const router = useRouter();
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState<Status>('idle');
   const [checkedState, setCheckedState] = useState<boolean[]>([]);
@@ -60,7 +62,9 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
   }, [status]);
 
   const handleSelectBallots = () => {
-    const payableBallots = data.filter((item) => item.status === 'Activa');
+    const payableBallots = data.filter((item) => {
+      return item.status === 'Activa' && !item.accountBlocked;
+    });
     setBallotsToPay(payableBallots);
     setStatus('selection');
   };
@@ -78,6 +82,17 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
 
     const totalAmount = roundDecimals(subtotal);
     setTotal(totalAmount);
+  };
+
+  const paySelectedBallots = () => {
+    const ids = checkedState
+      .filter((el) => el === true)
+      .map((_, idx) => {
+        return ballots[idx].accountNumber;
+      });
+
+    const queryString = encodeURIComponent(JSON.stringify(ids));
+    router.push(`/perfil/boleta?ids=${queryString}&status=payment_selected`);
   };
 
   return (
@@ -100,7 +115,8 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
               size="small"
               theme="primary"
               text={`Pagar refrendos $${total}`}
-              onClick={handleSelectBallots}
+              onClick={paySelectedBallots}
+              disabled={checkedState.every((el) => el === false)}
             />
           </>
         )}
@@ -113,7 +129,9 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
           const paymentAmount = formatPrice({ amount: item.paymentAmount, locale: LOCALE }); // PAGO DE REFRENDO
           const cannotBePaid = item.accountBlocked || item.status === 'Proceso comercial';
 
-          const link = cannotBePaid ? '/sucursales' : `/perfil/boleta?id=${item.accountNumber}`;
+          const link = cannotBePaid
+            ? '/sucursales'
+            : `/perfil/boleta?ids=["${item.accountNumber}"]`;
 
           if (status === 'selection') {
             return (
@@ -164,8 +182,8 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
               <Link href={link}>
                 <a
                   className={cn(
-                    'flex justify-between px-4 py-2 flex-wrap',
-                    'sm:py-8 sm:items-center',
+                    'grid grid-rows-2 grid-flow-col gap-1 px-4 py-2',
+                    'sm:grid-rows-1 sm:py-8 sm:items-center',
                   )}
                 >
                   <div>
@@ -198,7 +216,7 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
                     )}
                   </div>
                   {!cannotBePaid && (
-                    <div className="mt-2 sm:mt-0">
+                    <div className="mt-2 row-span-2 sm:mt-0 sm:row-span-1">
                       <span className="rounded-full bg-gray-100 w-10 h-10 flex items-center justify-center">
                         <ArrowRight />
                       </span>

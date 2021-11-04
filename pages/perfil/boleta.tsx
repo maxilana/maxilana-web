@@ -13,11 +13,15 @@ export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
 const PawnBallotProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const router = useRouter();
   const { account } = useAccountStatus(4);
-  const { id } = router.query;
-  let ballot = null;
+  const { ids, status = 'idle' } = router.query;
+  let ballots = undefined;
 
-  if (account) {
-    ballot = account.find((item) => item.accountNumber === id);
+  if (ids && account) {
+    const accounts: string[] = JSON.parse(`${ids}`);
+
+    if (Array.isArray(accounts)) {
+      ballots = account.filter((item) => accounts.includes(item.accountNumber));
+    }
   }
 
   return (
@@ -36,11 +40,14 @@ const PawnBallotProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages 
             ]}
           />
         </div>
-        {ballot !== null && ballot !== undefined ? (
-          <PaymentFlow data={ballot} />
-        ) : (
-          <PageLoader text="Obteniendo la boleta..." />
-        )}
+        {(() => {
+          if (ballots === undefined) {
+            return <PageLoader text="Obteniendo información de la boleta..." />;
+          }
+
+          // @ts-ignore
+          return <PaymentFlow accounts={ballots} status={status} />;
+        })()}
       </section>
     </Layout>
   );
