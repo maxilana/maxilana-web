@@ -6,14 +6,12 @@ import { Breadcrumbs } from '~/components/ui';
 import { PageLoader } from '~/components/common';
 import PaymentFlow from '~/components/profile/PaymentFlow';
 import useAccountStatus from '~/hooks/useAccountStatus';
-import { DefaultPageProps } from '~/types/DefaultPageProps';
-import useUser from '~/hooks/useUser';
+import { AuthPageProps } from '~/types/AuthPageProps';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
-const PawnBallotProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+const PawnBallotProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
   const router = useRouter();
-  const { user } = useUser();
   const { account } = useAccountStatus(user?.userCode);
   const { ids, status = 'idle' } = router.query;
   let ballots = undefined;

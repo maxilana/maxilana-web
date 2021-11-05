@@ -3,25 +3,23 @@ import { Tabs } from 'antd';
 import { NextPage } from 'next';
 import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@ant-design/icons';
 
-import { Modal, PageLoader } from '~/components/common';
 import { Layout } from '~/components/layout';
-import { DefaultPageProps } from '~/types/DefaultPageProps';
+import { Modal, PageLoader } from '~/components/common';
 import { PawnProfileForm, PawnProfileHub } from '~/components/profile';
-import useUser from '~/hooks/useUser';
 import useToggleState from '~/hooks/useToggleState';
+import { AuthPageProps } from '~/types/AuthPageProps';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
 const { TabPane } = Tabs;
 
-const ProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
-  const { user } = useUser();
+const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
   const [showModal, toggleModal] = useToggleState(false);
 
   return (
     <Layout
-      cities={cities}
-      legalPages={legalPages}
+      cities={cities || []}
+      legalPages={legalPages || []}
       title="Perfil de usuario"
       meta={{ css: ['/antd/tabs.css', '/antd/form.css'] }}
     >

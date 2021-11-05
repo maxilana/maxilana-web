@@ -4,11 +4,11 @@ import { NextPage } from 'next';
 import { Layout } from '~/components/layout';
 import { Breadcrumbs, Button } from '~/components/ui';
 import { CustomForm, InputField } from '~/components/common';
-import { DefaultPageProps } from '~/types/DefaultPageProps';
+import { AuthPageProps } from '~/types/AuthPageProps';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
+export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
-const EditProfilePage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
+const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = [] }) => {
   const [form] = Form.useForm();
 
   const handleSubmit = async (values: any) => {
