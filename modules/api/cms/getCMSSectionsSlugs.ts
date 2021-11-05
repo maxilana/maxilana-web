@@ -9,7 +9,7 @@ const getCMSSections = async (): Promise<string[]> => {
       }
     }
   `);
-  return response?.sections.map?.((section) => section?.slug);
+  return response?.sections?.map?.((section) => section?.slug);
 };
 
 export default getCMSSections;
