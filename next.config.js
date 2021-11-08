@@ -36,6 +36,7 @@ const nextConfig = {
   },
   redirects() {
     return [
+      // URLS del sitio viejo
       {
         source: '/index.html',
         destination: '/',
@@ -157,6 +158,46 @@ const nextConfig = {
       {
         source: '/api/:path*',
         destination: 'https://www.maxilana.com/api/:path*',
+      },
+      {
+        source: '/autoclave/:path*',
+        destination: 'https://www.maxilana.com/autoclave/:path*',
+      },
+      {
+        source: '/busquedaarticulos/:path*',
+        destination: 'https://www.maxilana.com/autoclave/:path*',
+      },
+      {
+        source: '/consultarventas/:path*',
+        destination: 'https://www.maxilana.com/consultarventas/:path*',
+      },
+      {
+        source: '/costoenvios/:path*',
+        destination: 'https://www.maxilana.com/costoenvios/:path*',
+      },
+      {
+        source: '/consultarventas/:path*',
+        destination: 'https://www.maxilana.com/consultarventas/:path*',
+      },
+      {
+        source: '/direccionessucursales/:path*',
+        destination: 'https://www.maxilana.com/direccionessucursales/:path*',
+      },
+      {
+        source: '/fotosremates/:path*',
+        destination: 'https://www.maxilana.com/fotosremates/:path*',
+      },
+      {
+        source: '/informacionsucursales/:path*',
+        destination: 'https://www.maxilana.com/informacionsucursales/:path*',
+      },
+      {
+        source: '/sinonimosremates/:path*',
+        destination: 'https://www.maxilana.com/sinonimosremates/:path*',
+      },
+      {
+        source: '/imagenes/:path*',
+        destination: 'https://www.maxilana.com/imagenes/:path*',
       },
     ];
   },
