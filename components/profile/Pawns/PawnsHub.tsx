@@ -24,7 +24,7 @@ const PawnsHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
     return <PawnEmptyList onAddAccount={onAddAccount} />;
   }
 
-  return <PawnList data={data} onAddAccount={onAddAccount} />;
+  return <PawnList data={data} />;
 };
 
 export default PawnsHub;

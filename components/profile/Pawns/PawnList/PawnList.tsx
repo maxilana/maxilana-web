@@ -14,7 +14,6 @@ import roundDecimals from '~/utils/roundDecimals';
 
 interface Props {
   data: PawnAccount[];
-  onAddAccount: () => void;
 }
 
 type Status = 'idle' | 'selection';
@@ -41,7 +40,7 @@ const statusStyles = {
 dayjs.extend(localizedFormat);
 const LOCALE = 'es-MX';
 
-const PawnList: FC<Props> = ({ data, onAddAccount }) => {
+const PawnList: FC<Props> = ({ data }) => {
   const router = useRouter();
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState<Status>('idle');
@@ -63,7 +62,14 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
 
   const handleSelectBallots = () => {
     const payableBallots = data.filter((item) => {
-      return item.status === 'Activa' && !item.accountBlocked;
+      const isPastLimitDueDays = item.dueDays > item.limitDueDays;
+      const canBePaid =
+        ['Activa', 'Vencida'].includes(item.status) &&
+        !item.accountBlocked &&
+        !isPastLimitDueDays &&
+        !item.paymentPendingToApply;
+
+      return canBePaid;
     });
     setBallotsToPay(payableBallots);
     setStatus('selection');
@@ -97,16 +103,17 @@ const PawnList: FC<Props> = ({ data, onAddAccount }) => {
 
   return (
     <div className="relative">
-      <div className="sticky top-0 border-gray-200 border-b flex px-2 pb-4 justify-between items-center">
+      <div className="border-gray-200 border-b flex px-2 pb-4 justify-between items-center">
         {status === 'idle' ? (
           <>
-            <Button size="small" text="Agregar boleta" onClick={onAddAccount} />
-            <Button
-              size="small"
-              theme="primary"
-              text="Pagar boletas"
-              onClick={handleSelectBallots}
-            />
+            <span className="text-right w-full">
+              <Button
+                size="small"
+                theme="primary"
+                text="Pagar boletas"
+                onClick={handleSelectBallots}
+              />
+            </span>
           </>
         ) : (
           <>
