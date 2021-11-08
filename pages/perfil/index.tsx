@@ -5,7 +5,7 @@ import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@
 
 import { Layout } from '~/components/layout';
 import { Modal, PageLoader } from '~/components/common';
-import { PawnProfileForm, PawnProfileHub } from '~/components/profile';
+import { PawnProfileForm, PawnProfileHub, OrdersHub } from '~/components/profile';
 import useToggleState from '~/hooks/useToggleState';
 import { AuthPageProps } from '~/types/AuthPageProps';
 
@@ -80,7 +80,7 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
                     </span>
                   }
                 >
-                  Tab 2
+                  <OrdersHub />
                 </TabPane>
               </Tabs>
             </div>
