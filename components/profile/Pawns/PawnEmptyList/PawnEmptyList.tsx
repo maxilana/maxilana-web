@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { EmptyPawns } from '../../svg';
+import { EmptyPawns } from '~/components/svg';
 import { Button } from '~/components/ui';
 
 interface Props {

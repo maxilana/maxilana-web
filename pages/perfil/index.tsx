@@ -5,7 +5,8 @@ import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@
 
 import { Layout } from '~/components/layout';
 import { Modal, PageLoader } from '~/components/common';
-import { PawnProfileForm, PawnProfileHub, OrdersHub } from '~/components/profile';
+import { OrdersHub, PawnsHub } from '~/components/profile';
+import { PawnAccountForm } from '~/components/profile/Pawns';
 import useToggleState from '~/hooks/useToggleState';
 import { AuthPageProps } from '~/types/AuthPageProps';
 
@@ -64,7 +65,7 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
                     </span>
                   }
                 >
-                  <PawnProfileHub
+                  <PawnsHub
                     user={user}
                     onAddAccount={() => {
                       toggleModal();
@@ -90,7 +91,7 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
 
       {showModal && (
         <Modal open onClose={() => toggleModal()}>
-          <PawnProfileForm />
+          <PawnAccountForm />
         </Modal>
       )}
     </Layout>

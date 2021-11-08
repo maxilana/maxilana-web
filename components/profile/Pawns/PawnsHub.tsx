@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import { User } from '~/types/Models';
-import PawnList from '../PawnList';
-import PawnEmptyList from '../PawnEmptyList';
+import PawnList from './PawnList';
+import PawnEmptyList from './PawnEmptyList';
 import useAccountStatus from '~/hooks/useAccountStatus';
 import { PageLoader } from '~/components/common';
 
@@ -13,7 +13,7 @@ interface Props {
 
 const noop = () => {};
 
-const PawnProfileHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
+const PawnsHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
   const { account: data, loading } = useAccountStatus(user?.userCode);
 
   if (loading) {
@@ -27,4 +27,4 @@ const PawnProfileHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
   return <PawnList data={data} onAddAccount={onAddAccount} />;
 };
 
-export default PawnProfileHub;
+export default PawnsHub;
