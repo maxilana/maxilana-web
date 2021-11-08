@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/dc2d25db-3faa-4083-839b-51704532f5fc/deploy-status)](https://app.netlify.com/sites/maxilana-web/deploys)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%adhocti%2Fmaxilana-web)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped
 with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
