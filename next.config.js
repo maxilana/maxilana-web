@@ -69,32 +69,32 @@ const nextConfig = {
       },
       {
         source: '/tijuana.php',
-        destination: '/sucursales/tijuana',
+        destination: '/sucursales/ciudad/tijuana',
         permanent: true,
       },
       {
         source: '/hermosillo.php',
-        destination: '/sucursales/hermosillo',
+        destination: '/sucursales/ciudad/hermosillo',
         permanent: true,
       },
       {
         source: '/culiacan.php',
-        destination: '/sucursales/culiacan',
+        destination: '/sucursales/ciudad/culiacan',
         permanent: true,
       },
       {
         source: '/mazatlan.php',
-        destination: '/sucursales/mazatlan',
+        destination: '/sucursales/ciudad/mazatlan',
         permanent: true,
       },
       {
         source: '/guadalajara.php',
-        destination: '/sucursales/guadalajara',
+        destination: '/sucursales/ciudad/guadalajara',
         permanent: true,
       },
       {
         source: '/mexicali.php',
-        destination: '/sucursales/mexicali',
+        destination: '/sucursales/ciudad/mexicali',
         permanent: true,
       },
       {
