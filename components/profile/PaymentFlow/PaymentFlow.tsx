@@ -84,7 +84,7 @@ const PawnPaymentFlow: FC<Props> = ({ status = 'idle', accounts }) => {
       const paymentRequest = {
         paymentCode: '1',
         paymentExtension: 0,
-        amount: total.toString(),
+        amount: total,
         concept: PAYMENT_CONCEPT[0],
       };
 

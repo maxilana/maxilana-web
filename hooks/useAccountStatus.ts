@@ -24,6 +24,7 @@ export default function useAccountStatus(userCode?: number) {
           FecVen,
           Prestamo,
           Refrendo,
+          TipoEmpeno,
           // Sucursal,
           Codigosucursal,
           Estatus,
@@ -114,7 +115,7 @@ export default function useAccountStatus(userCode?: number) {
           status: Estatus,
           requestDate: fechaConsulta,
           dueDate: FecVen,
-          description: '', // TODO: No existe este dato (TipoEmpeno)
+          description: TipoEmpeno,
           paymentAmount: paymentAmount,
           minPaymentAmount: minPaymentAmount,
           totalPaymentAmount: totalPaymentAmount,
@@ -125,7 +126,7 @@ export default function useAccountStatus(userCode?: number) {
           dueDailyInterest: Number(InteresDiarioVencido),
           minDaysToPay: Number(DiasPagoMinimo),
           amountToAply: Number(SaldoPorAplicar),
-          paymentPendingToApply: Number(PagoEnProceso) === 1, // TODO: Preguntar si PagoEnProceso es el RefrendoPendientedeAplicar.
+          paymentPendingToApply: Number(PagoEnProceso) === 1,
           branch: Codigosucursal,
         };
       });

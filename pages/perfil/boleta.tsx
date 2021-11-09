@@ -12,15 +12,15 @@ export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
 const PawnBallotProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
   const router = useRouter();
-  const { account } = useAccountStatus(user?.userCode);
+  const { account, loading } = useAccountStatus(user?.userCode);
   const { ids, status = 'idle' } = router.query;
   let ballots = undefined;
 
-  if (ids && account) {
-    const accounts: string[] = JSON.parse(`${ids}`);
+  if (ids && !loading) {
+    const selectedIds: string[] = JSON.parse(`${ids}`);
 
-    if (Array.isArray(accounts)) {
-      ballots = account.filter((item) => accounts.includes(item.accountNumber));
+    if (Array.isArray(selectedIds)) {
+      ballots = account.filter((item) => selectedIds.includes(item.accountNumber));
     }
   }
 
