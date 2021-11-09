@@ -35,6 +35,17 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   redirects() {
+    const externalLegacyPaths = [
+      'autoclavepp',
+      'busquedaarticulos',
+      'consultarventas',
+      'costoenvios',
+      'descuentosremates',
+      'direccionessucursales',
+      'fotosremates',
+      'informacionsucursales',
+      'sinonimosremates',
+    ];
     return [
       // URLS del sitio viejo
       {
@@ -157,47 +168,44 @@ const nextConfig = {
       },
       {
         source: '/api/:path*',
-        destination: 'https://www.maxilana.com/api/:path*',
+        destination: 'https://consola.maxilana.com/api/:path*',
       },
       {
-        source: '/autoclave/:path*',
-        destination: 'https://www.maxilana.com/autoclave/:path*',
+        source: '/autoclavepp/:path*',
+        destination: 'https://consola.maxilana.com/autoclavepp/:path*',
       },
+
       {
         source: '/busquedaarticulos/:path*',
-        destination: 'https://www.maxilana.com/autoclave/:path*',
+        destination: 'https://consola.maxilana.com/busquedaarticulos/:path*',
       },
       {
         source: '/consultarventas/:path*',
-        destination: 'https://www.maxilana.com/consultarventas/:path*',
+        destination: 'https://consola.maxilana.com/consultarventas/:path*',
       },
       {
         source: '/costoenvios/:path*',
-        destination: 'https://www.maxilana.com/costoenvios/:path*',
-      },
-      {
-        source: '/consultarventas/:path*',
-        destination: 'https://www.maxilana.com/consultarventas/:path*',
+        destination: 'https://consola.maxilana.com/costoenvios/:path*',
       },
       {
         source: '/direccionessucursales/:path*',
-        destination: 'https://www.maxilana.com/direccionessucursales/:path*',
+        destination: 'https://consola.maxilana.com/direccionessucursales/:path*',
       },
       {
         source: '/fotosremates/:path*',
-        destination: 'https://www.maxilana.com/fotosremates/:path*',
+        destination: 'https://consola.maxilana.com/fotosremates/:path*',
       },
       {
         source: '/informacionsucursales/:path*',
-        destination: 'https://www.maxilana.com/informacionsucursales/:path*',
+        destination: 'https://consola.maxilana.com/informacionsucursales/:path*',
       },
       {
         source: '/sinonimosremates/:path*',
-        destination: 'https://www.maxilana.com/sinonimosremates/:path*',
+        destination: 'https://consola.maxilana.com/sinonimosremates/:path*',
       },
       {
         source: '/imagenes/:path*',
-        destination: 'https://www.maxilana.com/imagenes/:path*',
+        destination: 'https://consola.maxilana.com/imagenes/:path*',
       },
     ];
   },
