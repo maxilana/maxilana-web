@@ -17,7 +17,7 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getCMSSectionsSlugs();
   return {
     paths: slugs?.map?.((slug) => ({ params: { slug } })),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
