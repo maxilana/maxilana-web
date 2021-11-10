@@ -7,7 +7,7 @@ import { GetAccountStatus } from '~/types/Responses';
 import roundDecimals from '~/utils/roundDecimals';
 import roundUpToFifty from '~/utils/roundUpToFifty';
 
-export default function useAccountStatus(userCode?: number) {
+export default function useAccountStatus(userCode?: string) {
   const { data, error, isValidating } = useSWR<GetAccountStatus>(
     userCode !== undefined ? `/usuarios/estadodecuenta?codigousuario=${userCode}` : null,
     {

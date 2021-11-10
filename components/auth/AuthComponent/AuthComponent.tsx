@@ -39,7 +39,7 @@ const AuthComponent: FC<Props> = ({ onClickLogin }) => {
     }
   };
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || !user) {
     return (
       <span role="button" className="text-xs text-white block" onClick={onClickLogin}>
         Iniciar Sesión
