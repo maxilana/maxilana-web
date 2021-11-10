@@ -1,6 +1,6 @@
 export interface User {
   isLoggedIn: boolean;
-  userCode: number;
+  userCode: string;
   name: string;
   lastname: string;
 }

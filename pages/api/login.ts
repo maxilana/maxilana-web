@@ -20,7 +20,7 @@ export default withSession(async (req, res) => {
 
     const authUser: User = {
       isLoggedIn: true,
-      userCode: Number(response.CodigoUsuario),
+      userCode: response.CodigoUsuario,
       name: response.NombreCompleto,
       lastname: `${response.PrimerApellido} ${response.SegundoApellido}`,
     };

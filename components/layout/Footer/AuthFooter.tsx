@@ -3,7 +3,7 @@ import Link from 'next/link';
 const AuthFooter = () => {
   return (
     <footer className="my-12 mx-auto sm:max-w-xl">
-      <ul className="flex flex-col items-center justify-between text-sm sm:flex-row">
+      <ul className="flex flex-col items-center justify-between text-center text-sm sm:flex-row">
         <li className="text-link uppercase p-1 mx-4">
           <Link href="/contacto">
             <a>Contacto</a>

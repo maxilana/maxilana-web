@@ -1,3 +1,4 @@
+export * from './Auth';
 export * from './Contact';
 export * from './Pawns';
 export * from './Loans';
