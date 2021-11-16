@@ -207,6 +207,10 @@ const nextConfig = {
         source: '/imagenes/:path*',
         destination: 'https://consola.maxilana.com/imagenes/:path*',
       },
+      {
+        source: '/subasta/:path*',
+        destination: 'https://consola.maxilana.com/subasta/:path*',
+      },
     ];
   },
 };
