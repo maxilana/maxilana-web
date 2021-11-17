@@ -2,11 +2,11 @@ import cn from 'classnames';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { RightOutlined as ArrowRight } from '@ant-design/icons';
+import { RightOutlined as ArrowRight, InfoCircleOutlined } from '@ant-design/icons';
 
-import { Button } from '~/components/ui';
+import { Button, Tooltip } from '~/components/ui';
 import { PawnAccount } from '~/types/Models';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
@@ -101,19 +101,31 @@ const PawnList: FC<Props> = ({ data }) => {
     router.push(`/perfil/boleta?ids=${queryString}&status=payment_selected`);
   };
 
+  const globalCreditBalance = useMemo(() => {
+    const balance = data.reduce((accum, current) => {
+      return accum + current.creditBalance;
+    }, 0);
+
+    return formatPrice({ amount: balance, locale: 'es-MX' });
+  }, [data]);
+
   return (
     <div className="relative">
       <div className="border-gray-200 border-b flex px-2 pb-4 justify-between items-center">
         {status === 'idle' ? (
           <>
-            <span className="text-right w-full">
-              <Button
-                size="small"
-                theme="primary"
-                text="Pagar boletas"
-                onClick={handleSelectBallots}
-              />
-            </span>
+            <Tooltip text="Saldo a favor. Si tu balance es positivo te podemos prestar más por tu empeño">
+              <span className="text-sm text-secondary flex items-center">
+                <span className="mr-1">{`Balance ${globalCreditBalance}`}</span>
+                <InfoCircleOutlined />
+              </span>
+            </Tooltip>
+            <Button
+              size="small"
+              theme="primary"
+              text="Pagar boletas"
+              onClick={handleSelectBallots}
+            />
           </>
         ) : (
           <>

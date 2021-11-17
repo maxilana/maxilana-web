@@ -25,6 +25,7 @@ export interface PawnAccount {
   branch: string; // CodigoSucursal
   extraCharge: number; //comision
   accountBlockedMessage: string; // Cuando accountBlocked es TRUE
+  creditBalance: number; //SaldoAFavor (no viene en el endpoint que se usa en pagos)
 }
 
 export interface PawnPaymentSuccess {

@@ -40,7 +40,7 @@ export default function useAccountStatus(userCode?: string) {
           DiasPagoMinimo,
           ImportePagoMinimo,
           DiasVencidosPendientes,
-          // SaldoAFavor,
+          SaldoAFavor,
           BoletaBloqueada,
           Mensaje,
           PagoEnProceso,
@@ -52,9 +52,9 @@ export default function useAccountStatus(userCode?: string) {
         // let decimal = 0;
         let decimalTotal = 0;
         let loan = Number(Prestamo);
-        let paymentAmount = Number(Refrendo); // REFRENDO
         let totalPaymentAmount = 0; // DESEMPEÑO
         const extraCharge = comision; // COMISION
+        let paymentAmount = Number(Refrendo); // REFRENDO
         const minPaymentAmount = roundDecimals(
           roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge,
         ); // PAGO MÍNIMO
@@ -77,8 +77,7 @@ export default function useAccountStatus(userCode?: string) {
         //   paymentAmount = Math.round(interest + (0.5 + decimal));
         // }
 
-        // TODO: Preguntar si la cantidad de refrendo ya viene con la comisión
-        // paymentAmount = roundDecimals(paymentAmount * extraCharge);
+        paymentAmount = roundDecimals(paymentAmount * extraCharge);
 
         /** CÁLCULO DE PAGO DE DESEMPEÑO */
         // SOLO INFORMATIVO, NO SE PUEDE PAGAR
@@ -128,6 +127,7 @@ export default function useAccountStatus(userCode?: string) {
           amountToAply: Number(SaldoPorAplicar),
           paymentPendingToApply: Number(PagoEnProceso) === 1,
           branch: Codigosucursal,
+          creditBalance: Number(SaldoAFavor),
         };
       });
     }

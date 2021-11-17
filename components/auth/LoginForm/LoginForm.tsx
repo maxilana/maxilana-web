@@ -59,11 +59,9 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
     <CustomForm form={form} name="loginForm" className="max-w-lg" onSubmit={handleSubmit}>
       <>
         <header className="text-center">
-          <Link href="/">
-            <a className="inline-flex">
-              <Logo alt width={182} height={46} />
-            </a>
-          </Link>
+          <span className="inline-flex">
+            <Logo alt width={182} height={46} />
+          </span>
         </header>
         <div className="px-4">
           <p className="text-center text-secondary my-6">Inicia sesión con tu email o celular</p>
