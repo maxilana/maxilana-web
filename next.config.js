@@ -51,6 +51,7 @@ const nextConfig = {
       ...externalLegacyPaths.map((item) => ({
         source: `/${item}`,
         destination: `https://consola.maxilana.com/${item}`,
+        permanent: true,
       })),
       // URLS del sitio viejo
       {

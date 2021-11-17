@@ -140,6 +140,20 @@ const ProductsFilters: FC<Props> = ({
 
   useDebounceEffect((debouncedChanges) => handleChange(debouncedChanges, null), 500, [formChanges]);
 
+  const branchName = (() => {
+    const city = ciudad ? parseInt(ciudad as string) : 'all';
+    const branch = sucursal ? parseInt(sucursal as string) : 'all';
+    if (branch !== 'all') {
+      const branchSelected = branches?.find?.((item) => branch === item.id);
+      return branchSelected?.name;
+    }
+    if (city !== 'all') {
+      const citySelected = cities?.find?.((item) => city === item.id);
+      return citySelected?.name;
+    }
+    return 'Todas';
+  })();
+
   return (
     <Form
       className={cn(styles.root, { [styles.visible]: visible })}
@@ -230,9 +244,7 @@ const ProductsFilters: FC<Props> = ({
                     <Checkbox value="0" disabled={vtalinea === '0'}>
                       <span>
                         Venta en sucursal
-                        <span className="block text-secondary line-clamp-1">
-                          Culiacan y Navolato
-                        </span>
+                        <span className="block text-secondary line-clamp-1">{branchName}</span>
                       </span>
                       <ProductBadge type="shop" />
                     </Checkbox>
