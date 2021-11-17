@@ -123,7 +123,7 @@ const PawnList: FC<Props> = ({ data }) => {
             <Button
               size="small"
               theme="primary"
-              text="Pagar boletas"
+              text="Pagar refrendos"
               onClick={handleSelectBallots}
             />
           </>

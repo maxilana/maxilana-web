@@ -46,13 +46,6 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
                 {/* <span className="block text-secondary text-sm">ezerangel@live.com</span>
                 <span className="p-1 rounded-sm bg-surface-dark text-xs">Público general</span> */}
               </div>
-              <div>
-                <Link href="/perfil/editar-perfil">
-                  <a>
-                    <EditOutlined style={{ fontSize: 24 }} />
-                  </a>
-                </Link>
-              </div>
             </header>
             <div className="relative bg-white border border-surface-dark sm:rounded-sm">
               <Tabs defaultActiveKey="boletas">
