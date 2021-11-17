@@ -177,8 +177,8 @@ const nextConfig = {
         destination: 'https://consola.maxilana.com/api/:path*',
       },
       {
-        source: '/imagenes/:path*',
-        destination: 'https://consola.maxilana.com/imagenes/:path*',
+        source: '/images/:path*',
+        destination: 'https://consola.maxilana.com/images/:path*',
       },
     ];
   },
