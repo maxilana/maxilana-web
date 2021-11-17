@@ -103,7 +103,7 @@ const PawnList: FC<Props> = ({ data }) => {
 
   const globalCreditBalance = useMemo(() => {
     const balance = data.reduce((accum, current) => {
-      return accum + current.creditBalance;
+      return accum + (current?.creditBalance ?? 0);
     }, 0);
 
     return formatPrice({ amount: balance, locale: 'es-MX' });
