@@ -12,9 +12,6 @@ interface Props {
   items: CMSWhatsApp[];
 }
 
-/**
- * TODO: PEDIR LOS NÚMEROS DE WHATSAPP
- */
 const PawnSelectableCity: FC<Props> = ({ onBack, items }) => {
   return (
     <div className={containerStyles.root}>
@@ -27,7 +24,7 @@ const PawnSelectableCity: FC<Props> = ({ onBack, items }) => {
               key={item.id}
               rel="noreferrer"
               className={cn('border border-surface rounded p-4', 'hover:bg-surface-dark')}
-              href={`https://api.whatsapp.com/send?phone=521${item.number}/text=Hola me gustaría solicitar un empeño`}
+              href={`https://api.whatsapp.com/send?phone=521${item.number}&text=Hola me gustaría solicitar un empeño`}
               target="_blank"
             >
               <WhatsAppOutlined style={{ fontSize: 32, color: '#0BBF69' }} />
@@ -44,38 +41,5 @@ const PawnSelectableCity: FC<Props> = ({ onBack, items }) => {
     </div>
   );
 };
-
-const cities = [
-  {
-    id: 1,
-    label: 'Culiacán y Navolato',
-    href: '6675021267',
-  },
-  {
-    id: 2,
-    label: 'Mazatlán',
-    href: '6692405437',
-  },
-  {
-    id: 3,
-    label: 'Guadalajara',
-    href: '3318911511',
-  },
-  {
-    id: 4,
-    label: 'Hermosillo',
-    href: '6624294030',
-  },
-  {
-    id: 5,
-    label: 'Mexicali',
-    href: '6861571304',
-  },
-  {
-    id: 6,
-    label: 'Tijuana',
-    href: '664120345',
-  },
-];
 
 export default PawnSelectableCity;
