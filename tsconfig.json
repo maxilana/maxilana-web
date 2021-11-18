@@ -23,8 +23,7 @@
       "~/types": ["types/*"],
       "~/utils/*": ["utils/*"],
       "~/public/*": ["public/*"]
-    },
-    "types": ["./next-env.d.ts"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "modules/lib/*"],
   "exclude": ["node_modules"]
