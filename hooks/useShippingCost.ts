@@ -3,7 +3,7 @@ import useSWR from 'swr';
 import fetcher from '~/api/fetcher';
 import { GetShippingCost } from '~/types/Responses/GetShippingCost';
 
-const useShippingCost = (id: string): number => {
+const useShippingCost = (id: string): number | undefined => {
   const { data, isValidating } = useSWR<GetShippingCost>(`/obtenercostoenvio/${id}`, {
     fetcher: fetcher,
     revalidateOnFocus: false,
@@ -15,7 +15,7 @@ const useShippingCost = (id: string): number => {
     return Number(amount);
   }
 
-  return 0;
+  return undefined;
 };
 
 export default useShippingCost;
