@@ -75,8 +75,8 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
                     </Form.Item>
                   </div>
                   <div>
-                    <Form.Item name="letra" rules={[{ required: true, len: 1 }]}>
-                      <InputField label="Letra" maxLength={1} />
+                    <Form.Item name="letra" rules={[{ required: true }]}>
+                      <InputField label="Letra" maxLength={3} />
                     </Form.Item>
                   </div>
                   <div>
