@@ -17,4 +17,5 @@ export interface Product {
   precod: number; // TODO:Que es esto? preguntas a maxilana
   slug?: string;
   saleOnline?: boolean;
+  promoDiscount?: number;
 }
