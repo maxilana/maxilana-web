@@ -54,9 +54,9 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
     let totalPrice = 0;
 
     if (product.netPrice) {
-      totalPrice = shipping + product.netPrice;
+      totalPrice = shipping || 0 + product.netPrice;
     } else {
-      totalPrice = shipping + product.price;
+      totalPrice = shipping || 0 + product.price;
     }
 
     try {
@@ -243,10 +243,20 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                   }}
                 >
                   <div>
-                    <CartSummary data={product} />
+                    <CartSummary
+                      data={product}
+                      shipping={shipping}
+                      loadingShipping={shipping === undefined}
+                    />
                     <hr className="my-4" />
                     <div>
-                      <Button fullWidth size="large" theme="primary" text="Proceder al pago" />
+                      <Button
+                        fullWidth
+                        size="large"
+                        theme="primary"
+                        text="Proceder al pago"
+                        disabled={shipping === undefined}
+                      />
                     </div>
                     <hr className="my-4" />
                     <div className="text-center">

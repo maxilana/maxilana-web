@@ -6,17 +6,18 @@ import { usePrice } from '~/modules/hooks';
 import { Product } from '~/types/Models/Product';
 
 import styles from './CartSummary.module.css';
-import useShippingCost from '~/hooks/useShippingCost';
 
 interface Props {
   data: Product;
+  shipping?: number;
+  loadingShipping?: boolean;
 }
 
-const CartSummary: FC<Props> = ({ data }) => {
+const CartSummary: FC<Props> = ({ data, shipping = 0, loadingShipping }) => {
   const { name, price, image, netPrice, observations, brand } = data;
-  const shipping = useShippingCost(data.id);
 
   const { price: shippingPrice } = usePrice({ amount: shipping });
+
   const {
     price: discountPrice,
     basePrice,
@@ -24,7 +25,7 @@ const CartSummary: FC<Props> = ({ data }) => {
   } = usePrice({ amount: netPrice, baseAmount: price });
 
   const { price: totalPrice } = usePrice(
-    shipping && discount ? { amount: netPrice + shipping } : { amount: price + shipping },
+    discount ? { amount: netPrice + shipping } : { amount: price + shipping },
   );
 
   return (
@@ -68,11 +69,13 @@ const CartSummary: FC<Props> = ({ data }) => {
         )}
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio de envio</span>
-          <span className={styles.amount}>{shippingPrice}</span>
+          <span className={styles.amount}>{loadingShipping ? '...' : shippingPrice}</span>
         </div>
         <div className={styles.rowSplit}>
           <span className="font-semibold text-lg">Total</span>
-          <span className={cn(styles.amount, styles.amountFeat)}>{totalPrice}</span>
+          <span className={cn(styles.amount, styles.amountFeat)}>
+            {loadingShipping ? '-' : totalPrice}
+          </span>
         </div>
       </div>
     </div>

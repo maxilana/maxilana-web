@@ -59,7 +59,7 @@ const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
           <div className={styles.innerSection}>
             <h2 className={styles.subtitle}>Resumen del pedido:</h2>
             <div>
-              <CartSummary data={product} />
+              <CartSummary data={product} shipping={info?.shipping.amount} />
             </div>
           </div>
         )}
