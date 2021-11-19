@@ -180,6 +180,10 @@ const nextConfig = {
         source: '/images/:path*',
         destination: 'https://consola.maxilana.com/images/:path*',
       },
+      {
+        source: '/subasta/:path*',
+        destination: 'https://consola.maxilana.com/subasta/:path*',
+      },
     ];
   },
 };
