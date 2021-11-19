@@ -11,11 +11,7 @@ type FormValues = {
   monto: number;
 };
 
-interface Props {
-  onSuccess?: () => void;
-}
-
-const PawnAccountForm: FC<Props> = ({ onSuccess }) => {
+const PawnAccountForm: FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -45,8 +41,8 @@ const PawnAccountForm: FC<Props> = ({ onSuccess }) => {
             </Form.Item>
           </div>
           <div>
-            <Form.Item name="letra" rules={[{ required: true, len: 1 }]}>
-              <InputField label="Letra" maxLength={1} />
+            <Form.Item name="letra" rules={[{ required: true }]}>
+              <InputField label="Letra" maxLength={3} />
             </Form.Item>
           </div>
           <div>
