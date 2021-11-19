@@ -193,8 +193,6 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                         {
                           required: true,
                           validator: (_, value) => {
-                            console.log(value);
-
                             const dt = dayjs(value, 'MM/YY');
                             const isFuture = dt.isAfter(dayjs());
 

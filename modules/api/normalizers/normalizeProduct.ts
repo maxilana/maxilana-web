@@ -35,6 +35,7 @@ const normalizeProduct = (noNormalized: Producto): Product => ({
   image: !!noNormalized.imagen ? `${imageBaseURL}/${noNormalized.codigo}.jpg` : null,
   precod: noNormalized.precod,
   saleOnline: Boolean(noNormalized.ventalinea),
+  promoDiscount: Number(noNormalized?.descuento ?? 0),
 });
 
 export default normalizeProduct;
