@@ -160,7 +160,7 @@ const ProductView: NextPage<Props> = ({
               </div>
               {product?.saleOnline && product?.promoDiscount && (
                 <div className="mt-4">
-                  <p>{`%${product.promoDiscount}`} de descuento adicional comprando en línea.</p>
+                  <p>{`${product.promoDiscount}%`} de descuento adicional comprando en línea.</p>
                 </div>
               )}
               {product?.observations && (

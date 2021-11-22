@@ -110,7 +110,7 @@ const footerMenu = (cities: City[], legalPages: Partial<CMSLegal>[]) => {
       {
         id: 3,
         label: 'Contrato de adhesión',
-        href: 'https://maxilana.com/assets/contratoadhesion.pdf',
+        href: '/contratoadhesion.pdf',
         target: '_blank',
       },
       {
