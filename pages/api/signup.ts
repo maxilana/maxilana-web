@@ -26,8 +26,11 @@ export default withSession(async (req, res) => {
     const authUser: User = {
       isLoggedIn: true,
       name: params.Nombre,
-      lastname: `${params.Apellidop} ${params.Apellidom}`,
+      lastname: params.Apellidop,
+      surname: params.Apellidom,
       userCode: response.Usuario,
+      cellphone: params?.Celular ?? '',
+      email: params?.Correo ?? '',
     };
 
     req.session.set('user', authUser);

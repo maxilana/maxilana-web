@@ -22,7 +22,10 @@ export default withSession(async (req, res) => {
       isLoggedIn: true,
       userCode: response.CodigoUsuario,
       name: response.NombreCompleto,
-      lastname: `${response.PrimerApellido} ${response.SegundoApellido}`,
+      lastname: response.PrimerApellido,
+      surname: response.SegundoApellido,
+      cellphone: '', // No viene en el login
+      email: '', // No viene en el login
     };
 
     req.session.set('user', authUser);

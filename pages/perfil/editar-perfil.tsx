@@ -5,16 +5,45 @@ import { Layout } from '~/components/layout';
 import { Breadcrumbs, Button } from '~/components/ui';
 import { CustomForm, InputField } from '~/components/common';
 import { AuthPageProps } from '~/types/AuthPageProps';
+import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 
 export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
-const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = [] }) => {
-  const [form] = Form.useForm();
+type FormValues = {
+  Nombre: string;
+  Apellidop: string;
+  Apellidom: string;
+  Celular: string;
+  Correo: string;
+  Contrasena?: string;
+  ContrasenaNueva?: string;
+};
 
-  const handleSubmit = async (values: any) => {
-    console.log(values);
+const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = [], user }) => {
+  const [form] = Form.useForm<FormValues>();
 
-    throw new Error('Este es un error de prueba');
+  const handleSubmit = async (values: FormValues) => {
+    const { Contrasena, ContrasenaNueva, ...rest } = values;
+    let params = null;
+
+    try {
+      if (ContrasenaNueva) {
+        params = {
+          ...rest,
+          Contrasena: ContrasenaNueva,
+        };
+      } else {
+        params = { ...rest };
+      }
+
+      await NextAPIMutator({
+        endpoint: '/api/edit-user',
+        method: 'POST',
+        body: JSON.stringify(params),
+      });
+    } catch (err) {
+      throw err;
+    }
   };
 
   return (
@@ -33,25 +62,36 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
             ]}
           />
         </div>
-        <CustomForm form={form} name="profileForm" onSubmit={handleSubmit}>
+        <CustomForm
+          form={form}
+          name="profileForm"
+          onSubmit={handleSubmit}
+          initialValues={{
+            Nombre: user.name,
+            Apellidop: user.lastname,
+            Apellidom: user.surname,
+            Celular: user?.cellphone ?? '',
+            Correo: user?.email ?? '',
+          }}
+        >
           <>
             <h1 className="h6">Editar perfil</h1>
             <div className="grid gap-4 mt-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <Form.Item name="nombre" rules={[{ required: true }]}>
+                <Form.Item name="Nombre">
                   <InputField label="Nombre completo" />
                 </Form.Item>
               </div>
-              <Form.Item name="apellidoPaterno" rules={[{ required: true }]}>
+              <Form.Item name="Apellidop">
                 <InputField label="Apellido materno" />
               </Form.Item>
-              <Form.Item name="apellidoMaterno" rules={[{ required: true }]}>
+              <Form.Item name="Apellidom">
                 <InputField label="Apellido materno" />
               </Form.Item>
-              <Form.Item name="celular" rules={[{ required: true }]}>
+              <Form.Item name="Celular">
                 <InputField type="tel" label="Celular" maxLength={10} />
               </Form.Item>
-              <Form.Item name="correoElectronico" rules={[{ required: true }]}>
+              <Form.Item name="Correo">
                 <InputField label="Correo electrónico" />
               </Form.Item>
               <div className="sm:col-span-2">
@@ -59,11 +99,17 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
               </div>
               <div className="sm:col-span-2">
                 <Form.Item
-                  name="contrasenaActual"
+                  name="Contrasena"
                   rules={[
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (getFieldValue('contrasenaNueva') !== null && !value) {
+                        if (value && !getFieldValue('ContrasenaNueva')) {
+                          return Promise.reject(
+                            'Para cambiar tu contraseña, llena todos los campos.',
+                          );
+                        }
+
+                        if (getFieldValue('ContrasenaNueva') && !value) {
                           return Promise.reject('Ingresa tu contraseña actual');
                         }
 
@@ -79,12 +125,12 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
                 <InputField type="password" label="Contraseña nueva" />
               </Form.Item>
               <Form.Item
-                name="confirmarContrasenaNueva"
-                dependencies={['contrasenaNueva']}
+                name="ConfirmarContrasena"
+                dependencies={['ContrasenaNueva']}
                 rules={[
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('contrasenaNueva') === value) {
+                      if (!value || getFieldValue('ContrasenaNueva') === value) {
                         return Promise.resolve();
                       }
 
