@@ -56,7 +56,7 @@ const CartSummary: FC<Props> = ({ data, shipping = 0, loadingShipping }) => {
       <div className="space-y-2">
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio del artículo</span>
-          <span className={styles.amount}>{basePrice}</span>
+          <span className={styles.amount}>{basePrice ?? discountPrice}</span>
         </div>
         {discount && (
           <div className={styles.rowSplit}>
