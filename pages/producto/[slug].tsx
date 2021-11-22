@@ -26,6 +26,7 @@ import { Truck } from '~/components/svg';
 import LogoRedondo from '../../public/logo-redondo.png';
 import useAddItem from '~/hooks/cart/useAddItem';
 import { formatPrice } from '~/modules/hooks/usePrice';
+import getOnlinePrice from '~/utils/getOnlinePrice';
 
 interface GSProps {
   product: Product;
@@ -103,11 +104,6 @@ const ProductView: NextPage<Props> = ({
     baseAmount: product?.price,
   });
 
-  const onlinePrice =
-    product !== null && product?.promoDiscount
-      ? product.netPrice - (product.netPrice * product?.promoDiscount) / 100
-      : product?.netPrice ?? 0;
-
   useEffect(() => {
     if (process.browser) {
       setShareURL(window?.location?.toString());
@@ -126,6 +122,8 @@ const ProductView: NextPage<Props> = ({
       </Layout>
     );
   }
+
+  const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
 
   const handlePurchaseProduct = () => {
     addItem(product);

@@ -6,6 +6,8 @@ import { usePrice } from '~/modules/hooks';
 import { Product } from '~/types/Models/Product';
 
 import styles from './CartSummary.module.css';
+import { formatPrice } from '~/modules/hooks/usePrice';
+import getOnlinePrice from '~/utils/getOnlinePrice';
 
 interface Props {
   data: Product;
@@ -13,20 +15,21 @@ interface Props {
   loadingShipping?: boolean;
 }
 
+const LOCALE = 'es-MX';
+
 const CartSummary: FC<Props> = ({ data, shipping = 0, loadingShipping }) => {
   const { name, price, image, netPrice, observations, brand } = data;
 
-  const { price: shippingPrice } = usePrice({ amount: shipping });
+  const onlinePrice = getOnlinePrice(netPrice, data?.promoDiscount);
+  const shippingPrice = formatPrice({ amount: shipping, locale: LOCALE });
 
   const {
-    price: discountPrice,
-    basePrice,
     discount,
-  } = usePrice({ amount: netPrice, baseAmount: price });
+    basePrice,
+    price: discountPrice,
+  } = usePrice({ amount: onlinePrice, baseAmount: price });
 
-  const { price: totalPrice } = usePrice(
-    discount ? { amount: netPrice + shipping } : { amount: price + shipping },
-  );
+  const totalPrice = formatPrice({ amount: onlinePrice + shipping, locale: LOCALE });
 
   return (
     <div>
@@ -53,7 +56,7 @@ const CartSummary: FC<Props> = ({ data, shipping = 0, loadingShipping }) => {
       <div className="space-y-2">
         <div className={styles.rowSplit}>
           <span className="text-secondary">Precio del artículo</span>
-          <span className={styles.amount}>{basePrice}</span>
+          <span className={styles.amount}>{basePrice ?? discountPrice}</span>
         </div>
         {discount && (
           <div className={styles.rowSplit}>
