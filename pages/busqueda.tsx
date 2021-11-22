@@ -109,6 +109,7 @@ const Busqueda: NextPage<Props> = ({
       }
     };
     const handleRouteChangeComplete = () => {
+      toggleVisibleFilter();
       setLoading(false);
     };
 
@@ -122,7 +123,6 @@ const Busqueda: NextPage<Props> = ({
   }, []);
 
   const search = (queryParams: ParsedUrlQuery) => {
-    console.log(queryParams);
     router.push(`/busqueda?${parseQuery(omit(queryParams, 'page', 'slug'))}`, undefined, {
       scroll: false,
     });

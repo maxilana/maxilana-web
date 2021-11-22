@@ -146,7 +146,14 @@ const Searcher: FC<Props> = ({ cities }) => {
         >
           <div role="menu">
             {city && (
-              <span role="menuitem" className={styles.categoryItem} onClick={() => setCity(null)}>
+              <span
+                role="menuitem"
+                className={styles.categoryItem}
+                onClick={() => {
+                  toggleDropdown(false);
+                  setCity(null);
+                }}
+              >
                 <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
                 <span>Todo México</span>
               </span>
@@ -158,7 +165,10 @@ const Searcher: FC<Props> = ({ cities }) => {
                   key={item.id}
                   role="menuitem"
                   className={styles.categoryItem}
-                  onClick={() => setCity(item)}
+                  onClick={() => {
+                    toggleDropdown(false);
+                    setCity(item);
+                  }}
                 >
                   <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
                   <span>{item.name}</span>
