@@ -80,7 +80,7 @@
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^7.0.1",
+    "husky": "^7.0.4",
     "lint-staged": "^11.1.2",
     "netlify-plugin-cache-nextjs": "^1.6.1",
     "netlify-plugin-next-dynamic": "^1.0.9",

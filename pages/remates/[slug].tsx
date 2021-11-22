@@ -91,7 +91,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
         </aside>
         <main className="lg:col-span-3 mb-12">
           {page?.cover?.url && (
-            <div className="aspect-w-16 aspect-h-7 relative rounded overflow-hidden mb-6">
+            <div className="aspect-w-16 aspect-h-6 relative rounded overflow-hidden mb-6">
               <Img src={page?.cover?.url} layout="fill" />
             </div>
           )}
