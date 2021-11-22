@@ -21,6 +21,7 @@ export interface Producto {
   precod: number;
   slug?: string;
   ventalinea: 1 | 0;
+  descuento?: string; //Numero con el %desc
 }
 
 export type GetProductos = Paginated<Producto>;

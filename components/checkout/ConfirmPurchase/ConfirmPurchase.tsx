@@ -16,6 +16,7 @@ import { Product } from '~/types/Models/Product';
 import { CreditCard, ProductPurchase } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
 import useShippingCost from '~/hooks/useShippingCost';
+import getOnlinePrice from '~/utils/getOnlinePrice';
 
 interface Props {
   product: Product;
@@ -50,13 +51,8 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
 
   const handleFormSubmit = async (data: FormValues) => {
     setStatus('submiting');
-    let totalPrice = 0;
-
-    if (product.netPrice) {
-      totalPrice = shipping || 0 + product.netPrice;
-    } else {
-      totalPrice = shipping || 0 + product.price;
-    }
+    const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
+    const totalPrice = onlinePrice + (shipping ?? 0);
 
     try {
       const params: ProductPurchase = {
@@ -192,8 +188,6 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                         {
                           required: true,
                           validator: (_, value) => {
-                            console.log(value);
-
                             const dt = dayjs(value, 'MM/YY');
                             const isFuture = dt.isAfter(dayjs());
 

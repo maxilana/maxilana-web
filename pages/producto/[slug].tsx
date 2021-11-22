@@ -25,6 +25,8 @@ import { Truck } from '~/components/svg';
 
 import LogoRedondo from '../../public/logo-redondo.png';
 import useAddItem from '~/hooks/cart/useAddItem';
+import { formatPrice } from '~/modules/hooks/usePrice';
+import getOnlinePrice from '~/utils/getOnlinePrice';
 
 interface GSProps {
   product: Product;
@@ -121,12 +123,15 @@ const ProductView: NextPage<Props> = ({
     );
   }
 
+  const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
+
   const handlePurchaseProduct = () => {
     addItem(product);
     router.push('/checkout');
   };
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
+
   const message = encodeURIComponent(
     `Hola me gustaría comprar el producto: *${product?.name}* con código *${product?.id}* que cuesta *$${product?.netPrice}*`,
   );
@@ -153,6 +158,11 @@ const ProductView: NextPage<Props> = ({
                   <span className="h4 text-price">{price}</span>
                 )}
               </div>
+              {product?.saleOnline && product?.promoDiscount && (
+                <div className="mt-4">
+                  <p>{`%${product.promoDiscount}`} de descuento adicional comprando en línea.</p>
+                </div>
+              )}
               {product?.observations && (
                 <div>
                   <span className="font-bold block text-secondary">Descripción</span>
@@ -182,7 +192,10 @@ const ProductView: NextPage<Props> = ({
                 <Button
                   fullWidth
                   theme="primary"
-                  text="Comprar en línea"
+                  text={`Comprar en línea (${formatPrice({
+                    amount: onlinePrice,
+                    locale: 'es-MX',
+                  })})`}
                   onClick={handlePurchaseProduct}
                 />
               )}

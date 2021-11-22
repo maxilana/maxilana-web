@@ -87,7 +87,6 @@ const Searcher: FC<Props> = ({ cities }) => {
       if (!query?.orden) {
         query.orden = 'desc';
       }
-      console.log(`/busqueda?${parseQuery(omit(query, 'page'))}`);
       router.push(`/busqueda?${parseQuery(omit(query, 'page'))}`);
     }
   };
@@ -146,7 +145,14 @@ const Searcher: FC<Props> = ({ cities }) => {
         >
           <div role="menu" className="w-64">
             {city && (
-              <span role="menuitem" className={styles.categoryItem} onClick={() => setCity(null)}>
+              <span
+                role="menuitem"
+                className={styles.categoryItem}
+                onClick={() => {
+                  toggleDropdown(false);
+                  setCity(null);
+                }}
+              >
                 <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
                 <span>Todo México</span>
               </span>
@@ -158,7 +164,10 @@ const Searcher: FC<Props> = ({ cities }) => {
                   key={item.id}
                   role="menuitem"
                   className={styles.categoryItem}
-                  onClick={() => setCity(item)}
+                  onClick={() => {
+                    toggleDropdown(false);
+                    setCity(item);
+                  }}
                 >
                   <EnvironmentOutlined style={{ fontSize: 18, color: '#0B477D' }} />
                   <span>{item.name}</span>

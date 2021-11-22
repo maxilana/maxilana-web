@@ -104,7 +104,6 @@ const LoanRequestFlow: FC = () => {
          \nFecha: ${params.Fecha}
          \nMonto Solicitado: ${params.MontoSolicitado}
          \nCiudad: ${item?.label}
-         \nCódigoPolítica: ${params.CodigoPolitica}
       `;
 
       const location = `https://api.whatsapp.com/send?phone=521${item?.phone}&text=${message}`;

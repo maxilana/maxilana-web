@@ -24,7 +24,7 @@
 }
 
 .input {
-  @apply w-full rounded-sm border px-3 py-1 text-sm placeholder-gray-300;
+  @apply w-full rounded-sm border px-3 py-1 placeholder-gray-300;
   @apply focus:outline-none focus:border-blue-400;
   @apply invalid:border-red-500;
   @apply disabled:bg-surface disabled:text-disabled;
