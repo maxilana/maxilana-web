@@ -9,7 +9,10 @@ const getProductsFromCMSFilters = async (filters: Partial<CMSFilters>): Promise<
     orden: filters?.order || 'rand',
   };
   if (filters?.categories?.length) {
-    query.categoria = filters?.categories?.map((item) => item?.itemID).join(',');
+    query.categoria = filters?.categories
+      ?.filter((item) => item.itemID.trim())
+      .map((item) => item?.itemID)
+      .join(',');
   }
   // TODO: soporte para obtener los productos seleccionados en la categoria (CMS)
   if (filters?.search) query.q = filters?.search;
