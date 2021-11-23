@@ -10,6 +10,10 @@ const CATEGORY_FIELDS_FRAGMENT = gql`
     image {
       ...ImageFields
     }
+    products_page_mkt {
+      id
+      slug
+    }
   }
 `;
 

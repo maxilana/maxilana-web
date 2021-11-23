@@ -11,7 +11,7 @@ interface Props {
 
 const Hero: FC<Props> = ({ title, subtitle = null, actions = null, cover = null }) => {
   return (
-    <div className={styles.root}>
+    <section className={styles.root}>
       {cover !== null && <div className={styles.cover}>{cover}</div>}
       <div className={styles.wrapper}>
         <div className={styles.body}>
@@ -20,7 +20,7 @@ const Hero: FC<Props> = ({ title, subtitle = null, actions = null, cover = null 
           {actions !== null && <div className={styles.actionsWrap}>{actions}</div>}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
