@@ -32,3 +32,15 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# PHPStorm Project config
+.idea
+
+# Local Netlify folder
+.netlify
+netlify
+
+
+# PHPStorm Graphql plugin
+.graphqlconfig
+schema.graphql

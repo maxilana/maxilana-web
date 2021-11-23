@@ -1,20 +1,23 @@
 .root {
-  padding: 12px 16px;
-  box-shadow: 1px 1px 4px 0px #00000033;
-  @apply bg-surface-dark rounded uppercase text-primary text-xs tracking-wide inline-flex flex-row items-center;
+  @apply bg-surface rounded text-primary tracking-wide inline-flex flex-row space-x-2 items-center shadow px-4 py-3;
 }
 
 .root:hover,
 .root:active {
-  background-color: #deeaf5;
+  @apply bg-surface-dark;
 }
 
 .root:active {
-  box-shadow: 1px 1px 4px 0px #0000001a inset;
+  @apply shadow-inner;
 }
 
-.root:disabled {
+.root:disabled,
+.disabled {
   @apply bg-surface-light text-disabled pointer-events-none;
+}
+
+.label {
+  @apply text-xs font-semibold uppercase;
 }
 
 .sm {
@@ -31,7 +34,7 @@
 
 .primary:hover,
 .primar:active {
-  @apply bg-accent-dark;
+  @apply bg-accent-dark text-primary;
 }
 
 .primary:disabled {
@@ -39,8 +42,7 @@
 }
 
 .secondary {
-  color: #fff;
-  @apply bg-action-primary;
+  @apply bg-action-primary text-white;
 }
 
 .secondary:hover,
@@ -60,16 +62,18 @@
 .whatsapp:hover,
 .whatsapp:active {
   background-color: #06aa5b;
+  color: #fff;
 }
 
 .danger {
   background-color: #cb2b55;
-  color: #fff;
+  color: white;
 }
 
 .danger:hover,
 .danger:active {
   background-color: #c1254e;
+  color: white;
 }
 
 .link {
@@ -86,6 +90,14 @@
   box-shadow: none;
 }
 
-.iconContainer {
-  @apply mr-2;
+.link.primary {
+  @apply text-accent;
+}
+
+.link.secondary {
+  @apply text-price;
+}
+
+.fullWidth {
+  @apply w-full justify-center;
 }
