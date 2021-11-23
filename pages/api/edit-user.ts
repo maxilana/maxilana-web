@@ -13,9 +13,8 @@ export default withSession(async (req, res) => {
       ...request,
       Usuario: user.userCode,
     };
-    const response = await maxAxios.post<MaxilanaEditResponse>('/usuarios/editar', params);
 
-    console.log(response);
+    const response = await maxAxios.post<MaxilanaEditResponse>('/usuarios/editarperfil', params);
 
     if (!response) {
       throw new Error('No recibimos respuesta del servidor. Intenta de nuevo más tarde.');
@@ -38,7 +37,7 @@ export default withSession(async (req, res) => {
     await req.session.save();
 
     res.status(200).json({ ok: true });
-  } catch (err) {
+  } catch (error) {
     res
       .status(422)
       // @ts-ignore

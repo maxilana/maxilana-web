@@ -6,6 +6,7 @@ import { Breadcrumbs, Button } from '~/components/ui';
 import { CustomForm, InputField } from '~/components/common';
 import { AuthPageProps } from '~/types/AuthPageProps';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
+import { useState } from 'react';
 
 export { default as getServerSideProps } from '~/utils/authGetServerSideProps';
 
@@ -21,8 +22,10 @@ type FormValues = {
 
 const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = [], user }) => {
   const [form] = Form.useForm<FormValues>();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values: FormValues) => {
+    setLoading(true);
     const { Contrasena, ContrasenaNueva, ...rest } = values;
     let params = null;
 
@@ -41,7 +44,10 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
         method: 'POST',
         body: JSON.stringify(params),
       });
+
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       throw err;
     }
   };
@@ -142,7 +148,12 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
                 <InputField type="password" label="Confirmar contraseña nueva" />
               </Form.Item>
               <div className="sm:col-span-2">
-                <Button fullWidth text="Guardar" theme="primary" />
+                <Button
+                  fullWidth
+                  theme="primary"
+                  disabled={loading}
+                  text={loading ? 'Guardando' : 'Guardar'}
+                />
               </div>
             </div>
           </>

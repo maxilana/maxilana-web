@@ -49,8 +49,6 @@ export default function useAccountStatus(userCode?: string) {
           comision,
         } = ballot;
 
-        // let decimal = 0;
-        let decimalTotal = 0;
         let loan = Number(Prestamo);
         let totalPaymentAmount = 0; // DESEMPEÑO
         const extraCharge = comision; // COMISION
@@ -60,44 +58,13 @@ export default function useAccountStatus(userCode?: string) {
         ); // PAGO MÍNIMO
 
         /** CÁLCULO DE PAGO DE REFRENDO */
-        // TODO: Preguntar si estos son los intereses para hacer en este cálculo
-        // TODO: Preguntar si es necesario volver hacer este cálculo, ya viene la cantidad de refrendo
-        const interest = Number(InteresdiarioActivo) + Number(InteresDiarioVencido);
-        // const diffInterest = interest - Math.round(interest);
-
-        // if (diffInterest > 0) {
-        //   decimal = 0.5 - Math.round(diffInterest);
-        // }
-
-        // if (decimal === 0) {
-        //   paymentAmount = Math.round(interest);
-        // } else if (decimal > 0) {
-        //   paymentAmount = interest + decimal;
-        // } else {
-        //   paymentAmount = Math.round(interest + (0.5 + decimal));
-        // }
-
         paymentAmount = roundDecimals(paymentAmount * extraCharge);
 
         /** CÁLCULO DE PAGO DE DESEMPEÑO */
         // SOLO INFORMATIVO, NO SE PUEDE PAGAR
-        // TODO: Preguntar si es necesario hacer este cálculo, el dato no viene del endpoint.
-        let subtotal = loan + interest;
-        const diffSubtotalInterest = subtotal - Math.round(subtotal);
+        // ! https://docs.google.com/spreadsheets/d/1fvTCU19wyIS0uEPZ7ORA24LhJsxewq6PUVo6ZtIlh2U/edit?disco=AAAARViEeF4
 
-        if (diffSubtotalInterest > 0) {
-          decimalTotal = 0.5 - Math.round(diffSubtotalInterest);
-        }
-
-        if (decimalTotal === 0) {
-          totalPaymentAmount = Math.round(subtotal);
-        } else if (decimalTotal > 0) {
-          totalPaymentAmount = subtotal + decimalTotal;
-        } else {
-          totalPaymentAmount = Math.round(subtotal + (0.5 + decimalTotal));
-        }
-
-        totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
+        totalPaymentAmount = roundDecimals(paymentAmount + loan);
 
         const accountBlocked = BoletaBloqueada === '1';
         const accountBlockedMessage = accountBlocked ? Mensaje ?? '' : '';
@@ -110,7 +77,7 @@ export default function useAccountStatus(userCode?: string) {
           accountNumber: Boleta,
           accountLetter: Prefijo,
           loanAmount: loan,
-          startDate: FLR, // TODO: Preguntar si esa fecha es la fecha de empeño
+          startDate: FLR, // TODO: FLR es la fecha máxima de pago, aquí debe estar la fecha en la que se realizó el empeño
           status: Estatus,
           requestDate: fechaConsulta,
           dueDate: FecVen,
