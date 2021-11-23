@@ -45,18 +45,19 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
     getAllLegalPages(),
   ]);
 
-  if (query.categoria) {
-    const category = categories.find((item) => item.id === query?.categoria);
-    const { filters } = category || {};
-    if (filters) {
-      if (filters?.categories) {
-        query.categoria = filters?.categories.map((item) => item?.itemID).join(',');
+  const paginatedProducts = await (() => {
+    const { categoria, ...apiQuery } = query;
+    if (categoria) {
+      const category = categories.find((item) => item.id === query?.categoria);
+      const { filters } = category || {};
+      if (filters && filters?.categories?.length) {
+        apiQuery.categoria = filters?.categories.map((item) => item?.itemID).join(',');
       }
-      Object.assign(filtersToQueryParams(filters), query);
+      return getProducts(Object.assign(filtersToQueryParams(filters || {}), apiQuery));
+    } else {
+      return getProducts(query);
     }
-  }
-
-  const paginatedProducts = await getProducts(query);
+  })();
   const { rows: products, ...pagination } = paginatedProducts;
 
   const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
