@@ -19,7 +19,7 @@ const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
   if (variant === 'compact') {
     return (
       <footer className={`${styles.root} ${styles.rootCompact}`}>
-        <div className={styles.wrapper}>
+        <section className={styles.wrapper}>
           <div className="flex flex-col md:flex-row items-center md:justify-between">
             <div>
               <Link href="/">
@@ -35,14 +35,14 @@ const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
             </div>
             <Copyright />
           </div>
-        </div>
+        </section>
       </footer>
     );
   }
 
   return (
     <footer className={styles.root}>
-      <div className={`${styles.wrapper} ${styles.wrapperDefault}`}>
+      <section className={`${styles.wrapper} ${styles.wrapperDefault}`}>
         <nav className="sm:flex sm:flex-row items-start mb-20">
           <div className="flex-initial sm:mr-12 mb-10 sm:mb-0">
             <div>
@@ -77,7 +77,7 @@ const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
 
                 return (
                   <li key={section.id} className={styles.menuSection}>
-                    <h6 className={styles.menuTitle}>{section.label}</h6>
+                    <h1 className={styles.menuTitle}>{section.label}</h1>
                     {items}
                   </li>
                 );
@@ -85,7 +85,7 @@ const Footer: FC<Props> = ({ variant = 'default', cities, legalPages }) => {
             </ul>
           </div>
         </nav>
-      </div>
+      </section>
       <Copyright />
     </footer>
   );
