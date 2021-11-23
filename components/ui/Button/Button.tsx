@@ -1,29 +1,35 @@
-
 import Link from 'next/link';
-import { FC, MouseEvent, ReactElement } from "react";
+import cn from 'classnames';
+import { FC, HTMLProps, MouseEvent, ReactElement } from 'react';
 import { LoadingOutlined } from '@ant-design/icons';
 
 import styles from './Button.module.css';
 
-interface Props {
+export interface Props {
   text: string;
   href?: string;
+  target?: HTMLProps<HTMLAnchorElement>['target'];
   loading?: boolean;
+  fullWidth?: boolean;
   icon?: ReactElement;
-  variant?: "link" | "default";
-  size?: "small" | "default" | "large";
-  theme?: "default" | "primary" | "secondary" | "danger" | "whatsapp";
+  rightIcon?: ReactElement;
+  variant?: 'link' | 'default';
+  size?: 'small' | 'default' | 'large';
+  theme?: 'default' | 'primary' | 'secondary' | 'danger' | 'whatsapp';
+  className?: string;
+  disabled?: boolean;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
-};
+  prefetch?: boolean;
+}
 
 const classStyles = {
   size: {
-    default: "",
+    default: '',
     small: styles.sm,
     large: styles.lg,
   },
   theme: {
-    default: "",
+    default: '',
     primary: styles.primary,
     secondary: styles.secondary,
     danger: styles.danger,
@@ -33,18 +39,33 @@ const classStyles = {
 
 const Button: FC<Props> = ({
   text,
-  icon,
   href,
+  target,
+  icon,
+  rightIcon,
   onClick,
   loading = false,
-  size = "default",
-  theme = "default",
-  variant = "default",
+  fullWidth = false,
+  size = 'default',
+  theme = 'default',
+  variant = 'default',
+  className,
+  disabled = false,
+  prefetch,
 }) => {
   const sizeStyles = classStyles.size[size];
   const themeStyles = classStyles.theme[theme];
-  const linkStyles = variant === "link" ? styles.link : "";
-  const className = [styles.root, sizeStyles, themeStyles, linkStyles].join(" ");
+  const linkStyles = variant === 'link' ? styles.link : '';
+  const fullWidthStyles = fullWidth ? styles.fullWidth : '';
+  const rootClassName = cn(
+    styles.root,
+    sizeStyles,
+    themeStyles,
+    linkStyles,
+    fullWidthStyles,
+    className,
+    { [styles.disabled]: disabled },
+  );
 
   let iconElement = icon;
 
@@ -54,34 +75,23 @@ const Button: FC<Props> = ({
 
   if (href !== undefined) {
     return (
-      <Link href={href}>
-        <a className={className}>
-          {icon && (
-            <span className={styles.iconContainer}>
-              {iconElement}
-            </span>
-          )}
-          <span>{text}</span>
+      <Link href={href} prefetch={prefetch}>
+        <a className={rootClassName} target={target}>
+          {icon && iconElement}
+          <span className={styles.label}>{text}</span>
+          {rightIcon}
         </a>
       </Link>
-    )
+    );
   }
 
-
   return (
-    <button
-      onClick={onClick}
-      disabled={loading}
-      className={className}
-    >
-      {(loading || icon) && (
-        <span className={styles.iconContainer}>
-          {iconElement}
-        </span>
-      )}
-      <span>{text}</span>
+    <button onClick={onClick} disabled={loading} className={rootClassName}>
+      {(loading || icon) && iconElement}
+      <span className={styles.label}>{text}</span>
+      {rightIcon}
     </button>
-  )
-}
+  );
+};
 
 export default Button;

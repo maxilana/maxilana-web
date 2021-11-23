@@ -1,3 +1,106 @@
+@charset "UTF-8";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body {
+  @apply bg-surface;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-primary/90;
+    font-weight: 600;
+  }
+
+  h1 {
+    @apply text-5xl;
+  }
+
+  h2 {
+    @apply text-4xl;
+  }
+
+  h3 {
+    @apply text-3xl;
+  }
+
+  h4 {
+    @apply text-2xl;
+  }
+
+  h5 {
+    @apply text-xl;
+  }
+
+  h6 {
+    @apply text-lg;
+  }
+}
+
+@layer components {
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    font-weight: 600;
+    @apply text-primary/90;
+  }
+
+  .h1 {
+    @apply text-5xl;
+  }
+
+  .h2 {
+    @apply text-4xl;
+  }
+
+  .h3 {
+    @apply text-3xl;
+  }
+
+  .h4 {
+    @apply text-2xl;
+  }
+
+  .h5 {
+    @apply text-xl;
+  }
+
+  .h6 {
+    @apply text-lg;
+  }
+
+  .heading {
+    @apply text-primary uppercase text-sm font-bold block;
+  }
+
+  .saleTypeCheckboxes {
+    @apply w-full;
+
+    & .ant-checkbox-wrapper {
+      @apply w-full items-center;
+
+      & > span:last-child {
+        @apply flex-1 flex justify-between items-center;
+      }
+    }
+  }
+
+  .productsGrid {
+    @apply grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 mb-12;
+  }
+
+  .circleRight {
+    @apply rounded-full bg-surface flex justify-center items-center block min-w-[32px] min-h-[32px];
+  }
+}
