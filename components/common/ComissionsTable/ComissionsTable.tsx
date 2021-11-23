@@ -65,11 +65,14 @@ const ComissionsTable: FC = () => {
             </a>
           </div>
           <div>
-            <Link href="/legal/contrato-adhesion">
-              <a className="text-xs text-price hover:underline">
-                Contrato de adhesión registrado ante PROFECO
-              </a>
-            </Link>
+            <a
+              href="/contratoadhesion.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-price hover:underline"
+            >
+              Contrato de adhesión registrado ante PROFECO
+            </a>
           </div>
           <div>
             <Link href="/preguntas-frecuentes/empenos">

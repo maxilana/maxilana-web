@@ -4,7 +4,10 @@ import { CMSModel } from '~/types/Models/CMSModel';
 
 export interface CMSCategory extends CMSModel {
   name: string;
-  products_page_mkt: number | null;
+  products_page_mkt: {
+    id: number;
+    slug: string;
+  };
   filters: CMSFilters;
   image: CMSImage;
   code: string;

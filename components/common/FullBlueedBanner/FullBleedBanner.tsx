@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode } from 'react';
 
 import styles from './FullBleedBanner.module.css';
 
@@ -7,14 +7,12 @@ interface Props {
   backgroundColor?: string;
 }
 
-const FullBleedBanner: FC<Props> = ({ children, backgroundColor = "transparent" }) => {
+const FullBleedBanner: FC<Props> = ({ children, backgroundColor = 'transparent' }) => {
   return (
     <div className={styles.root}>
-      <div style={{ backgroundColor }}>
-        {children}
-      </div>
+      <div style={{ backgroundColor }}>{children}</div>
     </div>
-  )
-}
+  );
+};
 
 export default FullBleedBanner;

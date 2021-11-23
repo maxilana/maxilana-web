@@ -16,7 +16,9 @@ export const generateCategoryQueryParams = (
 };
 
 const generateCategoryURL = (item: Partial<CMSCategory>, query?: ParsedUrlQuery): string => {
-  return `/busqueda?${parseQuery(generateCategoryQueryParams(item, query))}`;
+  return item?.products_page_mkt?.slug
+    ? `/remates/${item.products_page_mkt.slug}`
+    : `/busqueda?${parseQuery(generateCategoryQueryParams(item, query))}`;
 };
 
 export default generateCategoryURL;

@@ -1,1 +1,1 @@
-export { default } from './FullBleedBanner';
+export { default } from './FullBleedBanner';
