@@ -10,7 +10,6 @@ stages:
 
 cache: &default_cache
   key: global
-  files:
   paths:
     - node_modules/
 
