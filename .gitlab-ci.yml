@@ -9,7 +9,7 @@ stages:
   image: node:14-alpine
 
 cache: &default_cache
-  key: global
+  key: maxilana
   paths:
     - node_modules/
 
@@ -23,7 +23,6 @@ install:
   <<: *dev_only
   cache: *default_cache
   script:
-    - cp .env.local.example .env
     - yarn
 
 linting:
@@ -36,6 +35,7 @@ linting:
   needs: [ install ]
   script:
     - cp .env.local.example .env
+    - ls
     - yarn lint
 
 build:
@@ -48,6 +48,7 @@ build:
   needs: [ install ]
   script:
     - cp .env.local.example .env
+    - ls
     - yarn build
 
 staging_deploy:
