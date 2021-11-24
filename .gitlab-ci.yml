@@ -6,7 +6,7 @@ stages:
   - deploy
 
 .default_image: &default_image
-  image: node:erbium-alpine3.10
+  image: node:14-alpine
 
 .default_artifacts: &default_artifacts
   artifacts:
@@ -44,13 +44,22 @@ build:
 
 staging_deploy:
   stage: deploy
-  image: node:erbium-alpine3.10
+  image: node:14-alpine
   only:
     - staging
+  variables:
+    PREVIEW_URL: $CI_PROJECT_NAME-staging.$VERCEL_USER.vercel.app
+    VERCEL_ORG_ID: $VERCEL_ORG_ID
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+  environment:
+    name: vercel/$CI_COMMIT_REF_NAME
+    url: https://$PREVIEW_URL
   script:
     - npm i -g vercel
     - DEPLOYMENT_URL=maxilana-web-staging-maxilana.vercel.app
-    - echo $DEPLOYMENT_URL > vercel_deployment_url.txt
+    - echo $PREVIEW_URL > vercel_deployment_url.txt
+    - DEPLOYMENT_URL=$(VERCEL_ORG_ID=$VERCEL_ORG_ID VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE)
+    - vercel alias set $DEPLOYMENT_URL $PREVIEW_URL -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
   artifacts:
     when: on_success
     paths:
@@ -58,7 +67,7 @@ staging_deploy:
 
 production_deploy:
   stage: deploy
-  image: node:erbium-alpine3.10
+  image: node:14-alpine
   only:
     - master
   script:
