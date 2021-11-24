@@ -21,7 +21,9 @@ install:
   stage: install
   <<: *default_image
   <<: *dev_only
-  cache: *default_cache
+  cache:
+    <<: *default_cache
+    policy: push
   script:
     - yarn
 
