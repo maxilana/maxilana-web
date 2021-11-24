@@ -81,7 +81,7 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
                     </span>
                   }
                 >
-                  <OrdersHub />
+                  <OrdersHub user={user} />
                 </TabPane>
               </Tabs>
             </div>
