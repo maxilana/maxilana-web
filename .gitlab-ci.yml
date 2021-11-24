@@ -8,11 +8,11 @@ stages:
 .default_image: &default_image
   image: node:14-alpine
 
-.default_artifacts: &default_artifacts
-  artifacts:
-    expire_in: 15 minutes
-    paths:
-      - node_modules/
+cache: &default_cache
+  key: global
+  files:
+  paths:
+    - node_modules/
 
 .dev_only: &dev_only
   rules:
@@ -21,25 +21,34 @@ stages:
 install:
   stage: install
   <<: *default_image
-  <<: *default_artifacts
   <<: *dev_only
+  cache: *default_cache
   script:
+    - cp .env.local.example .env
     - yarn
 
 linting:
   stage: lint
   <<: *default_image
   <<: *dev_only
+  cache:
+    <<: *default_cache
+    policy: pull
   needs: [ install ]
   script:
+    - cp .env.local.example .env
     - yarn lint
 
 build:
   stage: build
   <<: *default_image
   <<: *dev_only
+  cache:
+    <<: *default_cache
+    policy: pull
   needs: [ install ]
   script:
+    - cp .env.local.example .env
     - yarn build
 
 staging_deploy:
@@ -48,7 +57,7 @@ staging_deploy:
   only:
     - staging
   variables:
-    PREVIEW_URL: $CI_PROJECT_NAME-staging-$VERCEL_USER.vercel.app
+    PREVIEW_URL: $CI_PROJECT_NAME-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME-$VERCEL_USER.vercel.app
     VERCEL_ORG_ID: $VERCEL_ORG_ID
     VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
     VERCEL_SCOPE: $VERCEL_SCOPE
