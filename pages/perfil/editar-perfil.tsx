@@ -127,7 +127,7 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
                   <InputField type="password" label="Contraseña actual" />
                 </Form.Item>
               </div>
-              <Form.Item name="contrasenaNueva">
+              <Form.Item name="ContrasenaNueva">
                 <InputField type="password" label="Contraseña nueva" />
               </Form.Item>
               <Form.Item
