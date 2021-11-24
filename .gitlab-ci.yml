@@ -51,6 +51,7 @@ staging_deploy:
     PREVIEW_URL: $CI_PROJECT_NAME-staging.$VERCEL_USER.vercel.app
     VERCEL_ORG_ID: $VERCEL_ORG_ID
     VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+    VERCEL_SCOPE: $VERCEL_SCOPE
   environment:
     name: vercel/$CI_COMMIT_REF_NAME
     url: https://$PREVIEW_URL
@@ -58,6 +59,8 @@ staging_deploy:
     - npm i -g vercel
     - DEPLOYMENT_URL=maxilana-web-staging-maxilana.vercel.app
     - echo $PREVIEW_URL > vercel_deployment_url.txt
+    - echo VERCEL_SCOPE=$VERCEL_SCOPE
+    - echo VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID
     - DEPLOYMENT_URL=$(VERCEL_ORG_ID=$VERCEL_ORG_ID VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE)
     - vercel alias set $DEPLOYMENT_URL $PREVIEW_URL -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
   artifacts:
