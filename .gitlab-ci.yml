@@ -66,8 +66,9 @@ staging_deploy:
     url: https://$PREVIEW_URL
   script:
     - npm i -g vercel
+    - echo $CI_PROJECT_NAME-$CI_COMMIT_BRANCH-$VERCEL_USER.vercel.app
     - DEPLOYMENT_URL=$(vercel -t $VERCEL_TOKEN --confirm)
-    - echo $DEPLOYMENT_URL >vercel_deployment_url.txt
+    - echo $DEPLOYMENT_URL > vercel_deployment_url.txt
     #- DEPLOYMENT_URL=maxilana-web-staging-maxilana.vercel.app
     #- echo $PREVIEW_URL > vercel_deployment_url.txt
     #- echo VERCEL_SCOPE=$VERCEL_SCOPE
