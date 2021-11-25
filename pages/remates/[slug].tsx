@@ -1,5 +1,6 @@
 import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import difference from 'lodash.difference';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import omit from 'lodash.omit';
@@ -71,6 +72,10 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
     push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
   };
 
+  const category = categories?.find?.((item) => item?.products_page_mkt?.id == page?.id)?.id;
+  const filters = filtersToQueryParams(page?.productsFilters || {});
+  const queryParams = category ? { categoria: `${category}`, ...filters } : filters;
+
   return (
     <Layout
       title={page?.title}
@@ -86,7 +91,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
             categories={categories || []}
             visible={visibleFilter}
             onClose={toggleVisibleFilter}
-            initialValues={filtersToQueryParams(page?.productsFilters || {})}
+            initialValues={queryParams}
           />
         </aside>
         <main className="lg:col-span-3 mb-12">
@@ -117,7 +122,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
               text="Ver mas productos"
               theme="primary"
               size="large"
-              href={`/busqueda?${filtersToQueryString(page?.productsFilters || {})}`}
+              href={`/busqueda?${parseQuery({ ...queryParams, page: '2' })}`}
             />
           </div>
         </main>
