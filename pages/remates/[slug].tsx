@@ -1,10 +1,9 @@
 import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
-import difference from 'lodash.difference';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import omit from 'lodash.omit';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
@@ -16,7 +15,6 @@ import { CMSContent } from '~/components/common';
 import { Layout } from '~/components/layout';
 import { ProductsFilters } from '~/components/products';
 import { Button, Img, ProductCard } from '~/components/ui';
-import useToggleState from '~/hooks/useToggleState';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
@@ -65,16 +63,34 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, legalPages }) => {
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const router = useRouter();
+  const [visibleFilter, setVisibleFilter] = useState(false);
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
-    toggleVisibleFilter();
+    setVisibleFilter(false);
     push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
   };
 
   const category = categories?.find?.((item) => item?.products_page_mkt?.id == page?.id)?.id;
   const filters = filtersToQueryParams(page?.productsFilters || {});
   const queryParams = category ? { categoria: `${category}`, ...filters } : filters;
+
+  useEffect(() => {
+    const handleRouteChange = (url: string): void => {
+      setVisibleFilter(false);
+    };
+    const handleRouteChangeComplete = () => {
+      setVisibleFilter(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, []);
 
   return (
     <Layout
@@ -90,7 +106,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
             cities={cities}
             categories={categories || []}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             initialValues={queryParams}
           />
         </aside>
@@ -108,7 +124,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
             <Button
               icon={<FilterOutlined />}
               text="Filtros y orden"
-              onClick={toggleVisibleFilter}
+              onClick={() => setVisibleFilter(true)}
               theme="secondary"
             />
           </div>

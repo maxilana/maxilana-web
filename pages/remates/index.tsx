@@ -2,7 +2,7 @@ import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
@@ -66,13 +66,30 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts, legalPages }) => {
-  const { push } = useRouter();
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const router = useRouter();
+  const [visibleFilter, setVisibleFilter] = useState(false);
 
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
-    toggleVisibleFilter();
-    push(`/busqueda?${parseQuery(queryParams)}`);
+    setVisibleFilter(false);
+    router.push(`/busqueda?${parseQuery(queryParams)}`);
   };
+
+  useEffect(() => {
+    const handleRouteChange = (url: string): void => {
+      setVisibleFilter(false);
+    };
+    const handleRouteChangeComplete = () => {
+      setVisibleFilter(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, []);
 
   return (
     <Layout
@@ -86,7 +103,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
             cities={cities}
             categories={categories || []}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             onFiltersChange={handleFiltersChanges}
           />
         </aside>
@@ -94,7 +111,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
           <Button
             icon={<FilterOutlined />}
             text="Filtros y orden"
-            onClick={toggleVisibleFilter}
+            onClick={() => setVisibleFilter(false)}
             theme="secondary"
           />
         </div>
