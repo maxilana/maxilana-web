@@ -97,7 +97,7 @@ const Busqueda: NextPage<Props> = ({
   categories,
   legalPages,
 }) => {
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const [visibleFilter, setVisibleFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const category = categories?.find?.((item) => `${item.id}` === `${router?.query?.categoria}`);
@@ -106,11 +106,11 @@ const Busqueda: NextPage<Props> = ({
     const handleRouteChange = (url: string): void => {
       if (url.includes('busqueda')) {
         setLoading(true);
-        if (visibleFilter) toggleVisibleFilter();
+        setVisibleFilter(false);
       }
     };
     const handleRouteChangeComplete = () => {
-      toggleVisibleFilter();
+      setVisibleFilter(false);
       setLoading(false);
     };
 
@@ -143,7 +143,7 @@ const Busqueda: NextPage<Props> = ({
             cities={cities}
             branches={branches}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             onFiltersChange={search}
           />
         </aside>
@@ -177,7 +177,7 @@ const Busqueda: NextPage<Props> = ({
             <Button
               icon={<FilterOutlined />}
               text="Filtros y orden"
-              onClick={toggleVisibleFilter}
+              onClick={() => setVisibleFilter(true)}
               theme="secondary"
             />
           </div>
