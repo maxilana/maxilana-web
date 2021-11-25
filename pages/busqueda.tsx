@@ -151,7 +151,7 @@ const Busqueda: NextPage<Props> = ({
           <h2 className="h4">
             {(() => {
               if (category?.name) {
-                return query?.q ? (
+                return query?.q && `${query.q}`.toLowerCase() !== category.name.toLowerCase() ? (
                   <span>
                     {category.name}:{' '}
                     <span className="text-secondary line-clamp-1">
