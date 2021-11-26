@@ -82,7 +82,7 @@ const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
                     lng: branch?.longitud,
                   }}
                 >
-                  <div className="w-[300px] p-2">
+                  <div className="w-[225px] sm:w-[300px] p-2">
                     <span className="font-bold">{branch?.name}</span>
                     <p className="text-gray-300 mb-4">{branch?.address}</p>
                     <Button
