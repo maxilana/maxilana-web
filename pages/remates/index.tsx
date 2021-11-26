@@ -11,7 +11,6 @@ import getAllCities from '~/api/getAllCities';
 import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Banners } from '~/components/common';
 import { Layout } from '~/components/layout';
-import useToggleState from '~/hooks/useToggleState';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
