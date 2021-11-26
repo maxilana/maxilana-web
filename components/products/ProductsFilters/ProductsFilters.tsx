@@ -78,6 +78,8 @@ const ProductsFilters: FC<Props> = ({
   useEffect(() => {
     if (typeof categoria === 'string') {
       setCategory(categories?.find?.((item) => `${item?.id}` === `${categoria}`));
+    } else {
+      setCategory(null);
     }
   }, [categoria]);
 
