@@ -2,13 +2,12 @@
   @apply relative flex flex-col items-start justify-end bg-blue-500;
   @apply min-h-[420px];
   @apply sm:min-h-[320px];
-  @apply md:min-h-[610px];
+  @apply md:min-h-[500px];
 }
 
 .cover {
   @apply absolute inset-0 z-0;
   @apply sm:h-auto sm:min-h-[320px];
-  @apply md:min-h-[610px];
 }
 
 .wrapper {
@@ -21,6 +20,7 @@
   @apply py-8;
   @apply sm:py-20;
   @apply md:pb-32 md:max-w-2xl;
+  @apply md:pl-4;
 }
 
 .title {
