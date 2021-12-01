@@ -40,11 +40,13 @@ const ProductsFilters: FC<Props> = ({
   onFiltersChange,
   initialValues,
 }) => {
+  const router = useRouter();
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [form] = Form.useForm();
   const [branchFilter, setBranchFilter] = useState('');
   const { query } = useRouter();
   const [category, setCategory] = useState<Partial<CMSCategory> | null | undefined>(null);
+  const isMarketingPage = router.route.includes('remates');
 
   const { categoria, ciudad, sucursal, vtalinea, min, max, orden } = Object.assign(
     query || {},
@@ -76,6 +78,8 @@ const ProductsFilters: FC<Props> = ({
   useEffect(() => {
     if (typeof categoria === 'string') {
       setCategory(categories?.find?.((item) => `${item?.id}` === `${categoria}`));
+    } else {
+      setCategory(null);
     }
   }, [categoria]);
 
@@ -197,25 +201,29 @@ const ProductsFilters: FC<Props> = ({
                     </a>
                   </Link>
                 </li>
-                {categories.map((item) => (
-                  <li key={item.id}>
-                    <Link href={generateCategoryURL(item, omit(query, 'slug', 'q'))}>
-                      <a
-                        className={cn(styles.categoryItem, {
-                          [styles.categorySelected]: item.id === category?.id,
-                        })}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onFiltersChange(
-                            generateCategoryQueryParams(item, omit(query, 'slug', 'q')),
-                          );
-                        }}
-                      >
-                        {item.name}
-                      </a>
-                    </Link>
-                  </li>
-                ))}
+                {categories.map((item) => {
+                  return (
+                    <li key={item.id}>
+                      <Link href={generateCategoryURL(item, omit(query, 'slug', 'q'))}>
+                        <a
+                          className={cn(styles.categoryItem, {
+                            [styles.categorySelected]: item.id === category?.id,
+                          })}
+                          onClick={(e) => {
+                            if (!isMarketingPage) {
+                              e.preventDefault();
+                              onFiltersChange(
+                                generateCategoryQueryParams(item, omit(query, 'slug', 'q')),
+                              );
+                            }
+                          }}
+                        >
+                          {item.name}
+                        </a>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <div className="p-4 pb-0">

@@ -1,0 +1,95 @@
+# https://shadowsmith.com/how-to-test-all-vercel-deployments-using-cypress-in-a-gitlab-pipeline
+stages:
+  - install
+  - lint
+  - build
+  - deploy
+
+.default_image: &default_image
+  image: node:14-alpine
+
+cache: &default_cache
+  key: global
+  files:
+  paths:
+    - node_modules/
+
+.dev_only: &dev_only
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
+
+install:
+  stage: install
+  <<: *default_image
+  <<: *dev_only
+  cache: *default_cache
+  script:
+    - cp .env.local.example .env
+    - yarn
+
+linting:
+  stage: lint
+  <<: *default_image
+  <<: *dev_only
+  cache:
+    <<: *default_cache
+    policy: pull
+  needs: [ install ]
+  script:
+    - cp .env.local.example .env
+    - yarn lint
+
+build:
+  stage: build
+  <<: *default_image
+  <<: *dev_only
+  cache:
+    <<: *default_cache
+    policy: pull
+  needs: [ install ]
+  script:
+    - cp .env.local.example .env
+    - yarn build
+
+staging_deploy:
+  stage: deploy
+  image: node:14-alpine
+  only:
+    - staging
+  variables:
+    PREVIEW_URL: $CI_PROJECT_NAME-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME-$VERCEL_USER.vercel.app
+    VERCEL_ORG_ID: $VERCEL_ORG_ID
+    VERCEL_PROJECT_ID: $VERCEL_PROJECT_ID
+    VERCEL_SCOPE: $VERCEL_SCOPE
+  environment:
+    name: vercel/$CI_COMMIT_REF_NAME
+    url: https://$PREVIEW_URL
+  script:
+    - npm i -g vercel
+    - echo $CI_PROJECT_NAME-$CI_COMMIT_BRANCH-$VERCEL_USER.vercel.app
+    - DEPLOYMENT_URL=$(vercel -t $VERCEL_TOKEN --confirm)
+    - echo $DEPLOYMENT_URL > vercel_deployment_url.txt
+    #- DEPLOYMENT_URL=maxilana-web-staging-maxilana.vercel.app
+    #- echo $PREVIEW_URL > vercel_deployment_url.txt
+    #- echo VERCEL_SCOPE=$VERCEL_SCOPE
+    #- echo VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID
+    #- DEPLOYMENT_URL=$(VERCEL_ORG_ID=$VERCEL_ORG_ID VERCEL_PROJECT_ID=$VERCEL_PROJECT_ID vercel --confirm -t $VERCEL_TOKEN --scope $VERCEL_SCOPE)
+    #- vercel alias set $DEPLOYMENT_URL $PREVIEW_URL -t $VERCEL_TOKEN --scope $VERCEL_SCOPE
+  artifacts:
+    when: on_success
+    paths:
+      - vercel_deployment_url.txt
+
+production_deploy:
+  stage: deploy
+  image: node:14-alpine
+  only:
+    - master
+  script:
+    - npm i -g vercel
+    - DEPLOYMENT_URL=$(vercel -t $VERCEL_TOKEN --confirm --prod)
+    - echo $DEPLOYMENT_URL > vercel_deployment_url.txt
+  artifacts:
+    when: on_success
+    paths:
+      - vercel_deployment_url.txt

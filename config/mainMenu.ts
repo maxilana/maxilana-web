@@ -1,13 +1,13 @@
 const main = [
   {
-    id: 1,
-    label: 'Remates',
-    href: '/remates',
-  },
-  {
     id: 2,
     label: 'Empeños',
     href: '/empeno',
+  },
+  {
+    id: 1,
+    label: 'Remates',
+    href: '/remates',
   },
   {
     id: 3,

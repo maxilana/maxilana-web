@@ -1,6 +1,9 @@
 import React, { FC, useCallback, useState, useEffect } from 'react';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
+import { Button } from '~/components/ui';
 import { Branch } from '~/types/Models';
+import slugify from '~/utils/slugify';
+import { RightOutlined } from '@ant-design/icons';
 
 interface Props {
   branches: Branch[];
@@ -10,6 +13,11 @@ interface Props {
 
 const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
   const [map, setMap] = useState(null);
+  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [center, setCenter] = useState({
+    lat: branches[0].latitud,
+    lng: branches[0].longitud,
+  });
   if (!process.env.NEXT_PUBLIC_GM_API) console.warn('NEXT_PUBLIC_GM_API variable does not exist');
   if (!process.env.NEXT_PUBLIC_MARKER_IMAGE_URL) {
     console.warn('NEXT_PUBLIC_MARKER_IMAGE_URL variable does not exist');
@@ -49,10 +57,7 @@ const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
     <GoogleMap
       onLoad={handleLoad}
       onUnmount={onUnmount}
-      center={{
-        lat: branches[0].latitud,
-        lng: branches[0].longitud,
-      }}
+      center={center}
       zoom={zoom}
       options={{ streetViewControl: false, mapTypeControl: false }}
     >
@@ -67,7 +72,30 @@ const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
                 lng: branch?.longitud,
               }}
               key={branch?.id}
-            />
+              clickable
+              onClick={() => setSelectedBranch(branch)}
+            >
+              {selectedBranch?.id === branch.id && (
+                <InfoWindow
+                  position={{
+                    lat: branch?.latitud,
+                    lng: branch?.longitud,
+                  }}
+                >
+                  <div className="w-[225px] sm:w-[300px] p-2">
+                    <span className="font-bold">{branch?.name}</span>
+                    <p className="text-gray-300 mb-4">{branch?.address}</p>
+                    <Button
+                      text="Más detalles"
+                      size="small"
+                      theme="primary"
+                      href={`/sucursales/${branch?.slug || slugify(branch.name)}`}
+                      rightIcon={<RightOutlined />}
+                    />
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
           );
         })}
     </GoogleMap>

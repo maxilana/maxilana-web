@@ -1,4 +1,4 @@
-import imageExists from '~/api/imageExists';
+import capitalize from 'lodash.capitalize';
 import { Product } from '~/types/Models/Product';
 import { Producto } from '~/types/Responses/GetProductos';
 
@@ -9,7 +9,7 @@ if (!imageBaseURL) {
 
 const normalizeProduct = (noNormalized: Producto): Product => ({
   id: noNormalized.codigo,
-  name: noNormalized.nombre,
+  name: noNormalized.nombre.split(' ').map(capitalize).join(' '),
   BranchId: noNormalized.idsucursal,
   Branch: {
     id: noNormalized.idsucursal,
