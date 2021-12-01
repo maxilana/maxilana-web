@@ -77,6 +77,7 @@ const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
             >
               {selectedBranch?.id === branch.id && (
                 <InfoWindow
+                  onCloseClick={() => setSelectedBranch(null)}
                   position={{
                     lat: branch?.latitud,
                     lng: branch?.longitud,
