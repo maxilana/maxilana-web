@@ -44,3 +44,5 @@ netlify
 # PHPStorm Graphql plugin
 .graphqlconfig
 schema.graphql
+
+.gitlab-ci-local

@@ -39,7 +39,7 @@ const ProductCard: FC<Props> = ({ data, className }) => {
     >
       {!!href && (
         <Link href={href}>
-          <a className={styles.blockLink} />
+          <a className={styles.blockLink} title={name} />
         </Link>
       )}
       <div className={styles.productImgWrapper}>
@@ -61,7 +61,7 @@ const ProductCard: FC<Props> = ({ data, className }) => {
         <h3 className={styles.productTitle}>
           {!!href ? (
             <Link href={href}>
-              <a>{name}</a>
+              <a title={name}>{name}</a>
             </Link>
           ) : (
             name

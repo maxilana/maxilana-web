@@ -15,7 +15,8 @@ import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
 import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
-import useToggleState from '~/hooks/useToggleState';
+import { SelectField } from '~/components/common';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import { Branch, City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
@@ -97,20 +98,21 @@ const Busqueda: NextPage<Props> = ({
   categories,
   legalPages,
 }) => {
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const [visibleFilter, setVisibleFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [limit, setLimit] = useState(router?.query?.limit || 24);
   const category = categories?.find?.((item) => `${item.id}` === `${router?.query?.categoria}`);
 
   useEffect(() => {
     const handleRouteChange = (url: string): void => {
       if (url.includes('busqueda')) {
         setLoading(true);
-        if (visibleFilter) toggleVisibleFilter();
+        setVisibleFilter(false);
       }
     };
     const handleRouteChangeComplete = () => {
-      toggleVisibleFilter();
+      setVisibleFilter(false);
       setLoading(false);
     };
 
@@ -122,6 +124,10 @@ const Busqueda: NextPage<Props> = ({
       router.events.off('routeChangeComplete', handleRouteChangeComplete);
     };
   }, []);
+
+  useEffectOnUpdate(() => {
+    search({ ...(router?.query || {}), limit: `${limit}` });
+  }, [limit]);
 
   const search = (queryParams: ParsedUrlQuery) => {
     router.push(`/busqueda?${parseQuery(omit(queryParams, 'page', 'slug'))}`, undefined, {
@@ -143,7 +149,7 @@ const Busqueda: NextPage<Props> = ({
             cities={cities}
             branches={branches}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             onFiltersChange={search}
           />
         </aside>
@@ -151,7 +157,7 @@ const Busqueda: NextPage<Props> = ({
           <h2 className="h4">
             {(() => {
               if (category?.name) {
-                return query?.q ? (
+                return query?.q && `${query.q}`.toLowerCase() !== category.name.toLowerCase() ? (
                   <span>
                     {category.name}:{' '}
                     <span className="text-secondary line-clamp-1">
@@ -177,7 +183,7 @@ const Busqueda: NextPage<Props> = ({
             <Button
               icon={<FilterOutlined />}
               text="Filtros y orden"
-              onClick={toggleVisibleFilter}
+              onClick={() => setVisibleFilter(true)}
               theme="secondary"
             />
           </div>
@@ -188,7 +194,7 @@ const Busqueda: NextPage<Props> = ({
                   <ProductCard key={product.id} data={product} />
                 ))}
               </div>
-              <div className="flex space-x-6 justify-center">
+              <div className="flex space-x-6 justify-center items-center">
                 <Button
                   icon={<ArrowLeftOutlined />}
                   text="Anterior"
@@ -203,6 +209,10 @@ const Busqueda: NextPage<Props> = ({
                       : undefined
                   }
                 />
+                <span className="text-sm text-disabled">
+                  {pagination?.page} /{' '}
+                  {Math.ceil((pagination?.count || 1) / (pagination?.limit || 1))}
+                </span>
                 <Button
                   text="Siguiente"
                   rightIcon={<ArrowRightOutlined />}
@@ -216,6 +226,20 @@ const Busqueda: NextPage<Props> = ({
                         })}`
                       : undefined
                   }
+                />
+              </div>
+              <div className="flex items-center justify-center space-x-3 mt-4">
+                <span>Productos por página:</span>
+                <SelectField
+                  value={limit}
+                  name="limit"
+                  options={[8, 16, 24, 48, 64, 100].map((item) => ({
+                    value: item,
+                    label: `${item}`,
+                  }))}
+                  onChange={(e) => {
+                    setLimit(e.target.value);
+                  }}
                 />
               </div>
             </>
