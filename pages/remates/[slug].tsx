@@ -138,7 +138,10 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
               text="Ver mas productos"
               theme="primary"
               size="large"
-              href={`/busqueda?${parseQuery({ ...queryParams, page: '2' })}`}
+              href={`/busqueda?${parseQuery({
+                ...queryParams,
+                ...(queryParams.orden === 'rand' ? {} : { page: '2' }),
+              })}`}
             />
           </div>
         </main>
