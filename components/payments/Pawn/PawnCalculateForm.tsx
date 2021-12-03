@@ -35,6 +35,9 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
   const [error, setError] = useState<string | null>(null);
   const [daysToExtend, setDaysToExtend] = useState(data.minDaysToPay);
 
+  const creditBalance = data?.creditBalance
+    ? formatPrice({ amount: data.creditBalance, locale: LOCALE })
+    : '$0.00';
   const extensionAmount = useCalculatePawnExtension(data, daysToExtend); // PAGO DE EXTENSIÓN DE DÍAS
   const loanAmount = formatPrice({ amount: data.loanAmount, locale: LOCALE }); // PRÉSTAMO DEL CLIENTE
   const paymentAmount = formatPrice({ amount: data.paymentAmount, locale: LOCALE }); // PAGO DE REFRENDO
@@ -153,6 +156,10 @@ const PawnCalculateForm: FC<Props> = ({ data, onSubmit }) => {
                   <div className="flex flex-row justify-between items-center">
                     <span className="text-sm text-secondary">Estado de boleta:</span>
                     <span className={cn('text-sm', statusStyles[data.status])}>{data.status}</span>
+                  </div>
+                  <div className="flex flex-row justify-between">
+                    <span className="text-sm text-secondary">Saldo a favor:</span>
+                    <span>{creditBalance}</span>
                   </div>
                 </div>
                 <div className="py-2 border-b border-b-[#0C5E9C26]">
