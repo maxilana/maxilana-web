@@ -67,7 +67,6 @@ type Props = ImageProps & {
   placeholderType?: 'default' | 'brand';
   customLoader?: 'maxilana' | 'cloudinary';
   cloudinaryOptions?: string[];
-  lazyBoundary: '50px';
 };
 
 const Img: FC<Props> = ({
