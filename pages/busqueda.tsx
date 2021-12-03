@@ -39,6 +39,16 @@ interface GSSProps {
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
+
+  if (['desc', 'asc'].includes(`${query?.orden}`.toLowerCase())) {
+    return {
+      redirect: {
+        statusCode: 307,
+        destination: ctx.resolvedUrl.replace('orden=rand', 'orden=desc'),
+      },
+    };
+  }
+
   const { page, limit, ...filters } = query || {};
   const [categories, cities, legalPages] = await Promise.all([
     getCMSCategories(true),
@@ -130,7 +140,11 @@ const Busqueda: NextPage<Props> = ({
   }, [limit]);
 
   const search = (queryParams: ParsedUrlQuery) => {
-    router.push(`/busqueda?${parseQuery(omit(queryParams, 'page', 'slug'))}`, undefined, {
+    const newQueryParams = {
+      ...omit(queryParams, 'page', 'slug'),
+      orden: ['desc', 'asc'].includes(`${queryParams?.orden}`) ? queryParams.orden : 'desc',
+    };
+    router.push(`/busqueda?${parseQuery(newQueryParams)}`, undefined, {
       scroll: false,
     });
   };
