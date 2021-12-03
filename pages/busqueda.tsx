@@ -39,12 +39,11 @@ interface GSSProps {
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
-
-  if (['desc', 'asc'].includes(`${query?.orden}`.toLowerCase())) {
+  if (query?.orden && !['desc', 'asc'].includes(`${query?.orden}`.toLowerCase())) {
     return {
       redirect: {
         statusCode: 307,
-        destination: ctx.resolvedUrl.replace('orden=rand', 'orden=desc'),
+        destination: `/busqueda?${parseQuery({ ...query, orden: 'desc' })}`,
       },
     };
   }
