@@ -67,21 +67,21 @@ const ProductCard: FC<Props> = ({ data, className }) => {
             name
           )}
         </h3>
-        <div className={styles.productPrice}>
-          {discount ? (
-            <>
-              <span className={styles.productPriceSale}>{price}</span>{' '}
-              <span className={styles.productCompareAtPrice}>{basePrice}</span>
-            </>
-          ) : (
-            <span>{price}</span>
-          )}
-        </div>
-        <span className={styles.productBranch}>
+        <div className={styles.productBranch}>
+          <div className={styles.productPrice}>
+            {discount ? (
+              <>
+                <span className={styles.productPriceSale}>{price}</span>{' '}
+                <span className={styles.productCompareAtPrice}>{basePrice}</span>
+              </>
+            ) : (
+              <span>{price}</span>
+            )}
+          </div>
           <span className="block line-clamp-1">
             {Branch?.name}, {Branch?.City?.name}
           </span>
-        </span>
+        </div>
       </div>
       {/* TODO: como sabes cuando un producto esta en oferta? */}
       {/*onSale && <span className={styles.productSaleBadge}>Oferta</span>*/}
