@@ -10,6 +10,7 @@ import { City, CMSLegal } from '~/types/Models';
 import { CardLink } from '~/components/ui';
 import getJobsPage from '~/api/cms/getJobsPage';
 import { CMSJobsPage } from '~/types/Models/CMSJobsPage';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 interface GSProps {
   page: CMSJobsPage;
@@ -58,7 +59,7 @@ const JobsPage: NextPage<Props> = ({ page, cities, legalPages }) => {
                     width={56}
                     height={56}
                     layout="fixed"
-                    src={item.logo.url}
+                    src={getCMSImageURL(item.logo)}
                     alt={`Logo de ${item.name}`}
                   />
                 }

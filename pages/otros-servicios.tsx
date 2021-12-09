@@ -9,6 +9,7 @@ import { CMSContent } from '~/components/common';
 import { Card } from '~/components/ui';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSOtherService } from '~/types/Models';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<
   DefaultPageProps<{ otherServices: CMSOtherService[] }>
@@ -37,12 +38,14 @@ const OtrosServicios: NextPage<Props> = ({ cities, legalPages, otherServices }) 
             {otherServices.map((item) => (
               <Card className="prose max-w-none" key={item.id}>
                 <div className="relative aspect-w-16 aspect-h-7 rounded overflow-hidden">
-                  <Image
-                    src={item?.image?.url as string}
-                    alt={item?.image?.alternativeText}
-                    layout="fill"
-                    objectFit="cover"
-                  />
+                  {item?.image && (
+                    <Image
+                      src={getCMSImageURL(item?.image)}
+                      alt={item?.image?.alternativeText}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  )}
                 </div>
                 <h2>{item.title}</h2>
                 <CMSContent content={item.description} />

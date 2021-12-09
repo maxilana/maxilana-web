@@ -9,6 +9,7 @@ import { Container, Layout } from '~/components/layout';
 import Image from 'next/image';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSPayment } from '~/types/Models';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ payments: CMSPayment[] }>> =
   async () => {
@@ -57,7 +58,7 @@ const PaymentsPage: NextPage<Props> = ({ cities, legalPages, payments }) => {
                       height={179}
                       layout="responsive"
                       alt={item.image.alternativeText}
-                      src={item.image.url}
+                      src={getCMSImageURL(item.image)}
                     />
                   </div>
                   <div className="flex-grow text-center">

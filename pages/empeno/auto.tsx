@@ -12,6 +12,7 @@ import { AutoPawnForm } from '~/components/pawn';
 import { Layout, Container, HelpSidebar } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSCarPawn } from '~/types/Models';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSCarPawn }>> = async () => {
   const [page, cities, legalPages] = await Promise.all([
@@ -52,7 +53,7 @@ const AutoEmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
                   height={347}
                   layout="responsive"
                   priority
-                  src={page.hero?.image?.url}
+                  src={getCMSImageURL(page.hero?.image)}
                   alt="Imagen de un automóvil"
                   placeholder="empty"
                 />
