@@ -15,6 +15,8 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSHomePage } from '~/types/Models/CMSHomePage';
 import { Product } from '~/types/Models/Product';
 import getCMSCategories from '~/api/cms/getCMSCategories';
+import getCMSImageURL from '~/utils/getCMSImageURL';
+import parseQuery from '~/utils/parseQuery';
 
 interface GSProps {
   products: Product[];
@@ -51,16 +53,26 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages }) => {
-  // TODO: es probable que cloudinary no se use, se debe tener otra opción para generar las imágenes
-  const baseURL = `${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/image/upload`;
-  const filename = `${page?.hero?.image?.hash}${page?.hero?.image?.ext}`;
-  const placeholderImage = `${baseURL}/c_fill,g_auto,w_18,q_70/${filename}`;
-  const mobileHeroImage = `${baseURL}/c_fill,g_auto,f_auto,w_360,h_420,q_70/${filename}`;
-  const tabletHeroImage = `${baseURL}/c_fill,g_auto,f_auto,w_840,h_400,q_80/${filename}`;
-  const desktopHeroImage = `${baseURL}/c_fill,g_auto,f_auto,q_80/${filename}`;
+  const url = page?.hero?.image ? getCMSImageURL(page?.hero?.image) : '';
+  const baseURL = `${process.env.NEXT_PUBLIC_API_BASEURL}/image`;
+
+  const placeholderImage = `${baseURL}?${parseQuery({ url, w: '18', q: '70' })}`;
+  const mobileHeroImage = `${baseURL}?${parseQuery({ url, w: '360', h: '420', q: '70' })}`;
+  const tabletHeroImage = `${baseURL}?${parseQuery({ url, w: '840', h: '400', q: '80' })}`;
+  const desktopHeroImage = `${baseURL}?${parseQuery({ url, q: '80' })}`;
+
+  const Cover = url ? (
+    <HeroImg
+      placeholder={placeholderImage}
+      mobile={mobileHeroImage}
+      tablet={tabletHeroImage}
+      desktop={desktopHeroImage}
+    />
+  ) : null;
+
   return (
     <Layout
-      meta={{ ...page.seo, images: [placeholderImage, mobileHeroImage] }}
+      meta={{ ...page.seo, images: url ? [placeholderImage, mobileHeroImage] : [] }}
       cities={cities}
       legalPages={legalPages}
     >
@@ -80,14 +92,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
             ))}
           </>
         }
-        cover={
-          <HeroImg
-            placeholder={placeholderImage}
-            mobile={mobileHeroImage}
-            tablet={tabletHeroImage}
-            desktop={desktopHeroImage}
-          />
-        }
+        cover={Cover}
       />
       <Container>
         <div className="grid gap-6 my-12 md:grid-cols-2 lg:my-16">
@@ -99,7 +104,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
                     width={250}
                     height={364}
                     layout="responsive"
-                    src={card.image.url}
+                    src={getCMSImageURL(card.image)}
                     alt={card.title}
                   />
                 </div>

@@ -6,6 +6,7 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import generateCategoryURL from '~/utils/generateCategoryURL';
 
 import styles from './CategoryExplorer.module.css';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 interface Props {
   categories: Array<Partial<CMSCategory>>;
@@ -22,7 +23,7 @@ const CategoryExplorer: FC<Props> = ({ categories }) => {
                 <div className="w-[56px] h-[56px]">
                   {!!item?.image?.url && (
                     <Img
-                      src={item?.image?.url}
+                      src={getCMSImageURL(item?.image)}
                       width={item?.image?.width}
                       height={item?.image?.height}
                       layout="fixed"

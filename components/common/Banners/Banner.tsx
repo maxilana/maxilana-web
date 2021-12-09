@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { FC } from 'react';
 import { Img } from '~/components/ui';
 import { CMSBanner } from '~/types/Models/CMSBanner';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 import styles from './Banners.module.css';
 
@@ -12,8 +13,15 @@ interface Props {
 }
 
 const Banner: FC<Props> = ({ data, priority }) => {
+  console.log(data?.image);
   const image = (
-    <Img src={data?.image?.url} layout="fill" objectFit="cover" quality={90} priority={priority} />
+    <Img
+      src={getCMSImageURL(data?.image)}
+      layout="fill"
+      objectFit="cover"
+      quality={90}
+      priority={priority}
+    />
   );
   const url =
     Array.isArray(data?.products_page_mkts) && data?.products_page_mkts?.length === 1

@@ -20,6 +20,7 @@ import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
 import { Product } from '~/types/Models/Product';
 import filtersToQueryString, { filtersToQueryParams } from '~/utils/filtersToQueryString';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 import parseQuery from '~/utils/parseQuery';
 
 interface GSProps {
@@ -113,7 +114,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
         <main className="lg:col-span-3 mb-12">
           {page?.cover?.url && (
             <div className="aspect-w-16 aspect-h-6 relative rounded overflow-hidden mb-6">
-              <Img src={page?.cover?.url} layout="fill" />
+              <Img src={getCMSImageURL(page.cover, 'large')} layout="fill" />
             </div>
           )}
           <h1 className="h4 mb-8">{page?.title}</h1>
