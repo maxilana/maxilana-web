@@ -18,6 +18,7 @@ import HowWorks04 from '~/public/como-funcionan-vales-04.png';
 import GetMaxilanaVales from '~/public/gana-maxilana-vales.png';
 import PayVales from '~/public/pagar-vales.png';
 import { CMSPaybill } from '~/types/Models/CMSPaybill';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPaybill }>> = async () => {
   const [cities, legalPages, page] = await Promise.all([
@@ -46,7 +47,7 @@ const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
         cover={
           <Image
             layout="fill"
-            src={page?.hero?.image?.url}
+            src={getCMSImageURL(page?.hero?.image)}
             alt="Mujer hablando por teléfono, consiguiendo clientes"
             objectFit="cover"
             priority

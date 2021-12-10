@@ -13,6 +13,7 @@ import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { Button, Card, Img } from '~/components/ui';
 import Auto from '~/public/tarjeta-empeno-auto.png';
 import { CMSPawn } from '~/types/Models';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSPawn }>> = async () => {
   const [page, cities, legalPages] = await Promise.all([
@@ -46,7 +47,7 @@ const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
               <Img
                 priority
                 quality={100}
-                src={page.hero.image.url}
+                src={getCMSImageURL(page.hero.image)}
                 height={page.hero.image.height}
                 width={page.hero.image.width}
                 alt="Imagen de un hombre feliz con varios artículos"
@@ -66,7 +67,7 @@ const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
           <ServicePaymentCards
             actionCard={{
               title: page?.payment?.title,
-              imageSource: page?.payment?.image?.url,
+              imageSource: getCMSImageURL(page?.payment?.image),
               description: page?.payment?.description,
               buttonLabel: page?.payment?.CTAText,
               buttonHref: `/pagos/${page?.payment?.slug}`,
