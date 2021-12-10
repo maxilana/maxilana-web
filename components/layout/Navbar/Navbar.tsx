@@ -15,6 +15,7 @@ import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
 import useToggleState from '~/hooks/useToggleState';
 import { City } from '~/types/Models';
+import CartBadge from '~/components/common/CartBadge';
 
 interface Props {
   cities?: City[];
@@ -72,7 +73,10 @@ const Navbar: FC<Props> = ({ cities }) => {
             <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
-            <AuthComponent onClickLogin={toggleModal} />
+            <div className="flex justify-between items-center space-x-6">
+              <AuthComponent onClickLogin={toggleModal} />
+              <CartBadge />
+            </div>
             <span className={styles.payOnlineLink}>
               <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
             </span>

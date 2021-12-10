@@ -1,22 +1,21 @@
+import useSWR from 'swr';
 import Cookies from 'js-cookie';
+
 import { CART_ID_COOKIE } from 'config/cart';
-import { Product } from '~/types/Models/Product';
+import fetcher from '~/modules/api/fetcher';
+import { MaxilanCartResponse } from '~/types/Responses';
 
-type Cart = {
-  data: Product | null;
-};
-
-const useCart = (): Cart => {
-  const cart = Cookies.get(CART_ID_COOKIE);
-
-  if (!cart) {
-    return {
-      data: null,
-    };
-  }
+const useCart = () => {
+  const cartToken = Cookies.get(CART_ID_COOKIE);
+  const response = useSWR<MaxilanCartResponse>(cartToken ? `/carrito?orden=${cartToken}` : null, {
+    fetcher: fetcher,
+    revalidateOnFocus: false,
+  });
 
   return {
-    data: JSON.parse(cart),
+    data: response?.data,
+    isLoading: response.data === undefined,
+    isEmpty: response.data && response.data.productos.length < 1,
   };
 };
 
