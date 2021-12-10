@@ -5,17 +5,20 @@ import React, { FC } from 'react';
 import styles from './HeroImage.module.css';
 
 interface Props {
-  placeholder?: string;
-  mobile?: string;
+  mobile: string;
   tablet?: string;
   desktop?: string;
 }
 
-const HeroImg: FC<Props> = ({ placeholder, mobile, tablet, desktop }) => (
+const getNextImageUrl = (url: string) => `/_next/image?url=${encodeURIComponent(url)}&w=1920&q=60`;
+
+const HeroImg: FC<Props> = ({ mobile, tablet, desktop }) => (
   <picture className={styles.picture}>
-    <source srcSet={desktop} media="(min-width: 991px)" />
-    <source srcSet={tablet} media="(min-width: 768px) and (max-width: 991px)" />
-    <img src={mobile} alt="" className={styles.img} sizes="100vw" />
+    {desktop && <source srcSet={getNextImageUrl(desktop)} media="(min-width: 991px)" />}
+    {tablet && (
+      <source srcSet={getNextImageUrl(tablet)} media="(min-width: 768px) and (max-width: 991px)" />
+    )}
+    <img src={getNextImageUrl(mobile)} alt="" className={styles.img} sizes="100vw" />
   </picture>
 );
 
