@@ -13,15 +13,16 @@ interface Props {
 }
 
 const HeroImg: FC<Props> = ({ placeholder, mobile, tablet, desktop }) => {
-  const [ref, loaded] = useImageLoaded();
+  const [ref, loaded, onLoad] = useImageLoaded();
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if ((ref as MutableRefObject<HTMLImageElement>)?.current) {
         (ref as MutableRefObject<HTMLImageElement | null>).current = null;
       }
-    };
-  }, [(ref as MutableRefObject<HTMLImageElement>)?.current]);
+    },
+    [(ref as MutableRefObject<HTMLImageElement>)?.current],
+  );
 
   return (
     <>
@@ -34,6 +35,7 @@ const HeroImg: FC<Props> = ({ placeholder, mobile, tablet, desktop }) => {
           alt=""
           className={styles.img}
           sizes="100vw"
+          onLoad={onLoad}
         />
       </picture>
       <span className={cn(styles.placeholder, { [styles.hidePlaceholder]: loaded })}>
