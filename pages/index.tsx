@@ -57,7 +57,7 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
   const baseURL = `${process.env.NEXT_PUBLIC_API_BASEURL}/image`;
 
   const placeholderImage = `${baseURL}?${parseQuery({ url, w: '18', q: '70' })}`;
-  const mobileHeroImage = `${baseURL}?${parseQuery({ url, w: '360', h: '420', q: '70' })}`;
+  const mobileHeroImage = `${baseURL}?${parseQuery({ url, w: '300', h: '350', q: '60' })}`;
   const tabletHeroImage = `${baseURL}?${parseQuery({ url, w: '840', h: '400', q: '80' })}`;
   const desktopHeroImage = `${baseURL}?${parseQuery({ url, q: '80' })}`;
 
