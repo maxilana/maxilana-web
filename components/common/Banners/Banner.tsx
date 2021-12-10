@@ -13,7 +13,6 @@ interface Props {
 }
 
 const Banner: FC<Props> = ({ data, priority }) => {
-  console.log(data?.image);
   const image = (
     <Img
       src={getCMSImageURL(data?.image)}
