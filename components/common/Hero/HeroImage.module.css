@@ -7,7 +7,7 @@
 }
 
 .placeholder {
-  @apply block absolute w-full h-full overflow-hidden transition;
+  @apply block absolute w-full h-full overflow-hidden;
 }
 
 .placeholderImg {
