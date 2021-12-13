@@ -6,6 +6,7 @@ const MarketingScripts = () => {
     <>
       {/* Google Tag Manager */}
       <Script
+        id="GTM"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
@@ -24,6 +25,7 @@ const MarketingScripts = () => {
       />
       {/* Chat twak.to */}
       <Script
+        id="TAWK.TO"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           /*language=css*/
