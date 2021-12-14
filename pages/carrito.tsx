@@ -51,15 +51,13 @@ const CartPage: NextPage = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                   <div className="formContainer p-0">
-                    <table className="w-full table-fixed">
-                      <tbody>
-                        {data?.products.map((item) => (
-                          <tr key={item.id}>
-                            <LineItem data={item} />
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <ul className="w-full divide-y divide-solid divide-gray-200">
+                      {data?.products.map((item) => (
+                        <li key={item.id}>
+                          <LineItem data={item} />
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
                 <aside>
