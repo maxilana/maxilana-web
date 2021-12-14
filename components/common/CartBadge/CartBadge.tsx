@@ -11,7 +11,7 @@ const CartBadge: FC = () => {
   return (
     <Link href="/carrito" prefetch={false}>
       <a className={styles.root}>
-        <small className={styles.badge}>{data !== undefined && data.products.length}</small>
+        {data !== undefined && <small className={styles.badge}>{data.products.length}</small>}
         <ShoppingCartOutlined style={{ fontSize: 24 }} />
       </a>
     </Link>

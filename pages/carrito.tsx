@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { LineItem } from '~/components/cart';
+import { PageLoader } from '~/components/common';
 
 import { BareLayout } from '~/components/layout';
 import { EmptyCart } from '~/components/svg';
@@ -10,14 +12,20 @@ import { formatPrice } from '~/modules/hooks/usePrice';
 const CartPage: NextPage = () => {
   const { data, isLoading, isEmpty } = useCart();
 
+  console.log(data, isLoading, isEmpty);
+
   return (
     <BareLayout title="Carrito de compras" meta={{ css: ['/antd/form.css'] }}>
       <div className="container mx-auto py-8 lg:py-48">
         {(() => {
-          if (isLoading || isEmpty) {
+          if (isLoading) {
+            return <PageLoader text="Obteniendo carrito de compras" />;
+          }
+
+          if (isEmpty) {
             return (
               <section className="p-4">
-                <h1 className="h5 mb-6 sm:h4">Mi carrito</h1>
+                <h1 className="h5 mb-6 text-center sm:h4">Mi carrito</h1>
                 <div className="px-4 py-6">
                   <div className="flex flex-col items-center justify-center gap-4">
                     <EmptyCart />
@@ -47,22 +55,7 @@ const CartPage: NextPage = () => {
                       <tbody>
                         {data?.products.map((item) => (
                           <tr key={item.id}>
-                            <td className="p-4 border-b border-gray-200">
-                              <h2 className="h6">{item.name}</h2>
-                              <p className="text-secondary tex-sm mb-2">{`Código: ${item.id}`}</p>
-                              <span className="block mb-2 text-danger font-semibold">
-                                {formatPrice({ amount: item.price, locale: 'es-MX' })}
-                              </span>
-                              <Button
-                                size="small"
-                                theme="danger"
-                                text="Eliminar"
-                                variant="link"
-                                onClick={() => {
-                                  console.log(item.id);
-                                }}
-                              />
-                            </td>
+                            <LineItem data={item} />
                           </tr>
                         ))}
                       </tbody>

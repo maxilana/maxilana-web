@@ -1,5 +1,4 @@
 import maxAxios from '../axios';
-import { Cart } from '~/types/Models/Cart';
 import { MaxilanCartResponse } from '~/types/Responses';
 
 type CartRequest = {
@@ -7,8 +6,8 @@ type CartRequest = {
   orden: string;
 };
 
-export default async function addItem(data: CartRequest): Promise<MaxilanCartResponse> {
-  const response = await maxAxios.post<MaxilanCartResponse>('/carrito/agregararticulo', data);
+export default async function removeItem(data: CartRequest): Promise<MaxilanCartResponse> {
+  const response = await maxAxios.post<MaxilanCartResponse>('/carrito/eliminararticulo', data);
 
   if (!response.orden) {
     throw new Error(

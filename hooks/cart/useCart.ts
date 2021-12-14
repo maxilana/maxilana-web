@@ -8,15 +8,18 @@ import { normalizeCart } from '~/modules/api/normalizers';
 
 const useCart = () => {
   const cartToken = Cookies.get(CART_ID_COOKIE);
-  const response = useSWR<MaxilanCartResponse>(cartToken ? `/carrito?orden=${cartToken}` : null, {
-    fetcher: fetcher,
-    revalidateOnFocus: false,
-  });
+  const { data, isValidating } = useSWR<MaxilanCartResponse>(
+    cartToken ? `/carrito?orden=${cartToken}` : null,
+    {
+      fetcher: fetcher,
+      revalidateOnFocus: false,
+    },
+  );
 
   return {
-    isLoading: response?.data === undefined,
-    isEmpty: response?.data && response.data.productos.length < 1,
-    data: response?.data ? normalizeCart(response.data) : undefined,
+    isLoading: isValidating && data === undefined,
+    isEmpty: !!(data?.productos && data.productos.length < 1),
+    data: data ? normalizeCart(data) : undefined,
   };
 };
 
