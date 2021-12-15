@@ -7,7 +7,7 @@
 }
 
 .productImage {
-  @apply relative w-32 h-32 rounded-sm overflow-hidden bg-gray-300 mr-4 border-gray-300 border;
+  @apply relative w-24 h-24 rounded-sm overflow-hidden bg-gray-300 mr-4 border-gray-300 border;
 }
 
 .productTitle {

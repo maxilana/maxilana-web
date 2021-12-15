@@ -17,9 +17,11 @@ import { CreditCard, ProductPurchase } from '~/types/Requests';
 import { MaxilanaTransaction } from '~/types/Responses';
 import useShippingCost from '~/hooks/useShippingCost';
 import getOnlinePrice from '~/utils/getOnlinePrice';
+import { Cart } from '~/types/Models';
 
 interface Props {
-  product: Product;
+  cart: Cart;
+  product?: Product;
 }
 
 type Status = 'idle' | 'submiting' | 'error';
@@ -42,36 +44,39 @@ interface FormValues extends CreditCard {
 
 dayjs.extend(customParseFormat);
 
-const ConfirmPurchase: FC<Props> = ({ product }) => {
+const ConfirmPurchase: FC<Props> = ({ cart, product }) => {
   const [status, setStatus] = useState<Status>('idle');
   const [data, setData] = useState<Data | null>(null);
 
   const [form] = Form.useForm<FormValues>();
-  const shipping = useShippingCost(product.id);
+  // const shipping = useShippingCost(product.id);
 
   const handleFormSubmit = async (data: FormValues) => {
     setStatus('submiting');
-    const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
-    const totalPrice = onlinePrice + (shipping ?? 0);
+    // const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
+    // const totalPrice = onlinePrice + (shipping ?? 0);
+    const totalPrice = cart.pricing.total;
 
-    try {
-      const params: ProductPurchase = {
-        ...data,
-        sucursal: product.BranchId,
-        upc: product.id,
-        importe: totalPrice, // PRECIO + ENVIO
-      };
+    console.log(totalPrice);
 
-      const maxiTransaction = await request3DTransaction(params);
+    // try {
+    //   const params: ProductPurchase = {
+    //     ...data,
+    //     sucursal: product.BranchId,
+    //     upc: product.id,
+    //     importe: totalPrice, // PRECIO + ENVIO
+    //   };
 
-      setData({
-        payment: params,
-        transaction: maxiTransaction,
-      });
-    } catch (err) {
-      console.log(err);
-      setStatus('error');
-    }
+    //   const maxiTransaction = await request3DTransaction(params);
+
+    //   setData({
+    //     payment: params,
+    //     transaction: maxiTransaction,
+    //   });
+    // } catch (err) {
+    //   console.log(err);
+    //   setStatus('error');
+    // }
   };
 
   if (status === 'submiting') {
@@ -80,7 +85,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`${window.location.origin}/checkout/response?scost=${shipping}`}
+            forwardPath={`${window.location.origin}/checkout/response?scost=${cart.pricing.shipping}`}
           />
         )}
       </PageLoader>
@@ -236,20 +241,10 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                   }}
                 >
                   <div>
-                    <CartSummary
-                      data={product}
-                      shipping={shipping}
-                      loadingShipping={shipping === undefined}
-                    />
+                    <CartSummary data={cart} />
                     <hr className="my-4" />
                     <div>
-                      <Button
-                        fullWidth
-                        size="large"
-                        theme="primary"
-                        text="Proceder al pago"
-                        disabled={shipping === undefined}
-                      />
+                      <Button fullWidth size="large" theme="primary" text="Pagar" />
                     </div>
                     <hr className="my-4" />
                     <div className="text-center">
