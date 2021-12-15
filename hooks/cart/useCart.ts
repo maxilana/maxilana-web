@@ -1,4 +1,5 @@
 import useSWR from 'swr';
+import { useMemo } from 'react';
 import Cookies from 'js-cookie';
 
 import { CART_ID_COOKIE } from 'config/cart';
@@ -16,10 +17,26 @@ const useCart = () => {
     },
   );
 
+  const productsInCart = useMemo(() => {
+    if (data?.carrito) {
+      const qtyProducts = data.carrito.reduce((prevValue, currItem) => {
+        const { detalle } = currItem;
+        const newValue = prevValue + (detalle?.productos?.length ?? 0);
+
+        return newValue;
+      }, 0);
+
+      return qtyProducts;
+    }
+
+    return 0;
+  }, [data]);
+
   return {
+    isEmpty: productsInCart < 1,
     isLoading: isValidating && data === undefined,
-    isEmpty: !!(data?.productos && data.productos.length < 1),
     data: data ? normalizeCart(data) : undefined,
+    cartLength: productsInCart,
   };
 };
 

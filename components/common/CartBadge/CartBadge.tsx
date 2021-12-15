@@ -6,12 +6,12 @@ import useCart from '~/hooks/cart/useCart';
 import styles from './CartBadge.module.css';
 
 const CartBadge: FC = () => {
-  const { data } = useCart();
+  const { data, cartLength } = useCart();
 
   return (
     <Link href="/carrito" prefetch={false}>
       <a className={styles.root}>
-        {data !== undefined && <small className={styles.badge}>{data.products.length}</small>}
+        {data !== undefined && <small className={styles.badge}>{cartLength}</small>}
         <ShoppingCartOutlined style={{ fontSize: 24 }} />
       </a>
     </Link>

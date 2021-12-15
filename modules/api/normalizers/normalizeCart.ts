@@ -10,11 +10,18 @@ if (!imageBaseURL) {
 
 const normalizeCart = (object: Carrito): Cart => ({
   id: object.orden,
-  products: object.productos.map((item) => ({
-    id: item.id,
-    name: item.nombre,
-    price: item.precio,
-    image: `${imageBaseURL}/${item.id}.jpg`,
+  cart: object.carrito.map((item) => ({
+    branch: item.plaza,
+    details: {
+      shipping: Number(item.detalle.envio),
+      products: item.detalle.productos.map((product) => ({
+        id: product.id,
+        name: product.nombre,
+        price: product.precio,
+        branchId: product.sucursal,
+        image: `${imageBaseURL}/${product.id}.jpg`,
+      })),
+    },
   })),
   pricing: {
     total: object.pago.total,

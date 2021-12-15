@@ -1,5 +1,3 @@
-import { Product } from './Product';
-
 // NO PUEDO NORMALIZAR ESTE OBJETO
 //  YA QUE NO COINCIDEN LOS DATOS DEL PRODUCTO...
 export interface CartProduct {
@@ -7,11 +5,22 @@ export interface CartProduct {
   name: string;
   price: number;
   image: string;
+  branchId: number;
+  insurance?: number;
+}
+
+export interface LineItem {
+  branch: string;
+  branchId?: number;
+  details: {
+    shipping: number;
+    products: CartProduct[];
+  };
 }
 
 export interface Cart {
   id: string;
-  products: CartProduct[];
+  cart: LineItem[];
   pricing: {
     shipping: number;
     subtotal: number;

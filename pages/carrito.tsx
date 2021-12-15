@@ -10,9 +10,7 @@ import useCart from '~/hooks/cart/useCart';
 import { formatPrice } from '~/modules/hooks/usePrice';
 
 const CartPage: NextPage = () => {
-  const { data, isLoading, isEmpty } = useCart();
-
-  console.log(data, isLoading, isEmpty);
+  const { data, isLoading, isEmpty, cartLength } = useCart();
 
   return (
     <BareLayout title="Carrito de compras" meta={{ css: ['/antd/form.css'] }}>
@@ -40,6 +38,10 @@ const CartPage: NextPage = () => {
             );
           }
 
+          const products = data?.cart.flatMap((item) => {
+            return item.details.products;
+          });
+
           return (
             <section className="py-4 sm:px-4">
               <header className="mb-4 px-4 flex flex-row justify-between items-center sm:px-0">
@@ -52,7 +54,7 @@ const CartPage: NextPage = () => {
                 <div className="lg:col-span-2">
                   <div className="formContainer p-0">
                     <ul className="w-full divide-y divide-solid divide-gray-200">
-                      {data?.products.map((item) => (
+                      {products?.map((item) => (
                         <li key={item.id}>
                           <LineItem data={item} />
                         </li>
@@ -62,9 +64,7 @@ const CartPage: NextPage = () => {
                 </div>
                 <aside>
                   <div className="formContainer">
-                    <h2 className="h6 text-center mb-6">
-                      {`Resumen (${data?.products.length} productos)`}
-                    </h2>
+                    <h2 className="h6 text-center mb-6">{`Resumen (${cartLength} productos)`}</h2>
                     <dl className="border-b border-gray-200 pb-4">
                       <div className="flex flex-row justify-between items-center mt-4">
                         <dt className="text-secondary">Subtotal:</dt>
