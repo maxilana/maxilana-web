@@ -4,16 +4,15 @@ interface Producto {
   id: string;
   nombre: string;
   precio: number;
-  sucursal: number; // El id de la sucursal
   seguro?: number; // Cantidad de seguro de producto, joyería o >= $10K
+  sucursal: number; // El id de la sucursal
+  idciudad: number; // El id de la plaza
 }
 
 interface ItemCarrito {
   plaza: string;
-  detalle: {
-    envio: string; // number
-    productos: Producto[];
-  };
+  envio: string; // number
+  productos: Producto[];
 }
 
 export interface MaxilanCartResponse {

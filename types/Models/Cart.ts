@@ -5,17 +5,15 @@ export interface CartProduct {
   name: string;
   price: number;
   image: string;
+  cityId: number;
   branchId: number;
   insurance?: number;
 }
 
 export interface LineItem {
   branch: string;
-  branchId?: number;
-  details: {
-    shipping: number;
-    products: CartProduct[];
-  };
+  shipping: number;
+  products: CartProduct[];
 }
 
 export interface Cart {

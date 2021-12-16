@@ -20,8 +20,8 @@ const useCart = () => {
   const productsInCart = useMemo(() => {
     if (data?.carrito) {
       const qtyProducts = data.carrito.reduce((prevValue, currItem) => {
-        const { detalle } = currItem;
-        const newValue = prevValue + (detalle?.productos?.length ?? 0);
+        const { productos } = currItem;
+        const newValue = prevValue + (productos?.length ?? 0);
 
         return newValue;
       }, 0);
