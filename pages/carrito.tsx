@@ -39,7 +39,7 @@ const CartPage: NextPage = () => {
           }
 
           const products = data?.cart.flatMap((item) => {
-            return item.details.products;
+            return item.products;
           });
 
           return (

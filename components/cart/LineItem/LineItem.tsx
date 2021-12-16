@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
-import { Button, Img } from '~/components/ui';
+import { Button, Img, Tooltip } from '~/components/ui';
 import useRemoveItem from '~/hooks/cart/useRemoveItem';
 import { usePrice } from '~/modules/hooks';
+import { formatPrice } from '~/modules/hooks/usePrice';
 import { CartProduct } from '~/types/Models';
 
 interface Props {
@@ -13,6 +15,7 @@ const LineItem: FC<Props> = ({ data }) => {
   const removeItem = useRemoveItem();
   const [removing, setRemoving] = useState(false);
   const { price } = usePrice({ amount: data?.price });
+  const insurance = data?.insurance ?? 0;
 
   const handleRemove = async () => {
     setRemoving(true);
@@ -38,10 +41,20 @@ const LineItem: FC<Props> = ({ data }) => {
           alt={`Thumbnail de producto: ${data.name}`}
         />
       </div>
-      <div>
+      <div className="space-y-2">
         <h2 className="h6">{data.name}</h2>
-        <p className="text-secondary tex-sm mb-2">{`Código: ${data.id}`}</p>
-        <span className="block mb-2 text-danger font-semibold">{price}</span>
+        <p className="text-secondary text-sm">{`Código: ${data.id}`}</p>
+        <p className="text-secondary text-sm">Precio: {price}</p>
+        {insurance > 0 && (
+          <Tooltip text="Seguro para joyería y articulos con precio mayor a $10,000. Se aplica al envio.">
+            <p className="flex items-center text-sm text-secondary">
+              <span className="mr-1">
+                {`Seguro: ${formatPrice({ amount: insurance, locale: 'es-MX' })}`}
+              </span>
+              <InfoCircleOutlined />
+            </p>
+          </Tooltip>
+        )}
         <Button
           size="small"
           theme="danger"
