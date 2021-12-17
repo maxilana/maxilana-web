@@ -4,7 +4,7 @@
 }
 
 .overlay {
-  @apply absolute bottom-full left-0 mb-2 bg-gray-700 text-discount p-1 max-w-[600px] text-xxs rounded-sm;
+  @apply absolute bottom-full left-0 mb-2 bg-gray-700 text-discount p-1 max-w-[250px] text-xxs rounded-sm;
 }
 
 .arrow {
