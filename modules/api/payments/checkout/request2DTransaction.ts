@@ -8,8 +8,14 @@ interface Body extends PaymentTransactionRequest {
 }
 
 const request2DTransaction = async (data: Body): Promise<CheckoutSuccess> => {
+  if (!process.env.NEXT_PUBLIC_CHECKOUT_2DSECURE) {
+    throw new Error(
+      'Ocurrió un error al procesar el pago, la ENV no está definida para los pagos.',
+    );
+  }
+
   const response = await maxAxios.post<MaxilanaSecure2DResponse>(
-    '/procesar2dsecure/producto/prueba',
+    process.env.NEXT_PUBLIC_CHECKOUT_2DSECURE,
     data,
   );
 
