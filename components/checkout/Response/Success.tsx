@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
@@ -7,12 +7,15 @@ import { CartSummary } from '~/components/cart';
 
 import styles from './Response.module.css';
 import { Cart } from '~/types/Models';
+import useRemoveCart from '~/hooks/cart/useRemoveCart';
 
 interface Props {
   data: Cart;
 }
 
 const CheckoutSuccess: FC<Props> = ({ data: cart }) => {
+  useRemoveCart();
+
   return (
     <div className={styles.root}>
       <div className={styles.wrapper}>
