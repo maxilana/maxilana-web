@@ -4,22 +4,26 @@ import { BareLayout } from '~/components/layout';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
 import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
-import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
+import { Cart, ErrorCodes } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
+import { getCart } from '~/modules/api/cart';
 
 interface PaymentRequest extends PaymentTransactionRequest {
-  envio: number;
+  total: number;
 }
 
 type SSRProps = {
   error?: boolean;
-  response?: CheckoutData;
+  response?: Cart;
   errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
-  const { query } = context;
+  const {
+    req: { cookies },
+  } = context;
   const validation = await validatePayment(context);
+  const cartToken = cookies['maxilana_cart_cookie'] ?? undefined;
 
   if (validation?.redirect) {
     return {
@@ -39,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     };
   }
 
-  if (!validation?.transaction) {
+  if (!validation?.transaction || !cartToken) {
     return {
       props: {
         error: true,
@@ -48,17 +52,20 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     };
   }
 
-  const shipping = Number(query.scost);
+  const cart = await getCart(cartToken);
+
   const request2D: PaymentRequest = {
     ...validation.transaction,
-    envio: shipping,
+    total: cart.pricing.total,
   };
 
-  const response = await request2DTransaction(request2D);
+  // TODO: Debería regresar la info del envio/cliente
+  //  por ahora solo regresa un boolean.
+  await request2DTransaction(request2D);
 
   return {
     props: {
-      response,
+      response: cart,
     },
   };
 };

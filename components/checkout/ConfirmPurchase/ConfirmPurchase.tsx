@@ -5,78 +5,55 @@ import { FC, useState } from 'react';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '~/components/ui';
+import { CartSummary } from '~/components/cart';
 import { BankTransactionForm } from '~/components/payments';
-import { CartSummary, FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
+import { FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
 
 import styles from './ConfirmPurchase.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 
 import { request3DTransaction } from '~/api/payments';
-import { Product } from '~/types/Models/Product';
-import { CreditCard, ProductPurchase } from '~/types/Requests';
-import { MaxilanaTransaction } from '~/types/Responses';
-import useShippingCost from '~/hooks/useShippingCost';
-import getOnlinePrice from '~/utils/getOnlinePrice';
+import { CartPurchase } from '~/types/Requests';
+import { MaxiCartTransaction } from '~/types/Responses';
 import { Cart } from '~/types/Models';
 
 interface Props {
   cart: Cart;
-  product?: Product;
 }
 
 type Status = 'idle' | 'submiting' | 'error';
 type Data = {
-  payment: ProductPurchase;
-  transaction: MaxilanaTransaction;
+  payment: CartPurchase;
+  transaction: MaxiCartTransaction;
 };
-
-interface FormValues extends CreditCard {
-  nombreenvio: string;
-  celular: string;
-  correo: string;
-  domicilio: string;
-  codigopostal: string;
-  colonia: string;
-  municipio: string;
-  estado: string;
-  instrucciones: string;
-}
 
 dayjs.extend(customParseFormat);
 
-const ConfirmPurchase: FC<Props> = ({ cart, product }) => {
+const ConfirmPurchase: FC<Props> = ({ cart }) => {
   const [status, setStatus] = useState<Status>('idle');
   const [data, setData] = useState<Data | null>(null);
 
-  const [form] = Form.useForm<FormValues>();
-  // const shipping = useShippingCost(product.id);
+  const [form] = Form.useForm<CartPurchase>();
 
-  const handleFormSubmit = async (data: FormValues) => {
+  const handleFormSubmit = async (data: CartPurchase) => {
     setStatus('submiting');
-    // const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
-    // const totalPrice = onlinePrice + (shipping ?? 0);
-    const totalPrice = cart.pricing.total;
 
-    console.log(totalPrice);
+    try {
+      const params = {
+        ...data,
+        orden: cart.id,
+      };
 
-    // try {
-    //   const params: ProductPurchase = {
-    //     ...data,
-    //     sucursal: product.BranchId,
-    //     upc: product.id,
-    //     importe: totalPrice, // PRECIO + ENVIO
-    //   };
+      const maxiTransaction = await request3DTransaction(params);
 
-    //   const maxiTransaction = await request3DTransaction(params);
-
-    //   setData({
-    //     payment: params,
-    //     transaction: maxiTransaction,
-    //   });
-    // } catch (err) {
-    //   console.log(err);
-    //   setStatus('error');
-    // }
+      setData({
+        payment: params,
+        transaction: maxiTransaction,
+      });
+    } catch (err) {
+      console.log(err);
+      setStatus('error');
+    }
   };
 
   if (status === 'submiting') {
@@ -85,7 +62,7 @@ const ConfirmPurchase: FC<Props> = ({ cart, product }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`${window.location.origin}/checkout/response?scost=${cart.pricing.shipping}`}
+            forwardPath={`${window.location.origin}/checkout/response`}
           />
         )}
       </PageLoader>
@@ -244,7 +221,7 @@ const ConfirmPurchase: FC<Props> = ({ cart, product }) => {
                     <CartSummary data={cart} />
                     <hr className="my-4" />
                     <div>
-                      <Button fullWidth size="large" theme="primary" text="Pagar" />
+                      <Button fullWidth size="large" theme="primary" text="Confirmar compra" />
                     </div>
                     <hr className="my-4" />
                     <div className="text-center">

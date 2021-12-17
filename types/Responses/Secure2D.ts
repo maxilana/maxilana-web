@@ -1,3 +1,4 @@
+// TODO: Esto ya no se usa en el checkout del producto
 export interface MaxilanaSecure2DResponse {
   referencia: string;
   monto: string;

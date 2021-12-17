@@ -1,37 +1,27 @@
 import maxAxios from '~/api/axios';
-import { CheckoutSuccess } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
-import { MaxilanaSecure2DResponse } from '~/types/Responses';
 
 interface Body extends PaymentTransactionRequest {
-  envio: number;
+  total: number;
 }
 
-const request2DTransaction = async (data: Body): Promise<CheckoutSuccess> => {
-  const response = await maxAxios.post<MaxilanaSecure2DResponse>(
-    '/procesar2dsecure/producto/prueba',
+type Checkout2DSecureResponse = {
+  resultado: boolean;
+};
+
+const request2DTransaction = async (data: Body): Promise<boolean> => {
+  const response = await maxAxios.post<Checkout2DSecureResponse>(
+    '/procesar2dsecure/web/productos',
     data,
   );
 
-  if (!response.referencia) {
-    throw new Error('Ocurrió un error al procesar el pago, inténtalo en otra ocasión.');
+  if (!response?.resultado) {
+    throw new Error(
+      'Ocurrió un error al procesar el pago, comunícate con una sucursal para resolver el problema.',
+    );
   }
 
-  const { referencia, monto, articulo, contacto, dom, mun, ciudad, nombreenvio, envio } = response;
-
-  return {
-    reference: referencia,
-    amount: Number(monto),
-    productName: articulo,
-    contactName: contacto,
-    shipping: {
-      address: dom,
-      city: ciudad,
-      locality: mun,
-      contactName: nombreenvio,
-      amount: Number(envio),
-    },
-  };
+  return true;
 };
 
 export default request2DTransaction;

@@ -1,3 +1,4 @@
+// TODO: Eliminar esto, se usará el carrito.
 export interface CheckoutSuccess {
   reference: string;
   amount: number;

@@ -10,12 +10,12 @@ import { AuthComponent, LoginForm } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { Button } from '~/components/ui';
+import { CartBadge } from '~/components/cart';
 
 import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
 import useToggleState from '~/hooks/useToggleState';
 import { City } from '~/types/Models';
-import CartBadge from '~/components/common/CartBadge';
 
 interface Props {
   cities?: City[];

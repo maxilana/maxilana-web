@@ -1,4 +1,18 @@
+// Modelo en comun para solicitar transacciones de pago
+//  es una respuesta que regresa Maxilana
+//  y a su vez se envia al banco para solicitar el pago.
+export interface CommonTransaction {
+  id: string;
+  merchancity: string;
+  merchanname: string;
+  merchanid: string;
+  correoEmpresa: string;
+  correoserv: string;
+  correopass: string;
+}
+
 // Response de la transacción de Maxilana
+// TODO: Remover una vez salga el carrito de compras.
 export interface MaxilanaTransaction {
   id: string;
   merchancity: string; // "CULIACAN"
@@ -7,6 +21,12 @@ export interface MaxilanaTransaction {
   correoEmpresa: string; // "webmaxilana@maxilana.com",
   correoserv: string; // "smtp.office365.com",
   correopass: string; // "cceMaxiWeb2015"
+}
+
+// Modelo de transacción para pagar productos
+//  lo regresa Maxilana para solicitar un pago.
+export interface MaxiCartTransaction extends CommonTransaction {
+  orden: string;
 }
 
 // Response de la transacción del banco
