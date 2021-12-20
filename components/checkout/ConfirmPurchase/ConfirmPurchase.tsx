@@ -14,7 +14,7 @@ import defaultValidateMessages from 'config/validationMessages';
 
 import { request3DTransaction } from '~/api/payments';
 import { CartPurchase } from '~/types/Requests';
-import { MaxiCartTransaction } from '~/types/Responses';
+import { MaxilanaCheckout3DResponse as Transaction } from '~/types/Responses';
 import { Cart } from '~/types/Models';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 type Status = 'idle' | 'submiting' | 'error';
 type Data = {
   payment: CartPurchase;
-  transaction: MaxiCartTransaction;
+  transaction: Transaction;
 };
 
 dayjs.extend(customParseFormat);
@@ -44,11 +44,11 @@ const ConfirmPurchase: FC<Props> = ({ cart }) => {
         orden: cart.id,
       };
 
-      const maxiTransaction = await request3DTransaction(params);
+      const transaction3D = await request3DTransaction(params);
 
       setData({
         payment: params,
-        transaction: maxiTransaction,
+        transaction: transaction3D,
       });
     } catch (err) {
       console.log(err);

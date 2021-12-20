@@ -1,9 +1,9 @@
 import maxAxios from '~/api/axios';
 import { CartPurchase } from '~/types/Requests';
-import { MaxiCartTransaction } from '~/types/Responses';
+import { MaxilanaCheckout3DResponse } from '~/types/Responses';
 
-const request3DTransaction = async (data: CartPurchase): Promise<MaxiCartTransaction> => {
-  const response = await maxAxios.post<MaxiCartTransaction>(
+const request3DTransaction = async (data: CartPurchase): Promise<MaxilanaCheckout3DResponse> => {
+  const response = await maxAxios.post<MaxilanaCheckout3DResponse>(
     '/procesar3dsecure/web/productos',
     data,
   );

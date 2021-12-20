@@ -25,7 +25,8 @@ export interface MaxilanaTransaction {
 
 // Modelo de transacción para pagar productos
 //  lo regresa Maxilana para solicitar un pago.
-export interface MaxiCartTransaction extends CommonTransaction {
+export interface MaxilanaCheckout3DResponse extends CommonTransaction {
+  total: number;
   orden: string;
 }
 
