@@ -41,7 +41,10 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
           page?.categories.map((item) => {
             const category = categories.find(({ id }) => id === item?.category?.id);
             return category?.filters
-              ? getProductsFromCMSFilters(category?.filters).then((products) => {
+              ? getProductsFromCMSFilters({
+                  ...category?.filters,
+                  quantity: 10,
+                }).then((products) => {
                   return { ...category, products };
                 })
               : { ...category, products: [] as Product[] };
