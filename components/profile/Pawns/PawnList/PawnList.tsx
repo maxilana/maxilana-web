@@ -142,8 +142,8 @@ const PawnList: FC<Props> = ({ data }) => {
       </div>
       <ul>
         {ballots.map((item, idx) => {
-          const textStyle = statusStyles[item.status].textColor;
-          const borderStyle = statusStyles[item.status].borderColor;
+          const textStyle = statusStyles[item.status]?.textColor ?? 'text-black';
+          const borderStyle = statusStyles[item.status]?.borderColor ?? 'border-l-[#DDD]';
           const dueDate = dayjs(item.dueDate, 'YYYY-MM-DD').locale('es').format('DD MMM YYYY');
           const paymentAmount = formatPrice({ amount: item.paymentAmount, locale: LOCALE }); // PAGO DE REFRENDO
           const cannotBePaid = item.accountBlocked || item.status === 'Proceso comercial';
