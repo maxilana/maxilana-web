@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import deepmerge from 'deepmerge';
 import { addItemCart, createCart } from '~/modules/api/cart';
 import { CART_ID_COOKIE, COOKIE_EXPIRATION } from 'config/cart';
-import Cart from '~/types/Models/Cart';
+import { Cart } from '~/types/Models';
 import { Product } from '~/types/Models/Product';
 
 const useAddItem = () => {
