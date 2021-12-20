@@ -4,12 +4,9 @@ const locale = 'es-MX';
 const currencyCode = 'MXN';
 
 export function formatPrice({ amount, locale: locale }: { amount: number; locale?: string }) {
-  const formatCurrency = new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currencyCode,
-  });
+  const strAmount = String(amount.toFixed(2)).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 
-  return formatCurrency.format(amount);
+  return `$${strAmount}`;
 }
 
 export function formatVariantPrice({

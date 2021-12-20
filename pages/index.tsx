@@ -56,23 +56,17 @@ const Home: NextPage<Props> = ({ cities, products, page, categories, legalPages 
   const url = page?.hero?.image ? getCMSImageURL(page?.hero?.image) : '';
   const baseURL = `${process.env.NEXT_PUBLIC_API_BASEURL}/image`;
 
-  const placeholderImage = `${baseURL}?${parseQuery({ url, w: '18', q: '70' })}`;
-  const mobileHeroImage = `${baseURL}?${parseQuery({ url, w: '300', h: '350', q: '60' })}`;
-  const tabletHeroImage = `${baseURL}?${parseQuery({ url, w: '840', h: '400', q: '80' })}`;
-  const desktopHeroImage = `${baseURL}?${parseQuery({ url, q: '80' })}`;
+  const mobileHeroImage = `${baseURL}?${parseQuery({ url, w: '300', h: '350', q: '100' })}`;
+  const tabletHeroImage = `${baseURL}?${parseQuery({ url, w: '840', h: '400', q: '100' })}`;
+  const desktopHeroImage = `${baseURL}?${parseQuery({ url, q: '100' })}`;
 
   const Cover = url ? (
-    <HeroImg
-      placeholder={placeholderImage}
-      mobile={mobileHeroImage}
-      tablet={tabletHeroImage}
-      desktop={desktopHeroImage}
-    />
+    <HeroImg mobile={mobileHeroImage} tablet={tabletHeroImage} desktop={desktopHeroImage} />
   ) : null;
 
   return (
     <Layout
-      meta={{ ...page.seo, images: url ? [placeholderImage, mobileHeroImage] : [] }}
+      meta={{ ...page.seo, images: url ? [mobileHeroImage] : [] }}
       cities={cities}
       legalPages={legalPages}
     >
