@@ -6,14 +6,15 @@ import { Button } from '~/components/ui';
 import { CartSummary } from '~/components/cart';
 
 import styles from './Response.module.css';
-import { Cart } from '~/types/Models';
+import { Cart, CheckoutResponse as Order } from '~/types/Models';
 import useRemoveCart from '~/hooks/cart/useRemoveCart';
 
 interface Props {
-  data: Cart;
+  cart: Cart;
+  order: Order;
 }
 
-const CheckoutSuccess: FC<Props> = ({ data: cart }) => {
+const CheckoutSuccess: FC<Props> = ({ cart, order }) => {
   useRemoveCart();
 
   return (
@@ -23,19 +24,20 @@ const CheckoutSuccess: FC<Props> = ({ data: cart }) => {
           <CheckCircleTwoTone twoToneColor="#0BBF69" style={{ fontSize: 60 }} />
           <h1 className={styles.headerTitle}>Gracias por su compra</h1>
           <p>Un email de confirmación ha sido enviado con todos los detalles de su pedido.</p>
-          {/* <p className="text-center text-lg">{info?.reference}</p> */}
+          <p className="text-center text-lg">{order?.reference}</p>
         </div>
         <div className={styles.innerSection}>
           <h2 className={styles.subtitle}>Datos de entrega:</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <h3 className={styles.subheading}>Tu pedido se enviará a:</h3>
-              {/* <div className="space-y-2">
-                <p>{info?.shipping.contactName}</p>
+              <div className="space-y-2">
+                <p>{order?.shipping.name}</p>
                 <p>
-                  {`Dirección: ${info?.shipping.address} ${info?.shipping.locality} ${info?.shipping.city}`}
+                  {`Dirección: ${order?.shipping.address} ${order?.shipping.locality} ${order?.shipping.city}`}
                 </p>
-              </div> */}
+                <p>{`Código Postal: ${order?.shipping.zipcode}`}</p>
+              </div>
             </div>
             <div>
               <h3 className={styles.subheading}>Entrega estimada:</h3>

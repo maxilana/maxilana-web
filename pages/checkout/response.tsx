@@ -4,7 +4,7 @@ import { BareLayout } from '~/components/layout';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
 import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
-import { Cart, ErrorCodes } from '~/types/Models';
+import { Cart, CheckoutResponse, ErrorCodes } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
 import { getCart } from '~/modules/api/cart';
 
@@ -14,7 +14,10 @@ interface PaymentRequest extends PaymentTransactionRequest {
 
 type SSRProps = {
   error?: boolean;
-  response?: Cart;
+  response?: {
+    cart: Cart;
+    order: CheckoutResponse;
+  };
   errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
 };
 
@@ -59,13 +62,14 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
     total: cart.pricing.total,
   };
 
-  // TODO: Debería regresar la info del envio/cliente
-  //  por ahora solo regresa un boolean.
-  await request2DTransaction(request2D);
+  const order = await request2DTransaction(request2D);
 
   return {
     props: {
-      response: cart,
+      response: {
+        cart,
+        order,
+      },
     },
   };
 };
@@ -81,7 +85,7 @@ const CheckoutResponsePage: NextPage<Props> = ({
     <BareLayout>
       {(() => {
         if (response !== null && !error) {
-          return <CheckoutSuccess data={response} />;
+          return <CheckoutSuccess cart={response.cart} order={response.order} />;
         }
 
         return <CheckoutError code={errorCode} />;

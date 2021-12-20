@@ -13,6 +13,19 @@ export interface CheckoutSuccess {
   };
 }
 
+export interface CheckoutResponse {
+  reference: string;
+  shipping: {
+    name: string;
+    cellphone: string;
+    address: string;
+    locality: string;
+    zipcode: string;
+    city: string;
+    state: string;
+  };
+}
+
 // LOS CÓDIGOS 201 EN ADELANTE
 //  SON DEL BANCO AL TRATAR DE PAGAR
 export type ErrorCodes =
