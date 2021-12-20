@@ -5,3 +5,4 @@ export { default as Error500 } from './Error500';
 export { default as Truck } from './Truck';
 export { default as EmptyPawns } from './EmptyPawns';
 export { default as EmptyOrders } from './EmptyOrders';
+export { default as EmptyCart } from './EmptyCart';

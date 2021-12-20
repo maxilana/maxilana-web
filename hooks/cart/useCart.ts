@@ -1,22 +1,42 @@
+import useSWR from 'swr';
+import { useMemo } from 'react';
 import Cookies from 'js-cookie';
+
 import { CART_ID_COOKIE } from 'config/cart';
-import { Product } from '~/types/Models/Product';
+import fetcher from '~/modules/api/fetcher';
+import { MaxilanCartResponse } from '~/types/Responses';
+import { normalizeCart } from '~/modules/api/normalizers';
 
-type Cart = {
-  data: Product | null;
-};
+const useCart = () => {
+  const cartToken = Cookies.get(CART_ID_COOKIE);
+  const { data, isValidating } = useSWR<MaxilanCartResponse>(
+    cartToken ? `/carrito?orden=${cartToken}` : null,
+    {
+      fetcher: fetcher,
+      revalidateOnFocus: false,
+    },
+  );
 
-const useCart = (): Cart => {
-  const cart = Cookies.get(CART_ID_COOKIE);
+  const productsInCart = useMemo(() => {
+    if (data?.carrito) {
+      const qtyProducts = data.carrito.reduce((prevValue, currItem) => {
+        const { productos } = currItem;
+        const newValue = prevValue + (productos?.length ?? 0);
 
-  if (!cart) {
-    return {
-      data: null,
-    };
-  }
+        return newValue;
+      }, 0);
+
+      return qtyProducts;
+    }
+
+    return 0;
+  }, [data]);
 
   return {
-    data: JSON.parse(cart),
+    isEmpty: productsInCart < 1,
+    isLoading: isValidating && data === undefined,
+    data: data ? normalizeCart(data) : undefined,
+    cartLength: productsInCart,
   };
 };
 

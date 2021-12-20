@@ -28,6 +28,8 @@ import useAddItem from '~/hooks/cart/useAddItem';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import getOnlinePrice from '~/utils/getOnlinePrice';
 
+type CartStatus = 'default' | 'adding' | 'added';
+
 interface GSProps {
   product: Product;
   gallery: string[];
@@ -95,10 +97,10 @@ const ProductView: NextPage<Props> = ({
   router,
   legalPages,
 }) => {
-  // const [visibleShare, toggleShare] = useToggleState();
   const { isFallback } = router;
   const addItem = useAddItem();
   const [shareURL, setShareURL] = useState<string>();
+  const [status, setStatus] = useState<CartStatus>('default');
   const { price, discount, basePrice } = usePrice({
     amount: product?.netPrice,
     baseAmount: product?.price,
@@ -125,10 +127,19 @@ const ProductView: NextPage<Props> = ({
 
   const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
 
-  const handlePurchaseProduct = () => {
-    addItem(product);
-    router.push('/checkout');
+  const handleAddToCart = async () => {
+    setStatus('adding');
+
+    try {
+      await addItem(product);
+      setStatus('added');
+      // Notificar que se agregó el producto...
+    } catch (err) {
+      setStatus('default');
+      console.log(err);
+    }
   };
+
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
 
@@ -137,6 +148,8 @@ const ProductView: NextPage<Props> = ({
   );
   const number = whatsapp.replace(/\s/g, '');
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${number}&text=${message}`;
+
+  const buyButtonText = status === 'added' ? 'Producto en carrito' : 'Agregar al carrito';
 
   return (
     <Layout title={product?.name} cities={cities || []} bgWhite legalPages={legalPages}>
@@ -191,19 +204,21 @@ const ProductView: NextPage<Props> = ({
               {product?.saleOnline && (
                 <Button
                   fullWidth
-                  theme="primary"
-                  text={`Comprar en línea (${formatPrice({
+                  disabled={status === 'added'}
+                  loading={status === 'adding'}
+                  theme={status === 'added' ? 'default' : 'primary'}
+                  text={`${buyButtonText} (${formatPrice({
                     amount: onlinePrice,
                     locale: 'es-MX',
                   })})`}
-                  onClick={handlePurchaseProduct}
+                  onClick={handleAddToCart}
                 />
               )}
               <Button
                 fullWidth
                 theme="whatsapp"
                 text="Comprar en sucursal"
-                target="__blank"
+                target="_blank"
                 href={whatsappLink}
                 icon={<WhatsAppOutlined />}
               />
@@ -226,6 +241,14 @@ const ProductView: NextPage<Props> = ({
                     <a className="font-bold block">{product?.Branch?.name}</a>
                   </Link>
                   <span className="text-secondary text-sm">{product?.Branch?.City?.name}</span>
+                  <p className="text-secondary">
+                    <span className="block">
+                      Teléfono: <span>{phone}</span>
+                    </span>
+                    <span className="block">
+                      Whatsapp: <span>{whatsapp}</span>
+                    </span>
+                  </p>
                 </div>
               </div>
               {product?.saleOnline ? (
@@ -236,8 +259,8 @@ const ProductView: NextPage<Props> = ({
                   <div>
                     <span className="block font-bold">Producto con entrega en tu domicilio</span>
                     <span className="text-secondary">
-                      Este producto puede ser comprados en sucursal y en línea pagando con tu
-                      tarjeta de crédito o débito
+                      Este producto puede ser comprado en sucursal y en línea pagando con tu tarjeta
+                      de crédito o débito
                     </span>
                   </div>
                 </div>

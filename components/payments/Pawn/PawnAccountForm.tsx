@@ -44,7 +44,7 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
         </p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className="flex flex-col gap-6 items-center sm:flex-row">
+        <div className="flex flex-col gap-6 items-center md:flex-row lg:flex-col xl:flex-row">
           <div>
             <Image
               width={328}

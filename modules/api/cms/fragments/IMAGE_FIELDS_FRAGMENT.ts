@@ -9,6 +9,7 @@ const IMAGE_FIELDS_FRAGMENT = gql`
     ext
     width
     height
+    provider
   }
 `;
 

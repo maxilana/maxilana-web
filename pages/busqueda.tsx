@@ -15,7 +15,8 @@ import getCityBranchesBySlug from '~/api/getCityBranchesBySlug';
 import { Layout } from '~/components/layout';
 import getProducts from '~/api/getProducts';
 import { Button, ProductCard, ProductsNotFound } from '~/components/ui';
-import useToggleState from '~/hooks/useToggleState';
+import { SelectField } from '~/components/common';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import { Branch, City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
@@ -38,6 +39,15 @@ interface GSSProps {
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
+  if (query?.orden && !['desc', 'asc'].includes(`${query?.orden}`.toLowerCase())) {
+    return {
+      redirect: {
+        statusCode: 307,
+        destination: `/busqueda?${parseQuery({ ...query, orden: 'desc' })}`,
+      },
+    };
+  }
+
   const { page, limit, ...filters } = query || {};
   const [categories, cities, legalPages] = await Promise.all([
     getCMSCategories(true),
@@ -45,18 +55,19 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
     getAllLegalPages(),
   ]);
 
-  if (query.categoria) {
-    const category = categories.find((item) => item.id === query?.categoria);
-    const { filters } = category || {};
-    if (filters) {
-      if (filters?.categories) {
-        query.categoria = filters?.categories.map((item) => item?.itemID).join(',');
+  const paginatedProducts = await (() => {
+    const { categoria, ...apiQuery } = query;
+    if (categoria) {
+      const category = categories.find((item) => item.id === query?.categoria);
+      const { filters } = category || {};
+      if (filters && filters?.categories?.length) {
+        apiQuery.categoria = filters?.categories.map((item) => item?.itemID).join(',');
       }
-      Object.assign(filtersToQueryParams(filters), query);
+      return getProducts(Object.assign(filtersToQueryParams(filters || {}), apiQuery));
+    } else {
+      return getProducts(query);
     }
-  }
-
-  const paginatedProducts = await getProducts(query);
+  })();
   const { rows: products, ...pagination } = paginatedProducts;
 
   const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
@@ -96,20 +107,21 @@ const Busqueda: NextPage<Props> = ({
   categories,
   legalPages,
 }) => {
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const [visibleFilter, setVisibleFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [limit, setLimit] = useState(router?.query?.limit || 24);
   const category = categories?.find?.((item) => `${item.id}` === `${router?.query?.categoria}`);
 
   useEffect(() => {
     const handleRouteChange = (url: string): void => {
       if (url.includes('busqueda')) {
         setLoading(true);
-        if (visibleFilter) toggleVisibleFilter();
+        setVisibleFilter(false);
       }
     };
     const handleRouteChangeComplete = () => {
-      toggleVisibleFilter();
+      setVisibleFilter(false);
       setLoading(false);
     };
 
@@ -122,8 +134,16 @@ const Busqueda: NextPage<Props> = ({
     };
   }, []);
 
+  useEffectOnUpdate(() => {
+    search({ ...(router?.query || {}), limit: `${limit}` });
+  }, [limit]);
+
   const search = (queryParams: ParsedUrlQuery) => {
-    router.push(`/busqueda?${parseQuery(omit(queryParams, 'page', 'slug'))}`, undefined, {
+    const newQueryParams = {
+      ...omit(queryParams, 'page', 'slug'),
+      orden: ['desc', 'asc'].includes(`${queryParams?.orden}`) ? queryParams.orden : 'desc',
+    };
+    router.push(`/busqueda?${parseQuery(newQueryParams)}`, undefined, {
       scroll: false,
     });
   };
@@ -142,7 +162,7 @@ const Busqueda: NextPage<Props> = ({
             cities={cities}
             branches={branches}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             onFiltersChange={search}
           />
         </aside>
@@ -150,7 +170,7 @@ const Busqueda: NextPage<Props> = ({
           <h2 className="h4">
             {(() => {
               if (category?.name) {
-                return query?.q ? (
+                return query?.q && `${query.q}`.toLowerCase() !== category.name.toLowerCase() ? (
                   <span>
                     {category.name}:{' '}
                     <span className="text-secondary line-clamp-1">
@@ -176,7 +196,7 @@ const Busqueda: NextPage<Props> = ({
             <Button
               icon={<FilterOutlined />}
               text="Filtros y orden"
-              onClick={toggleVisibleFilter}
+              onClick={() => setVisibleFilter(true)}
               theme="secondary"
             />
           </div>
@@ -187,7 +207,7 @@ const Busqueda: NextPage<Props> = ({
                   <ProductCard key={product.id} data={product} />
                 ))}
               </div>
-              <div className="flex space-x-6 justify-center">
+              <div className="flex space-x-6 justify-center items-center">
                 <Button
                   icon={<ArrowLeftOutlined />}
                   text="Anterior"
@@ -202,6 +222,10 @@ const Busqueda: NextPage<Props> = ({
                       : undefined
                   }
                 />
+                <span className="text-sm text-disabled">
+                  {pagination?.page} /{' '}
+                  {Math.ceil((pagination?.count || 1) / (pagination?.limit || 1))}
+                </span>
                 <Button
                   text="Siguiente"
                   rightIcon={<ArrowRightOutlined />}
@@ -215,6 +239,20 @@ const Busqueda: NextPage<Props> = ({
                         })}`
                       : undefined
                   }
+                />
+              </div>
+              <div className="flex items-center justify-center space-x-3 mt-4">
+                <span>Productos por página:</span>
+                <SelectField
+                  value={limit}
+                  name="limit"
+                  options={[8, 16, 24, 48, 64, 100].map((item) => ({
+                    value: item,
+                    label: `${item}`,
+                  }))}
+                  onChange={(e) => {
+                    setLimit(e.target.value);
+                  }}
                 />
               </div>
             </>

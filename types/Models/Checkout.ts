@@ -1,3 +1,4 @@
+// TODO: Eliminar esto, se usará el carrito.
 export interface CheckoutSuccess {
   reference: string;
   amount: number;
@@ -9,6 +10,19 @@ export interface CheckoutSuccess {
     city: string;
     amount: number;
     contactName: string;
+  };
+}
+
+export interface CheckoutResponse {
+  reference: string;
+  shipping: {
+    name: string;
+    cellphone: string;
+    address: string;
+    locality: string;
+    zipcode: string;
+    city: string;
+    state: string;
   };
 }
 

@@ -22,7 +22,7 @@ const useImageLoaded = (): [
         ref?.current?.removeEventListener('load', onLoad);
       };
     }
-  });
+  }, []);
 
   return [ref, loaded, onLoad];
 };

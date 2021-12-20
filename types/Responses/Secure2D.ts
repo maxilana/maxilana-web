@@ -1,3 +1,4 @@
+// TODO: Esto ya no se usa en el checkout del producto
 export interface MaxilanaSecure2DResponse {
   referencia: string;
   monto: string;
@@ -8,6 +9,21 @@ export interface MaxilanaSecure2DResponse {
   ciudad: string;
   nombreenvio: string;
   envio: string;
+}
+
+export interface MaxilanaCheckout2DResponse {
+  resultado: boolean;
+  referencia: string;
+  datosenvio: {
+    nombre: string;
+    celular: string;
+    domicilio: string;
+    colonia: string;
+    codigopostal: string;
+    municipio: string;
+    estado: string;
+    instrucciones: string;
+  };
 }
 
 export interface PawnSecure2DResponse {

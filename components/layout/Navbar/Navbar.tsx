@@ -10,6 +10,7 @@ import { AuthComponent, LoginForm } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { Button } from '~/components/ui';
+import { CartBadge } from '~/components/cart';
 
 import styles from './Navbar.module.css';
 import mainMenu from '../../../config/mainMenu';
@@ -72,7 +73,10 @@ const Navbar: FC<Props> = ({ cities }) => {
             <Searcher cities={cities} />
           </div>
           <div className={styles.contextualArea}>
-            <AuthComponent onClickLogin={toggleModal} />
+            <div className="flex justify-between items-center space-x-6">
+              <AuthComponent onClickLogin={toggleModal} />
+              <CartBadge />
+            </div>
             <span className={styles.payOnlineLink}>
               <Button size="small" theme="primary" text="Pagar en línea" href="/pagos" />
             </span>

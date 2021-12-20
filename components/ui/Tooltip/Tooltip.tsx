@@ -24,17 +24,17 @@ const Tooltip: FC<PropsWithChildren<Props>> = ({ children, text, disabled }) => 
   const { tooltipProps } = useTooltip(tooltipTriggerProps, state);
 
   return (
-    <span className={s.root}>
-      <span ref={ref} {...triggerProps}>
+    <div className={s.root}>
+      <div ref={ref} {...triggerProps}>
         {children}
-      </span>
+      </div>
       {state.isOpen && (
         <span {...tooltipProps} {...tooltipTriggerProps} className={s.overlay}>
           <span className={s.arrow} />
           {text}
         </span>
       )}
-    </span>
+    </div>
   );
 };
 

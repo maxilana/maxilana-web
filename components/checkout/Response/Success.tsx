@@ -1,30 +1,21 @@
 import Link from 'next/link';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
-import { CartSummary } from '~/components/common';
+import { CartSummary } from '~/components/cart';
 
-import useCart from '~/hooks/cart/useCart';
 import styles from './Response.module.css';
-import { Product } from '~/types/Models/Product';
-import useRemoveItem from '~/hooks/cart/useRemoveItem';
-import { CheckoutSuccess as CheckoutData } from '~/types/Models';
+import { Cart, CheckoutResponse as Order } from '~/types/Models';
+import useRemoveCart from '~/hooks/cart/useRemoveCart';
 
 interface Props {
-  data?: CheckoutData;
-  children?: ReactNode;
+  cart: Cart;
+  order: Order;
 }
 
-const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
-  const { data } = useCart();
-  const removeItem = useRemoveItem();
-  const [product, setProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    setProduct(data);
-    removeItem();
-  }, []);
+const CheckoutSuccess: FC<Props> = ({ cart, order }) => {
+  useRemoveCart();
 
   return (
     <div className={styles.root}>
@@ -33,7 +24,7 @@ const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
           <CheckCircleTwoTone twoToneColor="#0BBF69" style={{ fontSize: 60 }} />
           <h1 className={styles.headerTitle}>Gracias por su compra</h1>
           <p>Un email de confirmación ha sido enviado con todos los detalles de su pedido.</p>
-          <p className="text-center text-lg">{info?.reference}</p>
+          <p className="text-center text-lg">{order?.reference}</p>
         </div>
         <div className={styles.innerSection}>
           <h2 className={styles.subtitle}>Datos de entrega:</h2>
@@ -41,10 +32,11 @@ const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
             <div>
               <h3 className={styles.subheading}>Tu pedido se enviará a:</h3>
               <div className="space-y-2">
-                <p>{info?.shipping.contactName}</p>
+                <p>{order?.shipping.name}</p>
                 <p>
-                  {`Dirección: ${info?.shipping.address} ${info?.shipping.locality} ${info?.shipping.city}`}
+                  {`Dirección: ${order?.shipping.address} ${order?.shipping.locality} ${order?.shipping.city}`}
                 </p>
+                <p>{`Código Postal: ${order?.shipping.zipcode}`}</p>
               </div>
             </div>
             <div>
@@ -55,14 +47,12 @@ const CheckoutSuccess: FC<Props> = ({ data: info = null, children = null }) => {
             </div>
           </div>
         </div>
-        {product !== null && (
-          <div className={styles.innerSection}>
-            <h2 className={styles.subtitle}>Resumen del pedido:</h2>
-            <div>
-              <CartSummary data={product} shipping={info?.shipping.amount} />
-            </div>
+        <div className={styles.innerSection}>
+          <h2 className={styles.subtitle}>Resumen del pedido:</h2>
+          <div>
+            <CartSummary data={cart} />
           </div>
-        )}
+        </div>
       </div>
       <div className="text-center p-4">
         <Button theme="primary" text="Seguir comprando" href="/remates" />

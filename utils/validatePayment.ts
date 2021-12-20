@@ -13,6 +13,9 @@ type Validation = {
   transaction?: PaymentTransactionRequest;
 };
 
+/**
+ * Función que valida la respuesta del banco cuando se realiza un pago
+ */
 const validatePayment = async (context: GetServerSidePropsContext): Promise<Validation> => {
   const { query, req } = context;
 

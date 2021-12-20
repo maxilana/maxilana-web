@@ -13,6 +13,8 @@ type FormValues = {
   password: string;
 };
 
+type Status = 'idle' | 'successful' | 'error';
+
 interface Props {
   onSuccess: () => void;
 }
@@ -21,6 +23,7 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
   const { mutateUser } = useUser();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
 
   const handleSubmit = async (values: FormValues) => {
     setLoading(true);
@@ -33,7 +36,7 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
       });
 
       mutateUser(authUser);
-      onSuccess();
+      setStatus('successful');
     } catch (err) {
       setLoading(false);
       throw err;
@@ -54,6 +57,27 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
       head.appendChild(link);
     }
   }, []);
+
+  if (status === 'successful') {
+    return (
+      <div className="formContainer max-w-lg">
+        <header className="text-center">
+          <p className="h5 mb-4">¡Hecho!</p>
+          <span className="text-secondary">Iniciaste sesión correctamente</span>
+        </header>
+        <div className="my-4 space-y-4">
+          <Button fullWidth size="small" theme="primary" text="Ir a mi perfil" href="/perfil" />
+          <Button
+            fullWidth
+            size="small"
+            theme="secondary"
+            text="Seguir navegando"
+            onClick={onSuccess}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <CustomForm form={form} name="loginForm" className="max-w-lg" onSubmit={handleSubmit}>
@@ -78,7 +102,7 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
             <hr className="my-6" />
             <div className="text-center text-sm">
               <p>
-                ¿No estás registrado?{' '}
+                ¿No tienes cuenta?{' '}
                 <Link href="/auth/registro">
                   <a className="text-link">Regístrate aquí</a>
                 </Link>

@@ -23,13 +23,13 @@ const authGetServerSideProps: GetServerSideProps<GSSProps> = withSession(async (
     };
   }
 
-  const [cities, allLegalPages] = await Promise.all([getAllCities(), getAllLegalPages()]);
+  const [cities, legalPages] = await Promise.all([getAllCities(), getAllLegalPages()]);
 
   return {
     props: {
       user,
       cities,
-      allLegalPages,
+      legalPages,
     },
   };
 });

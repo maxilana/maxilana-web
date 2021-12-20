@@ -72,17 +72,6 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
                     }}
                   />
                 </TabPane>
-                <TabPane
-                  key="compras"
-                  tab={
-                    <span className="flex items-center px-2">
-                      <ProfileOutlined style={{ fontSize: 14 }} />
-                      Compras
-                    </span>
-                  }
-                >
-                  <OrdersHub />
-                </TabPane>
               </Tabs>
             </div>
           </section>

@@ -11,3 +11,5 @@ export * from './CMSPayment';
 export * from './Checkout';
 export * from './CMSOtherService';
 export * from './User';
+export * from './Orders';
+export * from './Cart';
