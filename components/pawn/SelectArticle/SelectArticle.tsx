@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { FC } from 'react';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 import BackButton from '../BackButton';
 
 import commonStyles from '../Pawn.module.css';
@@ -31,7 +32,7 @@ const SelectArticle: FC<Props> = ({ category, onBack, onSelectArticle }) => {
             <SelectableItem
               key={item.id}
               label={item.name}
-              imageSrc={item?.image?.url}
+              imageSrc={getCMSImageURL(item?.image)}
               onClick={() => {
                 const id = category?.code || item?.code;
                 const articleType = category?.formType || 'default';
