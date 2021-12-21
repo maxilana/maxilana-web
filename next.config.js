@@ -28,6 +28,9 @@ const nextConfig = {
   generateBuildId: () => buildId,
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+  },
   images: {
     domains: process.env.IMAGES_DOMAINS.split(','),
     deviceSizes: process.env.IMAGES_DEVICE_SIZES.split(',').map((item) => parseInt(item)),
