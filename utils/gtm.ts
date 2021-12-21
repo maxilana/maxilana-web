@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection
+
 import { NextWebVitalsMetric } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -10,7 +12,7 @@ declare global {
   }
 }
 
-export const pageview = (url: string): void => {
+export const pageView = (url: string): void => {
   window?.dataLayer?.push?.({
     event: 'pageview',
     page: url,
@@ -20,14 +22,14 @@ export const pageview = (url: string): void => {
 export const usePageView = () => {
   const router = useRouter();
   useEffect(() => {
-    router.events.on('routeChangeComplete', pageview);
+    router.events.on('routeChangeComplete', pageView);
     return () => {
-      router.events.off('routeChangeComplete', pageview);
+      router.events.off('routeChangeComplete', pageView);
     };
   }, [router.events]);
 };
 
-export const reportWebVitals = ({ id, name, label, value }: NextWebVitalsMetric) => {
+export const webVitals = ({ id, name, label, value }: NextWebVitalsMetric) => {
   // Use `window.gtag` if you initialized Google Analytics as this example:
   // https://github.com/vercel/next.js/blob/canary/examples/with-google-analytics/pages/_document.js
   const event = {
