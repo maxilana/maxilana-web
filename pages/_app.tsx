@@ -3,7 +3,7 @@ import Head from 'next/head';
 import NextNprogress from 'nextjs-progressbar';
 import MarketingScripts from '~/components/common/MarketingScripts';
 
-import { usePageView } from '~/utils/gtm';
+import { usePageView, webVitals } from '~/utils/gtm';
 
 import 'dayjs/locale/es';
 import 'tailwindcss/tailwind.css';
@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export function reportWebVitals(metrics: NextWebVitalsMetric) {
-  reportWebVitals(metrics);
+  webVitals(metrics);
 }
 
 export default MyApp;
