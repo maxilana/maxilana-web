@@ -20,6 +20,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
           rel="stylesheet"
+          media="print"
+          onLoad={function (event) {
+            // @ts-ignore
+            this.media = 'all';
+          }}
         />
       </Head>
       {/* Google Tag Manager - Global base code */}
