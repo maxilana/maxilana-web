@@ -3,6 +3,7 @@ import { WhatsAppOutlined } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
 import { CMSCategory } from '~/types/Models/CMSCategory';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 import styles from '../Pawn.module.css';
 import SelectableItem from '../SelectableItem';
@@ -26,7 +27,7 @@ const PawnRequest: FC<Props> = ({ onSelect, onWhatsappClick, categories }) => {
             return (
               <SelectableItem
                 key={item.id}
-                imageSrc={item?.image?.url}
+                imageSrc={getCMSImageURL(item?.image)}
                 label={item.name}
                 onClick={() => {
                   onSelect(item);

@@ -19,7 +19,7 @@ import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSMktPage } from '~/types/Models/CMSMktPage';
 import { Product } from '~/types/Models/Product';
-import filtersToQueryString, { filtersToQueryParams } from '~/utils/filtersToQueryString';
+import { filtersToQueryParams } from '~/utils/filtersToQueryString';
 import getCMSImageURL from '~/utils/getCMSImageURL';
 import parseQuery from '~/utils/parseQuery';
 
@@ -35,7 +35,7 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getCMSMktPagesSlugs();
   return {
     paths: slugs?.map?.((slug) => ({ params: { slug } })),
-    fallback: true,
+    fallback: false,
   };
 };
 
