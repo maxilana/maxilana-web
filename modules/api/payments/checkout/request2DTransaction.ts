@@ -4,7 +4,7 @@ import { PaymentTransactionRequest } from '~/types/Requests';
 import { MaxilanaCheckout2DResponse } from '~/types/Responses';
 
 interface Body extends PaymentTransactionRequest {
-  total: number;
+  orden: string;
 }
 
 const request2DTransaction = async (data: Body): Promise<CheckoutResponse> => {

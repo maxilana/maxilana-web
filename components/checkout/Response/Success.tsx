@@ -7,7 +7,6 @@ import { CartSummary } from '~/components/cart';
 
 import styles from './Response.module.css';
 import { Cart, CheckoutResponse as Order } from '~/types/Models';
-import useRemoveCart from '~/hooks/cart/useRemoveCart';
 
 interface Props {
   cart: Cart;
@@ -15,8 +14,6 @@ interface Props {
 }
 
 const CheckoutSuccess: FC<Props> = ({ cart, order }) => {
-  useRemoveCart();
-
   return (
     <div className={styles.root}>
       <div className={styles.wrapper}>
