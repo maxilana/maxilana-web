@@ -11,25 +11,15 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   usePageView();
-  const font = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap';
   return (
     <>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link rel="preload" as="style" href={font} />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href={font}
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
           rel="stylesheet"
-          media="print"
-          onLoad={function (event) {
-            // @ts-ignore
-            this.media = 'all';
-          }}
         />
-        <noscript>
-          <link href={font} rel="stylesheet" />
-        </noscript>
       </Head>
       {/* Google Tag Manager - Global base code */}
       <MarketingScripts />
