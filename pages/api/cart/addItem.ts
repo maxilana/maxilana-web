@@ -26,11 +26,9 @@ export default withCartSession(async (req, res) => {
       res.json(cart);
     }
   } catch (err) {
-    res
-      .status(422)
+    res.status(422).json({
       // @ts-ignore
-      .json({
-        errors: [{ message: `Ocurrió un error al actualizar el carrito. ${err?.message}` }],
-      });
+      errors: [{ message: `Ocurrió un error al actualizar el carrito. ${err?.message}` }],
+    });
   }
 });

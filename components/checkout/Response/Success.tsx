@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 
 import { Button } from '~/components/ui';
@@ -7,6 +7,7 @@ import { CartSummary } from '~/components/cart';
 
 import styles from './Response.module.css';
 import { Cart, CheckoutResponse as Order } from '~/types/Models';
+import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 
 interface Props {
   cart: Cart;
@@ -14,6 +15,18 @@ interface Props {
 }
 
 const CheckoutSuccess: FC<Props> = ({ cart, order }) => {
+  useEffect(() => {
+    const removeCart = async () => {
+      await NextAPIMutator({
+        endpoint: '/api/cart/removeCart',
+        method: 'POST',
+        body: JSON.stringify({ remove: true }),
+      });
+    };
+
+    removeCart();
+  }, []);
+
   return (
     <div className={styles.root}>
       <div className={styles.wrapper}>
