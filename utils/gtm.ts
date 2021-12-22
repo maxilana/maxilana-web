@@ -39,6 +39,5 @@ export const webVitals = ({ id, name, label, value }: NextWebVitalsMetric) => {
     event_label: id, // id unique to current page load
     non_interaction: true, // avoids affecting bounce rate.
   };
-  console.log(window?.dataLayer?.push, event);
   window?.dataLayer?.push?.(event);
 };
