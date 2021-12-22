@@ -6,7 +6,6 @@ import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
 import { Cart, CheckoutResponse, ErrorCodes } from '~/types/Models';
 import { getCart } from '~/modules/api/cart';
-import withCartSession from '~/modules/lib/withCartSession';
 
 type SSRProps = {
   error?: boolean;
@@ -17,13 +16,12 @@ type SSRProps = {
   errorCode?: ErrorCodes;
 };
 
-// @ts-ignore
-export const getServerSideProps: GetServerSideProps<SSRProps> = withCartSession(async (context) => {
+export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
   try {
-    // @ts-ignore
+    const { query } = context;
+    const cartToken: string = (query?.oid as string) ?? undefined;
+
     const validation = await validatePayment(context);
-    // @ts-ignore
-    const cartToken: string = await context.req.session.get('cart');
 
     if (validation?.redirect) {
       return {
@@ -56,11 +54,8 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = withCartSession(
       };
     }
 
-    const cart = await getCart(cartToken);
+    const cart = await getCart(cartToken as string);
     const { transaction } = validation;
-
-    // @ts-ignore
-    context.req.session.destroy();
 
     const request2D = {
       ...transaction,
@@ -87,7 +82,7 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = withCartSession(
       },
     };
   }
-});
+};
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 

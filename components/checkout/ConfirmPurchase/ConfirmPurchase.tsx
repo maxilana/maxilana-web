@@ -66,7 +66,7 @@ const ConfirmPurchase: FC<Props> = ({ cart }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`${window.location.origin}/checkout/response`}
+            forwardPath={`${window.location.origin}/checkout/response?oid=${cart.id}`}
           />
         )}
       </PageLoader>
