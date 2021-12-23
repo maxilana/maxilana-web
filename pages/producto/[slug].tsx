@@ -44,7 +44,7 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
     paths: products.map((product) => ({
       params: { slug: `${product?.id}-${slugify(product?.name)}` },
     })),
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
