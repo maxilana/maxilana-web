@@ -2,7 +2,7 @@ import { FilterOutlined } from '@ant-design/icons';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ms from 'ms';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
@@ -11,7 +11,6 @@ import getAllCities from '~/api/getAllCities';
 import getProductsFromCMSFilters from '~/api/getProductsFromCMSFilters';
 import { Banners } from '~/components/common';
 import { Layout } from '~/components/layout';
-import useToggleState from '~/hooks/useToggleState';
 import { City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { CMSRematesPage } from '~/types/Models/CMSRematesPage';
@@ -42,7 +41,10 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
           page?.categories.map((item) => {
             const category = categories.find(({ id }) => id === item?.category?.id);
             return category?.filters
-              ? getProductsFromCMSFilters(category?.filters).then((products) => {
+              ? getProductsFromCMSFilters({
+                  ...category?.filters,
+                  quantity: 10,
+                }).then((products) => {
                   return { ...category, products };
                 })
               : { ...category, products: [] as Product[] };
@@ -66,13 +68,30 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts, legalPages }) => {
-  const { push } = useRouter();
-  const [visibleFilter, toggleVisibleFilter] = useToggleState();
+  const router = useRouter();
+  const [visibleFilter, setVisibleFilter] = useState(false);
 
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
-    toggleVisibleFilter();
-    push(`/busqueda?${parseQuery(queryParams)}`);
+    setVisibleFilter(false);
+    router.push(`/busqueda?${parseQuery(queryParams)}`);
   };
+
+  useEffect(() => {
+    const handleRouteChange = (url: string): void => {
+      setVisibleFilter(false);
+    };
+    const handleRouteChangeComplete = () => {
+      setVisibleFilter(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, []);
 
   return (
     <Layout
@@ -86,7 +105,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
             cities={cities}
             categories={categories || []}
             visible={visibleFilter}
-            onClose={toggleVisibleFilter}
+            onClose={() => setVisibleFilter(false)}
             onFiltersChange={handleFiltersChanges}
           />
         </aside>
@@ -94,7 +113,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
           <Button
             icon={<FilterOutlined />}
             text="Filtros y orden"
-            onClick={toggleVisibleFilter}
+            onClick={() => setVisibleFilter(false)}
             theme="secondary"
           />
         </div>

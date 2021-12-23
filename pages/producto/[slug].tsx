@@ -44,7 +44,7 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
     paths: products.map((product) => ({
       params: { slug: `${product?.id}-${slugify(product?.name)}` },
     })),
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
@@ -203,7 +203,7 @@ const ProductView: NextPage<Props> = ({
                 fullWidth
                 theme="whatsapp"
                 text="Comprar en sucursal"
-                target="__blank"
+                target="_blank"
                 href={whatsappLink}
                 icon={<WhatsAppOutlined />}
               />
@@ -226,6 +226,14 @@ const ProductView: NextPage<Props> = ({
                     <a className="font-bold block">{product?.Branch?.name}</a>
                   </Link>
                   <span className="text-secondary text-sm">{product?.Branch?.City?.name}</span>
+                  <p className="text-secondary">
+                    <span className="block">
+                      Teléfono: <span>{phone}</span>
+                    </span>
+                    <span className="block">
+                      Whatsapp: <span>{whatsapp}</span>
+                    </span>
+                  </p>
                 </div>
               </div>
               {product?.saleOnline ? (

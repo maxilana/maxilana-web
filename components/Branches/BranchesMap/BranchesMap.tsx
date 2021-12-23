@@ -1,5 +1,6 @@
+import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import cn from 'classnames';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
+  const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const [selectedBranch, setSelectedBranch] = useState<Branch>();
   const [mapVisible, toggleMap] = useToggleState();
   const [map, setMap] = useState<google.maps.Map>();
@@ -28,6 +30,19 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
       map.setCenter({ lat: selectedBranch.latitud, lng: selectedBranch.longitud });
     }
   }, [selectedBranch]);
+
+  useEffect(() => {
+    if (ref.current) {
+      if (mapVisible) {
+        disableBodyScroll(ref.current);
+      } else {
+        enableBodyScroll(ref.current);
+      }
+    }
+    return () => {
+      clearAllBodyScrollLocks();
+    };
+  }, [mapVisible]);
 
   return (
     <main className={cn(styles.root, { [styles.visible]: mapVisible })}>
@@ -64,8 +79,10 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
             />
           ))}
       </aside>
-      <div className={styles.map}>
-        {(mapVisible || !isMobile) && <Map branches={branches} zoom={zoom} onLoad={setMap} />}
+      <div className={styles.map} ref={ref}>
+        {(mapVisible || !isMobile) && (
+          <Map branches={branches} zoom={zoom} onLoad={setMap} key={currentCity?.id || 'all'} />
+        )}
       </div>
       <Button
         text={mapVisible ? 'Ver lista' : 'Ver mapa'}

@@ -12,6 +12,7 @@ import useResponsive from '~/hooks/useResponsive';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSLoans } from '~/types/Models/CMSLoans';
 import getAllCities from '~/api/getAllCities';
+import getCMSImageURL from '~/utils/getCMSImageURL';
 
 export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>> = async () => {
   const [cities, legalPages, page] = await Promise.all([
@@ -50,7 +51,7 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
             <Img
               priority
               layout="fill"
-              src={page.hero.image.url}
+              src={getCMSImageURL(page.hero.image)}
               alt="Prestamos Hero Image"
               objectFit="cover"
               placeholder="empty"
@@ -66,7 +67,7 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
           <ServicePaymentCards
             actionCard={{
               title: page?.payment?.title,
-              imageSource: page?.payment?.image?.url,
+              imageSource: getCMSImageURL(page?.payment?.image),
               description: page?.payment?.description,
               buttonLabel: page?.payment?.CTAText,
               buttonHref: `/pagos/${page?.payment?.slug}`,

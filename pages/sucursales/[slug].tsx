@@ -19,8 +19,8 @@ import LogoRedondo from '../../public/logo-redondo.png';
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const slugs = await getBranchesSlugs();
   return {
-    paths: slugs.map((slug) => ({ params: { slug } })),
-    fallback: false,
+    paths: slugs.slice(3).map((slug) => ({ params: { slug } })),
+    fallback: 'blocking',
   };
 };
 
