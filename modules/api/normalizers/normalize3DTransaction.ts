@@ -8,7 +8,7 @@ const normalize3DTransaction = (responseBuffer: Buffer): PaymentTransactionReque
     new URLSearchParams(parsedResponse),
   );
 
-  const { ECI, XID, CAVV, Reference3D, CardType, Status } = securetransaction;
+  const { ECI, XID, CAVV, Reference3D, CardType, Status, Total } = securetransaction;
 
   return {
     eci: ECI,
@@ -16,6 +16,7 @@ const normalize3DTransaction = (responseBuffer: Buffer): PaymentTransactionReque
     cavv: CAVV,
     status: Status,
     cardtype: CardType,
+    total: Number(Total),
     Reference3D,
   };
 };

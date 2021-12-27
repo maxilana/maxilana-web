@@ -39,9 +39,13 @@ const ConfirmPurchase: FC<Props> = ({ cart }) => {
     setStatus('submiting');
 
     try {
+      // ! Esto no debería ser así
+      // ! No es correcto enviar un importe en una petición
+      // ! El API debería obtener el total de la compra por medio del order id
       const params = {
         ...data,
         orden: cart.id,
+        importe: cart.pricing.total,
       };
 
       const transaction3D = await request3DTransaction(params);
@@ -62,7 +66,7 @@ const ConfirmPurchase: FC<Props> = ({ cart }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`${window.location.origin}/checkout/response`}
+            forwardPath={`${window.location.origin}/checkout/response?oid=${cart.id}`}
           />
         )}
       </PageLoader>

@@ -1,12 +1,14 @@
 import maxAxios from '../axios';
 import { MaxilanCartResponse } from '~/types/Responses';
+import { Cart } from '~/types/Models';
+import { normalizeCart } from '../normalizers';
 
 type CartRequest = {
   codigo: string;
   orden: string;
 };
 
-export default async function removeItem(data: CartRequest): Promise<MaxilanCartResponse> {
+export default async function removeItem(data: CartRequest): Promise<Cart> {
   const response = await maxAxios.post<MaxilanCartResponse>('/carrito/eliminararticulo', data);
 
   if (!response.orden) {
@@ -15,5 +17,5 @@ export default async function removeItem(data: CartRequest): Promise<MaxilanCart
     );
   }
 
-  return response;
+  return normalizeCart(response);
 }

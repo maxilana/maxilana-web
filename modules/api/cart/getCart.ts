@@ -7,7 +7,7 @@ export default async function getCart(cartToken: string): Promise<Cart> {
   const response = await maxAxios.get<MaxilanCartResponse>(`/carrito?orden=${cartToken}`);
 
   if (!response?.orden) {
-    throw new Error('Ocurrió un error obtener los datos de la compra.');
+    throw new Error('No fue posible obtener los datos del carrito');
   }
 
   return normalizeCart(response);

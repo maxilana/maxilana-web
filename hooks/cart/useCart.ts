@@ -1,27 +1,22 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
-import Cookies from 'js-cookie';
 
-import { CART_ID_COOKIE } from 'config/cart';
-import fetcher from '~/modules/api/fetcher';
-import { MaxilanCartResponse } from '~/types/Responses';
-import { normalizeCart } from '~/modules/api/normalizers';
+import NextAPIFetcher from '~/modules/api/nextApiFetcher';
+import { Cart } from '~/types/Models';
+import { FetcherError } from '~/modules/lib/errors';
 
 const useCart = () => {
-  const cartToken = Cookies.get(CART_ID_COOKIE);
-  const { data, isValidating } = useSWR<MaxilanCartResponse>(
-    cartToken ? `/carrito?orden=${cartToken}` : null,
-    {
-      fetcher: fetcher,
-      revalidateOnFocus: false,
-    },
-  );
+  const wrapper = (endpoint: string) => NextAPIFetcher({ endpoint });
+  const { data, isValidating } = useSWR<Cart, FetcherError>('/api/cart', {
+    fetcher: wrapper,
+    revalidateOnFocus: false,
+  });
 
   const productsInCart = useMemo(() => {
-    if (data?.carrito) {
-      const qtyProducts = data.carrito.reduce((prevValue, currItem) => {
-        const { productos } = currItem;
-        const newValue = prevValue + (productos?.length ?? 0);
+    if (data?.id) {
+      const qtyProducts = data.cart.reduce((prevValue, currItem) => {
+        const { products } = currItem;
+        const newValue = prevValue + (products?.length ?? 0);
 
         return newValue;
       }, 0);
@@ -33,9 +28,9 @@ const useCart = () => {
   }, [data]);
 
   return {
+    data,
     isEmpty: productsInCart < 1,
     isLoading: isValidating && data === undefined,
-    data: data ? normalizeCart(data) : undefined,
     cartLength: productsInCart,
   };
 };

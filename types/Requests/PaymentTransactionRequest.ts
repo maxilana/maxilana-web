@@ -6,7 +6,7 @@ export interface PaymentTransactionRequest {
   status: string; //200 OK
   cardtype: 'VISA' | 'MC';
   Reference3D: string;
-  // Total: string; //number
+  total: number; //number
   //Number: string; // CardNumber
   // Expires: string;
   // MerchantCity: string;

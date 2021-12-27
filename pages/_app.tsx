@@ -1,9 +1,9 @@
-import type { AppProps } from 'next/app';
+import type { AppProps, NextWebVitalsMetric } from 'next/app';
 import Head from 'next/head';
 import NextNprogress from 'nextjs-progressbar';
 import MarketingScripts from '~/components/common/MarketingScripts';
 
-import { usePageView } from '~/utils/gtm';
+import { usePageView, webVitals } from '~/utils/gtm';
 
 import 'dayjs/locale/es';
 import 'tailwindcss/tailwind.css';
@@ -11,7 +11,6 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   usePageView();
-
   return (
     <>
       <Head>
@@ -36,8 +35,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-/*export function reportWebVitals(metric: NextWebVitalsMetric) {
-  console.log(metric);
-}*/
+export function reportWebVitals(metrics: NextWebVitalsMetric) {
+  webVitals(metrics);
+}
 
 export default MyApp;

@@ -1,22 +1,15 @@
 import { mutate } from 'swr';
-import Cookies from 'js-cookie';
-
-import { CART_ID_COOKIE } from 'config/cart';
-import { removeItemCart } from '~/modules/api/cart';
+import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 
 const useRemoveItem = () => {
-  const cartCookie = Cookies.get(CART_ID_COOKIE);
-
   const removeItem = async (productId: string) => {
-    const token = cartCookie;
+    const cart = await NextAPIMutator({
+      endpoint: '/api/cart/removeItem',
+      method: 'POST',
+      body: JSON.stringify({ pid: productId }),
+    });
 
-    if (!cartCookie) {
-      throw new Error('Este carrito ya no existe, vuelve a crear uno.');
-    }
-
-    const order = await removeItemCart({ codigo: productId, orden: token as string });
-
-    await mutate(`/carrito?orden=${token}`, order, false);
+    await mutate(`/api/cart`, cart, false);
   };
 
   return removeItem;

@@ -5,12 +5,7 @@ import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
 import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
 import { Cart, CheckoutResponse, ErrorCodes } from '~/types/Models';
-import { PaymentTransactionRequest } from '~/types/Requests';
 import { getCart } from '~/modules/api/cart';
-
-interface PaymentRequest extends PaymentTransactionRequest {
-  total: number;
-}
 
 type SSRProps = {
   error?: boolean;
@@ -18,35 +13,68 @@ type SSRProps = {
     cart: Cart;
     order: CheckoutResponse;
   };
-  errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
+  errorCode?: ErrorCodes;
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
-  const {
-    req: { cookies },
-  } = context;
-  const validation = await validatePayment(context);
-  const cartToken = cookies['maxilana_cart_cookie'] ?? undefined;
+  try {
+    const { query } = context;
+    const cartToken: string = (query?.oid as string) ?? undefined;
 
-  if (validation?.redirect) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
+    const validation = await validatePayment(context);
+
+    if (validation?.redirect) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
+    if (validation?.error) {
+      return {
+        props: {
+          error: true,
+          errorCode: validation.error.errorCode,
+        },
+      };
+    }
+
+    if (!cartToken) {
+      throw new Error('No fue posible encontrar el token del carrito');
+    }
+
+    if (!validation?.transaction) {
+      return {
+        props: {
+          error: true,
+          errorCode: '0',
+        },
+      };
+    }
+
+    const cart = await getCart(cartToken as string);
+    const { transaction } = validation;
+
+    const request2D = {
+      ...transaction,
+      orden: cartToken,
     };
-  }
 
-  if (validation?.error) {
+    const order = await request2DTransaction(request2D);
+
     return {
       props: {
-        error: true,
-        errorCode: validation.error.errorCode,
+        response: {
+          cart,
+          order,
+        },
       },
     };
-  }
+  } catch (err) {
+    console.log(err);
 
-  if (!validation?.transaction || !cartToken) {
     return {
       props: {
         error: true,
@@ -54,24 +82,6 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
       },
     };
   }
-
-  const cart = await getCart(cartToken);
-
-  const request2D: PaymentRequest = {
-    ...validation.transaction,
-    total: cart.pricing.total,
-  };
-
-  const order = await request2DTransaction(request2D);
-
-  return {
-    props: {
-      response: {
-        cart,
-        order,
-      },
-    },
-  };
 };
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
