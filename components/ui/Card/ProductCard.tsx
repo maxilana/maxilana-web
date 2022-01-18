@@ -38,7 +38,7 @@ const ProductCard: FC<Props> = ({ data, className }) => {
       className={cn(styles.root, styles.rootProduct, { [styles.productLink]: !!href }, className)}
     >
       {!!href && (
-        <Link href={href}>
+        <Link href={href} prefetch={false}>
           <a className={styles.blockLink} title={name} />
         </Link>
       )}
@@ -60,7 +60,7 @@ const ProductCard: FC<Props> = ({ data, className }) => {
       <div className={styles.productBody}>
         <h3 className={styles.productTitle}>
           {!!href ? (
-            <Link href={href}>
+            <Link href={href} prefetch={false}>
               <a title={name}>{name}</a>
             </Link>
           ) : (

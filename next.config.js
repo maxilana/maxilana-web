@@ -29,7 +29,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    optimizeCss: true,
+    optimizeCss: process.env.OPTIMIZE_CSS === 'true',
   },
   images: {
     domains: process.env.IMAGES_DOMAINS.split(','),
