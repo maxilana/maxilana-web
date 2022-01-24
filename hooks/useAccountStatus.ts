@@ -58,7 +58,7 @@ export default function useAccountStatus(userCode?: string) {
         ); // PAGO MÍNIMO
 
         /** CÁLCULO DE PAGO DE REFRENDO */
-        paymentAmount = roundDecimals(paymentAmount * extraCharge);
+        paymentAmount = roundDecimals(roundUpToFifty(paymentAmount * extraCharge));
 
         /** CÁLCULO DE PAGO DE DESEMPEÑO */
         // SOLO INFORMATIVO, NO SE PUEDE PAGAR
