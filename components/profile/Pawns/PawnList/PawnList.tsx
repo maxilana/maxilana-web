@@ -124,12 +124,13 @@ const PawnList: FC<Props> = ({ data }) => {
                 <InfoCircleOutlined />
               </span>
             </Tooltip>
-            <Button
+            <div />
+            {/* <Button
               size="small"
               theme="primary"
               text="Pagar refrendos"
               onClick={handleSelectBallots}
-            />
+            /> */}
           </>
         ) : (
           <>
