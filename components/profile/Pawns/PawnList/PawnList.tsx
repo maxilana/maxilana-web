@@ -92,10 +92,14 @@ const PawnList: FC<Props> = ({ data }) => {
 
   const paySelectedBallots = () => {
     const ids = checkedState
-      .filter((el) => el === true)
-      .map((_, idx) => {
-        return ballots[idx].accountNumber;
-      });
+      .map((checked, idx) => {
+        if (checked) {
+          return ballots[idx].accountNumber;
+        }
+
+        return undefined;
+      })
+      .filter(Boolean);
 
     const queryString = encodeURIComponent(JSON.stringify(ids));
     router.push(`/perfil/boleta?ids=${queryString}&status=payment_selected`);
@@ -120,12 +124,13 @@ const PawnList: FC<Props> = ({ data }) => {
                 <InfoCircleOutlined />
               </span>
             </Tooltip>
-            <Button
+            <div />
+            {/* <Button
               size="small"
               theme="primary"
               text="Pagar refrendos"
               onClick={handleSelectBallots}
-            />
+            /> */}
           </>
         ) : (
           <>
