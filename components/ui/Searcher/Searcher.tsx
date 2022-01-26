@@ -142,7 +142,7 @@ const Searcher: FC<Props> = ({ cities }) => {
             </div>
           }
         >
-          <div role="menu">
+          <div role="menu" className="w-64">
             {city && (
               <span
                 role="menuitem"

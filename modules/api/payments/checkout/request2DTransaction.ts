@@ -1,41 +1,36 @@
 import maxAxios from '~/api/axios';
-import { CheckoutSuccess } from '~/types/Models';
+import { CheckoutResponse } from '~/types/Models';
 import { PaymentTransactionRequest } from '~/types/Requests';
-import { MaxilanaSecure2DResponse } from '~/types/Responses';
+import { MaxilanaCheckout2DResponse } from '~/types/Responses';
 
 interface Body extends PaymentTransactionRequest {
-  envio: number;
+  orden: string;
 }
 
-const request2DTransaction = async (data: Body): Promise<CheckoutSuccess> => {
-  if (!process.env.NEXT_PUBLIC_CHECKOUT_2DSECURE) {
-    throw new Error(
-      'Ocurrió un error al procesar el pago, la ENV no está definida para los pagos.',
-    );
-  }
-
-  const response = await maxAxios.post<MaxilanaSecure2DResponse>(
-    process.env.NEXT_PUBLIC_CHECKOUT_2DSECURE,
+const request2DTransaction = async (data: Body): Promise<CheckoutResponse> => {
+  const response = await maxAxios.post<MaxilanaCheckout2DResponse>(
+    '/procesar2dsecure/web/productos',
     data,
   );
 
-  if (!response.referencia) {
-    throw new Error('Ocurrió un error al procesar el pago, inténtalo en otra ocasión.');
+  if (response?.resultado !== true) {
+    throw new Error(
+      'Ocurrió un error al procesar el pago, comunícate con una sucursal para resolver el problema.',
+    );
   }
 
-  const { referencia, monto, articulo, contacto, dom, mun, ciudad, nombreenvio, envio } = response;
+  const { referencia, datosenvio } = response;
 
   return {
     reference: referencia,
-    amount: Number(monto),
-    productName: articulo,
-    contactName: contacto,
     shipping: {
-      address: dom,
-      city: ciudad,
-      locality: mun,
-      contactName: nombreenvio,
-      amount: Number(envio),
+      name: datosenvio.nombre,
+      cellphone: datosenvio.celular,
+      address: datosenvio.domicilio,
+      locality: datosenvio.colonia,
+      zipcode: datosenvio.codigopostal,
+      city: datosenvio.municipio,
+      state: datosenvio.estado,
     },
   };
 };

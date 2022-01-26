@@ -25,49 +25,49 @@ interface GSProps {
   page?: CMSRematesPage;
   categories?: Array<Partial<CMSCategory>>;
   categoriesProducts?: Array<Partial<CMSCategory & { products: Product[] }>>;
-  legalPages: CMSLegal[];
+  legalPages?: CMSLegal[];
+  error?: Error;
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
-  try {
-    const [cities, page, categories, legalPages] = await Promise.all([
-      getAllCities(),
-      getCMSRematesPage(),
-      getCMSCategories(true),
-      getAllLegalPages(),
-    ]);
-    const categoriesProducts = page?.categories?.length
-      ? await Promise.all(
-          page?.categories.map((item) => {
-            const category = categories.find(({ id }) => id === item?.category?.id);
-            return category?.filters
-              ? getProductsFromCMSFilters({
-                  ...category?.filters,
-                  quantity: 10,
-                }).then((products) => {
-                  return { ...category, products };
-                })
-              : { ...category, products: [] as Product[] };
-          }),
-        )
-      : [];
+  const [cities, page, categories, legalPages] = await Promise.all([
+    getAllCities(),
+    getCMSRematesPage(),
+    getCMSCategories(true),
+    getAllLegalPages(),
+  ]);
+  const categoriesProducts = page?.categories?.length
+    ? await Promise.all(
+        page?.categories.map((item) => {
+          const category = categories.find(({ id }) => id === item?.category?.id);
+          return category?.filters
+            ? getProductsFromCMSFilters({
+                ...category?.filters,
+                quantity: 10,
+              }).then((products) => {
+                return { ...category, products };
+              })
+            : { ...category, products: [] as Product[] };
+        }),
+      )
+    : [];
 
-    return {
-      props: { cities, page, categories, categoriesProducts, legalPages },
-      revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
-    };
-  } catch (e) {
-    console.log('Error getStaticProps');
-    console.log(e as Error);
-    return {
-      notFound: true,
-    };
-  }
+  return {
+    props: { cities, page, categories, categoriesProducts, legalPages },
+    revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
+  };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts, legalPages }) => {
+const Remates: NextPage<Props> = ({
+  cities,
+  page,
+  categories,
+  categoriesProducts,
+  legalPages,
+  error,
+}) => {
   const router = useRouter();
   const [visibleFilter, setVisibleFilter] = useState(false);
 
@@ -97,7 +97,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
     <Layout
       meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
       cities={cities || []}
-      legalPages={legalPages}
+      legalPages={legalPages || []}
     >
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
@@ -113,7 +113,7 @@ const Remates: NextPage<Props> = ({ cities, page, categories, categoriesProducts
           <Button
             icon={<FilterOutlined />}
             text="Filtros y orden"
-            onClick={() => setVisibleFilter(false)}
+            onClick={() => setVisibleFilter(true)}
             theme="secondary"
           />
         </div>

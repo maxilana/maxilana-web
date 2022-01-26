@@ -1,9 +1,12 @@
 import maxAxios from '~/api/axios';
-import { ProductPurchase } from '~/types/Requests';
-import { MaxilanaTransaction } from '~/types/Responses';
+import { CartPurchase } from '~/types/Requests';
+import { MaxilanaCheckout3DResponse } from '~/types/Responses';
 
-const request3DTransaction = async (data: ProductPurchase): Promise<MaxilanaTransaction> => {
-  const response = await maxAxios.post<MaxilanaTransaction>('/procesar3dsecure/producto', data);
+const request3DTransaction = async (data: CartPurchase): Promise<MaxilanaCheckout3DResponse> => {
+  const response = await maxAxios.post<MaxilanaCheckout3DResponse>(
+    '/procesar3dsecure/web/productos',
+    data,
+  );
 
   if (!response.id) {
     throw new Error('Ocurrió un error al procesar el pago, inténtalo en otra ocasión.');

@@ -28,6 +28,8 @@ import useAddItem from '~/hooks/cart/useAddItem';
 import { formatPrice } from '~/modules/hooks/usePrice';
 import getOnlinePrice from '~/utils/getOnlinePrice';
 
+type CartStatus = 'default' | 'adding' | 'added';
+
 interface GSProps {
   product: Product;
   gallery: string[];
@@ -44,44 +46,39 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
     paths: products.map((product) => ({
       params: { slug: `${product?.id}-${slugify(product?.name)}` },
     })),
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
 export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (ctx) => {
-  try {
-    const slug = ctx?.params?.slug as string;
-    const id = slug.split('-')[0];
-    const product = await getProductById(id);
-    if (!product) return { notFound: true };
+  const slug = ctx?.params?.slug as string;
+  const id = slug.split('-')[0];
+  const product = await getProductById(id);
+  if (!product) return { notFound: true };
 
-    const [products, branch, cities, gallery, legalPages] = await Promise.all([
-      getProducts({
-        limit: '4',
-        ciudad: `${product?.Branch?.CityId}`,
-        categoria: `${product.CategoryId}`,
-      }),
-      getBranch(product?.BranchId),
-      getAllCities(),
-      generateProductGallery(product.id),
-      getAllLegalPages(),
-    ]);
+  const [products, branch, cities, gallery, legalPages] = await Promise.all([
+    getProducts({
+      limit: '4',
+      ciudad: `${product?.Branch?.CityId}`,
+      categoria: `${product.CategoryId}`,
+    }),
+    getBranch(product?.BranchId),
+    getAllCities(),
+    generateProductGallery(product.id),
+    getAllLegalPages(),
+  ]);
 
-    return {
-      props: {
-        product,
-        gallery,
-        branch,
-        relatedProducts: products.rows,
-        cities,
-        legalPages,
-      },
-      revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m') / 1000,
-    };
-  } catch (e) {
-    console.log('getStaticProps ERROR:', e);
-    return { notFound: true };
-  }
+  return {
+    props: {
+      product,
+      gallery,
+      branch,
+      relatedProducts: products.rows,
+      cities,
+      legalPages,
+    },
+    revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m') / 1000,
+  };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps> & WithRouterProps;
@@ -95,10 +92,10 @@ const ProductView: NextPage<Props> = ({
   router,
   legalPages,
 }) => {
-  // const [visibleShare, toggleShare] = useToggleState();
   const { isFallback } = router;
   const addItem = useAddItem();
   const [shareURL, setShareURL] = useState<string>();
+  const [status, setStatus] = useState<CartStatus>('default');
   const { price, discount, basePrice } = usePrice({
     amount: product?.netPrice,
     baseAmount: product?.price,
@@ -125,10 +122,19 @@ const ProductView: NextPage<Props> = ({
 
   const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
 
-  const handlePurchaseProduct = () => {
-    addItem(product);
-    router.push('/checkout');
+  const handleAddToCart = async () => {
+    setStatus('adding');
+
+    try {
+      await addItem(product);
+      setStatus('added');
+      // Notificar que se agregó el producto...
+    } catch (err) {
+      setStatus('default');
+      console.log(err);
+    }
   };
+
   const { phone = '', whatsapp = '' } = branch || {};
   const phoneLink = `tel:52${phone.replace(/\s/g, '')}`;
 
@@ -137,6 +143,8 @@ const ProductView: NextPage<Props> = ({
   );
   const number = whatsapp.replace(/\s/g, '');
   const whatsappLink = `https://api.whatsapp.com/send?phone=521${number}&text=${message}`;
+
+  const buyButtonText = status === 'added' ? 'Producto en carrito' : 'Agregar al carrito';
 
   return (
     <Layout title={product?.name} cities={cities || []} bgWhite legalPages={legalPages}>
@@ -191,12 +199,14 @@ const ProductView: NextPage<Props> = ({
               {product?.saleOnline && (
                 <Button
                   fullWidth
-                  theme="primary"
-                  text={`Comprar en línea (${formatPrice({
+                  disabled={status === 'added'}
+                  loading={status === 'adding'}
+                  theme={status === 'added' ? 'default' : 'primary'}
+                  text={`${buyButtonText} (${formatPrice({
                     amount: onlinePrice,
                     locale: 'es-MX',
                   })})`}
-                  onClick={handlePurchaseProduct}
+                  onClick={handleAddToCart}
                 />
               )}
               <Button
@@ -244,8 +254,8 @@ const ProductView: NextPage<Props> = ({
                   <div>
                     <span className="block font-bold">Producto con entrega en tu domicilio</span>
                     <span className="text-secondary">
-                      Este producto puede ser comprados en sucursal y en línea pagando con tu
-                      tarjeta de crédito o débito
+                      Este producto puede ser comprado en sucursal y en línea pagando con tu tarjeta
+                      de crédito o débito
                     </span>
                   </div>
                 </div>

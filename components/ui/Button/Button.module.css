@@ -98,6 +98,10 @@
   @apply text-price;
 }
 
+.link.danger {
+  @apply bg-transparent text-danger px-0;
+}
+
 .fullWidth {
   @apply w-full justify-center;
 }
