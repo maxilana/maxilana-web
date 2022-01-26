@@ -113,7 +113,7 @@ const Remates: NextPage<Props> = ({
           <Button
             icon={<FilterOutlined />}
             text="Filtros y orden"
-            onClick={() => setVisibleFilter(false)}
+            onClick={() => setVisibleFilter(true)}
             theme="secondary"
           />
         </div>
