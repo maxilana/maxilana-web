@@ -7,11 +7,11 @@
 }
 
 .productImage {
-  @apply relative w-32 h-32 rounded-sm overflow-hidden bg-gray-300 mr-4 border-gray-300 border;
+  @apply relative w-16 h-16 rounded-sm overflow-hidden bg-gray-300 mr-4 border-gray-300 border;
 }
 
 .productTitle {
-  @apply text-base uppercase;
+  @apply text-sm;
 }
 
 .productPrice {
@@ -31,9 +31,9 @@
 }
 
 .amount {
-  @apply text-primary font-semibold;
+  @apply text-primary;
 }
 
 .amountFeat {
-  @apply text-2xl;
+  @apply text-2xl font-semibold;
 }

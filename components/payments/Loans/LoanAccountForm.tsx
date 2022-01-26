@@ -5,7 +5,6 @@ import React, { FC, useState } from 'react';
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
 
-import styles from '../FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 
 type FormValues = {
@@ -41,7 +40,7 @@ const LoanAccountForm: FC<Props> = ({ onSubmit }) => {
         <p>Abona a tu préstamo personal en línea</p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className={styles.root}>
+        <div className="formContainer">
           <FormFeedback
             visible={error !== null}
             errorMessage={error as string}

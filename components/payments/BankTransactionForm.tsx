@@ -1,29 +1,18 @@
 import { useRouter } from 'next/router';
 import { FC, useEffect, useRef } from 'react';
 
-import { MaxilanaTransaction } from '~/types/Responses';
+import { CommonTransaction } from '~/types/Responses';
 import {
   CouponPaymentRequest,
   LoanPaymentRequest,
   PawnPaymentRequest,
   ProductPurchase,
+  CartPurchase as CartPaymentRequest,
 } from '~/types/Requests';
 
-// interface FormValues {
-//   Card: string;
-//   Expires: string;
-//   Total: number;
-//   CardType: 'VISA' | 'MC';
-//   MerchantId: number;
-//   MerchantName: string;
-//   MerchantCity: string;
-//   ForwardPath: string;
-//   Cert3D: string;
-//   Reference3D: string;
-// }
-
 type PaymentRequest =
-  | ProductPurchase
+  | ProductPurchase // ! Esto se quitaría una vez se suba la compra del carrito
+  | CartPaymentRequest
   | CouponPaymentRequest
   | LoanPaymentRequest
   | PawnPaymentRequest;
@@ -31,7 +20,7 @@ type PaymentRequest =
 interface Props {
   forwardPath: string;
   payment: PaymentRequest;
-  transaction: MaxilanaTransaction;
+  transaction: CommonTransaction;
 }
 
 const BankTransactionForm: FC<Props> = ({ transaction, payment, forwardPath }) => {

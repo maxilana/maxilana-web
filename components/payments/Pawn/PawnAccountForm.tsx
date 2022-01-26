@@ -6,7 +6,6 @@ import React, { FC, useState } from 'react';
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
 
-import styles from '../FormContainer.module.css';
 import validationMessages from '../../../config/validationMessages';
 
 type FormValues = {
@@ -55,7 +54,7 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
               alt="Imagen muestra de boleta de empeño"
             />
           </div>
-          <div className={styles.root}>
+          <div className="formContainer">
             <FormFeedback
               visible={error !== null}
               errorMessage={error as string}

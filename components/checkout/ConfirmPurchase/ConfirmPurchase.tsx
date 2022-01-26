@@ -5,69 +5,54 @@ import { FC, useState } from 'react';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '~/components/ui';
+import { CartSummary } from '~/components/cart';
 import { BankTransactionForm } from '~/components/payments';
-import { CartSummary, FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
+import { FormFeedback, InputField, InputMask, PageLoader } from '~/components/common';
 
 import styles from './ConfirmPurchase.module.css';
-import formContainerStyles from '../FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 
 import { request3DTransaction } from '~/api/payments';
-import { Product } from '~/types/Models/Product';
-import { CreditCard, ProductPurchase } from '~/types/Requests';
-import { MaxilanaTransaction } from '~/types/Responses';
-import useShippingCost from '~/hooks/useShippingCost';
-import getOnlinePrice from '~/utils/getOnlinePrice';
+import { CartPurchase } from '~/types/Requests';
+import { MaxilanaCheckout3DResponse as Transaction } from '~/types/Responses';
+import { Cart } from '~/types/Models';
 
 interface Props {
-  product: Product;
+  cart: Cart;
 }
 
 type Status = 'idle' | 'submiting' | 'error';
 type Data = {
-  payment: ProductPurchase;
-  transaction: MaxilanaTransaction;
+  payment: CartPurchase;
+  transaction: Transaction;
 };
-
-interface FormValues extends CreditCard {
-  nombreenvio: string;
-  celular: string;
-  correo: string;
-  domicilio: string;
-  codigopostal: string;
-  colonia: string;
-  municipio: string;
-  estado: string;
-  instrucciones: string;
-}
 
 dayjs.extend(customParseFormat);
 
-const ConfirmPurchase: FC<Props> = ({ product }) => {
+const ConfirmPurchase: FC<Props> = ({ cart }) => {
   const [status, setStatus] = useState<Status>('idle');
   const [data, setData] = useState<Data | null>(null);
 
-  const [form] = Form.useForm<FormValues>();
-  const shipping = useShippingCost(product.id);
+  const [form] = Form.useForm<CartPurchase>();
 
-  const handleFormSubmit = async (data: FormValues) => {
+  const handleFormSubmit = async (data: CartPurchase) => {
     setStatus('submiting');
-    const onlinePrice = getOnlinePrice(product.netPrice, product?.promoDiscount);
-    const totalPrice = onlinePrice + (shipping ?? 0);
 
     try {
-      const params: ProductPurchase = {
+      // ! Esto no debería ser así
+      // ! No es correcto enviar un importe en una petición
+      // ! El API debería obtener el total de la compra por medio del order id
+      const params = {
         ...data,
-        sucursal: product.BranchId,
-        upc: product.id,
-        importe: totalPrice, // PRECIO + ENVIO
+        orden: cart.id,
+        importe: cart.pricing.total,
       };
 
-      const maxiTransaction = await request3DTransaction(params);
+      const transaction3D = await request3DTransaction(params);
 
       setData({
         payment: params,
-        transaction: maxiTransaction,
+        transaction: transaction3D,
       });
     } catch (err) {
       console.log(err);
@@ -81,7 +66,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
         {data !== null && (
           <BankTransactionForm
             {...data}
-            forwardPath={`${window.location.origin}/checkout/response?scost=${shipping}`}
+            forwardPath={`${window.location.origin}/checkout/response?oid=${cart.id}`}
           />
         )}
       </PageLoader>
@@ -95,7 +80,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
           <h1 className={styles.title}>Confirmar compra</h1>
           <div className={styles.gridContainer}>
             <div>
-              <div className={formContainerStyles.root}>
+              <div className="formContainer">
                 <h2 className={styles.subtitle}>Dirección de envío</h2>
                 <div className="grid gap-4">
                   <div className="col-span-2">
@@ -229,7 +214,7 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
               </div>
             </div>
             <div className="lg:max-w-[520px]">
-              <div className={formContainerStyles.root}>
+              <div className="formContainer">
                 <FormFeedback
                   visible={status === 'error'}
                   onDismiss={() => {
@@ -237,20 +222,10 @@ const ConfirmPurchase: FC<Props> = ({ product }) => {
                   }}
                 >
                   <div>
-                    <CartSummary
-                      data={product}
-                      shipping={shipping}
-                      loadingShipping={shipping === undefined}
-                    />
+                    <CartSummary data={cart} />
                     <hr className="my-4" />
                     <div>
-                      <Button
-                        fullWidth
-                        size="large"
-                        theme="primary"
-                        text="Proceder al pago"
-                        disabled={shipping === undefined}
-                      />
+                      <Button fullWidth size="large" theme="primary" text="Confirmar compra" />
                     </div>
                     <hr className="my-4" />
                     <div className="text-center">

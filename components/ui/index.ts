@@ -11,3 +11,5 @@ export { default as ProductsNotFound } from './ProductsNotFound';
 export { default as Map } from './Map';
 export { default as LazyMap } from './LazyMap';
 export { default as CardLink } from './CardLink';
+export { default as Breadcrumbs } from './Breadcrumbs';
+export { default as Tooltip } from './Tooltip';

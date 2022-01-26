@@ -1,14 +1,18 @@
-import Cookies from 'js-cookie';
-
+import { mutate } from 'swr';
 import { Product } from '~/types/Models/Product';
-import { CART_ID_COOKIE, COOKIE_EXPIRATION } from 'config/cart';
+import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 
 const useAddItem = () => {
-  const addItem = (data: Product) => {
-    const object = JSON.stringify(data);
-    Cookies.set(CART_ID_COOKIE, object, { expires: COOKIE_EXPIRATION });
+  const addItem = async (product: Product) => {
+    const productId = product.id;
 
-    return data;
+    const cart = await NextAPIMutator({
+      endpoint: '/api/cart/addItem',
+      method: 'POST',
+      body: JSON.stringify({ pid: productId }),
+    });
+
+    await mutate(`/api/cart`, cart, false);
   };
 
   return addItem;

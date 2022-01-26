@@ -4,42 +4,77 @@ import { BareLayout } from '~/components/layout';
 import { CheckoutError, CheckoutSuccess } from '~/components/checkout';
 import validatePayment from '~/utils/validatePayment';
 import { request2DTransaction } from '~/api/payments/checkout';
-import { CheckoutSuccess as CheckoutData, ErrorCodes } from '~/types/Models';
-import { PaymentTransactionRequest } from '~/types/Requests';
-
-interface PaymentRequest extends PaymentTransactionRequest {
-  envio: number;
-}
+import { Cart, CheckoutResponse, ErrorCodes } from '~/types/Models';
+import { getCart } from '~/modules/api/cart';
 
 type SSRProps = {
   error?: boolean;
-  response?: CheckoutData;
-  errorCode?: ErrorCodes; // Ver ~/types/Models/Checkout para más info...
+  response?: {
+    cart: Cart;
+    order: CheckoutResponse;
+  };
+  errorCode?: ErrorCodes;
 };
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
-  const { query } = context;
-  const validation = await validatePayment(context);
+  try {
+    const { query } = context;
+    const cartToken: string = (query?.oid as string) ?? undefined;
 
-  if (validation?.redirect) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
+    const validation = await validatePayment(context);
+
+    if (validation?.redirect) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
+    if (validation?.error) {
+      return {
+        props: {
+          error: true,
+          errorCode: validation.error.errorCode,
+        },
+      };
+    }
+
+    if (!cartToken) {
+      throw new Error('No fue posible encontrar el token del carrito');
+    }
+
+    if (!validation?.transaction) {
+      return {
+        props: {
+          error: true,
+          errorCode: '0',
+        },
+      };
+    }
+
+    const cart = await getCart(cartToken as string);
+    const { transaction } = validation;
+
+    const request2D = {
+      ...transaction,
+      orden: cartToken,
     };
-  }
 
-  if (validation?.error) {
+    const order = await request2DTransaction(request2D);
+
     return {
       props: {
-        error: true,
-        errorCode: validation.error.errorCode,
+        response: {
+          cart,
+          order,
+        },
       },
     };
-  }
+  } catch (err) {
+    console.log(err);
 
-  if (!validation?.transaction) {
     return {
       props: {
         error: true,
@@ -47,20 +82,6 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
       },
     };
   }
-
-  const shipping = Number(query.scost);
-  const request2D: PaymentRequest = {
-    ...validation.transaction,
-    envio: shipping,
-  };
-
-  const response = await request2DTransaction(request2D);
-
-  return {
-    props: {
-      response,
-    },
-  };
 };
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -74,7 +95,7 @@ const CheckoutResponsePage: NextPage<Props> = ({
     <BareLayout>
       {(() => {
         if (response !== null && !error) {
-          return <CheckoutSuccess data={response} />;
+          return <CheckoutSuccess cart={response.cart} order={response.order} />;
         }
 
         return <CheckoutError code={errorCode} />;
