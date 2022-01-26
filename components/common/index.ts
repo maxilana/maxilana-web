@@ -15,3 +15,5 @@ export { default as ShareLinks } from './ShareLinks';
 export { default as YouTube } from './YouTube';
 export { default as PageLoader } from './PageLoader';
 export { default as Modal } from './Modal';
+export { default as Search } from './Search';
+export { default as Result } from './Result';

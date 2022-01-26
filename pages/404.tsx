@@ -1,17 +1,10 @@
 import { ArrowRightOutlined } from '@ant-design/icons';
-import { Form } from 'antd';
 import Link from 'next/link';
-import { FormEventHandler } from 'react';
 import { Error404, Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
-import { InputField } from '~/components/common';
+import { Result, Search } from '~/components/common';
 
-const custom404 = () => {
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log(e);
-  };
+const Custom404 = () => {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <div className="bg-brand py-4">
@@ -23,22 +16,19 @@ const custom404 = () => {
       </div>
       <div className="flex justify-center items-center flex-1">
         <div className="text-center space-y-8 max-w-2xl">
-          <Error404 />
-          <div>
-            <span className="h4 mt-8 mb-4 block">Oops!... La página que buscas no existe.</span>
-            <span className="block">
-              Lo sentimos puede que la página que buscas ya no exista o nunca fue creada.
-            </span>
-          </div>
-          <Button text="Ir al inicio" rightIcon={<ArrowRightOutlined />} href="/" />
-          <Form className="max-w-sm mx-auto" onFinish={handleSubmit}>
-            <Form.Item name="q">
-              <InputField placeholder="Buscar productos" />
-            </Form.Item>
-          </Form>
+          <Result
+            image={<Error404 />}
+            title="Oops!... La página que buscas no existe."
+            message={
+              <p>Lo sentimos puede que la página que buscas ya no exista o nunca fue creada.</p>
+            }
+          >
+            <Button text="Ir al inicio" rightIcon={<ArrowRightOutlined />} href="/" />
+            <Search />
+          </Result>
         </div>
       </div>
     </div>
   );
 };
-export default custom404;
+export default Custom404;

@@ -51,39 +51,34 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
 };
 
 export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (ctx) => {
-  try {
-    const slug = ctx?.params?.slug as string;
-    const id = slug.split('-')[0];
-    const product = await getProductById(id);
-    if (!product) return { notFound: true };
+  const slug = ctx?.params?.slug as string;
+  const id = slug.split('-')[0];
+  const product = await getProductById(id);
+  if (!product) return { notFound: true };
 
-    const [products, branch, cities, gallery, legalPages] = await Promise.all([
-      getProducts({
-        limit: '4',
-        ciudad: `${product?.Branch?.CityId}`,
-        categoria: `${product.CategoryId}`,
-      }),
-      getBranch(product?.BranchId),
-      getAllCities(),
-      generateProductGallery(product.id),
-      getAllLegalPages(),
-    ]);
+  const [products, branch, cities, gallery, legalPages] = await Promise.all([
+    getProducts({
+      limit: '4',
+      ciudad: `${product?.Branch?.CityId}`,
+      categoria: `${product.CategoryId}`,
+    }),
+    getBranch(product?.BranchId),
+    getAllCities(),
+    generateProductGallery(product.id),
+    getAllLegalPages(),
+  ]);
 
-    return {
-      props: {
-        product,
-        gallery,
-        branch,
-        relatedProducts: products.rows,
-        cities,
-        legalPages,
-      },
-      revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m') / 1000,
-    };
-  } catch (e) {
-    console.log('getStaticProps ERROR:', e);
-    return { notFound: true };
-  }
+  return {
+    props: {
+      product,
+      gallery,
+      branch,
+      relatedProducts: products.rows,
+      cities,
+      legalPages,
+    },
+    revalidate: ms(process.env.PRODUCT_REVALIDATE || '1m') / 1000,
+  };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps> & WithRouterProps;
