@@ -14,7 +14,7 @@
 }
 
 .brandingArea {
-  @apply flex flex-row justify-center items-center relative;
+  @apply flex flex-row items-center relative space-x-3;
 }
 
 .navigationArea {
@@ -37,7 +37,6 @@
 }
 
 .drawerTrigger {
-  @apply absolute top-1/2 left-2 -translate-y-1/2;
   @apply lg:hidden;
 }
 
