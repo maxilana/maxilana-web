@@ -5,7 +5,6 @@ import { Form, Radio } from 'antd';
 import { Button } from '~/components/ui';
 import { FormFeedback, InputMask } from '~/components/common';
 
-import styles from '../FormContainer.module.css';
 import { LoanAccount } from '~/types/Models';
 import { usePrice } from '~/modules/hooks';
 
@@ -61,7 +60,7 @@ const LoanSelectionPaymentForm: FC<Props> = ({ account, onSubmit }) => {
         <p>Abona a tu préstamo personal en línea</p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className={styles.root}>
+        <div className="formContainer">
           <FormFeedback
             visible={error !== null}
             errorMessage={error as string}

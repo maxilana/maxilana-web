@@ -1,6 +1,8 @@
+export type PawnStatus = 'Activa' | 'Extraviada' | 'Vencida' | 'Proceso comercial';
+
 export interface PawnAccount {
   name: string;
-  status: 'Activa' | 'Extraviada' | 'Vencida';
+  status: PawnStatus;
   requestDate: string;
   startDate: string;
   dueDate: string;
@@ -23,6 +25,7 @@ export interface PawnAccount {
   branch: string; // CodigoSucursal
   extraCharge: number; //comision
   accountBlockedMessage: string; // Cuando accountBlocked es TRUE
+  creditBalance?: number; //SaldoAFavor (no viene en el endpoint que se usa en pagos)
 }
 
 export interface PawnPaymentSuccess {

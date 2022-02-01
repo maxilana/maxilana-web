@@ -6,7 +6,6 @@ import { Button } from '~/components/ui';
 import { FormFeedback, InputMask } from '~/components/common';
 import { usePrice } from '~/modules/hooks';
 
-import styles from '../FormContainer.module.css';
 import { CouponAccount } from '~/types/Models';
 
 type FormValues = {
@@ -60,7 +59,7 @@ const CouponCheckPaymentForm: FC<Props> = ({ account, onSubmit }) => {
         <p>Paga directamente a tu distribuidora</p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className={styles.root}>
+        <div className="formContainer">
           <FormFeedback
             visible={error !== null}
             errorMessage={error as string}

@@ -6,7 +6,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { Button } from '../ui';
 import { FormFeedback, InputField, InputMask } from '../common';
-import styles from './FormContainer.module.css';
 import defaultValidateMessages from 'config/validationMessages';
 import { ServicePaymentRequest } from '~/types/Requests';
 
@@ -58,7 +57,7 @@ const PaymentForm: FC<Props> = ({ data, title, description, onSubmit }) => {
         <p>{description}</p>
       </div>
       <div className="py-6 sm:px-4">
-        <div className={styles.root}>
+        <div className="formContainer">
           <FormFeedback
             visible={status === 'error'}
             errorMessage="Ocurrió un error al procesar el pago, por favor comunícate con una sucursal."
