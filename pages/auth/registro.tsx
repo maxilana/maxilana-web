@@ -9,6 +9,8 @@ import { CustomForm, InputField, InputCode } from '~/components/common';
 import { SignupRequest } from '~/types/Requests';
 import { validatePhone } from '~/modules/api/auth';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
+import { User } from '~/types/Models';
+import { useRouter } from 'next/router';
 
 type FormValues = {
   ConfirmaContrasena: string;
@@ -17,6 +19,7 @@ type FormValues = {
 type Status = 'idle' | 'verificate_code' | 'error';
 
 const SignupPage = () => {
+  const router = useRouter();
   const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [verificationForm] = Form.useForm();
@@ -56,11 +59,15 @@ const SignupPage = () => {
       setLoading(false);
 
       // Registro -> Login -> Redirección
-      await NextAPIMutator({
+      const user: User = await NextAPIMutator({
         endpoint: '/api/signup',
         method: 'POST',
         body: JSON.stringify(params),
       });
+
+      if (user?.userCode) {
+        router?.push('/');
+      }
     } catch (err) {
       setLoading(false);
       throw err;
