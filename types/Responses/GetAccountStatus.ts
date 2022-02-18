@@ -28,6 +28,7 @@ export interface MaxilanaPawnBallot {
   PermitirPago: string;
   comision: number;
   TipoEmpeno: string;
+  FecEmpeno: string;
 }
 
 export type GetAccountStatus = MaxilanaPawnBallot[];
