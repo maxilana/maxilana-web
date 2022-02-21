@@ -34,7 +34,7 @@ const normalizeProduct = (noNormalized: Producto): Product => ({
   observations: noNormalized.observaciones ? noNormalized.observaciones.trim() : '',
   image: !!noNormalized.imagen
     ? (() => {
-        const version = noNormalized.fechaimagen ? `?v=${noNormalized.fechaimagen}` : null;
+        const version = noNormalized.fechaimagen ? `?v=${noNormalized.fechaimagen}` : '';
         return `${imageBaseURL}/${noNormalized.codigo}.jpg${version}`;
       })()
     : null,
