@@ -32,6 +32,7 @@ export default function useAccountStatus(userCode?: string) {
           ApellidoP,
           ApellidoM,
           FLR,
+          FecEmpeno,
           // Banco,
           fechaConsulta,
           Prefijo,
@@ -77,7 +78,7 @@ export default function useAccountStatus(userCode?: string) {
           accountNumber: Boleta,
           accountLetter: Prefijo,
           loanAmount: loan,
-          startDate: FLR, // TODO: FLR es la fecha máxima de pago, aquí debe estar la fecha en la que se realizó el empeño
+          startDate: FecEmpeno,
           status: Estatus,
           requestDate: fechaConsulta,
           dueDate: FecVen,

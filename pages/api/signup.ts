@@ -36,7 +36,7 @@ export default withSession(async (req, res) => {
     req.session.set('user', authUser);
     await req.session.save();
 
-    res.redirect('/');
+    res.json(authUser);
   } catch (err) {
     res
       .status(422)
