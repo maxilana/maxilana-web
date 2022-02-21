@@ -32,7 +32,12 @@ const normalizeProduct = (noNormalized: Producto): Product => ({
   netPrice: Number(noNormalized.precioneto),
   brand: noNormalized.marca ? noNormalized.marca.trim() : '',
   observations: noNormalized.observaciones ? noNormalized.observaciones.trim() : '',
-  image: !!noNormalized.imagen ? `${imageBaseURL}/${noNormalized.codigo}.jpg` : null,
+  image: !!noNormalized.imagen
+    ? (() => {
+        const version = noNormalized.fechaimagen ? `?v=${noNormalized.fechaimagen}` : '';
+        return `${imageBaseURL}/${noNormalized.codigo}.jpg${version}`;
+      })()
+    : null,
   precod: noNormalized.precod,
   saleOnline: Boolean(noNormalized.ventalinea),
   promoDiscount: Number(noNormalized?.descuento ?? 0),
