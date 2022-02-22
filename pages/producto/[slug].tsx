@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
     }),
     getBranch(product?.BranchId),
     getAllCities(),
-    generateProductGallery(product.id),
+    generateProductGallery(product),
     getAllLegalPages(),
   ]);
 
