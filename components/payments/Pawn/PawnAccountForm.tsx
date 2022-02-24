@@ -1,7 +1,7 @@
 import { Form } from 'antd';
 import Image from 'next/image';
 import { AxiosError } from 'axios';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
@@ -23,13 +23,20 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
+
     try {
-      setLoading(false);
       await onSubmit(data);
     } catch (err) {
       setError((err as AxiosError).message);
+    } finally {
       setLoading(false);
     }
   };

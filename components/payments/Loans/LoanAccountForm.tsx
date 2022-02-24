@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { AxiosError } from 'axios';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
@@ -21,6 +21,12 @@ const LoanAccountForm: FC<Props> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
 
@@ -28,9 +34,9 @@ const LoanAccountForm: FC<Props> = ({ onSubmit }) => {
       await onSubmit(data);
     } catch (err) {
       setError((err as AxiosError).message);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
