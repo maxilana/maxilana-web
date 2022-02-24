@@ -46,6 +46,7 @@ deploy:
     - staging
     - master
   variables:
+    GIT_STRATEGY: none
     PREVIEW_URL: $CI_PROJECT_NAME-git-$CI_COMMIT_BRANCH-$VERCEL_USER.vercel.app
     VERCEL_WEBHOOK: $VERCEL_WEBHOOK
   environment:
