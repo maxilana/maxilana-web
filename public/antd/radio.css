@@ -2,8 +2,6 @@
 /* stylelint-disable no-duplicate-selectors */
 /* stylelint-disable */
 /* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-
-
 .ant-radio-group {
   box-sizing: border-box;
   margin: 0;
@@ -43,6 +41,10 @@
   cursor: pointer;
 }
 
+.ant-radio-wrapper-disabled {
+  cursor: not-allowed;
+}
+
 .ant-radio-wrapper::after {
   display: inline-block;
   width: 0;
@@ -74,7 +76,7 @@
 }
 
 .ant-radio-input:focus + .ant-radio-inner {
-  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.08);
+  box-shadow: 0 0 0 3px #e6f7ff;
 }
 
 .ant-radio-checked::after {
@@ -115,15 +117,17 @@
 
 .ant-radio-inner::after {
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 50%;
+  left: 50%;
   display: block;
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  margin-left: -8px;
   background-color: #1890ff;
   border-top: 0;
   border-left: 0;
-  border-radius: 8px;
+  border-radius: 16px;
   transform: scale(0);
   opacity: 0;
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
@@ -146,7 +150,7 @@
 }
 
 .ant-radio-checked .ant-radio-inner::after {
-  transform: scale(1);
+  transform: scale(0.5);
   opacity: 1;
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
 }
@@ -254,7 +258,7 @@ span.ant-radio + * {
 }
 
 .ant-radio-button-wrapper:focus-within {
-  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.08);
+  box-shadow: 0 0 0 3px #e6f7ff;
 }
 
 .ant-radio-button-wrapper .ant-radio-inner,
@@ -300,7 +304,7 @@ span.ant-radio + * {
 }
 
 .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):focus-within {
-  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.08);
+  box-shadow: 0 0 0 3px #e6f7ff;
 }
 
 .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
@@ -322,7 +326,7 @@ span.ant-radio + * {
 }
 
 .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):focus-within {
-  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.08);
+  box-shadow: 0 0 0 3px #e6f7ff;
 }
 
 .ant-radio-button-wrapper-disabled {
