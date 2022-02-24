@@ -56,7 +56,4 @@ deploy:
     - apk --no-cache add curl
     - npm i -g vercel
     - echo $PREVIEW_URL
-    - echo $VERCEL_ORG_ID
-    - echo $VERCEL_PROJECT_ID
-    - echo $VERCEL_SCOPE
     - curl -s $VERCEL_WEBHOOK
