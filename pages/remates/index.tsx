@@ -73,7 +73,7 @@ const Remates: NextPage<Props> = ({
 
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     setVisibleFilter(false);
-    router.push(`/busqueda?${parseQuery(queryParams)}`);
+    router.push(`/busqueda?${parseQuery(queryParams)}`, undefined, { shallow: true });
   };
 
   useEffect(() => {

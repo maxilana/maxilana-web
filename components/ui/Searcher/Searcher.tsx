@@ -86,7 +86,11 @@ const Searcher: FC<Props> = ({ cities }) => {
 
       query.orden = 'desc';
 
-      router.push(`/busqueda?${parseQuery(omit(query, ['page', 'categoria', 'slug']))}`);
+      router.push(
+        `/busqueda?${parseQuery(omit(query, ['page', 'categoria', 'slug']))}`,
+        undefined,
+        { shallow: true },
+      );
     }
   };
 

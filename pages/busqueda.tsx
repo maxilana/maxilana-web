@@ -20,22 +20,38 @@ import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import { Branch, City, CMSLegal } from '~/types/Models';
 import { CMSCategory } from '~/types/Models/CMSCategory';
 import { Product } from '~/types/Models/Product';
-import { Pagination } from '~/types/Pagination';
+import { Paginated } from '~/types/Paginated';
 import { AppliedFilters, ProductsFilters } from '~/components/products';
 import { filtersToQueryParams } from '~/utils/filtersToQueryString';
 import parseQuery from '~/utils/parseQuery';
 
 interface GSSProps {
-  pagination?: Pagination;
-  products?: Product[];
-  query?: ParsedUrlQuery;
-  cities?: City[];
-  branch?: Branch | null;
-  city?: City | null;
-  branches?: Branch[] | null;
-  categories?: Array<Partial<CMSCategory>>;
-  legalPages?: CMSLegal[];
+  initialPaginatedProducts: Paginated<Product>;
+  initialQuery: ParsedUrlQuery;
+  cities: City[];
+  initialBranch?: Branch | null;
+  initialCity?: City | null;
+  initialBranches?: Branch[] | null;
+  categories: Array<Partial<CMSCategory>>;
+  legalPages: CMSLegal[];
 }
+
+const normalizeQuery = (
+  query: ParsedUrlQuery | undefined,
+  categories: Partial<CMSCategory>[] | undefined,
+): ParsedUrlQuery => {
+  const { categoria, ...apiQuery } = query || {};
+  if (categoria) {
+    const category = categories?.find?.((item) => item.id === query?.categoria);
+    const { filters } = category || {};
+    if (filters && filters?.categories?.length) {
+      apiQuery.categoria = filters?.categories.map((item) => item?.itemID).join(',');
+    }
+    return Object.assign(filtersToQueryParams(filters || {}), apiQuery);
+  } else {
+    return query || {};
+  }
+};
 
 export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
   const { query } = ctx;
@@ -55,20 +71,7 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
     getAllLegalPages(),
   ]);
 
-  const paginatedProducts = await (() => {
-    const { categoria, ...apiQuery } = query;
-    if (categoria) {
-      const category = categories.find((item) => item.id === query?.categoria);
-      const { filters } = category || {};
-      if (filters && filters?.categories?.length) {
-        apiQuery.categoria = filters?.categories.map((item) => item?.itemID).join(',');
-      }
-      return getProducts(Object.assign(filtersToQueryParams(filters || {}), apiQuery));
-    } else {
-      return getProducts(query);
-    }
-  })();
-  const { rows: products, ...pagination } = paginatedProducts;
+  const initialPaginatedProducts = await getProducts(normalizeQuery(query, categories));
 
   const branch = typeof filters?.sucursal === 'string' ? await getBranch(filters.sucursal) : null;
   const city =
@@ -77,17 +80,16 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
           [branch?.CityId, parseInt(filters?.ciudad as string)].includes(item.id),
         )
       : null;
-  const branches = city ? await getCityBranchesBySlug(city?.slug) : null;
+  const initialBranches = city ? await getCityBranchesBySlug(city?.slug) : null;
 
   return {
     props: {
-      pagination,
-      products,
-      query,
+      initialPaginatedProducts,
+      initialQuery: query,
       cities,
-      branch,
-      city,
-      branches,
+      initialBranch: branch,
+      initialCity: city,
+      initialBranches,
       categories,
       legalPages,
     },
@@ -97,32 +99,35 @@ export const getServerSideProps: GetServerSideProps<GSSProps> = async (ctx) => {
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const Busqueda: NextPage<Props> = ({
-  pagination,
-  products,
+  initialPaginatedProducts,
   cities,
-  branch,
-  city,
-  branches,
-  query,
+  initialBranch,
+  initialCity,
+  initialBranches,
+  initialQuery,
   categories,
   legalPages,
 }) => {
+  const [city, setCity] = useState(initialCity);
+  const [branch, setBranch] = useState(initialBranch);
+  const [branches, setBranches] = useState(initialBranches);
+  const [paginatedProducts, setPaginatedProducts] = useState(initialPaginatedProducts);
   const [visibleFilter, setVisibleFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [limit, setLimit] = useState(router?.query?.limit || 24);
-  const category = categories?.find?.((item) => `${item.id}` === `${router?.query?.categoria}`);
+  const { query = initialQuery } = router || {};
+  const [limit, setLimit] = useState(query?.limit || 24);
+  const category = categories?.find?.((item) => `${item.id}` === `${query?.categoria}`);
+  const { rows: products, ...pagination } = paginatedProducts;
 
   useEffect(() => {
     const handleRouteChange = (url: string): void => {
       if (url.includes('busqueda')) {
-        setLoading(true);
         setVisibleFilter(false);
       }
     };
     const handleRouteChangeComplete = () => {
       setVisibleFilter(false);
-      setLoading(false);
     };
 
     router.events.on('routeChangeStart', handleRouteChange);
@@ -135,7 +140,33 @@ const Busqueda: NextPage<Props> = ({
   }, []);
 
   useEffectOnUpdate(() => {
-    search({ ...(router?.query || {}), limit: `${limit}` });
+    setLoading(true);
+    if (query?.ciudad) {
+      if (cities?.length) {
+        const newCity = cities.find((item) => `${item.id}` === query?.ciudad);
+        if (newCity) {
+          setCity(newCity);
+          getCityBranchesBySlug(newCity.slug).then(setBranches);
+        }
+      }
+    } else {
+      setCity(null);
+      setBranches(null);
+    }
+    if (query?.sucursal) {
+      if (branches?.length) {
+        setBranch(branches.find((item) => `${item.id}` === query?.sucursal));
+      }
+    } else {
+      setBranch(null);
+    }
+    getProducts(normalizeQuery(query, categories))
+      .then(setPaginatedProducts)
+      .finally(() => setLoading(false));
+  }, [query]);
+
+  useEffectOnUpdate(() => {
+    search({ ...(query || {}), limit: `${limit}` });
   }, [limit]);
 
   const search = (queryParams: ParsedUrlQuery) => {
@@ -145,6 +176,7 @@ const Busqueda: NextPage<Props> = ({
     };
     router.push(`/busqueda?${parseQuery(newQueryParams)}`, undefined, {
       scroll: false,
+      shallow: true,
     });
   };
 
@@ -216,7 +248,7 @@ const Busqueda: NextPage<Props> = ({
                   href={
                     pagination?.prev
                       ? `/busqueda?${parseQuery({
-                          ...query,
+                          ...(query || {}),
                           page: `${pagination?.page - 1}`,
                         })}`
                       : undefined
@@ -231,10 +263,11 @@ const Busqueda: NextPage<Props> = ({
                   rightIcon={<ArrowRightOutlined />}
                   disabled={!pagination?.next}
                   theme={pagination?.next ? 'secondary' : 'default'}
+                  shallow
                   href={
                     pagination?.next
                       ? `/busqueda?${parseQuery({
-                          ...query,
+                          ...(query || {}),
                           page: `${pagination?.page + 1}`,
                         })}`
                       : undefined
