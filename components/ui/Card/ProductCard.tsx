@@ -45,7 +45,15 @@ const ProductCard: FC<Props> = ({ data, className }) => {
       <div className={styles.productImgWrapper}>
         <div className={cn(styles.productImg, { [styles.productPlaceholder]: image === null })}>
           {image !== null ? (
-            <Img src={image} alt={name} objectFit="contain" layout="fill" />
+            <Img
+              src={image}
+              alt={name}
+              objectFit="contain"
+              objectPosition="center"
+              layout="intrinsic"
+              width={300}
+              height={300}
+            />
           ) : (
             <div className="flex justify-center items-center">
               <PictureOutlined />

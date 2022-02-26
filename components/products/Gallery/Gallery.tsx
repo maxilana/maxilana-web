@@ -13,7 +13,14 @@ const Gallery: FC<Props> = ({ images }) => {
   return (
     <div className={styles.root}>
       <div className={styles.image}>
-        <Img src={images[selected]} layout="fill" objectFit="contain" alt="" placeholder="empty" />
+        <Img
+          src={images[selected]}
+          objectFit="contain"
+          alt=""
+          placeholder="empty"
+          width={822}
+          height={530}
+        />
       </div>
       {images?.length > 1 && (
         <div className={styles.thumbnails}>
@@ -26,9 +33,9 @@ const Gallery: FC<Props> = ({ images }) => {
             >
               <Img
                 src={url}
-                width={64}
-                height={64}
-                layout="responsive"
+                width={90}
+                height={90}
+                layout="intrinsic"
                 objectFit="cover"
                 alt=""
                 placeholder="empty"
