@@ -69,7 +69,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     setVisibleFilter(false);
-    push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
+    push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`, undefined, { shallow: true });
   };
 
   const category = categories?.find?.((item) => item?.products_page_mkt?.id == page?.id)?.id;

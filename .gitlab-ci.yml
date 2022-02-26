@@ -41,7 +41,7 @@ linting:
 
 deploy:
   stage: deploy
-  image: node:14-alpine
+  <<: *default_image
   only:
     - staging
     - master

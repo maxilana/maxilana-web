@@ -4,6 +4,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { EnvironmentOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
 import useToggleState from '~/hooks/useToggleState';
 import { Branch, City } from '~/types/Models';
 import { Button, CheckableTag, Map } from '~/components/ui';
@@ -24,7 +25,7 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
   const [mapVisible, toggleMap] = useToggleState();
   const [map, setMap] = useState<google.maps.Map>();
 
-  useEffect(() => {
+  useEffectOnUpdate(() => {
     if (selectedBranch && map) {
       map.setZoom(18);
       map.setCenter({ lat: selectedBranch.latitud, lng: selectedBranch.longitud });
@@ -80,7 +81,7 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
           ))}
       </aside>
       <div className={styles.map} ref={ref}>
-        {(mapVisible || !isMobile) && (
+        {(mapVisible || !isMobile) && !!branches?.length && (
           <Map branches={branches} zoom={zoom} onLoad={setMap} key={currentCity?.id || 'all'} />
         )}
       </div>
