@@ -81,7 +81,7 @@ const BranchesMap: FC<Props> = ({ cities, branches, currentCity, zoom }) => {
           ))}
       </aside>
       <div className={styles.map} ref={ref}>
-        {(mapVisible || !isMobile) && (
+        {(mapVisible || !isMobile) && !!branches?.length && (
           <Map branches={branches} zoom={zoom} onLoad={setMap} key={currentCity?.id || 'all'} />
         )}
       </div>
