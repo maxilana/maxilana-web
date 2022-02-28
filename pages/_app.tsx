@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         startPosition={0.3}
         stopDelayMs={200}
         height={5}
-        showOnShallow={false}
+        showOnShallow
       />
     </>
   );
