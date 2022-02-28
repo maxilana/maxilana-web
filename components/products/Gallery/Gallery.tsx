@@ -20,6 +20,7 @@ const Gallery: FC<Props> = ({ images }) => {
           placeholder="empty"
           width={822}
           height={530}
+          customLoader={!selected ? undefined : 'maxilana'}
         />
       </div>
       {images?.length > 1 && (
@@ -39,6 +40,7 @@ const Gallery: FC<Props> = ({ images }) => {
                 objectFit="cover"
                 alt=""
                 placeholder="empty"
+                customLoader="maxilana"
               />
             </div>
           ))}
