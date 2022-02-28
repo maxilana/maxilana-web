@@ -13,7 +13,7 @@ interface Props {
 const ShareLinks: FC<Props> = ({ url, text, className }) => {
   return (
     <div className={cn(styles.root, className)}>
-      <span role="combobox">Compartir:</span>
+      <span>Compartir:</span>
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
         className={cn(styles.item, styles.facebook)}
