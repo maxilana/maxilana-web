@@ -14,9 +14,10 @@ import ProductBadge from '~/components/products/ProductBadge';
 interface Props {
   data: Product;
   className?: string;
+  imgLoader: 'maxilana' | undefined;
 }
 
-const ProductCard: FC<Props> = ({ data, className }) => {
+const ProductCard: FC<Props> = ({ data, className, imgLoader }) => {
   const {
     image,
     name,
@@ -53,6 +54,7 @@ const ProductCard: FC<Props> = ({ data, className }) => {
               layout="intrinsic"
               width={300}
               height={300}
+              customLoader={imgLoader}
             />
           ) : (
             <div className="flex justify-center items-center">

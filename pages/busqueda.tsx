@@ -3,7 +3,7 @@ import omit from 'lodash.omit';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeftOutlined, ArrowRightOutlined, FilterOutlined } from '@ant-design/icons';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
 import getCMSCategories from '~/api/cms/getCMSCategories';
@@ -108,6 +108,7 @@ const Busqueda: NextPage<Props> = ({
   categories,
   legalPages,
 }) => {
+  const productImgLoader = useRef<'maxilana' | undefined>();
   const [city, setCity] = useState(initialCity);
   const [branch, setBranch] = useState(initialBranch);
   const [branches, setBranches] = useState(initialBranches);
@@ -160,6 +161,7 @@ const Busqueda: NextPage<Props> = ({
     } else {
       setBranch(null);
     }
+    productImgLoader.current = 'maxilana';
     getProducts(normalizeQuery(query, categories))
       .then(setPaginatedProducts)
       .finally(() => setLoading(false));
@@ -236,7 +238,11 @@ const Busqueda: NextPage<Props> = ({
             <>
               <div className="productsGrid">
                 {products.map((product) => (
-                  <ProductCard key={product.id} data={product} />
+                  <ProductCard
+                    key={product.id}
+                    data={product}
+                    imgLoader={productImgLoader.current}
+                  />
                 ))}
               </div>
               <div className="flex space-x-6 justify-center items-center">
