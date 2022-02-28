@@ -14,7 +14,6 @@ interface Props {
 const Map: FC<Props> = ({ branches, zoom = 6, onLoad }) => {
   const [map, setMap] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
-  console.log(branches);
   const [center, setCenter] = useState({
     lat: branches[0].latitud,
     lng: branches[0].longitud,

@@ -53,12 +53,7 @@ const EditProfilePage: NextPage<AuthPageProps> = ({ cities = [], legalPages = []
   };
 
   return (
-    <Layout
-      cities={cities}
-      title="Editar tu perfil"
-      legalPages={legalPages}
-      meta={{ css: ['/antd/form.css'] }}
-    >
+    <Layout cities={cities} title="Editar tu perfil" legalPages={legalPages}>
       <section className="max-w-2xl mx-auto py-4 sm:px-4 sm:py-8">
         <div className="px-4 sm:px-0">
           <Breadcrumbs

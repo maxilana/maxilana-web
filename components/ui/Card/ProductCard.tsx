@@ -14,7 +14,7 @@ import ProductBadge from '~/components/products/ProductBadge';
 interface Props {
   data: Product;
   className?: string;
-  imgLoader: 'maxilana' | undefined;
+  imgLoader?: 'maxilana' | undefined;
 }
 
 const ProductCard: FC<Props> = ({ data, className, imgLoader }) => {

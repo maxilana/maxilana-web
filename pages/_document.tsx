@@ -1,13 +1,10 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document';
+import React from 'react';
 import { GTM_ID } from '~/utils/gtm';
 
 class CustomDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
-
   render() {
+    const css = this.props?.__NEXT_DATA__?.props?.pageProps?.css || [];
     return (
       <Html lang="en">
         <Head>
@@ -17,6 +14,23 @@ class CustomDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
             rel="stylesheet"
           />
+          {css?.map?.((href: string) => (
+            <link href={href} as="style" rel="preload" key={href} />
+          ))}
+          {css?.map?.((href: string) => (
+            <link
+              href={href}
+              id={href}
+              className="extra-css"
+              type="text/css"
+              rel="stylesheet"
+              key={href}
+              onLoad={function onLoad() {
+                //@ts-ignore
+                this.media = 'all';
+              }}
+            />
+          ))}
         </Head>
         <body>
           <noscript>

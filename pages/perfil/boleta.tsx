@@ -25,12 +25,7 @@ const PawnBallotProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPag
   }
 
   return (
-    <Layout
-      cities={cities}
-      title="Detalle de boleta"
-      legalPages={legalPages}
-      meta={{ css: ['/antd/form.css', '/antd/radio.css'] }}
-    >
+    <Layout cities={cities} title="Detalle de boleta" legalPages={legalPages}>
       <section className="max-w-2xl mx-auto py-4 sm:py-8">
         <div className="px-4">
           <Breadcrumbs
