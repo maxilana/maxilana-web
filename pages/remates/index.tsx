@@ -27,6 +27,7 @@ interface GSProps {
   categoriesProducts?: Array<Partial<CMSCategory & { products: Product[] }>>;
   legalPages?: CMSLegal[];
   error?: Error;
+  css?: string[];
 }
 
 export const getStaticProps: GetStaticProps<GSProps> = async () => {
@@ -53,7 +54,14 @@ export const getStaticProps: GetStaticProps<GSProps> = async () => {
     : [];
 
   return {
-    props: { cities, page, categories, categoriesProducts, legalPages },
+    props: {
+      cities,
+      page,
+      categories,
+      categoriesProducts,
+      legalPages,
+      css: ['/antd/radio.css', '/antd/checkbox.css'],
+    },
     revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
   };
 };
@@ -94,11 +102,7 @@ const Remates: NextPage<Props> = ({
   }, []);
 
   return (
-    <Layout
-      meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
-      cities={cities || []}
-      legalPages={legalPages || []}
-    >
+    <Layout meta={{ ...(page?.seo || {}) }} cities={cities || []} legalPages={legalPages || []}>
       <div className="container mx-auto lg:p-4 grid grid-cols-1 gap-8 lg:gap-8 lg:grid-cols-4">
         <aside>
           <ProductsFilters

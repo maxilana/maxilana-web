@@ -121,23 +121,21 @@ const Searcher: FC<Props> = ({ cities }) => {
           }}
           parent={
             <div
-              role="combobox"
               className={cn(styles.inputControl, styles.locationDropdown)}
+              aria-expanded={visible}
               onClick={() => {
                 toggleDropdown(!visible);
               }}
             >
               {!city ? (
-                <span role="option" className="flex items-center sm:space-x-2">
+                <span className="flex items-center sm:space-x-2">
                   <div className="hidden md:inline-block">
                     <Image src={MexicoMap} alt="Mexico" />
                   </div>
                   <span className="line-clamp-1">Todo México</span>
                 </span>
               ) : (
-                <span role="option" className="block space-x-2 line-clamp-1">
-                  {city?.name}
-                </span>
+                <span className="block space-x-2 line-clamp-1">{city?.name}</span>
               )}
               <DownOutlined
                 style={{ fontSize: 14 }}

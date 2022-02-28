@@ -9,11 +9,10 @@ export interface MetaProps extends Partial<CMSSeo> {
   description?: string;
   keywords?: string;
   shareImage?: string | CMSImage;
-  css?: string[];
   images?: string[];
 }
 
-const Meta: FC<MetaProps> = ({ title, description, keywords, css, images }) => {
+const Meta: FC<MetaProps> = ({ title, description, keywords, images }) => {
   const metaTitle = title ? `${title} | Maxilana` : 'Maxilana | Casa de empeño';
   // @ts-ignore
   return (
@@ -44,22 +43,6 @@ const Meta: FC<MetaProps> = ({ title, description, keywords, css, images }) => {
         // @ts-ignore
         return <link rel="preload" as="image" imageSrcSet={src} imageSizes="100vw" key={src} />;
       })}
-      {css?.map?.((href) => (
-        <link href={href} as="style" rel="preload" key={href} />
-      ))}
-      {css?.map?.((href) => (
-        <link
-          href={href}
-          id={href}
-          type="text/css"
-          rel="stylesheet"
-          key={href}
-          onLoad={function onLoad() {
-            //@ts-ignore
-            this.media = 'all';
-          }}
-        />
-      ))}
     </Head>
   );
 };

@@ -30,6 +30,7 @@ const authGetServerSideProps: GetServerSideProps<GSSProps> = withSession(async (
       user,
       cities,
       legalPages,
+      css: ['/antd/form.css', '/antd/radio.css', '/antd/tabs.css'],
     },
   };
 });
