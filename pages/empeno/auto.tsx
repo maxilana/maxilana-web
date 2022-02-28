@@ -14,7 +14,9 @@ import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { CMSCarPawn } from '~/types/Models';
 import getCMSImageURL from '~/utils/getCMSImageURL';
 
-export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSCarPawn }>> = async () => {
+export const getStaticProps: GetStaticProps<
+  DefaultPageProps<{ page: CMSCarPawn; css?: string[] }>
+> = async () => {
   const [page, cities, legalPages] = await Promise.all([
     getCarPawnPage(),
     getAllCities(),
@@ -26,6 +28,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSCarPawn 
       page,
       cities,
       legalPages,
+      css: ['/antd/form.css'],
     },
     revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
   };
@@ -36,14 +39,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const AutoEmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   return (
     <div>
-      <Layout
-        meta={{
-          ...page.seo,
-          css: ['/antd/form.css'],
-        }}
-        cities={cities}
-        legalPages={legalPages}
-      >
+      <Layout meta={page.seo} cities={cities} legalPages={legalPages}>
         <div className="pt-[108px] bg-gradient-to-r from-[#F7D067] to-[#F1C153]">
           <div className="container mx-auto px-4 py-10 sm:py-20">
             <div className="grid gap-4 sm:grid-cols-2">

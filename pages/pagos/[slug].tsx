@@ -50,6 +50,7 @@ export const getStaticProps: GetStaticProps<
       cities,
       legalPages,
       payment,
+      css: paymentTypes[payment.type].css,
     },
     revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
   };
@@ -58,9 +59,9 @@ export const getStaticProps: GetStaticProps<
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const PaymentPage: NextPage<Props> = ({ cities, legalPages, payment }) => {
-  const { css, component } = paymentTypes[payment.type];
+  const { component } = paymentTypes[payment.type];
   return (
-    <Layout meta={{ ...payment?.seo, css }} cities={cities} legalPages={legalPages}>
+    <Layout meta={{ ...payment?.seo }} cities={cities} legalPages={legalPages}>
       <div className="container mx-auto py-6">
         <div className="grid grid-flow-col gap-6">
           {component}

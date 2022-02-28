@@ -1,7 +1,10 @@
+import { getElementsByTagName } from 'domutils';
 import type { AppProps, NextWebVitalsMetric } from 'next/app';
-import Head from 'next/head';
 import NextNprogress from 'nextjs-progressbar';
+import { useEffect } from 'react';
 import MarketingScripts from '~/components/common/MarketingScripts';
+import useEffectOnUpdate from '~/hooks/useEffectOnUpdate';
+import usePageCss from '~/hooks/usePageCss';
 
 import { usePageView, webVitals } from '~/utils/gtm';
 
@@ -11,16 +14,10 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   usePageView();
+  usePageCss(pageProps?.css);
+
   return (
     <>
-      <Head>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
       {/* Google Tag Manager - Global base code */}
       <MarketingScripts />
       <Component {...pageProps} />
@@ -29,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         startPosition={0.3}
         stopDelayMs={200}
         height={5}
-        showOnShallow={true}
+        showOnShallow
       />
     </>
   );

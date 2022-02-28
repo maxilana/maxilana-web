@@ -23,6 +23,7 @@ const CheckableTag: FC<PropsWithChildren<Props>> = ({
     <span
       className={cn(styles.root, { [styles.checked]: status }, className)}
       role="checkbox"
+      aria-checked={status}
       onClick={() => toggle()}
     >
       {label || children}

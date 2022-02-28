@@ -84,7 +84,7 @@ const checkAccount = async (data: Body): Promise<PawnAccount> => {
     totalPaymentAmount = Math.round(subtotal + (0.5 + decimalTotal));
   }
 
-  totalPaymentAmount = roundDecimals(totalPaymentAmount * extraCharge);
+  totalPaymentAmount = roundDecimals(totalPaymentAmount);
 
   const accountBlocked = BoletaBloqueada === 'true';
   const accountBlockedMessage = accountBlocked ? response?.Mensaje ?? '' : '';

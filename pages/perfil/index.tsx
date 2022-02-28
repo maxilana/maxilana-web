@@ -18,12 +18,7 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
   const [showModal, toggleModal] = useToggleState(false);
 
   return (
-    <Layout
-      cities={cities || []}
-      legalPages={legalPages || []}
-      title="Perfil de usuario"
-      meta={{ css: ['/antd/tabs.css', '/antd/form.css'] }}
-    >
+    <Layout cities={cities || []} legalPages={legalPages || []} title="Perfil de usuario">
       {(() => {
         if (!user || user.isLoggedIn === false) {
           return (

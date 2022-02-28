@@ -46,7 +46,7 @@ export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
     paths: products.map((product) => ({
       params: { slug: `${product?.id}-${slugify(product?.name)}` },
     })),
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
     }),
     getBranch(product?.BranchId),
     getAllCities(),
-    generateProductGallery(product.id),
+    generateProductGallery(product),
     getAllLegalPages(),
   ]);
 

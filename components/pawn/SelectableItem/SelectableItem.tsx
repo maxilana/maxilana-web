@@ -11,7 +11,7 @@ interface Props {
 
 const SelectableItem: FC<Props> = ({ label, imageSrc = null, onClick = () => {} }) => {
   return (
-    <div id={label} role="checkbox" className={styles.root} onClick={onClick}>
+    <div id={label} className={styles.root} onClick={onClick}>
       <div className={styles.wrapBody}>
         {imageSrc !== null && (
           <div className="relative w-10 mr-4">

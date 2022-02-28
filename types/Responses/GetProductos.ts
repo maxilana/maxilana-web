@@ -22,6 +22,7 @@ export interface Producto {
   slug?: string;
   ventalinea: 1 | 0;
   descuento?: string; //Numero con el %desc
+  fechaimagen?: number; // Versión de imágen
 }
 
 export type GetProductos = Paginated<Producto>;

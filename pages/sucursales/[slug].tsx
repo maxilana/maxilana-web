@@ -32,28 +32,23 @@ export const getStaticProps: GetStaticProps<{
   legalPages: CMSLegal[];
 }> = async (ctx) => {
   const slug = ctx?.params?.slug as string;
-  try {
-    const [branch, cities, legalPages] = await Promise.all([
-      getBranch(slug),
-      getAllCities(),
-      getAllLegalPages(),
-    ]);
-    const products = await getProducts({ sucursal: `${branch?.id}` });
-    const city = cities.find((item) => item.id === branch.CityId);
-    return {
-      props: {
-        branch,
-        city,
-        products: products.rows,
-        cities,
-        legalPages,
-      },
-      revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
-    };
-  } catch (e) {
-    console.log(e);
-    return { notFound: true };
-  }
+  const [branch, cities, legalPages] = await Promise.all([
+    getBranch(slug),
+    getAllCities(),
+    getAllLegalPages(),
+  ]);
+  const products = await getProducts({ sucursal: `${branch?.id}` });
+  const city = cities.find((item) => item.id === branch.CityId);
+  return {
+    props: {
+      branch,
+      city,
+      products: products.rows,
+      cities,
+      legalPages,
+    },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
+  };
 };
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
