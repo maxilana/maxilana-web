@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import { LineItem } from '~/components/cart';
 import { PageLoader } from '~/components/common';
@@ -9,11 +9,14 @@ import { Button } from '~/components/ui';
 import useCart from '~/hooks/cart/useCart';
 import { formatPrice } from '~/modules/hooks/usePrice';
 
+export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
+  return { props: { css: ['/antd/form.css'] } };
+};
 const CartPage: NextPage = () => {
   const { data, isLoading, isEmpty, cartLength } = useCart();
 
   return (
-    <BareLayout title="Carrito de compras" meta={{ css: ['/antd/form.css'] }}>
+    <BareLayout title="Carrito de compras">
       <div className="container mx-auto py-8 lg:py-48">
         {(() => {
           if (isLoading) {

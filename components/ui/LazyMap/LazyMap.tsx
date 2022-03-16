@@ -20,7 +20,7 @@ const LazyMap: FC<Props> = ({ branch }) => {
     center: `${branch.latitud},${branch.longitud}`,
     zoom: '18',
     size: '600x300',
-    scale: '2',
+    scale: '1',
     key: process.env.NEXT_PUBLIC_GM_API,
     markers: `icon:${icon}|${branch.latitud},${branch.longitud}`,
   };
@@ -33,10 +33,12 @@ const LazyMap: FC<Props> = ({ branch }) => {
       <div className="absolute inset-0 cursor-pointer" onClick={showDynamicMap} role="button">
         <Img
           src={src}
-          layout="fill"
-          objectFit="contain"
+          layout="intrinsic"
+          objectFit="cover"
           alt="map"
           quality={100}
+          width={824}
+          height={414}
           customLoader="maxilana"
         />
       </div>

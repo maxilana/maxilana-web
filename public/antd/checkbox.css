@@ -142,6 +142,7 @@
 
 .ant-checkbox-disabled .ant-checkbox-input {
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .ant-checkbox-disabled .ant-checkbox-inner {

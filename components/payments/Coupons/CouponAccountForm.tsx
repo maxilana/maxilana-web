@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { AxiosError } from 'axios';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField } from '~/components/common';
@@ -22,6 +22,12 @@ const CouponAccountForm: FC<Props> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
 
@@ -29,9 +35,9 @@ const CouponAccountForm: FC<Props> = ({ onSubmit }) => {
       await onSubmit(data);
     } catch (err) {
       setError((err as AxiosError).message);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

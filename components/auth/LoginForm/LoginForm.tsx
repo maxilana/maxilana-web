@@ -14,12 +14,12 @@ type FormValues = {
 };
 
 type Status = 'idle' | 'successful' | 'error';
-
 interface Props {
   onSuccess: () => void;
+  changeLoginFlow: (newDirection: 'recoveryPassword') => void;
 }
 
-const LoginForm: FC<Props> = ({ onSuccess }) => {
+const LoginForm: FC<Props> = ({ onSuccess, changeLoginFlow }) => {
   const { mutateUser } = useUser();
   const [form] = Form.useForm<FormValues>();
   const [loading, setLoading] = useState(false);
@@ -80,7 +80,7 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
   }
 
   return (
-    <CustomForm form={form} name="loginForm" className="max-w-lg" onSubmit={handleSubmit}>
+    <CustomForm form={form} name="loginForm" className="w-96 max-w-sm" onSubmit={handleSubmit}>
       <>
         <header className="text-center">
           <span className="inline-flex">
@@ -94,9 +94,19 @@ const LoginForm: FC<Props> = ({ onSuccess }) => {
               <Form.Item name="user" rules={[{ required: true }]}>
                 <InputField label="Email o celular" placeholder="Ingresa número celular o email" />
               </Form.Item>
-              <Form.Item name="password" rules={[{ required: true }]}>
-                <InputField type="password" label="Contraseña" />
-              </Form.Item>
+              <div className="flex flex-col relative">
+                <Form.Item name="password" rules={[{ required: true }]}>
+                  <InputField type="password" label="Contraseña" />
+                </Form.Item>
+                <div className="text-center text-sm absolute right-0">
+                  <span
+                    onClick={() => changeLoginFlow('recoveryPassword')}
+                    className="text-[#1E83E1] cursor-pointer text-xs font-medium tracking-wider"
+                  >
+                    OLVIDÉ MI CONTRASEÑA
+                  </span>
+                </div>
+              </div>
               <Button fullWidth theme="primary" loading={loading} text="Iniciar Sesión" />
             </div>
             <hr className="my-6" />

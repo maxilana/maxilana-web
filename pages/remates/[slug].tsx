@@ -29,6 +29,7 @@ interface GSProps {
   page?: Partial<CMSMktPage>;
   products?: Product[];
   legalPages: CMSLegal[];
+  css?: string[];
 }
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -56,7 +57,14 @@ export const getStaticProps: GetStaticProps<GSProps, { slug: string }> = async (
     : [];
 
   return {
-    props: { cities, categories, page, products, legalPages },
+    props: {
+      cities,
+      categories,
+      page,
+      products,
+      legalPages,
+      css: ['/antd/radio.css', '/antd/checkbox.css'],
+    },
     revalidate: ms(process.env.REMATE_REVALIDATE || '10m') / 1000,
   };
 };
@@ -69,7 +77,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
   const { push } = useRouter();
   const handleFiltersChanges = (queryParams: ParsedUrlQuery) => {
     setVisibleFilter(false);
-    push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`);
+    push(`/busqueda?${parseQuery(omit(queryParams, 'slug'))}`, undefined, { shallow: true });
   };
 
   const category = categories?.find?.((item) => item?.products_page_mkt?.id == page?.id)?.id;
@@ -96,7 +104,7 @@ const MarketingPage: NextPage<Props> = ({ page, categories, cities, products, le
   return (
     <Layout
       title={page?.title}
-      meta={{ ...(page?.seo || {}), css: ['/antd/radio.css', '/antd/checkbox.css'] }}
+      meta={{ ...(page?.seo || {}) }}
       cities={cities || []}
       legalPages={legalPages}
     >

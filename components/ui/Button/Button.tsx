@@ -20,6 +20,7 @@ export interface Props {
   disabled?: boolean;
   onClick?: (evt: MouseEvent<HTMLButtonElement>) => void;
   prefetch?: boolean;
+  shallow?: boolean;
 }
 
 const classStyles = {
@@ -51,6 +52,7 @@ const Button: FC<Props> = ({
   variant = 'default',
   className,
   disabled = false,
+  shallow,
   prefetch,
 }) => {
   const sizeStyles = classStyles.size[size];
@@ -75,7 +77,7 @@ const Button: FC<Props> = ({
 
   if (href !== undefined) {
     return (
-      <Link href={href} prefetch={prefetch}>
+      <Link href={href} prefetch={prefetch} shallow={shallow} scroll>
         <a className={rootClassName} target={target}>
           {icon && iconElement}
           <span className={styles.label}>{text}</span>

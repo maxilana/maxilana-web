@@ -1,4 +1,5 @@
 import { Form } from 'antd';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
 import { Logo } from '~/components/svg';
@@ -6,6 +7,10 @@ import { Button } from '~/components/ui';
 import { InputField } from '~/components/common';
 import { BareLayout, AuthFooter } from '~/components/layout';
 import defaultValidateMessages from 'config/validationMessages';
+
+export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
+  return { props: { css: ['/antd/form.css'] } };
+};
 
 const LoginPage = () => {
   const [form] = Form.useForm();
@@ -15,7 +20,7 @@ const LoginPage = () => {
   };
 
   return (
-    <BareLayout title="Iniciar Sesión" hasHeader={false} meta={{ css: ['/antd/form.css'] }}>
+    <BareLayout title="Iniciar Sesión" hasHeader={false}>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <header className="flex items-center justify-center my-4">
           <Link href="/">
