@@ -1,4 +1,5 @@
 import { Form } from 'antd';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -17,6 +18,10 @@ type FormValues = {
 } & SignupRequest;
 
 type Status = 'idle' | 'verificate_code' | 'error';
+
+export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
+  return { props: { css: ['/antd/form.css'] } };
+};
 
 const SignupPage = () => {
   const router = useRouter();
@@ -75,7 +80,7 @@ const SignupPage = () => {
   };
 
   return (
-    <BareLayout title="Registro" hasHeader={false} meta={{ css: ['/antd/form.css'] }}>
+    <BareLayout title="Registro" hasHeader={false}>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <header className="flex items-center justify-center my-4">
           <Link href="/">

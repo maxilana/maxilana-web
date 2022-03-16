@@ -30,6 +30,10 @@ export interface CheckoutResponse {
 //  SON DEL BANCO AL TRATAR DE PAGAR
 export type ErrorCodes =
   | '0' // Un error general.
+  | '10' // El servidor no regresó un resultado en 2DTransaction.
+  | '20' // Timeout en la respuesta 2DTransaction.
+  | '30' // Por alguna razón el token del carrito se perdió...
+  | '40' // Petición incorrecta para el 3DTransaction
   | '100' // No existe la variable de entorno para redireccionar al banco.
   | '200' // El status no fue 200 o no se recibieron las variables necesarias ECI, CAVV O XID para la transacción.
   | '201' // Indica que se detecto un error general en el sistema de Visa o Master Card, se recomienda esperar unos momentos para reintentar la transacción.

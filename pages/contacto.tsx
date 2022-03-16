@@ -1,22 +1,40 @@
+import ms from 'ms';
 import Link from 'next/link';
 import { Form } from 'antd';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { PhoneFilled, QuestionCircleFilled, ShopFilled } from '@ant-design/icons';
+import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import getAllCities from '~/api/getAllCities';
 
 import { Button } from '~/components/ui';
 import { Container, Layout } from '~/components/layout';
 import { DefaultPageProps } from '~/types/DefaultPageProps';
 import { FormFeedback, InputField, SelectField, SocialMenu } from '~/components/common';
 import defaultValidateMessages from 'config/validationMessages';
+import { City, CMSLegal } from '~/types/Models';
 import { Contact } from '~/types/Requests';
 import sendContact from '~/api/sendContact';
 
-export { default as getStaticProps } from '~/utils/defaultGetStaticProps';
-
 type FormValues = Contact;
 type Status = 'idle' | 'loading' | 'submitted';
+
+export const defaultGetStaticProps: GetStaticProps<{
+  cities: City[];
+  legalPages: CMSLegal[];
+}> = async () => {
+  const [cities, legalPages] = await Promise.all([getAllCities(), getAllLegalPages()]);
+
+  return {
+    props: {
+      cities,
+      legalPages,
+      props: { css: ['/antd/form.css'] },
+    },
+    revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m'),
+  };
+};
 
 const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   const [form] = Form.useForm<FormValues>();
@@ -36,12 +54,7 @@ const ContactPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
   };
 
   return (
-    <Layout
-      cities={cities}
-      meta={{ css: ['/antd/form.css'] }}
-      title="Contáctanos"
-      legalPages={legalPages}
-    >
+    <Layout cities={cities} title="Contáctanos" legalPages={legalPages}>
       <Container>
         <div className="grid gap-10 my-12 sm:my-24 lg:grid-flow-col">
           <div className="lg:max-w-md">

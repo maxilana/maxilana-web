@@ -19,7 +19,7 @@
 }
 
 .productImg {
-  @apply aspect-w-1 aspect-h-1;
+  @apply aspect-[1/1] flex items-center justify-center;
 }
 
 .blockLink {
@@ -27,7 +27,7 @@
 }
 
 .productPlaceholder {
-  @apply flex flex-row items-center justify-center bg-gray-50 h-full text-brand/20 text-4xl;
+  @apply flex flex-row items-center justify-center bg-gray-50 h-full text-brand/20 text-4xl aspect-w-1 aspect-h-1;
 }
 
 .productBody {
