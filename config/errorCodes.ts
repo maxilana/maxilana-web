@@ -1,7 +1,14 @@
 const ERROR_CODES = {
-  0: '¡Discúlpanos por el inconveniente! Solucionaremos el problema en un momento.',
+  // ERRORES DE PARTE NUESTRA (CÓDIGO)
+  0: 'El pago no fue procesado. Cód. error: 0',
   100: 'Ocurrió un error al comunicarnos con el banco. Cód. error: 100',
-  200: 'El banco ha regresado un error que no permitió procesar el pago.',
+  // ERRORES EN LA TRANSACCIÓN 2D (MAXILANA)
+  10: 'No obtuvimos una respuesta exitosa y el pago no fue procesado. Cód. error: 10',
+  20: 'El tiempo de espera para la respuesta terminó y el pago no fue procesado. Cód. error: 20',
+  30: 'Los datos del carrito se han perdido, por favor vuelve a intentarlo otra véz',
+  40: 'La petición para procesar el pago es incorrecta. Por favor ponte en contacto con un administrador. Cód. error: 40',
+  // ERRORES EN LA TRANSACCIÓN 3D (BANCO)
+  200: 'No recibimos una respuesta satisfactoria del banco y el pago no fue procesado.',
   201: 'Ocurrió un error general en el sistema de Visa o Master Card, espera unos momentos para reintentar la transacción',
   421: 'El servicio 3D Secure no está disponible, espera unos momentos para reintentar la transacción.',
   422: 'Ocurrió un problema genérico al momento de realizar la transacción, inténtalo en otro momento.',
