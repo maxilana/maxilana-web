@@ -1,11 +1,12 @@
 import { Form } from 'antd';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { AuthFooter, BareLayout } from '~/components/layout';
-import { CustomForm, InputField, InputCode } from '~/components/common';
+import { CustomForm, InputField, InputMask, InputCode } from '~/components/common';
 import { SignupRequest } from '~/types/Requests';
 import { validatePhone } from '~/modules/api/auth';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
@@ -17,6 +18,10 @@ type FormValues = {
 } & SignupRequest;
 
 type Status = 'idle' | 'verificate_code' | 'error';
+
+export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
+  return { props: { css: ['/antd/form.css'] } };
+};
 
 const SignupPage = () => {
   const router = useRouter();
@@ -31,9 +36,12 @@ const SignupPage = () => {
   //  el chequeo se hace desde el cliente.
   const handleSignup = async (values: FormValues) => {
     setLoading(true);
+    // Usé InputMask para que tenga un formato de xxx xxx xxxx y solo puedan ingresar números
+    // Tiene un bug de que si el número de teléfono comienza en 0 o 1, el formato se pierde.
+    const userCellphoneNumber = `${values.Celular}`.split(' ').join('');
 
     try {
-      const { code } = await validatePhone({ celular: values.Celular });
+      const { code } = await validatePhone({ celular: userCellphoneNumber });
 
       setCode(code);
       // setUser(values);
@@ -75,7 +83,7 @@ const SignupPage = () => {
   };
 
   return (
-    <BareLayout title="Registro" hasHeader={false} meta={{ css: ['/antd/form.css'] }}>
+    <BareLayout title="Registro" hasHeader={false}>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <header className="flex items-center justify-center my-4">
           <Link href="/">
@@ -134,13 +142,16 @@ const SignupPage = () => {
                       <InputField label="Apellido materno" />
                     </Form.Item>
                     <Form.Item name="Celular" rules={[{ required: true }]}>
-                      <InputField type="tel" label="Número celular" maxLength={10} />
+                      <InputMask
+                        label="Número celular"
+                        options={{ phone: true, phoneRegionCode: 'MX' }}
+                      />
                     </Form.Item>
                     <Form.Item name="Correo" rules={[{ required: true }]}>
                       <InputField type="email" label="Correo electrónico" />
                     </Form.Item>
                     <Form.Item name="Contrasena" rules={[{ required: true }]}>
-                      <InputField type="password" label="Contraseña" />
+                      <InputField minLength={8} type="password" label="Contraseña" />
                     </Form.Item>
                     <Form.Item
                       name="ConfirmaContrasena"
@@ -157,7 +168,7 @@ const SignupPage = () => {
                         }),
                       ]}
                     >
-                      <InputField type="password" label="Confirmar contraseña" />
+                      <InputField minLength={8} type="password" label="Confirmar contraseña" />
                     </Form.Item>
                     <div className="sm:col-span-2">
                       <Button fullWidth theme="primary" text="Regístrate" loading={loading} />

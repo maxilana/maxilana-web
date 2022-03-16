@@ -86,18 +86,24 @@ const ProductsFilters: FC<Props> = ({
   useEffect(() => {
     if (typeof ciudad === 'string') {
       form.setFieldsValue({ CityId: parseInt(ciudad) });
+    } else if (ciudad === undefined) {
+      form.setFieldsValue({ CityId: 'all' });
     }
   }, [ciudad]);
 
   useEffect(() => {
     if (typeof sucursal === 'string') {
       form.setFieldsValue({ BranchId: parseInt(sucursal) });
+    } else if (sucursal === undefined) {
+      form.setFieldsValue({ BranchId: 'all' });
     }
   }, [sucursal]);
 
   useEffect(() => {
     if (vtalinea) {
       form.setFieldsValue({ saleOnline: [vtalinea] });
+    } else {
+      form.setFieldsValue({ saleOnline: ['0', '1'] });
     }
   }, [vtalinea]);
 

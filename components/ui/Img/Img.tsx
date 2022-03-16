@@ -37,9 +37,6 @@ const loaders = {
       }
       const baseURL = process.env.NEXT_PUBLIC_CLOUDINARY_BASEURL;
       const cloudinaryOptions = ['f_auto', `w_${width}`, `q_${quality}`];
-      console.log(
-        `${baseURL}/image/fetch/${[...cloudinaryOptions, ...(options || [])].join(',')}/${src}`,
-      );
       return `${baseURL}/image/fetch/${[...cloudinaryOptions, ...(options || [])].join(
         ',',
       )}/${src}`;
@@ -65,7 +62,7 @@ const placeholderColors = {
 
 type Props = ImageProps & {
   placeholderType?: 'default' | 'brand';
-  customLoader?: 'maxilana' | 'cloudinary';
+  customLoader?: 'maxilana' | 'cloudinary' | undefined;
   cloudinaryOptions?: string[];
 };
 
@@ -79,7 +76,6 @@ const Img: FC<Props> = ({
     loaders[customLoader || (process.env.NEXT_PUBLIC_CUSTOM_IMAGES_LOADER as keyof typeof loaders)];
   return (
     <>
-      {/*@ts-ignore esta mal typeado el componente Image*/}
       <Image
         alt=""
         placeholder="blur"

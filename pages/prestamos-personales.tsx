@@ -25,6 +25,7 @@ export const getStaticProps: GetStaticProps<DefaultPageProps<{ page: CMSLoans }>
       cities,
       legalPages,
       page,
+      css: ['/antd/form.css', '/antd/radio.css', '/antd/slider.css'],
     },
     revalidate: ms(process.env.DEFAULT_REVALIDATE || '10m') / 1000,
   };
@@ -34,14 +35,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
   const { isNotMobile } = useResponsive();
   return (
-    <Layout
-      cities={cities}
-      title="Prestamos personales"
-      meta={{
-        css: ['/antd/form.css', '/antd/radio.css', '/antd/slider.css'],
-      }}
-      legalPages={legalPages}
-    >
+    <Layout cities={cities} title="Prestamos personales" legalPages={legalPages}>
       <HeroComposed
         title={page.hero.mainText}
         copy={page.hero.secondaryText}

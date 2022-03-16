@@ -1,4 +1,5 @@
 import { Form } from 'antd';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -8,6 +9,9 @@ import { AuthFooter, BareLayout } from '~/components/layout';
 import defaultValidateMessages from 'config/validationMessages';
 
 type Status = 'idle' | 'loading' | 'error';
+export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
+  return { props: { css: ['/antd/form.css'] } };
+};
 
 const CodeVerificationPage = () => {
   const [form] = Form.useForm();
@@ -23,7 +27,7 @@ const CodeVerificationPage = () => {
   };
 
   return (
-    <BareLayout title="Código de verificación" hasHeader={false} meta={{ css: ['/antd/form.css'] }}>
+    <BareLayout title="Código de verificación" hasHeader={false}>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <header className="flex items-center justify-center my-4">
           <Link href="/">
