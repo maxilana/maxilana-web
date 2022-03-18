@@ -6,12 +6,13 @@ import { useState } from 'react';
 import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { AuthFooter, BareLayout } from '~/components/layout';
-import { CustomForm, InputField, InputMask, InputCode } from '~/components/common';
+import { CustomForm, InputField, InputCode } from '~/components/common';
 import { SignupRequest } from '~/types/Requests';
-import { validatePhone } from '~/modules/api/auth';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 import { User } from '~/types/Models';
 import { useRouter } from 'next/router';
+import axios from '~/modules/api/axios';
+import { validatePhone } from '~/modules/api/auth';
 
 type FormValues = {
   ConfirmaContrasena: string;
@@ -25,7 +26,6 @@ export const getStaticProps: GetStaticProps<{ css: string[] }> = () => {
 
 const SignupPage = () => {
   const router = useRouter();
-  const [code, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [verificationForm] = Form.useForm();
   const [signupForm] = Form.useForm<FormValues>();
@@ -36,35 +36,43 @@ const SignupPage = () => {
   //  el chequeo se hace desde el cliente.
   const handleSignup = async (values: FormValues) => {
     setLoading(true);
-    // Usé InputMask para que tenga un formato de xxx xxx xxxx y solo puedan ingresar números
-    // Tiene un bug de que si el número de teléfono comienza en 0 o 1, el formato se pierde.
-    const userCellphoneNumber = `${values.Celular}`.split(' ').join('');
-
     try {
-      const { code } = await validatePhone({ celular: userCellphoneNumber });
+      if (!Number(values.Celular)) {
+        throw new Error('Escribe un número de teléfono válido');
+      }
 
-      setCode(code);
-      // setUser(values);
-      setLoading(false);
+      await validatePhone({ celular: values.Celular });
       setStatus('verificate_code');
     } catch (err) {
-      setLoading(false);
       throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
   // Una vez que se verifica correctamente el celular
   //  procedemos a registrar al usuario.
-  const handleVerification = async (values: { code: string }) => {
+  const handleVerification = async (values: { code: string; Celular: string }) => {
     setLoading(true);
 
     try {
-      if (code !== values.code) {
+      const response = await axios.get(
+        `/usuarios/Validarcodigo/Alta?user=${values.Celular}&codigo=${values.code}`,
+      );
+      if (!response?.result) {
         throw new Error('El código de verificación es incorrecto.');
       }
 
-      const { ConfirmaContrasena, code: verifyCode, ...params } = signupForm.getFieldsValue(true);
-      setLoading(false);
+      const { Nombre, Apellidom, Apellidop, Correo, Contrasena, Celular } =
+        signupForm.getFieldsValue(true);
+      const params = {
+        Nombre,
+        Apellidom,
+        Apellidop,
+        Correo,
+        Contrasena,
+        Celular,
+      };
 
       // Registro -> Login -> Redirección
       const user: User = await NextAPIMutator({
@@ -72,13 +80,13 @@ const SignupPage = () => {
         method: 'POST',
         body: JSON.stringify(params),
       });
-
       if (user?.userCode) {
         router?.push('/');
       }
     } catch (err) {
-      setLoading(false);
       throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,7 +114,12 @@ const SignupPage = () => {
                     <label className="block text-center text-sm text-[#000] border-b-0 mb-4">
                       Código de verificación
                     </label>
-                    <Form.Item name="code" className="text-center" trigger="onComplete">
+                    <Form.Item
+                      name="code"
+                      className="text-center"
+                      trigger="onComplete"
+                      rules={[{ required: true }]}
+                    >
                       <InputCode length={4} loading={loading} />
                     </Form.Item>
                   </fieldset>
@@ -142,10 +155,7 @@ const SignupPage = () => {
                       <InputField label="Apellido materno" />
                     </Form.Item>
                     <Form.Item name="Celular" rules={[{ required: true }]}>
-                      <InputMask
-                        label="Número celular"
-                        options={{ phone: true, phoneRegionCode: 'MX' }}
-                      />
+                      <InputField label="Número celular" minLength={10} maxLength={10} />
                     </Form.Item>
                     <Form.Item name="Correo" rules={[{ required: true }]}>
                       <InputField type="email" label="Correo electrónico" />
