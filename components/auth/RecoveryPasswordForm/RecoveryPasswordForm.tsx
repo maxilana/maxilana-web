@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { FC, useState } from 'react';
-import { CustomForm, InputMask } from '~/components/common';
+import { CustomForm, InputField } from '~/components/common';
 import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { RecoveryPasswordResponse } from '../LoginFlow/index';
@@ -20,10 +20,10 @@ const RecoveryPasswordForm: FC<Props> = ({ changeLoginFlow, setUserData }) => {
 
   const handleSubmit = async (values: FormValues) => {
     setLoading(true);
-    const userCellphoneNumber = `${values.cellphoneNumber}`.split(' ').join(''); // convierte xxx xxx xxxx a xxxxxxxxxx
+    const userCellphoneNumber: number = Number(values.cellphoneNumber);
     try {
       // Primero cachamos algún error...
-      if (userCellphoneNumber.startsWith('0') || userCellphoneNumber.startsWith('1')) {
+      if (!userCellphoneNumber) {
         throw new Error('Escribe un teléfono válido');
       }
       const response: RecoveryPasswordResponse = await axios.get(
@@ -39,7 +39,6 @@ const RecoveryPasswordForm: FC<Props> = ({ changeLoginFlow, setUserData }) => {
       throw error;
     } finally {
       // Esto se ejecuta cuando la Promise resuelve o se rechaza
-      form.resetFields();
       setLoading(false);
     }
   };
@@ -69,10 +68,11 @@ const RecoveryPasswordForm: FC<Props> = ({ changeLoginFlow, setUserData }) => {
           <div>
             <div className="grid gap-y-4">
               <Form.Item name="cellphoneNumber" rules={[{ required: true }]}>
-                <InputMask
+                <InputField
                   label="Celular"
                   placeholder="Ingresa tu número de celular"
-                  options={{ phone: true, phoneRegionCode: 'MX' }}
+                  minLength={10}
+                  maxLength={10}
                 />
               </Form.Item>
               <Button fullWidth theme="primary" loading={loading} text="Envíar instrucciones" />
