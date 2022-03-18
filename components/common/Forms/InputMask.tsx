@@ -1,5 +1,6 @@
 import Cleave from 'cleave.js/react';
 import { CleaveOptions } from 'cleave.js/options';
+import 'cleave.js/dist/addons/cleave-phone.MX';
 import React, { InputHTMLAttributes, Ref } from 'react';
 import styles from './InputField.module.css';
 
