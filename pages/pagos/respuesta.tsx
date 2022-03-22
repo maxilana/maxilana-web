@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 
 import { BareLayout } from '~/components/layout';
@@ -8,8 +9,9 @@ import {
   requestLoan2DTransaction,
   requestPawn2DTransaction,
 } from '~/api/payments';
-import { ErrorCodes, PawnPaymentSuccess } from '~/types/Models';
 import { Pawn2DRequest } from '~/types/Requests';
+import { ErrorCodes, PawnPaymentSuccess } from '~/types/Models';
+import { PaymentError as PaymentErrorType } from '~/utils/errors';
 
 interface SSRProps {
   error?: boolean;
@@ -19,37 +21,28 @@ interface SSRProps {
 
 export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) => {
   const { query } = context;
-  const validation = await validatePayment(context);
-
-  if (validation?.redirect) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
-
-  if (validation?.error) {
-    return {
-      props: {
-        error: true,
-        errorCode: validation.error.errorCode,
-      },
-    };
-  }
-
-  if (!validation?.transaction) {
-    return {
-      props: {
-        error: true,
-        errorCode: '0',
-      },
-    };
-  }
 
   try {
     let response;
+    const validation = await validatePayment(context);
+
+    if (validation?.redirect) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      };
+    }
+
+    if (!validation?.transaction) {
+      throw new PaymentErrorType(
+        'Error al validar el pago',
+        'No fue posible procesar la transacción del banco',
+        '0',
+      );
+    }
+
     const request2D = validation.transaction;
 
     if (query?.type === 'coupons') {
@@ -73,10 +66,24 @@ export const getServerSideProps: GetServerSideProps<SSRProps> = async (context) 
       },
     };
   } catch (err) {
+    let errorCode: ErrorCodes = '0';
+
+    if (err instanceof PaymentErrorType) {
+      errorCode = err.errorCode;
+    }
+
+    if ((err as AxiosError).isAxiosError) {
+      const axiosError = err as AxiosError;
+
+      if (axiosError?.request) {
+        errorCode = '20';
+      }
+    }
+
     return {
       props: {
+        errorCode,
         error: true,
-        errorCode: '0',
       },
     };
   }

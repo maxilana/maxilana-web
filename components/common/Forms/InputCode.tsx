@@ -53,7 +53,7 @@ const InputCode: FC<Props> = ({ length, loading = false, onComplete = null, labe
   return (
     <div>
       {label !== '' && <label className={inputStyles.label}>{label}</label>}
-      <div>
+      <div className="flex justify-center">
         {code.map((num, idx) => (
           <input
             key={idx}

@@ -69,11 +69,11 @@ const AuthComponent: FC<Props> = ({ onClickLogin }) => {
           </div>
         }
       >
-        <div role="menu" className="w-36">
+        <div role="menu" className="w-28">
           <Link href="/perfil">
             <a
               role="menuitem"
-              className="block rounded-sm text-sm text-right p-1 hover:bg-brand/10 cursor-pointer"
+              className="block rounded-sm text-sm text-left p-1 hover:bg-brand/10 cursor-pointer"
             >
               Mi perfil
             </a>
@@ -81,7 +81,7 @@ const AuthComponent: FC<Props> = ({ onClickLogin }) => {
           <span
             role="menuitem"
             onClick={handleLogout}
-            className="block rounded-sm text-sm text-danger text-right p-1 hover:bg-brand/10 cursor-pointer"
+            className="block rounded-sm text-sm text-danger text-left p-1 hover:bg-brand/10 cursor-pointer"
           >
             {loading ? 'Saliendo...' : 'Salir'}
           </span>
