@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Logo } from '~/components/svg';
 import { Button } from '~/components/ui';
 import { AuthFooter, BareLayout } from '~/components/layout';
-import { CustomForm, InputField, InputMask, InputCode } from '~/components/common';
+import { CustomForm, InputField, InputCode } from '~/components/common';
 import { SignupRequest } from '~/types/Requests';
 import { NextAPIMutator } from '~/modules/api/nextApiFetcher';
 import { User } from '~/types/Models';
