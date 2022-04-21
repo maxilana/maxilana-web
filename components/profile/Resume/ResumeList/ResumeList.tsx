@@ -53,40 +53,55 @@ const ResumeList: FC<Props> = ({ data }) => {
         /* {data.map((order) => (*/
         <li key="PedroMiranta">
           <a>
-            <div className="flex" style={{ marginTop: '10px' }}>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
+            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
+              <div
+                className="text-sm text-secondary"
+                style={{ marginLeft: '1.5rem', width: '100%' }}
+              >
                 <p>Nombre del cliente</p>
               </div>
               <div style={{ marginLeft: '1.5rem', width: '100%' }}>
                 <p>{User}</p>
               </div>
             </div>
-            <div className="flex" style={{ marginTop: '10px' }}>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
+            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
+              <div
+                className="text-sm text-secondary"
+                style={{ marginLeft: '1.5rem', width: '100%' }}
+              >
                 <p>Empeños vigentes</p>
               </div>
               <div style={{ marginLeft: '1.5rem', width: '100%' }}>
                 <p>{Count}</p>
               </div>
             </div>
-            <div className="flex" style={{ marginTop: '10px' }}>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
+            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
+              <div
+                className="text-sm text-secondary"
+                style={{ marginLeft: '1.5rem', width: '100%' }}
+              >
                 <p>Total de préstamo</p>
               </div>
               <div style={{ marginLeft: '1.5rem', width: '100%' }}>
                 <p>{strTotalPrestamo}</p>
               </div>
             </div>
-            <div className="flex" style={{ marginTop: '10px' }}>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
+            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
+              <div
+                className="text-sm text-secondary"
+                style={{ marginLeft: '1.5rem', width: '100%' }}
+              >
                 <p>Total para refrendar</p>
               </div>
               <div style={{ marginLeft: '1.5rem', width: '100%' }}>
                 <p>{strTotalRefrendo}</p>
               </div>
             </div>
-            <div className="flex" style={{ marginTop: '10px' }}>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
+            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
+              <div
+                className="text-sm text-secondary"
+                style={{ marginLeft: '1.5rem', width: '100%' }}
+              >
                 <p>Total para desempeñar</p>
               </div>
               <div style={{ marginLeft: '1.5rem', width: '100%' }}>
