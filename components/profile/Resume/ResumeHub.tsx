@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { User } from '~/types/Models';
-import PawnList from './PawnList';
-import PawnEmptyList from './PawnEmptyList';
+import ResumeEmptyList from './ResumeEmptyList';
 import useAccountStatus from '~/hooks/useAccountStatus';
+import ResumeList from './ResumeList';
+import { User } from '~/types/Models';
 import { PageLoader } from '~/components/common';
 
 interface Props {
@@ -13,18 +13,18 @@ interface Props {
 
 const noop = () => {};
 
-const PawnsHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
+const ResumeHub: FC<Props> = ({ user = null, onAddAccount = noop }) => {
   const { account: data, loading } = useAccountStatus(user?.userCode);
 
-  if (false) {
+  if (loading) {
     return <PageLoader text="Obteniendo la información..." />;
   }
 
   if (data.length < 1) {
-    return <PawnEmptyList onAddAccount={onAddAccount} />;
+    return <ResumeEmptyList onAddAccount={onAddAccount} />;
   }
 
-  return <PawnList data={data} />;
+  return <ResumeList data={data} />;
 };
 
-export default PawnsHub;
+export default ResumeHub;
