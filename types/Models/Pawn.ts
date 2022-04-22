@@ -12,6 +12,7 @@ export interface PawnAccount {
   description: string;
   paymentAmount: number;
   minPaymentAmount: number;
+  paymenAmounNocomision?: number;
   totalPaymentAmount: number;
   dueDays: number; //DiasVencidos
   limitDueDays: number; //DiasVencidosPermitidos
