@@ -48,71 +48,37 @@ const ResumeList: FC<Props> = ({ data }) => {
       .join(' ');
   }
   return (
-    <ul>
-      {
-        /* {data.map((order) => (*/
-        <li key="PedroMiranta">
-          <a>
-            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
-              <div
-                className="text-sm text-secondary"
-                style={{ marginLeft: '1.5rem', width: '100%' }}
-              >
-                <p>Nombre del cliente</p>
-              </div>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
-                <p>{User}</p>
-              </div>
-            </div>
-            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
-              <div
-                className="text-sm text-secondary"
-                style={{ marginLeft: '1.5rem', width: '100%' }}
-              >
-                <p>Empeños vigentes</p>
-              </div>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
-                <p>{Count}</p>
-              </div>
-            </div>
-            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
-              <div
-                className="text-sm text-secondary"
-                style={{ marginLeft: '1.5rem', width: '100%' }}
-              >
-                <p>Total de préstamo</p>
-              </div>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
-                <p>{strTotalPrestamo}</p>
-              </div>
-            </div>
-            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
-              <div
-                className="text-sm text-secondary"
-                style={{ marginLeft: '1.5rem', width: '100%' }}
-              >
-                <p>Total para refrendar</p>
-              </div>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
-                <p>{strTotalRefrendo}</p>
-              </div>
-            </div>
-            <div className="flex py-2 border-b border-b-[#0C5E9C26]" style={{ marginTop: '10px' }}>
-              <div
-                className="text-sm text-secondary"
-                style={{ marginLeft: '1.5rem', width: '100%' }}
-              >
-                <p>Total para desempeñar</p>
-              </div>
-              <div style={{ marginLeft: '1.5rem', width: '100%' }}>
-                <p>{strTotalDesempeno}</p>
-              </div>
-            </div>
-          </a>
-        </li>
-        /* ))} */
-      }
-    </ul>
+    <>
+      <table className="w-full table-auto border-collapse text-sm text-secondary">
+        <tbody>
+          <tr>
+            <td className="p-4 border-b border-[#0C5E9C26]">Nombre del cliente</td>
+            <td className="p-4 border-b border-[#0C5E9C26] text-right">{User}</td>
+            <td className="md:w-2/12 border-b border-[#0C5E9C26]" />
+          </tr>
+          <tr>
+            <td className="p-4 border-b border-[#0C5E9C26]">Empeños vigentes</td>
+            <td className="p-4 border-b border-[#0C5E9C26] text-right">{Count}</td>
+            <td className="md:w-2/12 border-b border-[#0C5E9C26]" />
+          </tr>
+          <tr>
+            <td className="p-4 border-b border-[#0C5E9C26]">Total de préstamo</td>
+            <td className="p-4 border-b border-[#0C5E9C26] text-right">{strTotalPrestamo}</td>
+            <td className="md:w-2/12 border-b border-[#0C5E9C26]" />
+          </tr>
+          <tr>
+            <td className="p-4 border-b border-[#0C5E9C26]">Total para refrendar</td>
+            <td className="p-4 border-b border-[#0C5E9C26] text-right">{strTotalRefrendo}</td>
+            <td className="md:w-2/12 border-b border-[#0C5E9C26]" />
+          </tr>
+          <tr>
+            <td className="p-4 border-b border-[#0C5E9C26]">Total para desempeñar</td>
+            <td className="p-4 border-b border-[#0C5E9C26] text-right">{strTotalDesempeno}</td>
+            <td className="md:w-2/12 border-b border-[#0C5E9C26]" />
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 };
 
