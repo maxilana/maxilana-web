@@ -34,7 +34,7 @@ const ResumeList: FC<Props> = ({ data }) => {
     totalPre = totalPre + ball.loanAmount;
     strTotalPrestamo = formatPrice({ amount: totalPre, locale: LOCALE });
 
-    (totalDescNocom = totalDescNocom + ball.paymenAmounNocomision),
+    (totalDescNocom = totalDescNocom + ((ball?.paymenAmounNocomision as number) ?? 0)),
       (totalDes = totalDescNocom + totalPre);
     strTotalDesempeno = formatPrice({ amount: totalDes, locale: LOCALE });
   });
