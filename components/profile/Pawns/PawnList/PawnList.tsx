@@ -118,12 +118,12 @@ const PawnList: FC<Props> = ({ data }) => {
       <div className="border-gray-200 border-b flex px-2 pb-4 justify-between items-center">
         {status === 'idle' ? (
           <>
-            <Tooltip text="Saldo a favor. Si tu balance es positivo te podemos prestar más por tu empeño">
+            {/* <Tooltip text="Saldo a favor. Si tu balance es positivo te podemos prestar más por tu empeño">
               <span className="text-sm text-secondary flex items-center">
                 <span className="mr-1">{`Balance ${globalCreditBalance}`}</span>
                 <InfoCircleOutlined />
               </span>
-            </Tooltip>
+            </Tooltip> */}
             <div />
             {/* <Button
               size="small"

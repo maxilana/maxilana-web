@@ -5,7 +5,7 @@ import { UserOutlined, EditOutlined, FileTextOutlined, ProfileOutlined } from '@
 
 import { Layout } from '~/components/layout';
 import { Modal, PageLoader } from '~/components/common';
-import { OrdersHub, PawnsHub } from '~/components/profile';
+import { OrdersHub, PawnsHub, ResumeHub } from '~/components/profile';
 import { PawnAccountForm } from '~/components/profile/Pawns';
 import useToggleState from '~/hooks/useToggleState';
 import { AuthPageProps } from '~/types/AuthPageProps';
@@ -50,7 +50,25 @@ const ProfilePage: NextPage<AuthPageProps> = ({ user, cities, legalPages }) => {
               </div>
             </header>
             <div className="relative bg-white border border-surface-dark sm:rounded-sm">
-              <Tabs defaultActiveKey="boletas">
+              <Tabs defaultActiveKey="resumen">
+                <TabPane
+                  key="resumen"
+                  tab={
+                    <span className="flex items-center px-2">
+                      <FileTextOutlined style={{ fontSize: 14 }} />
+                      Resumen
+                    </span>
+                  }
+                >
+                  {
+                    <ResumeHub
+                      user={user}
+                      onAddAccount={() => {
+                        toggleModal();
+                      }}
+                    ></ResumeHub>
+                  }
+                </TabPane>
                 <TabPane
                   key="boletas"
                   tab={
