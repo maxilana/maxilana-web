@@ -8,7 +8,14 @@ import LogoFarmacia from '~/public/logo-farmacia-guadalajara.png';
 import LogoSeven from '~/public/logo-7-eleven.png';
 import { CMSBackAccount } from '~/types/Models/CMSBackAccount';
 
+const PAYMENT_TEXT = {
+  empeno: 'número de boleta',
+  vale: 'número de vale',
+  prestamo: 'número de préstamo',
+};
+
 interface Props {
+  paymentType: 'empeno' | 'prestamo' | 'vale';
   actionCard: {
     title: string;
     description: string;
@@ -26,7 +33,7 @@ interface Props {
 /**
  * Dejé el CSS de esa manera porque teoricamente no habría variantes
  */
-const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
+const ServicePaymentCards: FC<Props> = ({ paymentType, actionCard, contextCard }) => {
   return (
     <div className="grid gap-4 sm:grid-flow-col">
       <Card className="flex flex-col">
@@ -100,8 +107,7 @@ const ServicePaymentCards: FC<Props> = ({ actionCard, contextCard }) => {
           <div>
             <p className="text-secondary">1. Realiza tu depósito o transferencia.</p>
             <p className="text-secondary">
-              2. Envía por WhatsApp tu comprobante de pago junto a tu número de Vale y menciona el
-              tipo de servicio pagado.
+              {`2. Envía por WhatsApp tu comprobante de pago junto a tu ${PAYMENT_TEXT[paymentType]}.`}
             </p>
           </div>
         </div>

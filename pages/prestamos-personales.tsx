@@ -59,6 +59,7 @@ const PrestamosPage: NextPage<Props> = ({ cities, legalPages, page }) => {
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
+            paymentType="prestamo"
             actionCard={{
               title: page?.payment?.title,
               imageSource: getCMSImageURL(page?.payment?.image),
