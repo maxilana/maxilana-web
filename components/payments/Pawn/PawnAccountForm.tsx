@@ -1,12 +1,14 @@
 import { Form } from 'antd';
 import Image from 'next/image';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 import React, { FC, useEffect, useState } from 'react';
 
 import { Button } from '~/components/ui';
 import { FormFeedback, InputField, InputMask } from '~/components/common';
 
 import validationMessages from '../../../config/validationMessages';
+import useUser from 'hooks/useUser';
 
 type FormValues = {
   boleta: string;
@@ -22,16 +24,20 @@ const PawnAccountForm: FC<Props> = ({ onSubmit }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { user } = useUser();
 
   useEffect(() => {
+    if (user?.isLoggedIn) {
+      router.push('/perfil');
+    }
     return () => {
       setLoading(false);
     };
-  }, []);
+  }, [user]);
 
   const handleFormSubmit = async (data: FormValues) => {
     setLoading(true);
-
     try {
       await onSubmit(data);
     } catch (err) {

@@ -1,7 +1,6 @@
 import Cleave from 'cleave.js/react';
 import { CleaveOptions } from 'cleave.js/options';
 import React, { InputHTMLAttributes, Ref } from 'react';
-
 import styles from './InputField.module.css';
 
 interface Options extends CleaveOptions {

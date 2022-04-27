@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { MenuOutlined } from '@ant-design/icons';
 
 import { Logo } from '~/components/svg';
-import { AuthComponent, LoginForm } from '~/components/auth';
+import { AuthComponent, LoginFlow } from '~/components/auth';
 import { SocialMenu } from '~/components/common';
 import Searcher from '~/components/ui/Searcher';
 import { Button } from '~/components/ui';
@@ -85,7 +85,8 @@ const Navbar: FC<Props> = ({ cities }) => {
       </div>
       {showModal && (
         <Modal open onClose={toggleModal}>
-          <LoginForm onSuccess={toggleModal} />
+          {/* <LoginForm onSuccess={toggleModal} /> */}
+          <LoginFlow onSuccess={toggleModal} />
         </Modal>
       )}
     </header>

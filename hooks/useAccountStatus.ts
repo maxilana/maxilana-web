@@ -54,13 +54,13 @@ export default function useAccountStatus(userCode?: string) {
         let totalPaymentAmount = 0; // DESEMPEÑO
         const extraCharge = comision; // COMISION
         let paymentAmount = Number(Refrendo); // REFRENDO
+        let refrendoNocomicion = Number(Refrendo); // REFRENDO
         const minPaymentAmount = roundDecimals(
           roundUpToFifty(Number(ImportePagoMinimo)) * extraCharge,
         ); // PAGO MÍNIMO
-
         /** CÁLCULO DE PAGO DE REFRENDO */
-        paymentAmount = roundDecimals(roundUpToFifty(paymentAmount * extraCharge));
-
+        paymentAmount = roundDecimals(roundUpToFifty(paymentAmount));
+        paymentAmount = paymentAmount * extraCharge;
         /** CÁLCULO DE PAGO DE DESEMPEÑO */
         // SOLO INFORMATIVO, NO SE PUEDE PAGAR
         // ! https://docs.google.com/spreadsheets/d/1fvTCU19wyIS0uEPZ7ORA24LhJsxewq6PUVo6ZtIlh2U/edit?disco=AAAARViEeF4
@@ -84,6 +84,7 @@ export default function useAccountStatus(userCode?: string) {
           dueDate: FecVen,
           description: TipoEmpeno,
           paymentAmount: paymentAmount,
+          paymenAmounNocomision: refrendoNocomicion,
           minPaymentAmount: minPaymentAmount,
           totalPaymentAmount: totalPaymentAmount,
           dueDays: Number(DiasVencidosPendientes),

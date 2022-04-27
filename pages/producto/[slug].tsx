@@ -6,7 +6,9 @@ import ms from 'ms';
 import { WhatsAppOutlined, LoadingOutlined, ShopFilled, PhoneOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import Image from 'next/image';
+import useSWR from 'swr';
 import getAllLegalPages from '~/api/cms/getAllLegalPages';
+import fetcher from '~/modules/api/fetcher';
 
 import getAllCities from '~/api/getAllCities';
 import getBranch from '~/api/getBranch';
@@ -37,6 +39,12 @@ interface GSProps {
   relatedProducts?: Product[];
   branch?: Branch;
   legalPages: CMSLegal[];
+}
+
+interface ProductPriceResponse {
+  precio: number;
+  precioneto: number;
+  descuento: string;
 }
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
@@ -92,13 +100,17 @@ const ProductView: NextPage<Props> = ({
   router,
   legalPages,
 }) => {
+  const { data: ProductPrice, isValidating: loadingPrice } = useSWR<ProductPriceResponse>(
+    `/productos/${product.id}/precio`,
+    { revalidateOnFocus: true, fetcher },
+  );
   const { isFallback } = router;
   const addItem = useAddItem();
   const [shareURL, setShareURL] = useState<string>();
   const [status, setStatus] = useState<CartStatus>('default');
   const { price, discount, basePrice } = usePrice({
-    amount: product?.netPrice,
-    baseAmount: product?.price,
+    amount: ProductPrice?.precioneto || product?.netPrice,
+    baseAmount: ProductPrice?.precio || product?.price,
   });
 
   useEffect(() => {
@@ -156,7 +168,7 @@ const ProductView: NextPage<Props> = ({
                 <h1 className="h6">{product.name}</h1>
                 <span className="text-secondary block">Código: {product.id}</span>
               </div>
-              <div className="mt-4">
+              <div className="mt-4 relative">
                 {discount ? (
                   <>
                     <span className="h4 text-danger">{price}</span>{' '}
@@ -165,10 +177,21 @@ const ProductView: NextPage<Props> = ({
                 ) : (
                   <span className="h4 text-price">{price}</span>
                 )}
+                {loadingPrice && (
+                  <span className="absolute inset-0 bg-white/90 grid place-content-center">
+                    <span className="flex items-center space-x-3">
+                      <LoadingOutlined />
+                      <span>Actualizando precio...</span>
+                    </span>
+                  </span>
+                )}
               </div>
               {product?.saleOnline && product?.promoDiscount && (
                 <div className="mt-4">
-                  <p>{`${product.promoDiscount}%`} de descuento adicional comprando en línea.</p>
+                  <p>
+                    {`${ProductPrice?.descuento || product.promoDiscount}%`} de descuento adicional
+                    comprando en línea.
+                  </p>
                 </div>
               )}
               {product?.observations && (
