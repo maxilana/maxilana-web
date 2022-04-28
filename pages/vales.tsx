@@ -64,6 +64,7 @@ const ValesPage: NextPage<Props> = ({ cities, legalPages, page }) => {
       <Container>
         <div className="py-12 max-w-5xl mx-auto sm:py-24">
           <ServicePaymentCards
+            paymentType="vale"
             actionCard={{
               title: page?.payment?.title,
               imageSource: PayVales,

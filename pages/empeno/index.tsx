@@ -62,6 +62,7 @@ const EmpenoPage: NextPage<Props> = ({ cities, legalPages, page }) => {
       <Container>
         <div className="my-12 max-w-5xl mx-auto sm:my-12">
           <ServicePaymentCards
+            paymentType="empeno"
             actionCard={{
               title: page?.payment?.title,
               imageSource: getCMSImageURL(page?.payment?.image),
