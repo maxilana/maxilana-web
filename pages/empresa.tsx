@@ -63,7 +63,7 @@ const CompanyPage: NextPage<DefaultPageProps> = ({ cities, legalPages }) => {
         <div className="max-w-2xl mx-auto px-4 py-12 sm:py-24">
           <h1 className="text-base text-brand uppercase text-center mb-6">Nuestra Visión</h1>
           <h2 className="text-lg text-center sm:text-2xl">
-            Es ofrecer la más confiable y mejor experiencia omnicanal de préstamos y remates
+            En el 2023 seremos la empresa de préstamos y ventas preferida por las personas.
           </h2>
         </div>
       </section>
