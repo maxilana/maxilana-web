@@ -8,7 +8,7 @@ class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <Script id="google-tag-manager" strategy="afterInteractive">
+          <script id="google-tag-manager" strategy="afterInteractive">
             {`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -16,7 +16,7 @@ class CustomDocument extends Document {
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','${GTM_ID}');
             `}
-          </Script>
+          </script>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           {/* eslint-disable-next-line @next/next/no-page-custom-font */}
           <link
