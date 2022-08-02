@@ -187,6 +187,10 @@ const nextConfig = {
         source: '/subasta/:path*',
         destination: 'https://consola.maxilana.com/subasta/:path*',
       },
+            {
+        source: '/regreso-a-clases',
+        destination: 'https://consola.maxilana.com/regreso-a-clases.html',
+      },
     ];
   },
 };
