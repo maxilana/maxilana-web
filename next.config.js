@@ -189,7 +189,7 @@ const nextConfig = {
       },
             {
         source: '/regreso-a-clases',
-        destination: 'https://consola.maxilana.com/regreso-a-clases.html',
+        destination: 'https://consola.maxilana.com/regreso-a-clases.pdf',
       },
     ];
   },
