@@ -17,6 +17,7 @@ type Status = 'idle' | 'select_payment' | 'confirm_payment' | 'submit_payment';
 type Payment = {
   concept: string;
   amount: number;
+  celular: number;
 };
 
 type Transaction = {
@@ -26,6 +27,7 @@ type Transaction = {
 
 type State = {
   status: Status;
+  token: string;
   account: LoanAccount | null;
   paymentRequest: Payment | null;
   transactionRequest: Transaction | null;
@@ -33,6 +35,7 @@ type State = {
 
 const initialState: State = {
   status: 'idle',
+  token: '',
   account: null,
   paymentRequest: null,
   transactionRequest: null,
@@ -60,6 +63,11 @@ const reducer = (state: State, action: any): State => {
         status: 'submit_payment',
         transactionRequest: payload.transactionRequest,
       };
+    case 'SUBMIT_TOKEN':
+      return {
+        ...state,
+        token: payload.token,
+      };
     default:
       return initialState;
   }
@@ -77,6 +85,7 @@ const LoanPaymentFlow: FC = () => {
     const paymentRequest = {
       amount,
       concept: `ABONO A PRÉSTAMO NÚMERO ${state?.account?.clientCode}`,
+      celular: state.account?.phoneNumber,
     };
 
     dispatch({ type: 'CONFIRM_PAYMENT', payload: { paymentRequest } });
@@ -101,6 +110,9 @@ const LoanPaymentFlow: FC = () => {
 
     const maxilanaTransaction = await requestLoan3DTransaction(paymentRequest);
 
+    dispatch({ type: 'SUBMIT_TOKEN', payload: { token: maxilanaTransaction.JsonWebToken } });
+
+    console.log(maxilanaTransaction);
     const transactionRequest = {
       payment: paymentRequest,
       transaction: maxilanaTransaction,
@@ -126,6 +138,7 @@ const LoanPaymentFlow: FC = () => {
           title="Préstamos personales"
           description="Abona a tu préstamo personal en línea"
           onSubmit={handleSubmitPayment}
+          showSubmitButton={true}
         />
       )}
       {state.status === 'submit_payment' && state.transactionRequest && (
@@ -133,7 +146,7 @@ const LoanPaymentFlow: FC = () => {
           {state.transactionRequest !== null && (
             <BankTransactionForm
               {...state.transactionRequest}
-              forwardPath={`${window.location.origin}/pagos/respuesta?type=loans`}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=loans&token=${state.token}&cardtype=${state.transactionRequest.payment.cardtype}`}
             />
           )}
         </PageLoader>
