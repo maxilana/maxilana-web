@@ -1,4 +1,4 @@
-import React, { FC, useReducer } from 'react';
+import React, { FC, useEffect, useReducer } from 'react';
 
 import { PageLoader } from '~/components/common';
 import { checkAccount, requestPawn3DTransaction } from '~/api/payments';
@@ -20,6 +20,7 @@ type Payment = {
   amount: number;
   paymentCode: '1' | '2' | '3';
   paymentExtension: number;
+  celular: number;
 };
 
 type Transaction = {
@@ -29,6 +30,7 @@ type Transaction = {
 
 type State = {
   status: Status;
+  token: string;
   account: PawnAccount | null;
   paymentRequest: Payment | null;
   transactionRequest: Transaction | null;
@@ -36,6 +38,7 @@ type State = {
 
 const initialState: State = {
   status: 'idle',
+  token: '',
   account: null,
   paymentRequest: null,
   transactionRequest: null,
@@ -63,6 +66,11 @@ const reducer = (state: State, action: any): State => {
         status: 'payment_submitted',
         transactionRequest: payload.transactionRequest,
       };
+    case 'SUBMIT_TOKEN':
+      return {
+        ...state,
+        token: payload.token,
+      };
     default:
       return initialState;
   }
@@ -80,6 +88,10 @@ const PawnPaymentFlow: FC = () => {
     const account = await checkAccount(data);
     dispatch({ type: 'SET_ACCOUNT', payload: { account } });
   };
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   const handlePaymentSelection = (data: any) => {
     let paymentCode = '1'; // REFRENDO
@@ -100,6 +112,7 @@ const PawnPaymentFlow: FC = () => {
       paymentCode,
       paymentExtension,
       amount: data.paymentAmount,
+      celular: data.phoneNumber,
     };
 
     dispatch({ type: 'SET_PAYMENT', payload: { paymentRequest } });
@@ -109,7 +122,7 @@ const PawnPaymentFlow: FC = () => {
 
   const handleSubmitPayment = async (data: PaymentRequest) => {
     const { account, paymentRequest } = state;
-    const { concepto, correoelectronico, ...rest } = data;
+    const { concepto, email, ...rest } = data;
 
     if (!account || !paymentRequest) {
       throw new Error('No fue posible procesar el pago, vuelve a iniciar el proceso.');
@@ -117,7 +130,7 @@ const PawnPaymentFlow: FC = () => {
 
     const request = {
       ...rest,
-      email: correoelectronico,
+      email,
       detallepago: [
         {
           sucursal: account.branch,
@@ -133,6 +146,8 @@ const PawnPaymentFlow: FC = () => {
     };
 
     const maxilanaTransaction = await requestPawn3DTransaction(request);
+
+    dispatch({ type: 'SUBMIT_TOKEN', payload: { token: maxilanaTransaction.JsonWebToken } });
 
     const transactionRequest = {
       payment: request,
@@ -155,6 +170,7 @@ const PawnPaymentFlow: FC = () => {
           description="Realiza el pago del refrendo para no perder tu artículo.
                  El pago del desempeño de tu artículo tiene que ser en sucursal ya que pierde el seguro que lo protege."
           onSubmit={handleSubmitPayment}
+          showSubmitButton={true}
         />
       )}
       {state.status === 'payment_submitted' && state.transactionRequest && (
@@ -162,7 +178,7 @@ const PawnPaymentFlow: FC = () => {
           {state.transactionRequest !== null && (
             <BankTransactionForm
               {...state.transactionRequest}
-              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns&client=${state.account?.name}&total=${state.paymentRequest?.amount}`}
+              forwardPath={`${window.location.origin}/pagos/respuesta?type=pawns&client=${state.account?.name}&total=${state.paymentRequest?.amount}&token=${state.token}&cardtype=${state.transactionRequest.payment.cardtype}`}
             />
           )}
         </PageLoader>
