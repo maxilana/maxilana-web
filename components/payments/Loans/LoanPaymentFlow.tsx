@@ -136,6 +136,7 @@ const LoanPaymentFlow: FC = () => {
         <PaymentForm
           data={state.paymentRequest}
           title="Préstamos personales"
+          copiarDatos={false}
           description="Abona a tu préstamo personal en línea"
           onSubmit={handleSubmitPayment}
           showSubmitButton={true}

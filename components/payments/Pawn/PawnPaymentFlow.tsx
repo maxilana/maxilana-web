@@ -167,6 +167,7 @@ const PawnPaymentFlow: FC = () => {
         <PaymentForm
           data={state.paymentRequest}
           title="Boleta de empeño"
+          copiarDatos={false}
           description="Realiza el pago del refrendo para no perder tu artículo.
                  El pago del desempeño de tu artículo tiene que ser en sucursal ya que pierde el seguro que lo protege."
           onSubmit={handleSubmitPayment}

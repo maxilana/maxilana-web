@@ -133,6 +133,7 @@ const CouponPaymentFlow: FC = () => {
       {state.status === 'confirm_payment' && state.paymentRequest && (
         <PaymentForm
           title="Maxilana Vales"
+          copiarDatos={false}
           data={state.paymentRequest}
           description="Paga directamente a tu distribuidora"
           onSubmit={handleSubmitPayment}
